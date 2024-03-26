@@ -1,7 +1,14 @@
 const express = require('express');
-const app = express();
-const port = 3000;
+require('dotenv').config();
 
-app.listen(port, () => {
-    console.log(`NodeJS Server listening on port ${port}`);
-})
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api', require('./routes/api'));
+
+const SERV_HOST = process.env.SERV_HOST || 'localhost';
+const SERV_PORT = process.env.SERV_PORT || 3000;
+app.listen(SERV_PORT, SERV_HOST, () => {
+    console.log(`NodeJS Server listening on http:\\${SERV_HOST}:${SERV_PORT}`);
+});
