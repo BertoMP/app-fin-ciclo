@@ -1,0 +1,81 @@
+:host {
+  background-color: var(--bgColor-secondary);
+  padding: 2rem;
+  border-radius: 1.6rem;
+  width: 80%;
+  max-width: 400px;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: .5rem;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+label {
+  margin-bottom: .5rem;
+  text-align: center;
+  font-weight: bolder;
+  color: #555;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 1rem;
+  width: 100%;
+}
+
+button {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 1.3rem;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all .5s;
+  width: 80%;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+p {
+  text-align: center;
+}
+
+input.ng-invalid.ng-dirty {
+  background-color: lightcoral;
+}
+
+.invalid {
+  color: black;
+  margin-top: 0.2rem;
+  background-color: lightcoral;
+  border: 1px solid red;
+  border-radius: 1rem;
+  padding: 0.8rem;
+  font-size: 0.7rem;
+  min-height: 1.6rem;
+}
