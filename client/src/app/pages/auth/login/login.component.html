@@ -7,13 +7,11 @@
            formControlName="email"
     >
     @if (loginForm.get('email').invalid && loginForm.get('email').dirty) {
-      <article>
-        @if (loginForm.get('email').errors['required']) {
-          <p class="invalid">El email es necesario para iniciar sesión.</p>
-        } @else if (loginForm.get('email').errors['isInvalidMail']) {
-          <p class="invalid">El email ingresado no tiene un formato válido.</p>
-        }
-      </article>
+      @if (loginForm.get('email').errors['required']) {
+        <p class="invalid">El email es necesario para iniciar sesión.</p>
+      } @else if (loginForm.get('email').errors['isInvalidMail']) {
+        <p class="invalid">El email ingresado no tiene un formato válido.</p>
+      }
     }
   </section>
   <section class="form-section">
@@ -22,20 +20,25 @@
            id="password"
            formControlName="password"
     >
-    @if (loginForm.get('password').invalid && loginForm.get('password').dirty) {
-      <article>
-        @if (loginForm.get('password').invalid && loginForm.get('password').dirty){
-          <p class="invalid">La contraseña es necesaria para iniciar sesión.</p>
-        }
-      </article>
+    @if (loginForm.get('password').invalid
+    && loginForm.get('password').dirty) {
+      @if (loginForm.get('password').invalid
+      && loginForm.get('password').dirty){
+        <p class="invalid">La contraseña es necesaria para iniciar sesión.</p>
+      }
     }
   </section>
-  <button type="submit">Iniciar sesión</button>
+  <section class="form-section">
+    <button type="submit"
+            [disabled]="!loginForm.valid"
+    >Iniciar sesión</button>
+  </section>
 </form>
 <section>
-  <button routerLink="/auth/fogotten-password">He olvidado mi contraseña</button>
+  <button routerLink="/auth/fogotten-password"
+  >He olvidado mi contraseña</button>
 </section>
 <section>
-  <p class="remember-pass">¿No tienes cuenta? <button routerLink="/auth/register">Registrate</button></p>
+  <p>¿No tienes cuenta?<button routerLink="/auth/register">Registrate</button>
+  </p>
 </section>
-

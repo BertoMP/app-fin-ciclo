@@ -6,6 +6,7 @@
   max-width: 400px;
   display: flex;
   flex-flow: column nowrap;
+  align-items: center;
   gap: .5rem;
 }
 
@@ -20,7 +21,6 @@ form {
   flex-direction: column;
   align-items: center;
   width: 80%;
-  margin: 0 auto;
 }
 
 label {
@@ -31,7 +31,7 @@ label {
 }
 
 input {
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 1rem;
   width: 100%;
@@ -53,6 +53,11 @@ button:hover {
   background-color: #0056b3;
 }
 
+button:disabled {
+  background-color: #70a6ea;
+  cursor: not-allowed;
+}
+
 section {
   display: flex;
   flex-direction: column;
@@ -63,19 +68,25 @@ section {
 
 p {
   text-align: center;
+  margin-top: 0.2rem;
+  padding: 0.8rem;
+  font-size: 1rem;
+  min-height: 1.6rem;
 }
 
 input.ng-invalid.ng-dirty {
   background-color: lightcoral;
 }
 
+.form-section {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
 .invalid {
-  color: black;
-  margin-top: 0.2rem;
-  background-color: lightcoral;
-  border: 1px solid red;
-  border-radius: 1rem;
-  padding: 0.8rem;
   font-size: 0.7rem;
-  min-height: 1.6rem;
+  color: darkred;
+  position: absolute;
+  bottom: -2rem;
+  left: 0;
 }

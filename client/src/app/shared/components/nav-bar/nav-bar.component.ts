@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {RouterLink, RouterLinkActive} from "@angular/router";
 import {NgClass} from "@angular/common";
 
 @Component({
@@ -7,7 +7,8 @@ import {NgClass} from "@angular/common";
   standalone: true,
   imports: [
     RouterLink,
-    NgClass
+    NgClass,
+    RouterLinkActive
   ],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'

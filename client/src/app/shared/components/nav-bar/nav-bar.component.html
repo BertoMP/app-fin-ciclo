@@ -16,7 +16,9 @@
     <li class="hideOnMobile"><a>La Clínica</a></li>
     <li class="hideOnMobile"><a>Especialidades médicas</a></li>
     <li class="hideOnMobile"><a>Contacto</a></li>
-    <li class="hideOnMobile"><a routerLink="/auth/login">Mi espacio</a></li>
+    <li class="hideOnMobile" [routerLinkActive]="'active'">
+      <a routerLink="/auth/login">Mi espacio</a>
+    </li>
     <li class="menuButton" (click)="onOpenSideBar()"><a>
       <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26">
         <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>

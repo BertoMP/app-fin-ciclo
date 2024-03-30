@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf, NgSwitch, NgSwitchCase} from "@angular/common";
-import {CustomValidators} from "../../../shared/classes/CustomValidators";
+import {CustomValidators} from "../../../core/classes/CustomValidators";
 import {RouterLink} from "@angular/router";
 
 @Component({

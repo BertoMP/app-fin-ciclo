@@ -4,14 +4,15 @@ nav {
 
 nav ul {
   width: 100%;
+  height: 3rem;
   list-style: none;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  align-items: stretch;
 }
 
 nav li {
-  height: 3rem;
+  height: 100%;
 }
 
 nav a {
@@ -23,7 +24,8 @@ nav a {
   color: black;
 }
 
-nav a:hover {
+nav a:hover,
+.active {
   background-color: #f0f0f0;
 }
 
