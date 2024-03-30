@@ -8,13 +8,19 @@
       </a>
     </li>
     <li><a>La Clínica</a></li>
-    <li><a>Especialidades médicas</a></li>
+    <li [routerLinkActive]="'active'">
+      <a routerLink="/nuestros-servicios">Nuestros servicios</a>
+    </li>
     <li><a>Contacto</a></li>
-    <li><a>Mi espacio</a></li>
+    <li [routerLinkActive]="'active'">
+      <a routerLink="/auth/login">Mi espacio</a>
+    </li>
   </ul>
   <ul>
     <li class="hideOnMobile"><a>La Clínica</a></li>
-    <li class="hideOnMobile"><a>Especialidades médicas</a></li>
+    <li class="hideOnMobile" [routerLinkActive]="'active'">
+      <a routerLink="/nuestros-servicios">Nuestros servicios</a>
+    </li>
     <li class="hideOnMobile"><a>Contacto</a></li>
     <li class="hideOnMobile" [routerLinkActive]="'active'">
       <a routerLink="/auth/login">Mi espacio</a>

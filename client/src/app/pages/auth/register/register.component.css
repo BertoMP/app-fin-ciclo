@@ -1,0 +1,283 @@
+:host {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin: 2rem;
+}
+
+h2 {
+  text-align: center;
+}
+
+form {
+  width: 80%;
+  background-color: #c5cbf6;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+fieldset {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+legend {
+  font-size: 1.5em;
+  font-weight: bold;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+label {
+  font-weight: bold;
+  font-size: .9rem;
+  text-align: center;
+  display: block;
+}
+
+input,
+select {
+  width: 100%;
+  padding: .6rem;
+  margin: .3rem 0;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+}
+
+select>option {
+  text-align: left;
+}
+
+button {
+  padding: 1rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: 1.2rem;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.form-first-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas:
+    "personal-data personal-data account-data";
+  gap: 1rem;
+}
+
+.form-personal-data {
+  grid-area: personal-data;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas:
+    "name first-surname second-surname"
+    "dni date-of-birth gender";
+  gap: 1rem;
+  align-content: center;
+}
+
+.name-field {
+  grid-area: name;
+}
+
+.first-surname-field {
+  grid-area: first-surname;
+}
+
+.second-surname-field {
+  grid-area: second-surname;
+}
+
+.dni-field{
+  grid-area: dni;
+}
+
+.date-of-birth-field {
+  grid-area: date-of-birth;
+}
+
+.gender-field {
+  grid-area: gender;
+}
+
+.form-account-data {
+  grid-area: account-data;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1rem;
+}
+
+.form-second-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "contact-data";
+  gap: 1rem;
+}
+
+.form-contact-data {
+  grid-area: contact-data;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas:
+    "place address address number floor door"
+    "province province city city postal-code ."
+    "phone phone mobile mobile . .";
+  gap: 1rem;
+}
+
+.place-field {
+  grid-area: place;
+}
+
+.address-field {
+  grid-area: address;
+}
+
+.number-field {
+  grid-area: number;
+}
+
+.floor-field {
+  grid-area: floor;
+}
+
+.door-field {
+  grid-area: door;
+}
+
+.province-field {
+  grid-area: province;
+}
+
+.city-field {
+  grid-area: city;
+}
+
+.postal-code-field {
+  grid-area: postal-code;
+}
+
+.phone-field {
+  grid-area: phone;
+}
+
+.mobile-field {
+  grid-area: mobile;
+}
+
+.btn-section {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+}
+
+.btn-cancel:hover {
+  background-color: #c82333;
+}
+
+input.invalid,
+select.invalid {
+  border-color: red;
+  background-color: lightcoral;
+}
+
+select.invalid > option {
+  background-color: white;
+}
+
+.error-message {
+  font-size: .8rem;
+  background-color: lightcoral;
+  border: 1px solid red;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.error-message ul {
+  padding: 1rem;
+}
+
+.error-message li {
+  text-align: justify;
+}
+
+@media (max-width: 1000px) {
+  .form-first-row {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "personal-data"
+      "account-data";
+  }
+
+  .form-account-data {
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+  }
+
+  .form-account-data > article {
+    width: 50%;
+  }
+}
+
+@media (max-width: 670px) {
+  .form-personal-data {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "name"
+      "first-surname"
+      "second-surname"
+      "dni"
+      "date-of-birth"
+      "gender";
+  }
+
+  .form-contact-data {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-areas:
+      "place"
+      "address"
+      "number"
+      "floor"
+      "door"
+      "province"
+      "city"
+      "postal-code"
+      "phone"
+      "mobile";
+  }
+
+  .form-account-data {
+    flex-flow: column nowrap;
+    justify-content: center;
+  }
+
+  .form-account-data > article {
+    width: 100%;
+  }
+}

@@ -1,14 +1,299 @@
-<h2>REGISTRO</h2>
-<form action="http://localhost:3000/api/users/register" method="post">
-  <article>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email">
-  </article>
-  <article>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password">
-  </article>
-  <article>
-    <button type="submit">Registrarse</button>
-  </article>
+<form [formGroup]="registerForm"
+      (ngSubmit)="onRegisterAttempt()"
+>
+  <h2>FORMULARIO DE REGISTRO</h2>
+  <section class="form-first-row">
+    <fieldset class="form-personal-data">
+      <legend>Datos personales</legend>
+      <article class="name-field">
+        <label for="name">Nombre</label>
+        <input type="text"
+               id="name"
+               formControlName="name"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="first-surname-field">
+        <label for="first-surname">Primer apellido</label>
+        <input type="text"
+               id="first-surname"
+               formControlName="first-surname"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="second-surname-field">
+        <label for="second-surname">Segundo apellido</label>
+        <input type="text"
+               id="second-surname"
+               formControlName="second-surname"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="dni-field">
+        <label for="dni">DNI</label>
+        <input type="text"
+               id="dni"
+               formControlName="dni"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="date-of-birth-field">
+        <label for="date-of-birth">Fecha de nacimiento</label>
+        <input type="date"
+               id="date-of-birth"
+               formControlName="date-of-birth"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="gender-field">
+        <label for="gender">Género</label>
+        <select formControlName="gender" id="gender"
+                [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+          @for (gender of genders; track gender) {
+            <option value="{{ gender | lowercase }}">{{ gender }}</option>
+          }
+        </select>
+      </article>
+    </fieldset>
+    <fieldset class="form-account-data">
+      <legend>Datos de acceso</legend>
+      <article class="form-field">
+        <label for="email">Correo electrónico</label>
+        <input type="email"
+               id="email"
+               formControlName="email"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="form-field">
+        <label for="password">Contraseña</label>
+        <input type="password"
+               id="password"
+               formControlName="password"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+    </fieldset>
+  </section>
+  <section class="form-second-row">
+    <fieldset class="form-contact-data">
+      <legend>Dirección y contacto</legend>
+      <article class="place-field">
+        <label for="place">Plaza/Calle</label>
+        <select formControlName="place" id="place"
+                [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+                >
+          @for (place of places; track place) {
+            <option value="{{ place | lowercase }}">{{ place }}</option>
+          }
+        </select>
+      </article>
+      <article class="address-field">
+        <label for="address">Dirección</label>
+        <input type="text"
+               id="address"
+               formControlName="address"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="number-field">
+        <label for="number">Nº</label>
+        <input type="number"
+               id="number"
+               formControlName="number"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="floor-field">
+        <label for="floor">Piso</label>
+        <input type="number"
+               id="floor"
+               formControlName="floor"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="door-field">
+        <label for="door">Puerta</label>
+        <input type="text"
+               id="door"
+               formControlName="door"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="province-field">
+        <label for="province">Provincia</label>
+        <select formControlName="province" id="province"
+                [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+          @for (province of provinces; track province) {
+            <option value="{{ province | lowercase }}">{{ province }}</option>
+          }
+        </select>
+      </article>
+      <article class="city-field">
+        <label for="city">Ciudad</label>
+        <input type="text" formControlName="city" id="city"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="postal-code-field">
+        <label for="postal-code">CP</label>
+        <input type="number" formControlName="postal-code" id="postal-code"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="phone-field">
+        <label for="phone">Teléfono</label>
+        <input type="text" formControlName="phone" id="phone"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+      <article class="mobile-field">
+        <label for="mobile">Móvil</label>
+        <input type="text" formControlName="mobile" id="mobile"
+               [ngClass]="{ 'invalid': registerForm.get('name').invalid && sendedAttempt }"
+        >
+      </article>
+    </fieldset>
+    @if (registerForm.invalid && sendedAttempt) {
+      <section class="error-message">
+        <h3>Por favor, rellena todos los campos correctamente:</h3>
+        <ul>
+          @if (registerForm.get('name').invalid) {
+            <li>
+              <strong>Nombre:</strong> Debe empezar por mayúscula y el resto de
+              letras en minúsculas, salvo en el caso de nombres compuestos.
+            </li>
+          }
+
+          @if (registerForm.get('first-surname').invalid) {
+            <li>
+              <strong>Primer apellido:</strong> Debe empezar por mayúscula y
+              el resto de letras en minúsculas, salvo en el caso de apellidos
+              compuestos.
+            </li>
+          }
+
+          @if (registerForm.get('second-surname').invalid) {
+            <li>
+              <strong>Segundo apellido:</strong> Debe empezar por mayúscula y
+              el resto de letras en minúsculas, salvo en el caso de apellidos
+              compuestos.
+            </li>
+          }
+
+          @if (registerForm.get('dni').invalid) {
+            <li>
+              <strong>DNI:</strong> Debe tener un formato válido (7 u 8
+              números y una letra mayúscula. Por ejemplo: 12345678A).
+            </li>
+          }
+
+          @if (registerForm.get('date-of-birth').invalid) {
+            <li>
+              <strong>Fecha de nacimiento:</strong> Seleccione una fecha
+              usando el calendario o introduzca una en formato: DD/MM/AAAA.
+            </li>
+          }
+
+          @if (registerForm.get('gender').invalid) {
+            <li>
+              <strong>Género:</strong> Debe seleccionar una opción.
+            </li>
+          }
+
+          @if (registerForm.get('email').invalid) {
+            <li>
+              <strong>Correo electrónico:</strong> Debe tener un formato
+              válido (usuario&#64;dominio.com | usuario&#64;dominio).
+            </li>
+          }
+
+          @if (registerForm.get('password').invalid) {
+            <li>
+              <strong>Contraseña:</strong> Debe tener al menos 8 caracteres,
+              una mayúscula, una minúscula, un número y un carácter especial.
+            </li>
+          }
+
+          @if (registerForm.get('place').invalid) {
+            <li>
+              <strong>Plaza/Calle:</strong> Debe seleccionar una opción.
+            </li>
+          }
+
+          @if (registerForm.get('address').invalid) {
+            <li>
+              <strong>Dirección:</strong> Debe empezar por mayúscula y el
+              resto de letras en minúsculas, salvo en el caso de nombres
+              compuestos.
+            </li>
+          }
+
+          @if (registerForm.get('number').invalid) {
+            <li>
+              <strong>Nº:</strong> Debe ser un número.
+            </li>
+          }
+
+          @if (registerForm.get('floor').invalid) {
+            <li>
+              <strong>Piso:</strong> Debe ser un número.
+            </li>
+          }
+
+          @if (registerForm.get('door').invalid) {
+            <li>
+              <strong>Puerta:</strong> Debe ser un número o una letra mayúscula.
+            </li>
+          }
+
+          @if (registerForm.get('province').invalid) {
+            <li>
+              <strong>Provincia:</strong> Debe seleccionar una opción.
+            </li>
+          }
+
+          @if (registerForm.get('city').invalid) {
+            <li>
+              <strong>Ciudad:</strong> Debe empezar por mayúscula y el resto de
+              letras en minúsculas, salvo en el caso de nombres de
+              ciudades compuestas.
+            </li>
+          }
+
+          @if (registerForm.get('postal-code').invalid) {
+            <li>
+              <strong>CP:</strong> Debe ser un número de 5 dígitos.
+            </li>
+          }
+
+          @if (registerForm.get('phone').invalid) {
+            <li>
+              <strong>Teléfono:</strong> Debe ser un número de 9 dígitos.
+              Empezando por 9. En el caso de prefijos internacionales, puede
+              colocar el valor de las siguientes formas: +34 923456789 o 0034
+              923456789.
+            </li>
+          }
+
+          @if (registerForm.get('mobile').invalid) {
+            <li>
+              <strong>Móvil:</strong> Debe ser un número de 9 dígitos.
+              Empezando por 6 o por 7. En el caso de prefijos internacionales,
+              puede colocar el valor de las siguientes formas: +34 623456789 o
+              0034 723456789.
+            </li>
+          }
+        </ul>
+      </section>
+    }
+    <section class="btn-section">
+      <button type="submit">Registrarse</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar
+      </button>
+    </section>
+  </section>
 </form>
+
