@@ -1,9 +1,14 @@
 <article class="card">
-  <header class="card-header">
-    <h2 class="card-title">{{info.title}}</h2>
-  </header>
-  <section class="container">
-    <h4><b>{{info.title}}</b></h4>
-    <p>{{info.description}}</p>
+  <figure>
+    <img src="{{ info.image }}" alt="Imagen de {{ info.title | lowercase }}">
+  </figure>
+  <section class="contenido">
+    <h3>{{ info.title }}</h3>
+    <p>{{ info.description }}</p>
+    <article>
+      @for (link of links; track link) {
+        <button [routerLink]="link">Ver especialistas</button>
+      }
+    </article>
   </section>
 </article>

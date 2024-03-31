@@ -140,7 +140,7 @@ export class CustomValidators {
 
   static validMobile(control: FormControl): {[s: string]: boolean} | null {
     const value = control.value;
-    const regex: RegExp = new RegExp('^((\\+34|0034)\s)?[67][0-9]{8}$');
+    const regex: RegExp = new RegExp('^((\\+34|0034)\\s)?[67][0-9]{8}$');
 
     if (!regex.test(value)) {
       return {'isInvalidMobile': true}

@@ -10,22 +10,22 @@ export class MedicalSpecialtiesService {
     {
       title: 'Cardiología',
       description: 'Especialidad médica que se encarga del estudio del corazón y su funcionamiento.',
-      image: 'assets/images/cardiology.jpg'
+      image: 'assets/img/cardiologia.jpg'
     },
     {
       title: 'Dermatología',
       description: 'Especialidad médica que se encarga del estudio de la piel y sus enfermedades.',
-      image: 'assets/images/dermatology.jpg'
+      image: 'assets/img/dermatologia.jpg'
     },
     {
       title: 'Endocrinología',
       description: 'Especialidad médica que se encarga del estudio de las glándulas y sus enfermedades.',
-      image: 'assets/images/endocrinology.jpg'
+      image: 'assets/img/endocrinologia.jpg'
     },
     {
       title: 'Neurología',
       description: 'Especialidad médica que se encarga del estudio del sistema nervioso y sus enfermedades.',
-      image: 'assets/images/neurology.jpg'
+      image: 'assets/img/neurologia.jpg'
     }
   ]
   constructor() { }

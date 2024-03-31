@@ -1,34 +1,36 @@
-<nav>
-  <ul class="sidebar" #sideBar>
-    <li class="closeSideBar" (click)="onCloseSideBar()">
-      <a>
-        <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26">
-          <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
-        </svg>
-      </a>
-    </li>
-    <li><a>La Clínica</a></li>
-    <li [routerLinkActive]="'active'">
-      <a routerLink="/nuestros-servicios">Nuestros servicios</a>
-    </li>
-    <li><a>Contacto</a></li>
-    <li [routerLinkActive]="'active'">
-      <a routerLink="/auth/login">Mi espacio</a>
-    </li>
-  </ul>
-  <ul>
-    <li class="hideOnMobile"><a>La Clínica</a></li>
-    <li class="hideOnMobile" [routerLinkActive]="'active'">
-      <a routerLink="/nuestros-servicios">Nuestros servicios</a>
-    </li>
-    <li class="hideOnMobile"><a>Contacto</a></li>
-    <li class="hideOnMobile" [routerLinkActive]="'active'">
-      <a routerLink="/auth/login">Mi espacio</a>
-    </li>
-    <li class="menuButton" (click)="onOpenSideBar()"><a>
-      <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26">
-        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>
-      </svg>
-    </a></li>
-  </ul>
-</nav>
+
+
+<!--<nav>-->
+<!--  <ul class="sidebar" #sideBar>-->
+<!--    <li class="closeSideBar" (click)="onCloseSideBar()">-->
+<!--      <a>-->
+<!--        <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26">-->
+<!--          <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>-->
+<!--        </svg>-->
+<!--      </a>-->
+<!--    </li>-->
+<!--    <li><a>La Clínica</a></li>-->
+<!--    <li [routerLinkActive]="'active'">-->
+<!--      <a routerLink="/nuestros-servicios">Nuestros servicios</a>-->
+<!--    </li>-->
+<!--    <li><a>Contacto</a></li>-->
+<!--    <li [routerLinkActive]="'active'">-->
+<!--      <a routerLink="/auth/login">Mi espacio</a>-->
+<!--    </li>-->
+<!--  </ul>-->
+<!--  <ul>-->
+<!--    <li class="hideOnMobile"><a>La Clínica</a></li>-->
+<!--    <li class="hideOnMobile" [routerLinkActive]="'active'">-->
+<!--      <a routerLink="/nuestros-servicios">Nuestros servicios</a>-->
+<!--    </li>-->
+<!--    <li class="hideOnMobile"><a>Contacto</a></li>-->
+<!--    <li class="hideOnMobile" [routerLinkActive]="'active'">-->
+<!--      <a routerLink="/auth/login">Mi espacio</a>-->
+<!--    </li>-->
+<!--    <li class="menuButton" (click)="onOpenSideBar()"><a>-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26">-->
+<!--        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>-->
+<!--      </svg>-->
+<!--    </a></li>-->
+<!--  </ul>-->
+<!--</nav>-->

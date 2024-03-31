@@ -10,9 +10,12 @@
 
 h2 {
   font-size: 1.3rem;
-  margin-bottom: 1rem;
   font-weight: bold;
   text-align: center;
+}
+
+h3 {
+  margin-bottom: 0;
 }
 
 form {
@@ -31,13 +34,11 @@ fieldset {
 }
 
 legend {
-  float: none;
-  width: inherit;
   font-size: 1.5em;
   font-weight: bold;
   border: 1px solid black;
   border-radius: 5px;
-  padding: 5px;
+  padding: 1rem;
 }
 
 label {
