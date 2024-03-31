@@ -9,10 +9,10 @@ import {
   imports: [
     HorizontalCardComponent
   ],
-  templateUrl: './medical-specialties.component.html',
-  styleUrl: './medical-specialties.component.css'
+  templateUrl: './medical-services.component.html',
+  styleUrl: './medical-services.component.css'
 })
-export class MedicalSpecialtiesComponent {
+export class MedicalServicesComponent {
   infoCards: {
     title: string,
     description: string,

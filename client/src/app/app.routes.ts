@@ -8,8 +8,8 @@ import {
   ProfessionalsListComponent
 } from "./pages/medical-services/professionals-list/professionals-list.component";
 import {
-  MedicalSpecialtiesComponent
-} from "./pages/medical-services/medical-specialties.component";
+  MedicalServicesComponent
+} from "./pages/medical-services/medical-services.component";
 
 export const routes: Routes = [
   {
@@ -32,7 +32,7 @@ export const routes: Routes = [
   },
   {
     path: 'nuestros-servicios',
-    component: MedicalSpecialtiesComponent,
+    component: MedicalServicesComponent,
   },
   {
     path: 'nuestros-servicios/listado-de-especialidades',

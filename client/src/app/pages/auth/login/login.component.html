@@ -28,16 +28,16 @@
       }
     }
   </section>
-  <section class="form-section">
+  <section>
+    <button routerLink="/auth/fogotten-password"
+    >He olvidado mi contraseña</button>
+  </section>
+  <section>
     <button type="submit"
             [disabled]="!loginForm.valid"
     >Iniciar sesión</button>
   </section>
 </form>
-<section>
-  <button routerLink="/auth/fogotten-password"
-  >He olvidado mi contraseña</button>
-</section>
 <section>
   <p>¿No tienes cuenta?<button routerLink="/auth/register">Registrate</button>
   </p>

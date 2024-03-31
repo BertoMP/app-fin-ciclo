@@ -9,6 +9,9 @@
 }
 
 h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
   text-align: center;
 }
 
@@ -28,6 +31,8 @@ fieldset {
 }
 
 legend {
+  float: none;
+  width: inherit;
   font-size: 1.5em;
   font-weight: bold;
   border: 1px solid black;
@@ -36,16 +41,16 @@ legend {
 }
 
 label {
+  padding-left: 0.8rem;
   font-weight: bold;
   font-size: .9rem;
-  text-align: center;
   display: block;
 }
 
 input,
 select {
   width: 100%;
-  padding: .6rem;
+  padding: .3rem 1rem;
   margin: .3rem 0;
   border: 1px solid #ccc;
   border-radius: 1rem;

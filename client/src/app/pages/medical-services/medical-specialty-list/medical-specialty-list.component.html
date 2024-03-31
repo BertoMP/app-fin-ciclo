@@ -1,1 +1,10 @@
-<p>medical-specialty-list works!</p>
+<h2>ESPECIALIDADES MÉDICAS</h2>
+<section>
+  @for (specialty of specialties; track specialty.title) {
+    <app-vertical-card [info]="specialty"
+                       [links]="['/nuestros-servicios/listado-de-especialistas#'
+                       + (specialty.title | lowercase | removeAccents)
+                       ]"
+    ></app-vertical-card>
+  }
+</section>

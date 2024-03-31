@@ -1,3 +1,7 @@
+* {
+  all: unset;
+}
+
 header {
   background-color: var(--bgColor-secondary);
 

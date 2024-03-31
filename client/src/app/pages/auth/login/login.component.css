@@ -31,7 +31,7 @@ label {
 }
 
 input {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   border: 1px solid #ddd;
   border-radius: 1rem;
   width: 100%;
@@ -80,13 +80,13 @@ input.ng-invalid.ng-dirty {
 
 .form-section {
   position: relative;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .invalid {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: darkred;
   position: absolute;
-  bottom: -2rem;
+  bottom: -5rem;
   left: 0;
 }

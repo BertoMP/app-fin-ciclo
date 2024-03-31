@@ -83,7 +83,7 @@ export class RegisterComponent implements OnInit {
         ]
       ),
       'gender': new FormControl(
-        null,
+        '',
         [
           Validators.required
         ]
@@ -103,7 +103,7 @@ export class RegisterComponent implements OnInit {
         ]
       ),
       'place': new FormControl(
-        null,
+        '',
         [
           Validators.required
         ]
@@ -137,7 +137,7 @@ export class RegisterComponent implements OnInit {
         ]
       ),
       'province': new FormControl(
-        null,
+        '',
         [
           Validators.required
         ]
