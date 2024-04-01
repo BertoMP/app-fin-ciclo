@@ -17,5 +17,6 @@ import {LowerCasePipe} from "@angular/common";
 })
 export class VerticalCardComponent {
   @Input() info!: MedicalSpecialtyModel;
-  @Input() links!: string[];
+  @Input() routerLink!: string;
+  @Input() fragment!: string;
 }

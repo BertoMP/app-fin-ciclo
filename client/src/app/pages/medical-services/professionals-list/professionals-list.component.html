@@ -1,1 +1,29 @@
-<p>professionals-list works!</p>
+<section class="main-container">
+  <h2>NUESTROS ESPECIALISTAS</h2>
+  <section class="specialities-container">
+    @for (datum of listOfData; track datum.specialty) {
+      <section class="speciality-container"
+               id="{{ datum.specialty | lowercase | removeAccents }}">
+        <h3>Especialistas en {{ datum.specialty | lowercase }}</h3>
+        <section class="specialists-container">
+        @for (doctor of datum.medicalSpecialists; track doctor.name) {
+         <section class="specialist-container">
+           <article>
+             <figure>
+               <img src="{{ doctor.image }}" alt="{{ doctor.name }}">
+             </figure>
+           </article>
+           <article class="specialist-info">
+             <h4>{{ doctor.name }} {{ doctor.surname }}</h4>
+             <section class="btn-container">
+               <button>Ver perfil</button>
+               <button>Agendar cita</button>
+             </section>
+           </article>
+         </section>
+        }
+      </section>
+    </section>
+    }
+  </section>
+</section>

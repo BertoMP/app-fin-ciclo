@@ -2,9 +2,8 @@
 <section class="card-container">
   @for (specialty of specialties; track specialty.title) {
     <app-vertical-card [info]="specialty"
-                       [links]="['/nuestros-servicios/listado-de-especialistas#'
-                       + (specialty.title | lowercase | removeAccents)
-                       ]"
+                       [routerLink]="['/nuestros-servicios/listado-de-especialistas']"
+                       [fragment]="specialty.title | lowercase | removeAccents"
     ></app-vertical-card>
   }
 </section>
