@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NavBarComponent} from "../nav-bar/nav-bar.component";
 
 @Component({
@@ -11,5 +11,4 @@ import {NavBarComponent} from "../nav-bar/nav-bar.component";
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-
 }

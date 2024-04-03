@@ -26,7 +26,7 @@ export class MedicalServicesComponent {
       image: 'assets/img/medical-specialities.jpg',
       buttons: [{
         text: 'Ver especialidades',
-        link: '/nuestros-servicios/listado-de-especialidades',
+        link: '/listado-de-especialidades',
       }],
       order: 'normal'
     },
@@ -36,7 +36,7 @@ export class MedicalServicesComponent {
       image: 'assets/img/medical-specialists.jpg',
       buttons: [{
         text: 'Ver especialistas',
-        link: '/nuestros-servicios/listado-de-especialistas',
+        link: '/listado-de-especialistas',
       }],
       order: 'reverse'
     }

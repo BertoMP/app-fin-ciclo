@@ -1,86 +1,83 @@
-nav {
-  background-color: var(--bgColor-secondary);
+@import "boxicons";
+
+.navbar-mobile {
+  display: none;
 }
 
-nav ul {
-  width: 100%;
-  height: 3rem;
-  list-style: none;
-  display: flex;
-  justify-content: flex-end;
-  align-items: stretch;
-}
-
-nav li {
-  height: 100%;
-}
-
-nav a {
-  height: 100%;
-  padding: 0 2rem;
+a {
+  font-size: 1.15rem;
+  color: #fff;
   text-decoration: none;
-  display: flex;
-  align-items: center;
-  color: black;
+  font-weight: 500;
+  margin-left: 2.5rem;
+  transition: .2s;
 }
 
-nav a:hover,
-.active {
-  background-color: #f0f0f0;
+a.active {
+  color: #007bff;
+  font-weight: bolder;
 }
 
-nav li:first-child {
-  margin-right: auto;
+a:hover {
+  color: #007bff;
 }
 
-nav .sidebar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100vh;
-  width: 250px;
-  z-index: 999;
-  background-color: var(--bgColor-secondary);
-  backdrop-filter: blur(10px);
-  display: none;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-nav .sidebar li {
-  width: 100%;
-}
-
-nav .sidebar > li:first-child {
-  display: flex;
-  justify-content: flex-end;
-}
-
-nav .sidebar a {
-  width: 100%;
-}
-
-nav .menuButton {
+.icons {
+  right: 5%;
+  font-size: 2.8rem;
+  color: #fff;
+  cursor: pointer;
   display: none;
 }
 
-nav .sidebar .closeSideBar {
-  display: none;
-}
-
-@media(max-width: 870px) {
-  .hideOnMobile {
+@media (max-width: 800px) {
+  .navbar {
     display: none;
   }
 
-  nav .menuButton {
+  .icons {
     display: block;
   }
-}
 
-@media(max-width: 500px) {
-  nav .sidebar {
+  .navbar-mobile {
+    position: absolute;
+    top: 100%;
+    left: 0;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+    background-color: rgba(162, 176, 237, .5);
+    backdrop-filter: blur(50px);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+    transition: .3s ease;
+  }
+
+  .navbar-mobile.open {
+    visibility: visible;
+    opacity: 1;
+    max-height: 500px;
+  }
+
+  a {
+    display: inline-block;
+    font-size: 1.5rem;
+    margin: 1.5rem 0;
+    opacity: 0;
+    text-align: center;
+    transform: translateY(-50px);
+    transition: .3s ease;
+  }
+
+  .navbar-mobile.open a {
+    visibility: visible;
+    opacity: 1;
+    max-height: 500px;
+    transform: translateY(0);
+    transition-delay: calc(.15s * var(--i));
   }
 }

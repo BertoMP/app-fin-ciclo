@@ -21,9 +21,8 @@ body {
   font-family: var(--font-main);
   background-color: var(--bgColor-main);
   color: var(--color-main);
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  max-width: 100%;
+  width: 100%;
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,26 +1,46 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {RouterLink, RouterLinkActive} from "@angular/router";
+import {
+  Component,
+  ElementRef,
+  HostListener, OnDestroy, OnInit,
+} from '@angular/core';
+import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {NgClass} from "@angular/common";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [
-    RouterLink,
-    NgClass,
-    RouterLinkActive
-  ],
+  imports: [RouterLink, NgClass, RouterLinkActive],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
 })
-export class NavBarComponent {
-  @ViewChild('sideBar') sideBar: ElementRef;
+export class NavBarComponent implements OnInit, OnDestroy {
+  isMenuOpen: boolean = false;
+  routerSubscription: Subscription;
 
-  onOpenSideBar(): void {
-    this.sideBar.nativeElement.style.display = 'flex';
+  constructor(private elementRef: ElementRef,
+              private router: Router) {
   }
 
-  onCloseSideBar(): void {
-    this.sideBar.nativeElement.style.display = 'none';
+  onToggleMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  ngOnInit(): void {
+    this.routerSubscription = this.router.events.subscribe(() => {
+      this.isMenuOpen = false;
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.isMenuOpen = false;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.routerSubscription.unsubscribe();
   }
 }
