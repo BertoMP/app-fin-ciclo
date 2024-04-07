@@ -1,63 +1,90 @@
-create table users {
-    _id int auto_increment,
-    name varchar(255),
-    firstname varchar(255),
-    lastname varchar(255),
-    email varchar(255),
-    password varchar(255),
-    address varchar(255),
-    phone varchar(255),
-    mobile varchar(255),
-    role int,
+CREATE TABLE tension (
+	id			INT AUTO_INCREMENT,
+    sistolica	INT,
+    diastolica	INT,
+    puls_min	INT,
+    id_paciente	INT,
+		CONSTRAINT pk_tension PRIMARY KEY(id),
+        CONSTRAINT ck_tension CHECK(sistolica IS NOT NULL 
+									AND diastolica IS NOT NULL 
+                                    AND puls_min IS NOT NULL),
+		CONSTRAINT fk_paciente_tension FOREIGN KEY(id_paciente) 
+			REFERENCES paciente(id)
+);
 
-    constraint pk_users primary key (user_id),
-    constraint fk_users_roles foreign key (user_role) references roles(role_id)
-}
+CREATE TABLE medicamento (
+	id			INT AUTO_INCREMENT,
+    nombre		VARCHAR(255),
+    descripcion	TEXT,
+		CONSTRAINT pk_medicamento PRIMARY KEY(id),
+        CONSTRAINT uq_nombre UNIQUE(nombre),
+        CONSTRAINT ck_medicamento CHECK(nombre IS NOT NULL 
+										AND descripcion IS NOT NULL)
+);
 
-create table patients {
-    id_patient int auto_increment,
-    user_id int,
+CREATE TABLE medicamento_paciente (
+	id_medicamento	INT,
+    id_paciente		INT,
+    toma_diurna		INT,
+    toma_vesper		INT,
+    toma_nocturna	INT,
+		CONSTRAINT pk_medicamento_paciente PRIMARY KEY(id_medicamento, id_paciente),
+        CONSTRAINT fk_medicamento_paciente FOREIGN KEY(id_medicamento) 
+			REFERENCES medicamento(id), 
+		CONSTRAINT fk_paciente_medicamento FOREIGN KEY(id_paciente)
+			REFERENCES paciente(id)
+);
 
-    constraint pk_patients primary key (id_patient),
-    constraint fk_patients_users foreign key (user_id) references users(user_id)
-}
+CREATE TABLE glucometria (
+	id			INT AUTO_INCREMENT,
+    medicion	INT,
+    hora		DATETIME,
+    id_paciente	INT,
+		CONSTRAINT pk_glucometria PRIMARY KEY(id),
+        CONSTRAINT ck_glucometria CHECK(medicion IS NOT NULL
+										AND hora IS NOT NULL),
+        CONSTRAINT fk_paciente FOREIGN KEY(id_paciente) REFERENCES paciente(id)
+);
 
-create table doctors {
-    id_doctor int auto_increment,
-    user_id int,
-    college_number varchar(255),
-    specialty int,
-    description varchar(255),
+CREATE TABLE informe (
+	id			INT AUTO_INCREMENT,
+    descripcion	TEXT,
+    id_cita		INT,
+		CONSTRAINT pk_informe PRIMARY KEY(id),
+        CONSTRAINT ck_informe CHECK(descripcion IS NOT NULL),
+        CONSTRAINT fk_cita_informe FOREIGN KEY(id_cita) 
+			REFERENCES cita(id)
+);
 
-    constraint pk_doctors primary key (id_doctor),
-    constraint fk_doctors_users foreign key (user_id) references users(user_id),
-    constraint specialty foreign key (specialty) references specialties(specialty_id),
-    constraint uc_doctors_college_number unique (college_number)
-}
+CREATE TABLE especialidad (
+	id			INT AUTO_INCREMENT,
+    nombre		VARCHAR(255),
+    descripcion	TEXT,
+    imagen_path	VARCHAR(255),
+		CONSTRAINT pk_especialidad PRIMARY KEY(id),
+        CONSTRAINT uq_nombre UNIQUE(nombre),
+        CONSTRAINT ck_especialidad CHECK(nombre IS NOT NULL
+										 AND descripcion IS NOT NULL
+										 AND imagen_path IS NOT NULL)
+);
 
-create table specialties {
-    specialty_id int auto_increment,
-    specialty_name varchar(255),
-    specialty_description varchar(255),
+CREATE TABLE consulta (
+	id				INT AUTO_INCREMENT,
+    nombre_cabina	VARCHAR(255),
+		CONSTRAINT pk_consulta PRIMARY KEY(id),
+        CONSTRAINT uq_nombre_cabina UNIQUE(nombre_cabina),
+        CONSTRAINT ck_nombre_canina CHECK(nombre_cabina REGEXP '^[1-9][0-9]?-[A-Z]$')
+);
 
-    constraint pk_specialties primary key (specialty_id),
-    constraint uc_specialties_name unique (specialty_name)
-}
-
-create table appointments {
-    appointment_id int auto_increment,
-    patient_id int,
-    doctor_id int,
-    date datetime
-
-    constraint pk_appointments primary key (appointment_id),
-    constraint fk_appointments_patients foreign key (patient_id) references patients(id_patient),
-    constraint fk_appointments_doctors foreign key (doctor_id) references doctors(id_doctor),
-}
-
-create table roles {
-    role_id int auto_increment,
-    role_name varchar(255),
-
-    constraint pk_roles primary key (role_id)
-}
+CREATE TABLE cita (
+	id				INT AUTO_INCREMENT,
+    fecha			DATE,
+    hora			TIME,
+    id_paciente		INT,
+    id_especialista INT,
+		CONSTRAINT pk_cita PRIMARY KEY(id),
+        CONSTRAINT fk_cita_paciente FOREIGN KEY(id_paciente)
+			REFERENCES paciente(id),
+		CONSTRAINT fk_cita_especialista FOREIGN KEY(id_especialista)
+			REFERENCES especialista(id)
+);
