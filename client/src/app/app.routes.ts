@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from "./pages/auth/login/login.component";
 import {RegisterComponent} from "./pages/auth/register/register.component";
+import { ContactUsComponent } from './pages/contact-us/contact-us.component';
+import { ClinicaComponent } from './pages/clinica/clinica.component';
 import {
   MedicalSpecialtyListComponent
 } from "./pages/medical-specialty-list/medical-specialty-list.component";
@@ -20,6 +22,14 @@ export const routes: Routes = [
   {
     path: 'auth/login',
     component: LoginComponent,
+  },
+  {
+    path:'sobre-nosotros',
+    component:ClinicaComponent
+  },
+  {
+    path: 'contacto',
+    component:ContactUsComponent
   },
   {
     path: 'auth/register',

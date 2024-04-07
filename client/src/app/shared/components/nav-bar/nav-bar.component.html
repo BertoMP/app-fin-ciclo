@@ -7,17 +7,17 @@
 </section>
 
 <nav class="navbar">
-  <a [routerLink]="'/la-clinica'" [routerLinkActive]="'active'">La clínica</a>
+  <a [routerLink]="'/sobre-nosotros'" [routerLinkActive]="'active'">La clínica</a>
   <a [routerLink]="'/nuestros-servicios'" [routerLinkActive]="'active'">Servicios</a>
-  <a [routerLink]="'/contacta-con-nosotros'" [routerLinkActive]="'active'">Contacta</a>
+  <a [routerLink]="'/contacto'" [routerLinkActive]="'active'">Contacto</a>
   <a [routerLink]="'/auth'" [routerLinkActive]="'active'">MediAPP</a>
 </nav>
 
 <nav class="navbar-mobile"
      [ngClass]="{'open': isMenuOpen}"
 >
-  <a [routerLink]="'/la-clinica'" style="--i:0" [routerLinkActive]="'active'">La clínica</a>
+  <a [routerLink]="'/sobre-nosotros'" style="--i:0" [routerLinkActive]="'active'">La clínica</a>
   <a [routerLink]="'/nuestros-servicios'" style="--i:1" [routerLinkActive]="'active'">Servicios</a>
-  <a [routerLink]="'/contacta-con-nosotros'" style="--i:2" [routerLinkActive]="'active'">Contacta</a>
+  <a [routerLink]="'/contacto'" style="--i:2" [routerLinkActive]="'active'">Contacto</a>
   <a [routerLink]="'/auth'" style="--i:3" [routerLinkActive]="'active'">MediAPP</a>
 </nav>
