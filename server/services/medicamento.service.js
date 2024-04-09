@@ -10,6 +10,10 @@ class MedicamentoService {
         return await MedicamentoModel.findById(dbConn, id);
     }
 
+    static async readMedicamentoByNombre(nombre) {
+        return await MedicamentoModel.findByNombre(dbConn, nombre);
+    }
+
     static async createMedicamento(medicamento) {
         await MedicamentoModel.save(dbConn, medicamento);
     }

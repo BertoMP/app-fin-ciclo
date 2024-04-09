@@ -1,12 +1,19 @@
 const router = require('express').Router();
-const userController = require('../../controllers/usuario.controller');
+const UsuarioController = require('../../controllers/usuario.controller');
+const multer = require('../../middlewares/multer');
 
 // Rutas POST
-router.post('/registro',
-    userController.validateRegister,
-    userController.postRegister);
-router.post('/login',
-    userController.validateLogin,
-    userController.postLogin);
+router.post('/usuario/registro',
+    multer.none(),
+    UsuarioController.validateUsuario,
+    UsuarioController.postRegistro);
+router.post('/usuario/login',
+    multer.none(),
+    UsuarioController.validateUsuarioLogin,
+    UsuarioController.postLogin);
+
+// Rutas PUT
+router.put('/usuario/password',
+    UsuarioController.postUpdatePassword);
 
 module.exports = router;

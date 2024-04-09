@@ -9,12 +9,17 @@ module.exports = (req, res, next) => {
             next();
         } catch (error) {
             if (error.name === 'TokenExpiredError') {
-                return res.status(401).json({ message: 'La sesión ha expirado. Por favor, inicia sesión de nuevo.' });
+                return res.status(401).json({
+                    message: 'La sesión ha expirado. Por favor, ' +
+                        'inicia sesión de nuevo.'
+                });
             } else {
                 return res.status(401).json({ message: 'Token inválido.' });
             }
         }
     } else {
-        return res.status(401).json({ message: 'No se proporcionó ningún token.' });
+        return res.status(401).json({
+            message: 'No se proporcionó ningún token.'
+        });
     }
 };

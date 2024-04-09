@@ -1,17 +1,39 @@
 const router = require('express').Router();
-const medicamentoController = require('../../controllers/medicamento.controller');
+const MedicamentoController =
+    require('../../controllers/medicamento.controller');
+const tokenVerify = require('../../middlewares/tokenVerify');
+const tokenRole = require('../../middlewares/tokenRole');
 
 // Rutas GET
-router.get('/', medicamentoController.getMedicamentos);
-router.get('/:id', medicamentoController.getMedicamentoById);
+router.get('/medicamento',
+    tokenVerify,
+    tokenRole([3]),
+    MedicamentoController.getMedicamentos
+);
+router.get('/medicamento/:id',
+    tokenVerify,
+    tokenRole([3]),
+    MedicamentoController.getMedicamentoById);
 
 // Rutas POST
-router.post('/',
-    medicamentoController.validateMedicamento,
-    medicamentoController.postMedicamento);
-router.post('/delete/:id', medicamentoController.deleteMedicamento);
-router.post('/update/:id',
-    medicamentoController.validateMedicamento,
-    medicamentoController.updateMedicamento);
+router.post('/medicamento',
+    tokenVerify,
+    tokenRole([3]),
+    MedicamentoController.validateMedicamento,
+    MedicamentoController.createMedicamento);
+
+// Rutas PUT
+router.put('/medicamento/:id',
+    tokenVerify,
+    tokenRole([3]),
+    MedicamentoController.validateMedicamento,
+    MedicamentoController.updateMedicamento);
+
+// Rutas DELETE
+router.delete('/medicamento/:id',
+    tokenVerify,
+    tokenRole([3]),
+    MedicamentoController.deleteMedicamento);
+
 
 module.exports = router;

@@ -3,7 +3,7 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-exports.validateLogin = [
+exports.validateUsuarioLogin = [
     body('email')
         .isEmail()
         .withMessage('El correo debe ser un correo válido.'),
@@ -19,9 +19,17 @@ exports.validateLogin = [
     body('password')
         .notEmpty()
         .withMessage('La contraseña es requerida.'),
-]
 
-exports.validateRegister = [
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        next();
+    }
+];
+
+exports.validateUsuario = [
     body('email')
         .isEmail()
         .withMessage('El correo debe ser un correo válido.'),
@@ -29,15 +37,6 @@ exports.validateRegister = [
     body('email')
         .notEmpty()
         .withMessage('El correo es requerido.'),
-
-    body('email')
-        .custom(async (value) => {
-            const user = await UsuarioService.readUsuarioByEmail(value);
-            if (user) {
-                return Promise.reject('El correo ya está en uso.');
-            }
-        })
-        .withMessage('El correo ya está en uso.'),
 
     body('password')
         .isString()
@@ -54,7 +53,10 @@ exports.validateRegister = [
             const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
             return regex.test(value);
         })
-        .withMessage('La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número.'),
+        .withMessage(
+            'La contraseña debe tener al menos 8 caracteres, una letra' +
+            'mayúscula, una letra minúscula y un número.'
+        ),
 
     body('nombre')
         .isString()
@@ -89,11 +91,18 @@ exports.validateRegister = [
     }
 ];
 
-exports.postRegister = async (req, res) => {
+exports.postRegistro = async (req, res) => {
     try {
         const password = req.body.password;
         const salt = await bcrypt.genSalt(10);
         const encryptedPassword = await bcrypt.hash(password, salt);
+
+        const userExists =
+            await UsuarioService.readUsuarioByEmail(req.body.email);
+
+        if (userExists) {
+            throw new Error('El correo ya está registrado.');
+        }
 
         const usuario = {
             email: req.body.email,
@@ -135,6 +144,29 @@ exports.postLogin = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 }
+
+exports.postUpdatePassword = async (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    try {
+        const user = await UsuarioService.readUsuarioByEmail(email);
+        if (!user) {
+            throw new Error('Correo no encontrado.');
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const encryptedPassword = await bcrypt.hash(password, salt);
+
+        await UsuarioService.updatePassword(email, encryptedPassword);
+        res.status(200).json({
+            message: 'Contraseña actualizada exitosamente.'
+        });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
 
 function createToken(user) {
     const payload = {
