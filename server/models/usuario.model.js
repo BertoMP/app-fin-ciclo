@@ -1,12 +1,13 @@
 class UsuarioModel {
     static async findByEmail(dbConn, email) {
-        const query = 'SELECT * FROM usuario WHERE email = ?';
+        const query =
+            'SELECT * FROM usuario ' +
+            'WHERE email = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [email]);
             return rows[0];
         } catch (err) {
-            console.log(err);
             throw new Error('Error al obtener el usuario.');
         }
     }
@@ -20,8 +21,10 @@ class UsuarioModel {
         const id_rol = usuario.id_rol;
 
         const query =
-            'INSERT INTO usuario (email, password, nombre, primer_apellido,' +
-            ' segundo_apellido, id_rol) VALUES (?, ?, ?, ?, ?, ?)';
+            'INSERT INTO usuario ' +
+            '(email, password, nombre, primer_apellido, segundo_apellido,' +
+            ' id_rol) ' +
+            'VALUES (?, ?, ?, ?, ?, ?)';
 
         try {
             await dbConn.execute(
@@ -29,8 +32,20 @@ class UsuarioModel {
                 [email, password, nombre,
                     primer_apellido, segundo_apellido, id_rol]);
         } catch (err) {
-            console.log(err);
             throw new Error('Error al crear el usuario.');
+        }
+    }
+
+    static async updatePassword(dbConn, email, password) {
+        const query =
+            'UPDATE usuario ' +
+            'SET password = ? ' +
+            'WHERE email = ?';
+
+        try {
+            await dbConn.execute(query, [password, email]);
+        } catch (err) {
+            throw new Error('Error al actualizar la contraseña.');
         }
     }
 }

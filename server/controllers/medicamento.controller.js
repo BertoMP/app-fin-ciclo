@@ -2,7 +2,6 @@ const MedicamentoService = require('../services/medicamento.service');
 const { body, validationResult } = require('express-validator');
 
 exports.validateMedicamento = [
-    // Nombre no debe estar vacío y debe ser una cadena de texto
     body('nombre')
         .isString()
         .withMessage('El nombre del medicamento debe ser una cadena de texto'),
@@ -11,23 +10,21 @@ exports.validateMedicamento = [
         .notEmpty()
         .withMessage('El nombre del medicamento es requerido'),
 
-    // Descripción no debe estar vacío y debe ser una cadena de texto
     body('descripcion')
         .isString()
-        .withMessage('La descripción del medicamento debe ser una cadena de texto'),
+        .withMessage(
+            'La descripción del medicamento debe ser una cadena de texto'
+        ),
 
     body('descripcion')
         .notEmpty()
         .withMessage('La descripción del medicamento es requerida.'),
 
-    // Procesar los resultados de la validación
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            // Si hay errores de validación, enviar una respuesta con los errores
             return res.status(400).json({ errors: errors.array() });
         }
-        // Si no hay errores de validación, continuar con el siguiente middleware
         next();
     }
 ];
@@ -40,8 +37,30 @@ exports.getMedicamentos = async (req, res) => {
             throw new Error('Número de página inválido.');
         }
 
-        const medicamentos = await MedicamentoService.readMedicamentos(page);
-        res.status(200).json(medicamentos);
+        const {
+            rows: medicamentos,
+            total: cantidad_medicamentos,
+            totalPages: paginas_totales
+        } =
+            await MedicamentoService.readMedicamentos(page);
+        const prev = page > 1
+            ? `/api/medicamento?page=${page - 1}`
+            : null;
+        const next = page < paginas_totales
+            ? `/api/medicamento?page=${page + 1}`
+            : null;
+        const result_min = (page - 1) * 10 + 1;
+        const result_max = page * 10;
+
+        res.status(200).json({
+            prev,
+            next,
+            paginas_totales,
+            cantidad_medicamentos,
+            result_min,
+            result_max,
+            medicamentos
+        });
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
@@ -62,10 +81,17 @@ exports.getMedicamentoById = async (req, res) => {
     }
 }
 
-exports.postMedicamento = async (req, res) => {
+exports.createMedicamento = async (req, res) => {
     const medicamento = {
         nombre: req.body.nombre,
         descripcion: req.body.descripcion
+    }
+
+    const medicamentoExists =
+        await MedicamentoService.readMedicamentoByNombre(medicamento.nombre);
+
+    if (medicamentoExists) {
+        throw new Error('El medicamento ya está registrado.');
     }
 
     try {
@@ -73,7 +99,7 @@ exports.postMedicamento = async (req, res) => {
 
         res.status(200).json({ message: 'Medicamento creado.'});
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 }
 
@@ -85,11 +111,18 @@ exports.deleteMedicamento = async (req, res) => {
             throw new Error('Número de identificación inválido.');
         }
 
+        const currentMedicamento =
+            await MedicamentoService.readMedicamentoById(id);
+
+        if (!currentMedicamento) {
+            throw new Error('El medicamento no existe.');
+        }
+
         await MedicamentoService.deleteMedicamento(id);
 
         res.status(200).json({ message: 'Medicamento eliminado.' });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 }
 
@@ -106,6 +139,6 @@ exports.updateMedicamento = async (req, res) => {
 
         res.status(200).json({ message: 'Medicamento actualizado.' });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 }

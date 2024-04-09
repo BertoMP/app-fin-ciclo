@@ -1,8 +1,11 @@
 const router = require('express').Router();
-const authentication = require('../middlewares/authenticate');
-const authorization = require('../middlewares/authorization');
 
-router.use('/medicamento', authentication, authorization([1, 3]), require('./api/medicamento.routes'));
-router.use('/usuario', require('./api/usuario.routes'));
+const usuarioRoutes = require('./api/usuario.routes');
+const medicamentoRoutes = require('./api/medicamento.routes');
+const especialidadRoutes = require('./api/especialidad.routes');
+
+router.use(usuarioRoutes);
+router.use(medicamentoRoutes);
+router.use(especialidadRoutes);
 
 module.exports = router;

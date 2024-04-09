@@ -1,10 +1,10 @@
-class MedicamentoModel {
+class EspecialidadModel {
     static async fetchAll(dbConn, page) {
         const limit = 10;
         const offset = (page - 1) * limit;
 
         const query =
-            'SELECT nombre, descripcion FROM medicamento ' +
+            'SELECT * FROM especialidad ' +
             'LIMIT ? OFFSET ?';
 
         try {
@@ -12,92 +12,91 @@ class MedicamentoModel {
                 await dbConn.execute(query, [`${limit}`, `${offset}`]);
             const [count] =
                 await dbConn.execute(
-                    'SELECT COUNT(*) AS count FROM medicamento'
+                    'SELECT COUNT(*) AS count FROM especialidad'
                 );
             const total = count[0].count;
             const totalPages = Math.ceil(total / limit);
 
             return { rows, total, totalPages };
         } catch (err) {
-            throw new Error('Error al obtener los medicamentos.');
+            throw new Error('Error al obtener las especialidades.');
         }
     }
 
     static async findById(dbConn, id) {
-        const query =
-            'SELECT nombre, descripcion FROM medicamento ' +
-            'WHERE id = ?';
+        const query = `SELECT * FROM especialidad WHERE id = ?`;
 
         try {
             const [rows] = await dbConn.execute(query, [id]);
             return rows[0];
         } catch (err) {
-            throw new Error('Error al obtener el medicamento.');
+            throw new Error('Error al obtener la especialidad.');
         }
     }
 
     static async findByNombre(dbConn, nombre) {
         const query =
-            'SELECT nombre, descripcion FROM medicamento ' +
+            'SELECT * FROM especialidad ' +
             'WHERE nombre = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [nombre]);
             return rows[0];
         } catch (err) {
-            throw new Error('Error al obtener el medicamento.');
+            throw new Error('Error al obtener la especialidad.');
         }
     }
 
-    static async save(dbConn, medicamento) {
-        const nombre = medicamento.nombre;
-        const descripcion = medicamento.descripcion;
+    static async save(dbConn, especialidad) {
+        const nombre = especialidad.nombre;
+        const descripcion = especialidad.descripcion;
+        const imagen = especialidad.imagen;
 
         const query =
-            'INSERT INTO medicamento (nombre, descripcion) ' +
-            'VALUES (?, ?)';
+            'INSERT INTO especialidad (nombre, descripcion, imagen) ' +
+            'VALUES (?, ?, ?)';
 
         try {
-            await dbConn.execute(query, [nombre, descripcion]);
+            await dbConn.execute(query, [nombre, descripcion, imagen]);
         } catch (err) {
-            throw new Error('Error al crear el medicamento.');
+            throw new Error('Error al crear la especialidad.');
         }
     }
 
     static async deleteById(dbConn, id) {
         const query =
-            'DELETE FROM medicamento ' +
+            'DELETE FROM especialidad ' +
             'WHERE id = ?';
 
         try {
             await dbConn.execute(query, [id]);
         } catch (err) {
-            throw new Error('Error al eliminar el medicamento.');
+            throw new Error('Error al eliminar la especialidad.');
         }
     }
 
-    static async updateById(dbConn, id, medicamento) {
-        const nombre = medicamento.nombre;
-        const descripcion = medicamento.descripcion;
+    static async updateById(dbConn, id, especialidad) {
+        const nombre = especialidad.nombre;
+        const descripcion = especialidad.descripcion;
 
         try {
-            const currentMedicamento = await this.findById(dbConn, id);
+            const currentEspecialidad = await this.findById(dbConn, id);
 
-            if (!currentMedicamento) {
-                throw new Error('Medicamento no encontrado.');
+            if (!currentEspecialidad) {
+                throw new Error('Especialidad no encontrada.');
             }
 
             const query =
-                'UPDATE medicamento ' +
+                'UPDATE especialidad ' +
                 'SET nombre = ?, ' +
                 'descripcion = ? ' +
                 'WHERE id = ?';
 
             await dbConn.execute(query, [nombre, descripcion, id]);
         } catch (err) {
-            throw new Error('Error al actualizar el medicamento.');
+            throw new Error('Error al actualizar la especialidad.');
         }
     }
 }
 
-module.exports = MedicamentoModel;
+module.exports = EspecialidadModel;
