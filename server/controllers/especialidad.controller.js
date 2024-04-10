@@ -94,11 +94,14 @@ exports.getEspecialidadById = async (req, res) => {
 
 exports.createEspecialidad = async (req, res) => {
     try {
-        const imagenPath = req.file.path;
+        const image = req.file;
+
+        validateImage(image);
+
         const especialidad = {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
-            imagen: imagenPath
+            imagen: req.file.path
         }
 
         const especialidadExists =
@@ -114,7 +117,9 @@ exports.createEspecialidad = async (req, res) => {
         await EspecialidadService.createEspecialidad(especialidad);
         res.status(201).json({ message: 'Especialidad creada exitosamente.' });
     } catch (err) {
-        destroyFile(req.file.path);
+        if (req.file) {
+            destroyFile(req.file.path);
+        }
         res.status(400).json({ message: err.message });
     }
 }
@@ -124,6 +129,10 @@ exports.updateEspecialidad = async (req, res) => {
     let oldFilePath;
 
     try {
+        const image = req.file;
+
+        validateImage(image);
+
         const currentEspecialidad =
             await EspecialidadService.readEspecialidadById(id);
 
@@ -146,7 +155,9 @@ exports.updateEspecialidad = async (req, res) => {
             destroyFile(oldFilePath);
         }
     } catch (err) {
-        destroyFile(req.file.path);
+        if (req.file) {
+            destroyFile(req.file.path);
+        }
         res.status(400).json({ message: err.message });
     }
 }
@@ -179,5 +190,17 @@ exports.deleteEspecialidad = async (req, res) => {
         }
     } catch (err) {
         res.status(400).json({ message: err.message });
+    }
+}
+
+function validateImage(image) {
+    if (!image) {
+        throw new Error('La imagen de la especialidad es requerida.');
+    }
+
+    if (!image.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+        throw new Error(
+            'Sólo se permiten archivos de imagen: jpg, jpeg, png, gif'
+        );
     }
 }

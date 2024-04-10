@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const MedicamentoController =
     require('../../controllers/medicamento.controller');
-const tokenVerify = require('../../middlewares/tokenVerify');
-const tokenRole = require('../../middlewares/tokenRole');
+const tokenVerify = require('../../util/jwt/tokenVerify');
+const tokenRole = require('../../util/jwt/tokenRole');
 
 // Rutas GET
 router.get('/medicamento',

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const UsuarioController = require('../../controllers/usuario.controller');
-const multer = require('../../middlewares/multer');
+const multer = require('../../util/multer');
 
 // Rutas POST
 router.post('/usuario/registro',

@@ -110,7 +110,7 @@ exports.postRegistro = async (req, res) => {
             nombre: req.body.nombre,
             primer_apellido: req.body.primer_apellido,
             segundo_apellido: req.body.segundo_apellido,
-            id_rol: req.body.rol ? req.body.rol : 2
+            rol_id: req.body.rol ? req.body.rol : 2
         }
 
         await UsuarioService.createUsuario(usuario);
@@ -172,7 +172,7 @@ function createToken(user) {
     const payload = {
         user_email: user.email,
         user_primer_apellido: user.primer_apellido,
-        user_role: user.id_rol
+        user_role: user.rol_id
     }
 
     return jwt.sign(payload, process.env.JWT_SECRET_KEY, {

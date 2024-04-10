@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const EspecialidadController =
     require('../../controllers/especialidad.controller');
-const multer = require('../../middlewares/multer');
-const tokenVerify = require('../../middlewares/tokenVerify');
-const tokenRole = require('../../middlewares/tokenRole');
+const multer = require('../../util/multer');
+const tokenVerify = require('../../util/jwt/tokenVerify');
+const tokenRole = require('../../util/jwt/tokenRole');
 
 // Rutas GET
 router.get('/especialidad', EspecialidadController.getEspecialidades);
