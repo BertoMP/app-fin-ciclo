@@ -27,13 +27,15 @@ h3 {
     display: flex;
 }
 
-.contenedor,.fotomapa {
+.contenedor,.mapaUbicacion {
     margin-top: 5%;
     margin-bottom: 5%;
 }
 
-.fotomapa {
-    width: 70%;
+.mapaUbicacion{
+    border: 0;
+    width: 80%;
+    height: 600px;
 }
 
 .icon {
@@ -153,4 +155,9 @@ a {
 a p {
     font-size: max(1.1vw,10.7px);
     white-space: nowrap;
+}
+
+iframe{
+    box-shadow: 0px 10px 50px gray;
+    border-radius: 3px;
 }
