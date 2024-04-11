@@ -99,7 +99,7 @@ CREATE TABLE consulta (
 
 -- Tabla especialista
 CREATE TABLE especialista (
-    id              INT AUTO_INCREMENT,
+    usuario_id      INT,
     num_colegiado   VARCHAR(255),
     descripcion     TEXT,
     imagen          VARCHAR(255),
@@ -107,7 +107,7 @@ CREATE TABLE especialista (
     especialidad_id INT,
     consulta_id     INT,
         CONSTRAINT pk_especialista
-            PRIMARY KEY (id),
+            PRIMARY KEY (usuario_id),
         CONSTRAINT uq_especialista_num_colegiado
             UNIQUE (num_colegiado),
         CONSTRAINT ck_especialista_null
@@ -115,7 +115,7 @@ CREATE TABLE especialista (
                    descripcion IS NOT NULL AND
                    imagen IS NOT NULL),
         CONSTRAINT fk_especialista_usuario
-            FOREIGN KEY (id)
+            FOREIGN KEY (usuario_id)
             REFERENCES usuario (id),
         CONSTRAINT ck_especialista_turno
             CHECK (turno IN ('diurno', 'vespertino')),
@@ -129,7 +129,7 @@ CREATE TABLE especialista (
 
 -- Tabla paciente
 CREATE TABLE paciente (
-    id                      INT AUTO_INCREMENT,
+    usuario_id              INT,
     num_historia_clinica    VARCHAR(255),
     fecha_nacimiento        DATE,
     tipo_via                VARCHAR(255),
@@ -143,7 +143,7 @@ CREATE TABLE paciente (
     tel_fijo                INT,
     tel_movil               INT,
         CONSTRAINT pk_paciente
-            PRIMARY KEY (id),
+            PRIMARY KEY (usuario_id),
         CONSTRAINT uq_paciente_num_historia_clinica
             UNIQUE (num_historia_clinica),
         CONSTRAINT ck_paciente_null
@@ -162,11 +162,11 @@ CREATE TABLE paciente (
         CONSTRAINT ck_paciente_codigo_postal
             CHECK (codigo_postal BETWEEN 10000 AND 99999),
         CONSTRAINT ck_paciente_tel_fijo
-            CHECK (tel_fijo REGEXP '^((+34|0034|34)-)?9[0-9]{8}$'),
+            CHECK (tel_fijo REGEXP '^(\\+34|0034|34)?-?9[0-9]{8}$'),
         CONSTRAINT ck_paciente_tel_movil
-            CHECK (tel_movil REGEXP '^((+34|0034|34)-)?[67][0-9]{8}$'),
+            CHECK (tel_movil REGEXP '^(\\+34|0034|34)?-?[67][0-9]{8}$'),
         CONSTRAINT fk_paciente_usuario
-            FOREIGN KEY (id)
+            FOREIGN KEY (usuario_id)
             REFERENCES usuario (id)
 );
 
@@ -202,10 +202,10 @@ CREATE TABLE cita (
             CHECK (hora REGEXP '^[0-9]{2}:(00|30):[0-9]{2}$'),
         CONSTRAINT fk_cita_especialista
             FOREIGN KEY (especialista_id)
-            REFERENCES especialista (id),
+            REFERENCES especialista (usuario_id),
         CONSTRAINT fk_cita_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (id),
+            REFERENCES paciente (usuario_id),
         CONSTRAINT fk_cita_informe
             FOREIGN KEY (informe_id)
             REFERENCES informe (id)
@@ -230,7 +230,7 @@ CREATE TABLE tension_arterial (
                    pulsaciones_minuto IS NOT NULL),
         CONSTRAINT fk_tension_arterial_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (id)
+            REFERENCES paciente (usuario_id)
 );
 
 -- Tabla glucometria
@@ -248,7 +248,7 @@ CREATE TABLE glucometria (
                    hora IS NOT NULL),
         CONSTRAINT fk_glucometria_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (id)
+            REFERENCES paciente (usuario_id)
 );
 
 -- Tabla medicamento
@@ -280,7 +280,7 @@ CREATE TABLE paciente_medicamento (
                    toma_nocturna IS NOT NULL),
         CONSTRAINT fk_paciente_medicamento_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (id),
+            REFERENCES paciente (usuario_id),
         CONSTRAINT fk_paciente_medicamento_medicamento
             FOREIGN KEY (medicamento_id)
             REFERENCES medicamento (id)

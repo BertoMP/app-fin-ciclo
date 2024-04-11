@@ -1,13 +1,39 @@
 const dbConn = require('../util/database');
 const UsuarioModel = require('../models/usuario.model');
+const PacienteModel = require('../models/paciente.model');
 
 class UsuarioService {
-   static async readUsuarioByEmail(email) {
-       return await UsuarioModel.findByEmail(dbConn, email);
-   }
+    static async createUsuarioPaciente(usuario, paciente) {
+        const conn = await dbConn.getConnection();
 
-    static async createUsuario(email, password) {
-         return await UsuarioModel.create(dbConn, email, password);
+        try {
+            await conn.beginTransaction();
+
+            paciente.usuario_id = await UsuarioModel.create(conn, usuario);
+
+            await PacienteModel.create(conn, paciente);
+
+            await conn.commit();
+        } catch (err) {
+            await conn.rollback();
+            throw new Error('Error al crear el usuario o el paciente.');
+        }
+    }
+
+    static async createUsuarioEspecialista(usuario, especialista) {
+
+    }
+
+    static async readUsuarioByEmail(email) {
+       return await UsuarioModel.findByEmail(dbConn, email);
+    }
+
+    static async readUsuarioByDNI(dni) {
+        return await UsuarioModel.findByDNI(dbConn, dni);
+    }
+
+    static async createUsuario(usuario) {
+         return await UsuarioModel.create(dbConn, usuario);
     }
 
     static async updatePassword(email, password) {
