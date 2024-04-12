@@ -2,23 +2,14 @@ const UsuarioService = require('../services/usuario.service');
 const PacienteService = require('../services/paciente.service');
 
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+
+const fileDestroy = require('../util/functions/destroyFile');
+const createToken = require('../util/jwt/createToken');
 
 exports.postRegistro = async (req, res) => {
     try {
-        const password = req.body.password;
-        const salt = await bcrypt.genSalt(10);
-        const encryptedPassword = await bcrypt.hash(password, salt);
-
-        const user = {
-            email: req.body.email,
-            password: encryptedPassword,
-            nombre: req.body.nombre,
-            primer_apellido: req.body.primer_apellido,
-            segundo_apellido: req.body.segundo_apellido,
-            dni: req.body.dni,
-            rol_id: req.body.rol ? req.body.rol : 2
-        }
+        const encryptedPassword = await createEncryptedPassword(req.body.password);
+        const user = createUserObject(req, encryptedPassword);
 
         const patient = {
             num_hist_clinica: await createHistClinica(),
@@ -44,9 +35,30 @@ exports.postRegistro = async (req, res) => {
 }
 
 exports.postRegistroEspecialista = async (req, res) => {
+    try {
+        const encryptedPassword = await createEncryptedPassword(req.body.password);
+        const user = createUserObject(req, encryptedPassword);
 
+        const specialist = {
+            num_colegiado: req.body.num_colegiado,
+            descripcion: req.body.descripcion,
+            imagen: req.file.path,
+            turno: req.body.turno,
+            especialidad_id: req.body.especialidad_id,
+            consulta_id: req.body.consulta_id
+        }
+
+        await UsuarioService.createUsuarioEspecialista(user, specialist);
+
+        res.status(201).json({ message: 'Usuario creado exitosamente.' });
+    } catch (err) {
+        if (req.file) {
+            fileDestroy(req.file.path);
+        }
+
+        res.status(400).json({ message: err.message });
+    }
 }
-
 
 exports.postLogin = async (req, res) => {
     const email = req.body.email;
@@ -95,17 +107,21 @@ exports.postUpdatePassword = async (req, res) => {
     }
 }
 
+async function createEncryptedPassword(password) {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(password, salt);
+}
 
-function createToken(user) {
-    const payload = {
-        user_email: user.email,
-        user_primer_apellido: user.primer_apellido,
-        user_role: user.rol_id
-    }
-
-    return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-        expiresIn: '1h'
-    });
+function createUserObject(req, encryptedPassword) {
+    return {
+        email: req.body.email,
+        password: encryptedPassword,
+        nombre: req.body.nombre,
+        primer_apellido: req.body.primer_apellido,
+        segundo_apellido: req.body.segundo_apellido,
+        dni: req.body.dni,
+        rol_id: req.body.rol ? req.body.rol : 2
+    };
 }
 
 async function createHistClinica() {
@@ -124,9 +140,11 @@ async function createHistClinica() {
 
         const random = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
 
-        histClinica = `${year}${month}${day}${hours}${minutes}${seconds}${milliseconds}${random}`;
+        histClinica =
+            `${year}${month}${day}${hours}${minutes}${seconds}${milliseconds}${random}`;
 
-        existedPatient = await PacienteService.readPacienteByNumHistClinica(histClinica);
+        existedPatient =
+            await PacienteService.readPacienteByNumHistClinica(histClinica);
     } while (existedPatient);
 
     return histClinica;

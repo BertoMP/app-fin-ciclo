@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const EspecialidadController =
     require('../../controllers/especialidad.controller');
-const multer = require('../../util/multer');
+const multer = require('../../util/functions/multer');
 const tokenVerify = require('../../util/jwt/tokenVerify');
 const tokenRole = require('../../util/jwt/tokenRole');
+const {validateEspecialidad} = require("../../util/validators/especialidad.validator");
 
 // Rutas GET
 router.get('/especialidad', EspecialidadController.getEspecialidades);
@@ -14,7 +15,7 @@ router.post('/especialidad',
     tokenVerify,
     tokenRole([1]),
     multer.single('imagen'),
-    EspecialidadController.validateEspecialidad,
+    validateEspecialidad,
     EspecialidadController.createEspecialidad);
 
 // Rutas PUT
@@ -22,7 +23,7 @@ router.put('/especialidad/:id',
     tokenVerify,
     tokenRole([1]),
     multer.single('imagen'),
-    EspecialidadController.validateEspecialidad,
+    validateEspecialidad,
     EspecialidadController.updateEspecialidad);
 
 // Rutas DELETE

@@ -6,9 +6,9 @@ exports.validateUserRegister = [
         .trim()
         .notEmpty().withMessage('El correo es requerido.')
         .isEmail().withMessage('El correo debe ser un correo válido.')
-        .custom(async (value) => {
+        .custom(async (value, { req }) => {
             const usuario = await UsuarioService.readUsuarioByEmail(value);
-            if (usuario) {
+            if (usuario && usuario.id !== req.params.id) {
                 throw new Error('El correo ya está en uso.');
             }
             return true;
@@ -46,9 +46,9 @@ exports.validateUserRegister = [
             const regex = /^[0-9]{8}[A-Z]$/;
             return regex.test(value);
         }).withMessage('El DNI debe tener 8 dígitos y una letra mayúscula al final.')
-        .custom(async (value) => {
+        .custom(async (value, { req }) => {
             const usuario = await UsuarioService.readUsuarioByDNI(value);
-            if (usuario) {
+            if (usuario && usuario.id !== req.params.id) {
                 throw new Error('El DNI ya está en uso.');
             }
             return true;

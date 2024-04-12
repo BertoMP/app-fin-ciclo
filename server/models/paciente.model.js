@@ -28,7 +28,6 @@ class PacienteModel {
                     nombre_via, numero, piso, puerta, provincia, municipio,
                     codigo_postal, tel_fijo, tel_movil]);
         } catch (err) {
-            console.log(err);
             throw new Error('Error al crear el paciente.');
         }
     }

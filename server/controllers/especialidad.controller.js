@@ -1,44 +1,5 @@
 const EspecialidadService = require('../services/especialidad.service');
-const { body, validationResult } = require('express-validator');
-const fs = require('fs');
-const path = require('path');
-
-function destroyFile(filePath) {
-    fs.unlink(path.join(__dirname, '..', filePath), unlinkError => {
-        if (unlinkError) {
-            console.log('Error al eliminar el archivo subido: ', unlinkError);
-        }
-    });
-}
-
-exports.validateEspecialidad = [
-    body('nombre')
-        .isString()
-        .withMessage('El nombre de la especialidad es requerido.'),
-
-    body('nombre')
-        .notEmpty()
-        .withMessage('El nombre de la especialidad no puede estar vacío.'),
-
-    body('descripcion')
-        .isString()
-        .withMessage('La descripción de la especialidad es requerida.'),
-
-    body('descripcion')
-        .notEmpty()
-        .withMessage('La descripción de la especialidad no puede estar vacía.'),
-
-    (req, res, next) => {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            destroyFile(req.file.path);
-            return res.status(400).json({ errors: errors.array() });
-        }
-
-        next();
-    }
-];
+const destroyFile = require('../util/functions/destroyFile');
 
 exports.getEspecialidades = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
@@ -94,14 +55,12 @@ exports.getEspecialidadById = async (req, res) => {
 
 exports.createEspecialidad = async (req, res) => {
     try {
-        const image = req.file;
-
-        validateImage(image);
+        const imagePath = req.file.path.replace('public/', '');
 
         const especialidad = {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
-            imagen: req.file.path
+            imagen: imagePath
         }
 
         const especialidadExists =
@@ -129,10 +88,6 @@ exports.updateEspecialidad = async (req, res) => {
     let oldFilePath;
 
     try {
-        const image = req.file;
-
-        validateImage(image);
-
         const currentEspecialidad =
             await EspecialidadService.readEspecialidadById(id);
 
@@ -190,17 +145,5 @@ exports.deleteEspecialidad = async (req, res) => {
         }
     } catch (err) {
         res.status(400).json({ message: err.message });
-    }
-}
-
-function validateImage(image) {
-    if (!image) {
-        throw new Error('La imagen de la especialidad es requerida.');
-    }
-
-    if (!image.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-        throw new Error(
-            'Sólo se permiten archivos de imagen: jpg, jpeg, png, gif'
-        );
     }
 }

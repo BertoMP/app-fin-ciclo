@@ -6,7 +6,8 @@ const storage = multer.diskStorage({
         let uploadPath = 'public/uploads/images'
         if (req.path.includes('especialidad')) {
             uploadPath += '/especialidad';
-        } else if (req.path.includes('especialistas')) {
+        } else if (req.path.includes('especialistas')
+            || req.path.includes('registro-especialista')) {
             uploadPath += '/especialistas';
         } else if (req.path.includes('pacientes')) {
             uploadPath += '/pacientes';

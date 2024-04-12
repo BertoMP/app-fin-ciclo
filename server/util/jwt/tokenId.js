@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (roles) => {
+module.exports = () => {
     return (req, res, next) => {
         let token = req.headers['authorization'];
         if (token) {

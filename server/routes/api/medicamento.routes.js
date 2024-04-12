@@ -4,6 +4,8 @@ const MedicamentoController =
 const tokenVerify = require('../../util/jwt/tokenVerify');
 const tokenRole = require('../../util/jwt/tokenRole');
 
+const { validateMedicamento } = require('../../util/validators/medicamento.validator');
+
 // Rutas GET
 router.get('/medicamento',
     tokenVerify,
@@ -19,14 +21,14 @@ router.get('/medicamento/:id',
 router.post('/medicamento',
     tokenVerify,
     tokenRole([3]),
-    MedicamentoController.validateMedicamento,
+    validateMedicamento,
     MedicamentoController.createMedicamento);
 
 // Rutas PUT
 router.put('/medicamento/:id',
     tokenVerify,
     tokenRole([3]),
-    MedicamentoController.validateMedicamento,
+    validateMedicamento,
     MedicamentoController.updateMedicamento);
 
 // Rutas DELETE
