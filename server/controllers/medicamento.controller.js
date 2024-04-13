@@ -10,10 +10,16 @@ exports.getMedicamentos = async (req, res) => {
 
         const {
             rows: medicamentos,
+            actualPage: pagina_actual,
             total: cantidad_medicamentos,
             totalPages: paginas_totales
         } =
             await MedicamentoService.readMedicamentos(page);
+
+        if (page > paginas_totales) {
+            throw new Error('La página solicitada no existe.');
+        }
+
         const prev = page > 1
             ? `/api/medicamento?page=${page - 1}`
             : null;
@@ -26,6 +32,7 @@ exports.getMedicamentos = async (req, res) => {
         res.status(200).json({
             prev,
             next,
+            pagina_actual,
             paginas_totales,
             cantidad_medicamentos,
             result_min,

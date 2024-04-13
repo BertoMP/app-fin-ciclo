@@ -9,6 +9,7 @@ const { validateUserRegister } = require("../../util/validators/usuarioRegistro.
 const { validateUserLogin } = require("../../util/validators/usuarioLogin.validator");
 const { validatePacienteRegister } = require("../../util/validators/pacienteRegistro.validador");
 const { validateEspecialistaRegister } = require("../../util/validators/especialistaRegistro.validator");
+const { validateUserPasswordChange } = require("../../util/validators/usuarioPasswordChange.validator");
 
 // Rutas POST
 router.post('/usuario/registro',
@@ -33,8 +34,17 @@ router.post('/usuario/login',
     UsuarioController.postLogin
 );
 
+router.post('/usuario/contrasena-olvidada',
+    UsuarioController.postForgotPassword
+);
+
+router.post('/usuario/contrasena-reset',
+    UsuarioController.postResetPassword
+);
+
 // Rutas PUT
 router.put('/usuario/password',
+    validateUserPasswordChange,
     UsuarioController.postUpdatePassword
 );
 

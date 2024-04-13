@@ -1,4 +1,4 @@
-const {body, validationResult, check} = require("express-validator");
+const {body, validationResult } = require("express-validator");
 const destroyFile = require("../functions/destroyFile");
 const { validateImage } = require("./imagen.validator");
 const EspecialidadService = require("../../services/especialidad.service");

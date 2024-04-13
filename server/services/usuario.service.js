@@ -50,10 +50,6 @@ class UsuarioService {
         return await UsuarioModel.findByDNI(dbConn, dni);
     }
 
-    static async createUsuario(usuario) {
-         return await UsuarioModel.create(dbConn, usuario);
-    }
-
     static async updatePassword(email, password) {
         return await UsuarioModel.updatePassword(dbConn, email, password);
     }

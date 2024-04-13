@@ -12,9 +12,14 @@ exports.getEspecialidades = async (req, res) => {
         const {
             rows: especialidades,
             total: cantidad_especialidades,
+            actualPage: pagina_actual,
             totalPages: paginas_totales
-        } =
-            await EspecialidadService.readEspecialidades(page);
+        } = await EspecialidadService.readEspecialidades(page);
+
+        if (page > paginas_totales) {
+            throw new Error('La página solicitada no existe.');
+        }
+
         const prev = page > 1
             ? `/api/especialidad?page=${page - 1}`
             : null;
@@ -27,6 +32,7 @@ exports.getEspecialidades = async (req, res) => {
         res.status(200).json({
             prev,
             next,
+            pagina_actual,
             paginas_totales,
             cantidad_especialidades,
             result_min,
@@ -55,25 +61,14 @@ exports.getEspecialidadById = async (req, res) => {
 
 exports.createEspecialidad = async (req, res) => {
     try {
-        const imagePath = req.file.path.replace('public/', '');
-
         const especialidad = {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
-            imagen: imagePath
-        }
-
-        const especialidadExists =
-            await EspecialidadService
-                .readEspecialidadByNombre(especialidad.nombre);
-
-        if (especialidadExists) {
-            throw new Error(
-                'Ya existe una especialidad con ese nombre.'
-            );
+            imagen: req.file.path
         }
 
         await EspecialidadService.createEspecialidad(especialidad);
+
         res.status(201).json({ message: 'Especialidad creada exitosamente.' });
     } catch (err) {
         if (req.file) {
@@ -102,6 +97,7 @@ exports.updateEspecialidad = async (req, res) => {
         }
 
         await EspecialidadService.updateEspecialidad(id, especialidad);
+
         res.status(200).json({
             message: 'Especialidad actualizada exitosamente.'
         });

@@ -17,6 +17,10 @@ DROP TABLE IF EXISTS consulta;
 DROP TABLE IF EXISTS paciente;
 DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS rol;
+DROP TABLE IF EXISTS token;
+
+-- Eliminación de los eventos si existen
+DROP EVENT IF EXISTS limpiar_tabla_tokens;
 
 -- Creación de las tablas
 -- Tabla rol
@@ -65,6 +69,18 @@ CREATE TABLE usuario (
             REFERENCES rol (id)
 );
 
+-- Tabla Tokens
+CREATE TABLE token (
+    id          INT AUTO_INCREMENT,
+    reset_token VARCHAR(255),
+    usuario_id  INT,
+        CONSTRAINT pk_tokens
+            PRIMARY KEY (id),
+        CONSTRAINT fk_tokens_usuario
+            FOREIGN KEY (usuario_id)
+            REFERENCES usuario (id)
+);
+
 -- Tabla especialidad
 CREATE TABLE especialidad (
     id          INT AUTO_INCREMENT,
@@ -99,6 +115,7 @@ CREATE TABLE consulta (
 
 -- Tabla especialista
 CREATE TABLE especialista (
+    id              INT AUTO_INCREMENT,
     usuario_id      INT,
     num_colegiado   VARCHAR(255),
     descripcion     TEXT,
@@ -107,7 +124,7 @@ CREATE TABLE especialista (
     especialidad_id INT,
     consulta_id     INT,
         CONSTRAINT pk_especialista
-            PRIMARY KEY (usuario_id),
+            PRIMARY KEY (id),
         CONSTRAINT uq_especialista_num_colegiado
             UNIQUE (num_colegiado),
         CONSTRAINT ck_especialista_null
@@ -118,7 +135,7 @@ CREATE TABLE especialista (
             FOREIGN KEY (usuario_id)
             REFERENCES usuario (id),
         CONSTRAINT ck_especialista_turno
-            CHECK (turno IN ('diurno', 'vespertino')),
+            CHECK (turno IN ('diurno', 'vespertino', 'no-trabajando')),
         CONSTRAINT fk_especialista_especialidad
             FOREIGN KEY (especialidad_id)
             REFERENCES especialidad (id),
@@ -129,6 +146,7 @@ CREATE TABLE especialista (
 
 -- Tabla paciente
 CREATE TABLE paciente (
+    id                      INT AUTO_INCREMENT,
     usuario_id              INT,
     num_historia_clinica    VARCHAR(255),
     fecha_nacimiento        DATE,
@@ -143,7 +161,7 @@ CREATE TABLE paciente (
     tel_fijo                INT,
     tel_movil               INT,
         CONSTRAINT pk_paciente
-            PRIMARY KEY (usuario_id),
+            PRIMARY KEY (id),
         CONSTRAINT uq_paciente_num_historia_clinica
             UNIQUE (num_historia_clinica),
         CONSTRAINT ck_paciente_null
@@ -202,10 +220,10 @@ CREATE TABLE cita (
             CHECK (hora REGEXP '^[0-9]{2}:(00|30):[0-9]{2}$'),
         CONSTRAINT fk_cita_especialista
             FOREIGN KEY (especialista_id)
-            REFERENCES especialista (usuario_id),
+            REFERENCES especialista (id),
         CONSTRAINT fk_cita_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (usuario_id),
+            REFERENCES paciente (id),
         CONSTRAINT fk_cita_informe
             FOREIGN KEY (informe_id)
             REFERENCES informe (id)
@@ -230,7 +248,7 @@ CREATE TABLE tension_arterial (
                    pulsaciones_minuto IS NOT NULL),
         CONSTRAINT fk_tension_arterial_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (usuario_id)
+            REFERENCES paciente (id)
 );
 
 -- Tabla glucometria
@@ -248,7 +266,7 @@ CREATE TABLE glucometria (
                    hora IS NOT NULL),
         CONSTRAINT fk_glucometria_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (usuario_id)
+            REFERENCES paciente (id)
 );
 
 -- Tabla medicamento
@@ -280,7 +298,7 @@ CREATE TABLE paciente_medicamento (
                    toma_nocturna IS NOT NULL),
         CONSTRAINT fk_paciente_medicamento_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (usuario_id),
+            REFERENCES paciente (id),
         CONSTRAINT fk_paciente_medicamento_medicamento
             FOREIGN KEY (medicamento_id)
             REFERENCES medicamento (id)
@@ -297,3 +315,15 @@ INSERT INTO usuario (email, password, nombre, primer_apellido, segundo_apellido,
     VALUES  ('admin@admin.es', '$2y$10$kgYGNms6J4PhRa/VxbKUKeI24/Vo5pLgsOsQVRu93c.T.VWh5sLzO', 'Admin', 'Admin', 'Admin', '12345678Z', 1),
             ('paciente@paciente.es', '$2y$10$nK1i6y.2ThrH6AJrIrsGwemc4DYnYzkigw3dkbEoNalXfwslcV1/.', 'Paciente', 'Paciente', 'Paciente', '22345678Z', 2),
             ('especialista@especialista.es', '$2y$10$jxxv3w.KONPRfOVtu2ICbOLNwPqaEhEwuPWhcHS5u.nuxPKbiY9zm', 'Especialista', 'Especialista', 'Especialista', '32345678Z', 3);
+
+-- Evento para limpiar la tabla tokens
+DELIMITER $$
+
+CREATE EVENT limpiar_tabla_tokens
+    ON SCHEDULE EVERY 1 DAY STARTS CONCAT(CURRENT_DATE, ' 02:00:00')
+    DO
+    BEGIN
+        TRUNCATE TABLE token;
+    END $$
+
+DELIMITER ;

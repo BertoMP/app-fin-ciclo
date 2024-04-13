@@ -1,15 +1,19 @@
 const UsuarioService = require('../services/usuario.service');
 const PacienteService = require('../services/paciente.service');
+const TokenService = require('../services/token.service');
+const EmailService = require('../services/email.service');
 
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const fileDestroy = require('../util/functions/destroyFile');
 const createToken = require('../util/jwt/createToken');
+const createResetToken = require('../util/jwt/createResetToken');
 
 exports.postRegistro = async (req, res) => {
     try {
         const encryptedPassword = await createEncryptedPassword(req.body.password);
-        const user = createUserObject(req, encryptedPassword);
+        const user = createUserObject(req, encryptedPassword, 2);
 
         const patient = {
             num_hist_clinica: await createHistClinica(),
@@ -37,7 +41,7 @@ exports.postRegistro = async (req, res) => {
 exports.postRegistroEspecialista = async (req, res) => {
     try {
         const encryptedPassword = await createEncryptedPassword(req.body.password);
-        const user = createUserObject(req, encryptedPassword);
+        const user = createUserObject(req, encryptedPassword, 3);
 
         const specialist = {
             num_colegiado: req.body.num_colegiado,
@@ -85,6 +89,59 @@ exports.postLogin = async (req, res) => {
     }
 }
 
+exports.postForgotPassword = async (req, res) => {
+    const email = req.body.email;
+
+    try {
+        const user = await UsuarioService.readUsuarioByEmail(email);
+        if (!user) {
+            throw new Error('Correo no encontrado en la base de datos.');
+        }
+
+        const idUser = user.id;
+        const resetToken = createResetToken(user);
+
+        await TokenService.createToken(idUser, resetToken);
+
+        await EmailService.sendPasswordResetEmail(email, user, resetToken);
+
+        res.status(200).json({
+            message: 'Correo enviado exitosamente.'
+        });
+
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
+exports.postResetPassword = async (req, res) => {
+    const token = req.body.token;
+    const newPassword = req.body.password;
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decodedToken) => {
+        if (err) {
+            return res.status(400).json({ message: 'Token inválido o expirado.' });
+        }
+
+        try {
+            const user = await UsuarioService.readUsuarioByEmail(decodedToken.email);
+            if (!user) {
+                throw new Error('Usuario no encontrado.');
+            }
+
+            const encryptedPassword = await createEncryptedPassword(newPassword);
+            await UsuarioService.updatePassword(user.email, encryptedPassword);
+
+            res.status(200).json({
+                message: 'Contraseña actualizada exitosamente.'
+            });
+        } catch (err) {
+            res.status(400).json({ message: err.message });
+        }
+    });
+}
+
+
 exports.postUpdatePassword = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -112,7 +169,7 @@ async function createEncryptedPassword(password) {
     return await bcrypt.hash(password, salt);
 }
 
-function createUserObject(req, encryptedPassword) {
+function createUserObject(req, encryptedPassword, rol_id) {
     return {
         email: req.body.email,
         password: encryptedPassword,
@@ -120,7 +177,7 @@ function createUserObject(req, encryptedPassword) {
         primer_apellido: req.body.primer_apellido,
         segundo_apellido: req.body.segundo_apellido,
         dni: req.body.dni,
-        rol_id: req.body.rol ? req.body.rol : 2
+        rol_id: rol_id
     };
 }
 

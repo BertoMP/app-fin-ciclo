@@ -72,10 +72,10 @@ exports.validatePacienteRegister = [
         .notEmpty().withMessage('La provincia es requerida.')
         .isString().withMessage('La provincia debe ser una cadena de texto.'),
 
-    body('localidad')
+    body('municipio')
         .trim()
-        .notEmpty().withMessage('La localidad es requerida.')
-        .isString().withMessage('La localidad debe ser una cadena de texto.'),
+        .notEmpty().withMessage('El municipio es requerido.')
+        .isString().withMessage('El municipio debe ser una cadena de texto.'),
 
     body('tel_fijo')
         .trim()

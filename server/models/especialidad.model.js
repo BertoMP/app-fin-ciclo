@@ -1,4 +1,16 @@
 class EspecialidadModel {
+    /*
+     * Obtiene todas las especialidades de la base de datos, utilizando
+     * paginación.
+     *
+     * @param {object} dbConn - Conexión a la base de datos.
+     * @param {number} page - Página a obtener.
+     *
+     * @returns {object} - Objeto con las especialidades, el total de
+     * especialidades, la página actual y el total de páginas.
+     *
+     * @throws {Error} - Error de la base de datos.
+     */
     static async fetchAll(dbConn, page) {
         const limit = 10;
         const offset = (page - 1) * limit;
@@ -15,9 +27,10 @@ class EspecialidadModel {
                     'SELECT COUNT(*) AS count FROM especialidad'
                 );
             const total = count[0].count;
+            const actualPage = page;
             const totalPages = Math.ceil(total / limit);
 
-            return { rows, total, totalPages };
+            return { rows, total, actualPage, totalPages };
         } catch (err) {
             throw new Error('Error al obtener las especialidades.');
         }

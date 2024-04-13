@@ -11,6 +11,13 @@ exports.validateUserRegister = [
             if (usuario && usuario.id !== req.params.id) {
                 throw new Error('El correo ya está en uso.');
             }
+
+            const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (!regex.test(value)) {
+                throw new Error('El correo debe ser un correo válido.');
+            }
+
             return true;
         }),
 

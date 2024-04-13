@@ -15,9 +15,10 @@ class MedicamentoModel {
                     'SELECT COUNT(*) AS count FROM medicamento'
                 );
             const total = count[0].count;
+            const actualPage = page;
             const totalPages = Math.ceil(total / limit);
 
-            return { rows, total, totalPages };
+            return { rows, total, actualPage, totalPages };
         } catch (err) {
             throw new Error('Error al obtener los medicamentos.');
         }
