@@ -1,6 +1,8 @@
 const { body, validationResult } = require('express-validator');
+const {validateUserRegister} = require("./usuarioRegistro.validator");
 
 exports.validatePacienteRegister = [
+    validateUserRegister,
     body('tipo_via')
         .trim()
         .notEmpty().withMessage('El tipo de vía es requerido.')
@@ -32,7 +34,7 @@ exports.validatePacienteRegister = [
 
     body('piso')
         .trim()
-        .isNumeric().withMessage('El piso debe ser un valor numérico.')
+        .notEmpty().withMessage('El piso es requerido.')
         .isNumeric().withMessage('El piso debe ser un valor numérico.')
         .custom((value) => {
             if (value < 1) {
@@ -123,7 +125,7 @@ exports.validatePacienteRegister = [
         if (!errors.isEmpty()) {
             const errorMessages = errors.array().map(error => error.msg);
 
-            return res.status(500).json({ errors: errorMessages });
+            return res.status(409).json({ errors: errorMessages });
         }
         next();
     }

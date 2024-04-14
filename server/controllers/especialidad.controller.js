@@ -72,6 +72,16 @@ exports.createEspecialidad = async (req, res) => {
             imagen: req.file.path
         }
 
+        const especialidadExists =
+            await EspecialidadService.readEspecialidadByNombre(especialidad.nombre);
+
+        if (especialidadExists) {
+            destroyFile(req.file.path);
+            return res.status(409).json({
+                errors: ['Ya existe una especialidad con ese nombre.']
+            });
+        }
+
         await EspecialidadService.createEspecialidad(especialidad);
 
         return res.status(201).json({ message: 'Especialidad creada exitosamente.' });

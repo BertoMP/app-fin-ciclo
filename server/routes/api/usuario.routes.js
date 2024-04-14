@@ -10,11 +10,11 @@ const { validateUserLogin } = require("../../util/validators/usuarioLogin.valida
 const { validatePacienteRegister } = require("../../util/validators/pacienteRegistro.validador");
 const { validateEspecialistaRegister } = require("../../util/validators/especialistaRegistro.validator");
 const { validateUserPasswordChange } = require("../../util/validators/usuarioPasswordChange.validator");
+const {cleanupFiles} = require("../../util/middleware/cleanupFiles");
 
 // Rutas POST
 router.post('/usuario/registro',
     multer.none(),
-    validateUserRegister,
     validatePacienteRegister,
     UsuarioController.postRegistro
 );
@@ -23,8 +23,8 @@ router.post('/usuario/registro-especialista',
     tokenVerify,
     tokenRole([1]),
     multer.single('imagen'),
-    validateUserRegister,
     validateEspecialistaRegister,
+    cleanupFiles,
     UsuarioController.postRegistroEspecialista
 );
 

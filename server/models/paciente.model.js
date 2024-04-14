@@ -44,6 +44,19 @@ class PacienteModel {
             throw new Error('Error al obtener el paciente.');
         }
     }
+
+    static async findByDni(dbConn, dni) {
+        const query =
+            'SELECT * FROM paciente ' +
+            'WHERE dni = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [dni]);
+            return rows[0];
+        } catch (err) {
+            throw new Error('Error al obtener el paciente.');
+        }
+    }
 }
 
 module.exports = PacienteModel;

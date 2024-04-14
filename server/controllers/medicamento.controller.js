@@ -71,6 +71,15 @@ exports.createMedicamento = async (req, res) => {
     }
 
     try {
+        const medicamentoExists =
+            await MedicamentoService.readMedicamentoByNombre(medicamento.nombre);
+
+        if (medicamentoExists) {
+            return res.status(409).json({
+                errors: ['El medicamento ya existe.']
+            });
+        }
+
         await MedicamentoService.createMedicamento(medicamento);
 
         return res.status(200).json({ message: 'Medicamento creado.'});

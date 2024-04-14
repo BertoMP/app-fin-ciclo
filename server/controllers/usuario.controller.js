@@ -12,6 +12,22 @@ const createResetToken = require('../util/jwt/createResetToken');
 
 exports.postRegistro = async (req, res) => {
     try {
+        const userExists = await UsuarioService.readUsuarioByEmail(req.body.email);
+
+        if (userExists) {
+            return res.status(409).json({
+                errors: ['El correo ya está en uso.']
+            });
+        }
+
+        const patientExists = await PacienteService.readPacienteByDni(req.body.dni);
+
+        if (patientExists) {
+            return res.status(409).json({
+                errors: ['El DNI ya está en uso.']
+            });
+        }
+
         const encryptedPassword = await createEncryptedPassword(req.body.password);
         const user = createUserObject(req, encryptedPassword, 2);
 
@@ -40,6 +56,14 @@ exports.postRegistro = async (req, res) => {
 
 exports.postRegistroEspecialista = async (req, res) => {
     try {
+        const userExists = await UsuarioService.readUsuarioByEmail(req.body.email);
+
+        if (userExists) {
+            return res.status(409).json({
+                errors: ['El correo ya está en uso.']
+            });
+        }
+
         const encryptedPassword = await createEncryptedPassword(req.body.password);
         const user = createUserObject(req, encryptedPassword, 3);
 

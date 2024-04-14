@@ -1,20 +1,10 @@
 const { body, validationResult } = require("express-validator");
-const MedicamentoService = require("../../services/medicamento.service");
 
 exports.validateMedicamento = [
     body('nombre')
         .trim()
         .notEmpty().withMessage('El nombre del medicamento es requerido')
-        .isString().withMessage('El nombre del medicamento debe ser una cadena de texto')
-        .custom(async (value, { req }) => {
-            const medicamentoExists
-                = await MedicamentoService.readMedicamentoByNombre(value);
-
-            if (medicamentoExists && medicamentoExists.id !== parseInt(req.params.id)) {
-                throw new Error('El medicamento ya está registrado.');
-            }
-            return true;
-        }),
+        .isString().withMessage('El nombre del medicamento debe ser una cadena de texto'),
     body('descripcion')
         .trim()
         .notEmpty().withMessage('La descripción del medicamento es requerida.')
@@ -25,7 +15,7 @@ exports.validateMedicamento = [
         if (!errors.isEmpty()) {
             const errorMessages = errors.array().map(error => error.msg);
 
-            return res.status(500).json({ errors: errorMessages });
+            return res.status(409).json({ errors: errorMessages });
         }
         next();
     }

@@ -1,17 +1,16 @@
 const { body, validationResult } = require('express-validator');
-const EspecialistaService = require('../../services/especialista.service');
-
 const { validateImage } = require("./imagen.validator");
+const {validateUserRegister} = require("./usuarioRegistro.validator");
 
-const destroyFile = require("../functions/destroyFile");
 
 exports.validateEspecialistaRegister = [
+    validateUserRegister,
     validateImage,
     body('num_colegiado')
         .trim()
         .notEmpty().withMessage('El número de colegiado es requerido.')
         .isNumeric().withMessage('El número de colegiado debe ser un valor numérico.')
-        .custom(async (value, { req }) => {
+        .custom((value) => {
             const regex = /^\d{9}$/;
 
             if (!regex.test(value)) {
@@ -20,13 +19,6 @@ exports.validateEspecialistaRegister = [
 
             if (value < 1) {
                 throw new Error('El número de colegiado no puede ser 0 o negativo.');
-            }
-
-            const especialistaExists
-                = await EspecialistaService.readEspecialistaByNumColegiado(value);
-
-            if (especialistaExists && especialistaExists.usuario_id !== req.params.id) {
-                throw new Error('El número de colegiado ya existe en la base datos.');
             }
 
             return true;
@@ -51,12 +43,7 @@ exports.validateEspecialistaRegister = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            if (req.file && req.file.path) {
-                destroyFile(req.file.path);
-            }
-            const errorMessages = errors.array().map(error => error.msg);
-
-            return res.status(500).json({ errors: errorMessages });
+            req.validationErrors = errors.array().map(error => error.msg);
         }
         next();
     }

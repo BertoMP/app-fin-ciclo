@@ -34,7 +34,7 @@ exports.validateQueryParams = [
         if (!errors.isEmpty()) {
             const errorMessages = errors.array().map(error => error.msg);
 
-            return res.status(500).json({ errors: errorMessages });
+            return res.status(409).json({ errors: errorMessages });
         }
         next();
     }
