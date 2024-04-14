@@ -32,9 +32,9 @@ exports.postRegistro = async (req, res) => {
 
         await UsuarioService.createUsuarioPaciente(user, patient);
 
-        res.status(201).json({ message: 'Usuario creado exitosamente.' });
+        return res.status(201).json({ message: 'Usuario creado exitosamente.' });
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({ message: err.message });
     }
 }
 
@@ -54,13 +54,13 @@ exports.postRegistroEspecialista = async (req, res) => {
 
         await UsuarioService.createUsuarioEspecialista(user, specialist);
 
-        res.status(201).json({ message: 'Usuario creado exitosamente.' });
+        return res.status(201).json({ message: 'Usuario creado exitosamente.' });
     } catch (err) {
         if (req.file) {
             fileDestroy(req.file.path);
         }
 
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({ message: err.message });
     }
 }
 
@@ -71,21 +71,25 @@ exports.postLogin = async (req, res) => {
     try {
         const user = await UsuarioService.readUsuarioByEmail(email);
         if (!user) {
-            throw new Error('Correo o contraseña incorrectos.');
+            return res.status(401).json({
+                errors: ['Correo o contraseña incorrectos.']
+            });
         }
 
         const validPassword = await bcrypt.compare(password, user.password);
 
         if (!validPassword) {
-            throw new Error('Correo o contraseña incorrectos.');
+            return res.status(401).json({
+                errors: ['Correo o contraseña incorrectos.']
+            });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             message: 'Inicio de sesión exitoso.',
             token: createToken(user)
         });
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({ message: err.message });
     }
 }
 
@@ -95,7 +99,9 @@ exports.postForgotPassword = async (req, res) => {
     try {
         const user = await UsuarioService.readUsuarioByEmail(email);
         if (!user) {
-            throw new Error('Correo no encontrado en la base de datos.');
+            return res.status(404).json({
+                errors: ['Correo no encontrado en la base de datos.']
+            });
         }
 
         const idUser = user.id;
@@ -105,12 +111,12 @@ exports.postForgotPassword = async (req, res) => {
 
         await EmailService.sendPasswordResetEmail(email, user, resetToken);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: 'Correo enviado exitosamente.'
         });
 
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({ message: err.message });
     }
 }
 
@@ -120,23 +126,30 @@ exports.postResetPassword = async (req, res) => {
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decodedToken) => {
         if (err) {
-            return res.status(400).json({ message: 'Token inválido o expirado.' });
+            return res.status(500).json({
+                errors: ['Token invalido o expirado.']
+            });
         }
 
         try {
             const user = await UsuarioService.readUsuarioByEmail(decodedToken.email);
+
             if (!user) {
-                throw new Error('Usuario no encontrado.');
+                return res.status(404).json({
+                    errors: ['Usuario no encontrado.']
+                });
             }
 
             const encryptedPassword = await createEncryptedPassword(newPassword);
             await UsuarioService.updatePassword(user.email, encryptedPassword);
 
-            res.status(200).json({
+            return res.status(200).json({
                 message: 'Contraseña actualizada exitosamente.'
             });
         } catch (err) {
-            res.status(400).json({ message: err.message });
+            return res.status(500).json({
+                errors: [{ message: err.message }]
+            });
         }
     });
 }
@@ -148,19 +161,25 @@ exports.postUpdatePassword = async (req, res) => {
 
     try {
         const user = await UsuarioService.readUsuarioByEmail(email);
+
         if (!user) {
-            throw new Error('Correo no encontrado.');
+            return res.status(404).json({
+                errors: ['Correo no encontrado.']
+            });
         }
 
         const salt = await bcrypt.genSalt(10);
         const encryptedPassword = await bcrypt.hash(password, salt);
 
         await UsuarioService.updatePassword(email, encryptedPassword);
-        res.status(200).json({
+
+        return res.status(200).json({
             message: 'Contraseña actualizada exitosamente.'
         });
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }
 

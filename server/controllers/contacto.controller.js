@@ -10,8 +10,10 @@ exports.postContacto = async (req, res) => {
 
     try {
         await emailService.sendContactEmail(contacto);
-        res.status(200).json({ message: 'Mensaje enviado exitosamente.' });
+        return res.status(200).json({ message: 'Mensaje enviado exitosamente.' });
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: ['Error al enviar el mensaje.']
+        });
     }
 }

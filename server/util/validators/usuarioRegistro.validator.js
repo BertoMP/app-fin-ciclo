@@ -5,7 +5,6 @@ exports.validateUserRegister = [
     body('email')
         .trim()
         .notEmpty().withMessage('El correo es requerido.')
-        .isEmail().withMessage('El correo debe ser un correo válido.')
         .custom(async (value, { req }) => {
             const usuario = await UsuarioService.readUsuarioByEmail(value);
             if (usuario && usuario.id !== req.params.id) {
@@ -64,7 +63,9 @@ exports.validateUserRegister = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            const errorMessages = errors.array().map(error => error.msg);
+
+            return res.status(500).json({ errors: errorMessages });
         }
         next();
     }

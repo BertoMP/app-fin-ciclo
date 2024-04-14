@@ -5,7 +5,6 @@ class TokenModel {
         try {
             await dbConn.query(query, [idUser, token]);
         } catch (err) {
-            console.log(err);
             throw new Error('Error al crear el token.');
         }
     }

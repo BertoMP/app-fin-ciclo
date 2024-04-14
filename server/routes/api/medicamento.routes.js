@@ -5,16 +5,20 @@ const tokenVerify = require('../../util/jwt/tokenVerify');
 const tokenRole = require('../../util/jwt/tokenRole');
 
 const { validateMedicamento } = require('../../util/validators/medicamento.validator');
+const { validateQueryParams } = require("../../util/validators/queryParams.validator");
+const {validateParams} = require("../../util/validators/params.validator");
 
 // Rutas GET
 router.get('/medicamento',
     tokenVerify,
     tokenRole([3]),
+    validateQueryParams,
     MedicamentoController.getMedicamentos
 );
 router.get('/medicamento/:id',
     tokenVerify,
     tokenRole([3]),
+    validateParams,
     MedicamentoController.getMedicamentoById);
 
 // Rutas POST
@@ -28,6 +32,7 @@ router.post('/medicamento',
 router.put('/medicamento/:id',
     tokenVerify,
     tokenRole([3]),
+    validateParams,
     validateMedicamento,
     MedicamentoController.updateMedicamento);
 
@@ -35,6 +40,7 @@ router.put('/medicamento/:id',
 router.delete('/medicamento/:id',
     tokenVerify,
     tokenRole([3]),
+    validateParams,
     MedicamentoController.deleteMedicamento);
 
 

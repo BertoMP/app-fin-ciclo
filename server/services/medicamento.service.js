@@ -1,4 +1,4 @@
-const dbConn = require('../util/functions/database');
+const dbConn = require('../util/database/database');
 const MedicamentoModel = require('../models/medicamento.model');
 
 class MedicamentoService {

@@ -5,19 +5,17 @@ exports.getEspecialidades = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
 
     try {
-        if (isNaN(page)) {
-            throw new Error('Número de página inválido.');
-        }
-
         const {
-            rows: especialidades,
+            rows: resultados,
             total: cantidad_especialidades,
             actualPage: pagina_actual,
             totalPages: paginas_totales
         } = await EspecialidadService.readEspecialidades(page);
 
-        if (page > paginas_totales) {
-            throw new Error('La página solicitada no existe.');
+        if (page > 1 && page > paginas_totales) {
+            return res.status(404).json({
+                errors: ['La página de especialidades solicitada no existe.']
+            });
         }
 
         const prev = page > 1
@@ -27,9 +25,9 @@ exports.getEspecialidades = async (req, res) => {
             ? `/api/especialidad?page=${page + 1}`
             : null;
         const result_min = (page - 1) * 10 + 1;
-        const result_max = page * 10;
+        const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;
 
-        res.status(200).json({
+        return res.status(200).json({
             prev,
             next,
             pagina_actual,
@@ -37,10 +35,12 @@ exports.getEspecialidades = async (req, res) => {
             cantidad_especialidades,
             result_min,
             result_max,
-            especialidades
+            resultados
         });
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }
 
@@ -48,14 +48,19 @@ exports.getEspecialidadById = async (req, res) => {
     const id = parseInt(req.params.id);
 
     try {
-        if (isNaN(id)) {
-            throw new Error('Número de identificación inválido.');
+        const especialidad = await EspecialidadService.readEspecialidadById(id);
+
+        if (!especialidad) {
+            return res.status(404).json({
+                errors: ['Especialidad no encontrada.']
+            });
         }
 
-        const especialidad = await EspecialidadService.readEspecialidadById(id);
-        res.status(200).json(especialidad);
+        return res.status(200).json(especialidad);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }
 
@@ -69,12 +74,14 @@ exports.createEspecialidad = async (req, res) => {
 
         await EspecialidadService.createEspecialidad(especialidad);
 
-        res.status(201).json({ message: 'Especialidad creada exitosamente.' });
+        return res.status(201).json({ message: 'Especialidad creada exitosamente.' });
     } catch (err) {
         if (req.file) {
             destroyFile(req.file.path);
         }
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }
 
@@ -86,9 +93,13 @@ exports.updateEspecialidad = async (req, res) => {
         const currentEspecialidad =
             await EspecialidadService.readEspecialidadById(id);
 
-        if (currentEspecialidad) {
-            oldFilePath = currentEspecialidad.imagen;
+        if (!currentEspecialidad) {
+            return res.status(404).json({
+                errors: ['Especialidad no encontrada.']
+            });
         }
+
+        oldFilePath = currentEspecialidad.imagen;
 
         const especialidad = {
             nombre: req.body.nombre,
@@ -98,18 +109,20 @@ exports.updateEspecialidad = async (req, res) => {
 
         await EspecialidadService.updateEspecialidad(id, especialidad);
 
-        res.status(200).json({
-            message: 'Especialidad actualizada exitosamente.'
-        });
-
         if (oldFilePath) {
             destroyFile(oldFilePath);
         }
+
+        return res.status(200).json({
+            message: 'Especialidad actualizada exitosamente.'
+        });
     } catch (err) {
         if (req.file) {
             destroyFile(req.file.path);
         }
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }
 
@@ -118,28 +131,29 @@ exports.deleteEspecialidad = async (req, res) => {
     let oldFilePath;
 
     try {
-        if (isNaN(id)) {
-            throw new Error('Número de identificación inválido.');
-        }
-
         const currentEspecialidad =
             await EspecialidadService.readEspecialidadById(id);
 
         if (!currentEspecialidad) {
-            throw new Error('Especialidad no encontrada.');
+            return res.status(404).json({
+                errors: ['Especialidad no encontrada.']
+            });
         }
 
         oldFilePath = currentEspecialidad.imagen;
 
         await EspecialidadService.deleteEspecialidad(id);
-        res.status(200).json({
-            message: 'Especialidad eliminada exitosamente.'
-        });
 
         if (oldFilePath) {
             destroyFile(oldFilePath);
         }
+
+        return res.status(200).json({
+            message: 'Especialidad eliminada exitosamente.'
+        });
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }

@@ -29,7 +29,9 @@ exports.validateEspecialidad = [
             if (req.file && req.file.path) {
                 destroyFile(req.file.path);
             }
-            return res.status(400).json({ errors: errors.array() });
+            const errorMessages = errors.array().map(error => error.msg);
+
+            return res.status(500).json({ errors: errorMessages });
         }
         next();
     }

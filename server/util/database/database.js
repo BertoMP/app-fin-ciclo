@@ -6,6 +6,7 @@ const pool = mysql2.createPool({
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASS || 'admin',
     database: process.env.DB_NAME || 'clinica',
+    timezone: process.env.DB_TIMEZONE || 'Z',
 });
 
 module.exports = pool.promise();

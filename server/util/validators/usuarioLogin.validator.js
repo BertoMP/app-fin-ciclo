@@ -4,7 +4,15 @@ exports.validateUserLogin = [
     body('email')
         .trim()
         .notEmpty().withMessage('El correo es requerido.')
-        .isEmail().withMessage('El correo debe ser un correo válido.'),
+        .custom((value) => {
+            const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (!regex.test(value)) {
+                throw new Error('El correo debe ser un correo válido.');
+            }
+
+            return true;
+            }),
 
     body('password')
         .trim()
@@ -14,7 +22,9 @@ exports.validateUserLogin = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            const errorMessages = errors.array().map(error => error.msg);
+
+            return res.status(500).json({ errors: errorMessages });
         }
         next();
     }

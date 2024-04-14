@@ -4,20 +4,18 @@ exports.getMedicamentos = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
 
     try {
-        if (isNaN(page)) {
-            throw new Error('Número de página inválido.');
-        }
-
         const {
-            rows: medicamentos,
+            rows: resultados,
             actualPage: pagina_actual,
             total: cantidad_medicamentos,
             totalPages: paginas_totales
         } =
             await MedicamentoService.readMedicamentos(page);
 
-        if (page > paginas_totales) {
-            throw new Error('La página solicitada no existe.');
+        if (page > 1 && page > paginas_totales) {
+            return res.status(404).json({
+                errors: ['La página de medicamentos solicitada no existe.']
+            });
         }
 
         const prev = page > 1
@@ -27,9 +25,9 @@ exports.getMedicamentos = async (req, res) => {
             ? `/api/medicamento?page=${page + 1}`
             : null;
         const result_min = (page - 1) * 10 + 1;
-        const result_max = page * 10;
+        const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;
 
-        res.status(200).json({
+        return res.status(200).json({
             prev,
             next,
             pagina_actual,
@@ -37,10 +35,12 @@ exports.getMedicamentos = async (req, res) => {
             cantidad_medicamentos,
             result_min,
             result_max,
-            medicamentos
+            resultados
         });
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }
 
@@ -48,14 +48,19 @@ exports.getMedicamentoById = async (req, res) => {
     const id = parseInt(req.params.id);
 
     try {
-        if (isNaN(id)) {
-            throw new Error('Número de identificación inválido.');
+        const medicamento = await MedicamentoService.readMedicamentoById(id);
+
+        if (!medicamento) {
+            return res.status(404).json({
+                errors: ['El medicamento no existe.']
+            });
         }
 
-        const medicamento = await MedicamentoService.readMedicamentoById(id);
-        res.status(200).json(medicamento);
+        return res.status(200).json(medicamento);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }
 
@@ -68,9 +73,11 @@ exports.createMedicamento = async (req, res) => {
     try {
         await MedicamentoService.createMedicamento(medicamento);
 
-        res.status(200).json({ message: 'Medicamento creado.'});
+        return res.status(200).json({ message: 'Medicamento creado.'});
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }
 
@@ -78,22 +85,22 @@ exports.deleteMedicamento = async (req, res) => {
     const id = parseInt(req.params.id);
 
     try {
-        if (isNaN(id)) {
-            throw new Error('Número de identificación inválido.');
-        }
-
         const currentMedicamento =
             await MedicamentoService.readMedicamentoById(id);
 
         if (!currentMedicamento) {
-            throw new Error('El medicamento no existe.');
+            return res.status(404).json({
+                errors: ['El medicamento no existe.']
+            });
         }
 
         await MedicamentoService.deleteMedicamento(id);
 
-        res.status(200).json({ message: 'Medicamento eliminado.' });
+        return res.status(200).json({ message: 'Medicamento eliminado.' });
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }
 
@@ -102,14 +109,21 @@ exports.updateMedicamento = async (req, res) => {
     const medicamento = req.body;
 
     try {
-        if (isNaN(id)) {
-            throw new Error('Número de identificación inválido.');
+        const currentMedicamento =
+            await MedicamentoService.readMedicamentoById(id);
+
+        if (!currentMedicamento) {
+            return res.status(404).json({
+                errors: ['El medicamento no existe.']
+            });
         }
 
         await MedicamentoService.updateMedicamento(id, medicamento);
 
-        res.status(200).json({ message: 'Medicamento actualizado.' });
+        return res.status(200).json({ message: 'Medicamento actualizado.' });
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        return res.status(500).json({
+            errors: [err.message]
+        });
     }
 }

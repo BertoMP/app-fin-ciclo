@@ -11,16 +11,18 @@ module.exports = (roles) => {
 
                 if (!decodedToken || !roles.includes(decodedToken.user_role)) {
                     return res.status(403).json({
-                        message: 'No tienes permiso para realizar esta acción.'
+                        errors: ['No tienes permiso para realizar esta acción.']
                     });
                 }
                 next();
             } catch (error) {
-                return res.status(401).json({ message: 'Token inválido.' });
+                return res.status(401).json({
+                    errors: ['Token inválido.']
+                });
             }
         } else {
             return res.status(401).json({
-                message: 'No se proporcionó ningún token.'
+                errors: ['No se proporcionó ningún token.']
             });
         }
     }
