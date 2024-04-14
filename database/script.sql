@@ -15,9 +15,11 @@ DROP TABLE IF EXISTS especialista;
 DROP TABLE IF EXISTS especialidad;
 DROP TABLE IF EXISTS consulta;
 DROP TABLE IF EXISTS paciente;
+DROP TABLE IF EXISTS token;
 DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS rol;
-DROP TABLE IF EXISTS token;
+
+
 
 -- Eliminación de los eventos si existen
 DROP EVENT IF EXISTS limpiar_tabla_tokens;
@@ -115,7 +117,6 @@ CREATE TABLE consulta (
 
 -- Tabla especialista
 CREATE TABLE especialista (
-    id              INT AUTO_INCREMENT,
     usuario_id      INT,
     num_colegiado   VARCHAR(255),
     descripcion     TEXT,
@@ -124,7 +125,7 @@ CREATE TABLE especialista (
     especialidad_id INT,
     consulta_id     INT,
         CONSTRAINT pk_especialista
-            PRIMARY KEY (id),
+            PRIMARY KEY (usuario_id),
         CONSTRAINT uq_especialista_num_colegiado
             UNIQUE (num_colegiado),
         CONSTRAINT ck_especialista_null
@@ -146,7 +147,6 @@ CREATE TABLE especialista (
 
 -- Tabla paciente
 CREATE TABLE paciente (
-    id                      INT AUTO_INCREMENT,
     usuario_id              INT,
     num_historia_clinica    VARCHAR(255),
     fecha_nacimiento        DATE,
@@ -161,7 +161,7 @@ CREATE TABLE paciente (
     tel_fijo                INT,
     tel_movil               INT,
         CONSTRAINT pk_paciente
-            PRIMARY KEY (id),
+            PRIMARY KEY (usuario_id),
         CONSTRAINT uq_paciente_num_historia_clinica
             UNIQUE (num_historia_clinica),
         CONSTRAINT ck_paciente_null
@@ -220,10 +220,10 @@ CREATE TABLE cita (
             CHECK (hora REGEXP '^[0-9]{2}:(00|30):[0-9]{2}$'),
         CONSTRAINT fk_cita_especialista
             FOREIGN KEY (especialista_id)
-            REFERENCES especialista (id),
+            REFERENCES especialista (usuario_id),
         CONSTRAINT fk_cita_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (id),
+            REFERENCES paciente (usuario_id),
         CONSTRAINT fk_cita_informe
             FOREIGN KEY (informe_id)
             REFERENCES informe (id)
@@ -248,7 +248,7 @@ CREATE TABLE tension_arterial (
                    pulsaciones_minuto IS NOT NULL),
         CONSTRAINT fk_tension_arterial_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (id)
+            REFERENCES paciente (usuario_id)
 );
 
 -- Tabla glucometria
@@ -266,7 +266,7 @@ CREATE TABLE glucometria (
                    hora IS NOT NULL),
         CONSTRAINT fk_glucometria_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (id)
+            REFERENCES paciente (usuario_id)
 );
 
 -- Tabla medicamento
@@ -298,23 +298,11 @@ CREATE TABLE paciente_medicamento (
                    toma_nocturna IS NOT NULL),
         CONSTRAINT fk_paciente_medicamento_paciente
             FOREIGN KEY (paciente_id)
-            REFERENCES paciente (id),
+            REFERENCES paciente (usuario_id),
         CONSTRAINT fk_paciente_medicamento_medicamento
             FOREIGN KEY (medicamento_id)
             REFERENCES medicamento (id)
 );
-
--- Inserción de los datos de la tabla rol
-INSERT INTO rol (nombre)
-    VALUES  ('admin'),
-            ('paciente'),
-            ('especialista');
-
--- Inserción de datos dummy en la tabla usuario
-INSERT INTO usuario (email, password, nombre, primer_apellido, segundo_apellido, dni, rol_id)
-    VALUES  ('admin@admin.es', '$2y$10$kgYGNms6J4PhRa/VxbKUKeI24/Vo5pLgsOsQVRu93c.T.VWh5sLzO', 'Admin', 'Admin', 'Admin', '12345678Z', 1),
-            ('paciente@paciente.es', '$2y$10$nK1i6y.2ThrH6AJrIrsGwemc4DYnYzkigw3dkbEoNalXfwslcV1/.', 'Paciente', 'Paciente', 'Paciente', '22345678Z', 2),
-            ('especialista@especialista.es', '$2y$10$jxxv3w.KONPRfOVtu2ICbOLNwPqaEhEwuPWhcHS5u.nuxPKbiY9zm', 'Especialista', 'Especialista', 'Especialista', '32345678Z', 3);
 
 -- Evento para limpiar la tabla tokens
 DELIMITER $$
@@ -327,3 +315,31 @@ CREATE EVENT limpiar_tabla_tokens
     END $$
 
 DELIMITER ;
+
+-- Inserción de los datos de la tabla rol
+INSERT INTO rol (nombre)
+VALUES  ('admin'),
+        ('paciente'),
+        ('especialista');
+
+-- Inserción de datos dummy en la tabla usuario
+INSERT INTO usuario (email, password, nombre, primer_apellido, segundo_apellido, dni, rol_id)
+VALUES  ('admin@admin.es', '$2y$10$kgYGNms6J4PhRa/VxbKUKeI24/Vo5pLgsOsQVRu93c.T.VWh5sLzO', 'Admin', 'Admin', 'Admin', '12345678Z', 1),
+        ('paciente@paciente.es', '$2y$10$nK1i6y.2ThrH6AJrIrsGwemc4DYnYzkigw3dkbEoNalXfwslcV1/.', 'Paciente', 'Paciente', 'Paciente', '22345678Z', 2),
+        ('especialista@especialista.es', '$2y$10$jxxv3w.KONPRfOVtu2ICbOLNwPqaEhEwuPWhcHS5u.nuxPKbiY9zm', 'Especialista', 'Especialista', 'Especialista', '32345678Z', 3);
+
+-- Inserción de datos dummy en paciente
+INSERT INTO paciente (usuario_id, num_historia_clinica, fecha_nacimiento, tipo_via, nombre_via, numero, piso, puerta, provincia, municipio, codigo_postal, tel_fijo, tel_movil)
+VALUES  (2, '12345678', '1990-01-01', 'Calle', 'Calle de la calle', 1, 1, 'A', 'Madrid', 'Madrid', 28000, 912345678, 612345678);
+
+-- Inserción de datos dummy en especialidad
+INSERT INTO especialidad (nombre, descripcion, imagen)
+VALUES  ('Especialidad', 'Especialidad en especialidades', 'imagen.jpg');
+
+-- Inserción de datos dummy en consulta
+INSERT INTO consulta (nombre)
+VALUES  ('1-A');
+
+-- Inserción de datos dummy en especialista
+INSERT INTO especialista (usuario_id, num_colegiado, descripcion, imagen, turno, especialidad_id, consulta_id)
+VALUES  (3, '12345678', 'Especialista en especialidades', 'imagen.jpg', 'diurno', 1, 1);
