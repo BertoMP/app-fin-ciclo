@@ -99,4 +99,4 @@ del cliente.
 
 ## Licencia
 
-Este proyecto está licenciado bajo los términos de la licencia MIT.
+Este proyecto está licenciado bajo los términos de la licencia GNU GPL.
