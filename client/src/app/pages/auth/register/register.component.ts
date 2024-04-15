@@ -14,6 +14,7 @@ import {AuthService} from "../../../core/services/auth.service";
 import {
   LoadingSpinnerComponent
 } from "../../../shared/components/loading-spinner/loading-spinner.component";
+import {ProvinceModel} from "../../../core/interfaces/province.model";
 
 @Component({
   selector: 'app-register',
@@ -33,28 +34,24 @@ export class RegisterComponent implements OnInit {
   isLoading: boolean = false;
   error: string = null;
 
-  genders: string[] = [
-    'Hombre',
-    'Mujer',
-    'Otro'
-  ]
 
-  places: string[] = [
-    'Calle',
-    'Avenida',
-    'Plaza',
-    'Paseo',
-  ]
 
-  provinces: string[];
+  places: string[];
+  provinces: ProvinceModel[];
+  muncipios: string[];
 
   constructor(private provinceService: ProvinceService,
               private router: Router,
               private authService: AuthService) {
-    this.provinces = this.provinceService.getProvinces();
   }
 
   ngOnInit(): void {
+    this.provinceService.getProvinces()
+      .subscribe((provinces: ProvinceModel[]) => {
+        this.provinces = provinces;
+      });
+
+
     this.registerForm = new FormGroup<any>({
       'name': new FormControl(
         null,
@@ -89,12 +86,6 @@ export class RegisterComponent implements OnInit {
         [
           Validators.required,
           CustomValidators.validDateOfBirth
-        ]
-      ),
-      'gender': new FormControl(
-        '',
-        [
-          Validators.required
         ]
       ),
       'email': new FormControl(

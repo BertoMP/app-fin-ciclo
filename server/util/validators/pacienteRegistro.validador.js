@@ -69,15 +69,10 @@ exports.validatePacienteRegister = [
             return true;
         }),
 
-    body('provincia')
-        .trim()
-        .notEmpty().withMessage('La provincia es requerida.')
-        .isString().withMessage('La provincia debe ser una cadena de texto.'),
-
     body('municipio')
         .trim()
         .notEmpty().withMessage('El municipio es requerido.')
-        .isString().withMessage('El municipio debe ser una cadena de texto.'),
+        .isNumeric().withMessage('El municipio debe ser un valor numérico.'),
 
     body('tel_fijo')
         .trim()

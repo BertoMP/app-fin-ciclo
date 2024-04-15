@@ -1,67 +1,20 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import {catchError, Observable} from "rxjs";
+import {ProvinceModel} from "../interfaces/province.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProvinceService {
-  provinces: string[] = [
-    'Álava',
-    'Albacete',
-    'Alicante',
-    'Almería',
-    'Asturias',
-    'Ávila',
-    'Badajoz',
-    'Barcelona',
-    'Burgos',
-    'Cáceres',
-    'Cádiz',
-    'Cantabria',
-    'Castellón',
-    'Ceuta',
-    'Ciudad Real',
-    'Córdoba',
-    'Cuenca',
-    'Gerona',
-    'Granada',
-    'Guadalajara',
-    'Guipúzcoa',
-    'Huelva',
-    'Huesca',
-    'Islas Baleares',
-    'Jaén',
-    'La Coruña',
-    'La Rioja',
-    'Las Palmas',
-    'León',
-    'Lérida',
-    'Lugo',
-    'Madrid',
-    'Málaga',
-    'Melilla',
-    'Murcia',
-    'Navarra',
-    'Orense',
-    'Palencia',
-    'Pontevedra',
-    'Salamanca',
-    'Santa Cruz de Tenerife',
-    'Segovia',
-    'Sevilla',
-    'Soria',
-    'Tarragona',
-    'Teruel',
-    'Toledo',
-    'Valencia',
-    'Valladolid',
-    'Vizcaya',
-    'Zamora',
-    'Zaragoza'
-  ]
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
-
-  getProvinces(): string[] {
-    return [...this.provinces];
+  getProvinces(): Observable<ProvinceModel[]> {
+    return this.http.get('/provincia').pipe(
+      catchError(error => {
+        console.error('Error fetching provinces', error);
+        return [];
+      })
+    );
   }
 }

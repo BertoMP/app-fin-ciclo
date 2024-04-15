@@ -39,7 +39,6 @@ exports.postRegistro = async (req, res) => {
             numero: req.body.numero,
             piso: req.body.piso,
             puerta: req.body.puerta,
-            provincia: req.body.provincia,
             municipio: req.body.municipio,
             codigo_postal: req.body.codigo_postal,
             tel_fijo: req.body.tel_fijo,

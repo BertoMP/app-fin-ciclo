@@ -8,7 +8,6 @@ class PacienteModel {
         const numero            = paciente.numero;
         const piso              = paciente.piso;
         const puerta            = paciente.puerta;
-        const provincia         = paciente.provincia;
         const municipio         = paciente.municipio;
         const codigo_postal     = paciente.codigo_postal;
         const tel_fijo          = paciente.tel_fijo;
@@ -17,15 +16,15 @@ class PacienteModel {
         const query =
             'INSERT INTO paciente ' +
             '(usuario_id, num_historia_clinica, fecha_nacimiento, tipo_via, ' +
-            'nombre_via, numero, piso, puerta, provincia, municipio, ' +
+            'nombre_via, numero, piso, puerta, municipio, ' +
             'codigo_postal, tel_fijo, tel_movil) ' +
-            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         try {
             await dbConn.execute(
                 query,
                 [usuario_id, num_hist_clinica, fecha_nacimiento, tipo_via,
-                    nombre_via, numero, piso, puerta, provincia, municipio,
+                    nombre_via, numero, piso, puerta, municipio,
                     codigo_postal, tel_fijo, tel_movil]);
         } catch (err) {
             throw new Error('Error al crear el paciente.');

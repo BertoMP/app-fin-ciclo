@@ -66,20 +66,6 @@
                 }"
           >
         </article>
-        <article class="gender-field">
-          <label for="gender">Género</label>
-          <select formControlName="gender" id="gender"
-                  [ngClass]="{ 'invalid':
-                registerForm.get('gender').invalid
-                && sendedAttempt
-                }"
-          >
-            <option value="" disabled>Selecciona un género</option>
-            @for (gender of genders; track gender) {
-              <option value="{{ gender | lowercase }}">{{ gender }}</option>
-            }
-          </select>
-        </article>
       </fieldset>
       <fieldset class="form-account-data">
         <legend>Datos de acceso</legend>
