@@ -1,7 +1,7 @@
 class ProvinciaModel {
     static async fetchAll(dbConn) {
         const query =
-            'SELECT id, nombre FROM provincia ' +
+            'SELECT id as value, nombre as label FROM provincia ' +
             'ORDER BY nombre';
 
         try {
