@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Nuevo mensaje de contacto</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h1>Mensaje de contacto de {{contacto.nombre}}</h1>
+<p>Se ha recibido un mensaje de contacto del siguiente remitente:</p>
+<table>
+    <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+    </tr>
+    <tr>
+        <td>{{contacto.nombre}}</td>
+        <td>{{contacto.email}}</td>
+        <td>{{contacto.telefono}}</td>
+    </tr>
+</table>
+<strong>Mensaje:</strong>
+<p>{{contacto.mensaje}}</p>
+</body>
+</html>

@@ -1,10 +1,11 @@
 class MedicamentoModel {
     static async fetchAll(dbConn, page) {
         const limit = 10;
-        const offset = (page - 1) * limit;
+        const offset = ((page - 1) * limit) + 1;
 
         const query =
             'SELECT nombre, descripcion FROM medicamento ' +
+            'ORDER BY id ASC '
             'LIMIT ? OFFSET ?';
 
         try {

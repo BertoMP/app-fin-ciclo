@@ -9,6 +9,7 @@ const tensionArterialRoutes = require('./api/tensionArterial.routes');
 const provinciaRoutes = require('./api/provincia.routes');
 const municipioRoutes = require('./api/municipio.routes');
 const tipoViaRoutes = require('./api/tipoVia.routes');
+const consultaRoutes = require('./api/consulta.routes');
 
 router.use(usuarioRoutes);
 router.use(medicamentoRoutes);
@@ -19,5 +20,6 @@ router.use(tensionArterialRoutes);
 router.use(provinciaRoutes);
 router.use(municipioRoutes);
 router.use(tipoViaRoutes);
+router.use(consultaRoutes);
 
 module.exports = router;

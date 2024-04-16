@@ -13,10 +13,11 @@ class EspecialidadModel {
      */
     static async fetchAll(dbConn, page) {
         const limit = 10;
-        const offset = (page - 1) * limit;
+        const offset = ((page - 1) * limit) + 1;
 
         const query =
             'SELECT * FROM especialidad ' +
+            'ORDER BY id ASC '
             'LIMIT ? OFFSET ?';
 
         try {
