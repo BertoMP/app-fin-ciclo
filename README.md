@@ -3,17 +3,13 @@
 Este es un proyecto de fin de ciclo desarrollado por 
 [Alberto Martínez Pérez](https://github.com/BertoMP)
 y [Rafael Romero Roibu](https://github.com/romraf) utilizando las tecnologías
-Angular 17 para el _frontend_, Node.js (v. 20.11.1) para el _backend_ 
-y SQL para la base de datos.
+Angular 17 para el _frontend_, Node.js (v. 20.12.2) para el _backend_ 
+y MySQL para la base de datos.
 
-Además, se han utilizado las siguientes librerías y herramientas:
-
-- __Backend__: Express.js, bcrypt, jsonwebtoken, mysql2, nodemailer, nodemon, 
-cors, dotenv, multer y express-validator.
-
-El _frontend_ se encarga de la interfaz de usuario y la comunicación con el backend
-a través de peticiones HTTP. El _backend_ se encarga de la lógica de negocio y de
-la comunicación con la base de datos comportándose como una API REST.
+Nuestro _frontend_ se encarga de la interfaz de usuario y la comunicación con el 
+_backend_ a través de peticiones HTTP. El _backend_ por su parte es el encargado 
+de llevar a cabo toda la lógica de negocio así como la comunicación con la base 
+de datos comportándose como una API REST.
 
 El proyecto ha sido desarrollado en el marco del Ciclo Formativo de Grado Superior
 de Desarrollo de Aplicaciones Web en el IES Luis Braille de Coslada (Madrid).
@@ -23,6 +19,7 @@ de Desarrollo de Aplicaciones Web en el IES Luis Braille de Coslada (Madrid).
 - [Descripción](#descripción)
 - [Tecnologías Utilizadas](#tecnologías-utilizadas)
 - [Características principales](#características-principales)
+  - [Paquetes y librerías utilizadas](#paquetes-y-librerías-utilizadas)
 - [Requisitos para Instalar y Ejecutar el Proyecto](#requisitos-para-instalar-y-ejecutar-el-proyecto)
   - [Cómo Instalar y Ejecutar el Proyecto](#cómo-instalar-y-ejecutar-el-proyecto)
 - [Licencia](#licencia)
@@ -49,18 +46,43 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 ![Express.js](https://img.shields.io/badge/-Express.js-404D59?style=flat)
 * ___Base de Datos___: ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?style=flat&logo=mysql&logoColor=white)
 
+### Paquetes y librerías utilizadas
+
+__Frontend__:
+- _select2_: Librería jQuery que permite la creación de selectores personalizados.
+
+__Backend__:
+- _bcryptjs_: Librería cuya finalidad es el cifrado de contraseñas.
+- _cors_: Middleware de Express.js que permite habilitar CORS 
+(_Cross-Origin Resource Sharing_) con varias opciones.
+- _dotenv_: Librería que permite cargar variables de entorno desde un 
+archivo `.env`. 
+- _express_: Framework de Node.js que permite crear aplicaciones web y APIs.
+- _express-handlebars_: Motor de plantillas para Express.js basado en Handlebars
+que permite reorganizar las plantillas en diseños, páginas y partes.
+- _express-validator_: Middleware de Express.js que permite validar y limpiar
+datos de entrada.
+- _jsonwebtoken_: Librería que permite la generación y verificación de tokens 
+JWT.
+- _moment-timezone_: Librería que permite trabajar con fechas y horas en diferentes
+zonas horarias.
+- _multer_: Middleware de Express.js que permite gestionar la carga de archivos
+a través de formularios `multipart/form-data`.
+- _mysql2_: Librería que permite la conexión a bases de datos MySQL.
+- _nodemailer_: Librería que permite enviar correos electrónicos desde Node.js.
+
 ## Características principales
 
 - __Pacientes__: Los pacientes pueden registrarse, iniciar sesión, 
-restablecer su contraseña y actualizar su contraseña. Además pueden solicitar 
+restablecer su contraseña y actualizar su contraseña. También pueden solicitar 
 cita con los especialistas, ver su historial clínico y añadir mediciones de
 glucosa y tensión arterial.
 - __Especialistas__: Los especialistas pueden iniciar sesión, restablecer su
-contraseña y actualizar su contraseña. Además pueden ver las citas que tienen
+contraseña y actualizar su contraseña. Además, pueden ver las citas que tienen
 pendientes, ver los pacientes que tienen asignados y ver los historiales clínicos
 de los pacientes.
 - __Administradores__: Los administradores pueden iniciar sesión, restablecer su
-contraseña y actualizar su contraseña. Además pueden ver los especialistas y
+contraseña y actualizar su contraseña. Así mismo, pueden ver los especialistas y
 pacientes registrados en la aplicación, así como las especialidades médicas
 que se encuentran disponibles. Pueden realizar tareas de administración de los
 diferentes tipos de usuarios y de las especialidades médicas.
