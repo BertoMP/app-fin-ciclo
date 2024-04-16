@@ -1,4 +1,4 @@
 export interface MunicipioModel {
-  id: number,
+  id: string,
   nombre: string
 }

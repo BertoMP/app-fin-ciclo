@@ -1,7 +1,7 @@
 class TipoViaModel {
     static async fetchAll(dbConn) {
         const query =
-            'SELECT id as value, nombre as label FROM tipo_via ' +
+            'SELECT id, nombre FROM tipo_via ' +
             'ORDER BY nombre';
 
         try {

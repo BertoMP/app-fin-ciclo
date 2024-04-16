@@ -1,4 +1,4 @@
 export interface TipoViaModel {
-  id: number,
+  id: string,
   nombre: string
 }

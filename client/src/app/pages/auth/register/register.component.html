@@ -101,9 +101,9 @@
                 registerForm.get('place').invalid &&
                 sendedAttempt }"
           >
-            <option value="" disabled>Selecciona una opción</option>
-            @for (place of places; track place) {
-              <option value="{{ place | lowercase }}">{{ place }}</option>
+            <option value="0" disabled>Selecciona una opción</option>
+            @for (place of places; track place.id) {
+              <option value="{{ place.id }}">{{ place.nombre }}</option>
             }
           </select>
         </article>
@@ -154,19 +154,24 @@
                registerForm.get('province').invalid &&
                sendedAttempt }"
           >
-            <option value="" disabled>Selecciona una provincia</option>
+            <option value="0" disabled>Selecciona una provincia</option>
             @for (province of provinces; track province) {
-              <option value="{{ province | lowercase }}">{{ province }}</option>
+              <option value="{{ province.id }}">{{ province.nombre }}</option>
             }
           </select>
         </article>
         <article class="city-field">
           <label for="city">Ciudad</label>
-          <input type="text" formControlName="city" id="city"
-                 [ngClass]="{ 'invalid':
+          <select formControlName="city" id="city"
+                  [ngClass]="{ 'invalid':
                registerForm.get('city').invalid &&
                sendedAttempt }"
           >
+            <option value="0" disabled>Selecciona una ciudad</option>
+            @for (municipio of municipios; track municipio.id) {
+              <option value="{{ municipio.id }}">{{ municipio.nombre }}</option>
+            }
+          </select>
         </article>
         <article class="postal-code-field">
           <label for="postal-code">CP</label>

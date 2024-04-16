@@ -15,6 +15,11 @@ import {
   LoadingSpinnerComponent
 } from "../../../shared/components/loading-spinner/loading-spinner.component";
 import {ProvinceModel} from "../../../core/interfaces/province.model";
+import {MunicipioModel} from "../../../core/interfaces/municipio.model";
+import {TipoViaModel} from "../../../core/interfaces/tipo-via.model";
+import {MunicipioService} from "../../../core/services/municipio.service";
+import {TipoViaService} from "../../../core/services/tipo-via.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-register',
@@ -34,24 +39,30 @@ export class RegisterComponent implements OnInit {
   isLoading: boolean = false;
   error: string = null;
 
-
-
-  places: string[];
+  places: TipoViaModel[];
   provinces: ProvinceModel[];
-  muncipios: string[];
+  municipios: MunicipioModel[];
+
+  // SELECT2DATA
+  // Tienes que descomentar estas líneas para que funcione
+  // el código de abajo porque no se ha definido la interfaz
+  // select2Data en el proyecto, una vez instales el npm
+  // package de select2Data, podrás usarlo en el proyecto
+  // o al menos eso he entendido, en ese momento descomenta estas
+  // líneas y sigue con el código de abajo.
+
+  // places2Data: select2Data[] = [];
+  // provinces2Data: select2Data[] = [];
+  // municipios2Data: select2Data[] = [];
 
   constructor(private provinceService: ProvinceService,
+              private municipioService: MunicipioService,
+              private tipoViaService: TipoViaService,
               private router: Router,
               private authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.provinceService.getProvinces()
-      .subscribe((provinces: ProvinceModel[]) => {
-        this.provinces = provinces;
-      });
-
-
     this.registerForm = new FormGroup<any>({
       'name': new FormControl(
         null,
@@ -103,7 +114,7 @@ export class RegisterComponent implements OnInit {
         ]
       ),
       'place': new FormControl(
-        '',
+        '0',
         [
           Validators.required
         ]
@@ -137,13 +148,13 @@ export class RegisterComponent implements OnInit {
         ]
       ),
       'province': new FormControl(
-        '',
+        '0',
         [
           Validators.required
         ]
       ),
       'city': new FormControl(
-        null,
+        '0',
         [
           Validators.required,
           CustomValidators.validCity
@@ -171,6 +182,72 @@ export class RegisterComponent implements OnInit {
         ]
       ),
     });
+
+    this.tipoViaService.getTipoVia()
+      .subscribe({
+        next: (places: TipoViaModel[]) => {
+          this.places = places;
+
+          // SELECT2DATA
+          // Una vez que tengas el npm package de select2Data
+          // puedes descomentar este código para que funcione
+          // el select2Data en el proyecto.
+          // Si funciona correctamente, se puede rehacer el código
+          // para evitar el paso previo de guardarlo en el array
+          // places y hacerlo directamente en el array places2Data.
+          // Lo mismo para el resto de subscripciones a servicios
+          // que se han hecho en este componente.
+
+          // this.places2Data = places.map((place: TipoViaModel) => {
+          //   return {
+          //     value: place.id,
+          //     label: place.nombre
+          //   }
+          // });
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Error fetching places', error.error);
+        }
+      });
+
+    this.provinceService.getProvinces()
+      .subscribe({
+        next: (provinces: ProvinceModel[]) => {
+          this.provinces = provinces;
+
+          // this.provinces2Data = provinces.map((province: ProvinceModel) => {
+          //   return {
+          //     value: province.id,
+          //     label: province.nombre
+          //   }
+          // });
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Error fetching provinces', error.error);
+        }
+      });
+
+    this.registerForm.get('province').valueChanges
+      .subscribe({
+        next: (province: string) => {
+          this.municipioService.getMunicipios(province)
+            .subscribe({
+              next: (municipios: MunicipioModel[]) => {
+                this.municipios = municipios;
+
+                // this.municipios2Data = municipios.map((municipio: MunicipioModel) => {
+                //   return {
+                //     value: municipio.id,
+                //     label: municipio.nombre
+                //   }
+                // });
+              },
+              error: (error: HttpErrorResponse) => {
+                console.error('Error fetching municipios', error.error);
+              }
+            });
+        }
+      });
   }
 
   onRegisterAttempt(): void {

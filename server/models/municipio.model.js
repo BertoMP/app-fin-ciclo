@@ -1,7 +1,7 @@
 class MunicipioModel {
     static async fetchByProvinciaId(dbConn, id) {
         const query =
-            'SELECT id as value, nombre as label FROM municipio ' +
+            'SELECT id, nombre FROM municipio ' +
             'WHERE provincia_id = ? ' +
             'ORDER BY nombre';
 

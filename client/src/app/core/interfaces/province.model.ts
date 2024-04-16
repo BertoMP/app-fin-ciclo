@@ -1,4 +1,4 @@
 export interface ProvinceModel {
-  id: number,
+  id: string,
   nombre: string
 }

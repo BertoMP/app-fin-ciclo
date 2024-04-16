@@ -7,10 +7,12 @@ import {ProvinceModel} from "../interfaces/province.model";
   providedIn: 'root'
 })
 export class ProvinceService {
+  baseUrl: string = 'http://localhost:3000/api';
+
   constructor(private http: HttpClient) { }
 
   getProvinces(): Observable<ProvinceModel[]> {
-    return this.http.get('/provincia').pipe(
+    return this.http.get(`${this.baseUrl}/provincia`).pipe(
       catchError(error => {
         console.error('Error fetching provinces', error);
         return [];
