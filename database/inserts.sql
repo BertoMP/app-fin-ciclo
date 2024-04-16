@@ -8209,12 +8209,43 @@ INSERT INTO paciente (usuario_id, num_historia_clinica, fecha_nacimiento, tipo_v
 VALUES  (2, '12345678', '1990-01-01', 1, 'Calle de la calle', 1, 1, 'A', 1, 28000, 912345678, 612345678);
 
 -- Inserción de datos dummy en especialidad
-INSERT INTO especialidad (nombre, descripcion, imagen)
-VALUES  ('Especialidad', 'Especialidad en especialidades', 'imagen.jpg');
+
+INSERT INTO especialidad (nombre, descripcion, imagen) 
+VALUES	('Especialidad', 'Especialidad en especialidades', 'imagen.jpg'),
+		('Cardiología', 'Se ocupa de los trastornos del corazón y los vasos sanguíneos', 'cardiologia.png'),
+		('Dermatología', 'Se ocupa de la piel y sus enfermedades', 'dermatologia.png'),
+		('Endocrinología', 'Se ocupa de las glándulas del cuerpo y las hormonas que producen', 'endocrinologia.png'),
+		('Gastroenterología', 'Se ocupa del sistema digestivo y sus trastornos', 'gastroenterologia.png'),
+		('Neurología', 'Se ocupa de los trastornos del sistema nervioso', 'neurologia.png');
 
 -- Inserción de datos dummy en consulta
 INSERT INTO consulta (nombre)
-VALUES  ('1-A');
+VALUES  ('1-A'),
+		('2-B'),
+		('3-C'),
+		('4-D'),
+		('5-E'),
+		('6-F'),
+		('7-G'),
+		('8-H'),
+		('9-I'),
+		('10-J');
+
+
+INSERT INTO usuario (email, password, nombre, primer_apellido, segundo_apellido, dni, rol_id) VALUES
+('especialista1@clinica.com', 'password1', 'Especialista', 'Uno', 'Primero', '12345678A', 3),
+('especialista2@clinica.com', 'password2', 'Especialista', 'Dos', 'Segundo', '12345678B', 3),
+('especialista3@clinica.com', 'password3', 'Especialista', 'Tres', 'Tercero', '12345678C', 3),
+('especialista4@clinica.com', 'password4', 'Especialista', 'Cuatro', 'Cuarto', '12345678D', 3),
+('especialista5@clinica.com', 'password5', 'Especialista', 'Cinco', 'Quinto', '12345678E', 3);
+
+-- Insertar datos en la tabla especialista
+INSERT INTO especialista (usuario_id, num_colegiado, descripcion, imagen, turno, especialidad_id, consulta_id) VALUES
+(4, '12345A', 'Especialista en Cardiología', 'especialista1.png', 'diurno', 1, 1),
+(5, '12345B', 'Especialista en Dermatología', 'especialista2.png', 'vespertino', 2, 2),
+(6, '12345C', 'Especialista en Endocrinología', 'especialista3.png', 'diurno', 3, 3),
+(7, '12345D', 'Especialista en Gastroenterología', 'especialista4.png', 'vespertino', 4, 4),
+(8, '12345E', 'Especialista en Neurología', 'especialista5.png', 'diurno', 5, 5);
 
 -- Inserción de datos dummy en especialista
 INSERT INTO especialista (usuario_id, num_colegiado, descripcion, imagen, turno, especialidad_id, consulta_id)

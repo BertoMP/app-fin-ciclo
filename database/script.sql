@@ -228,11 +228,15 @@ CREATE TABLE paciente (
 -- Tabla informe
 CREATE TABLE informe (
     id          INT AUTO_INCREMENT,
+    motivo      VARCHAR(255),
+    patologia   VARCHAR(255),
     contenido   TEXT,
         CONSTRAINT pk_informe
             PRIMARY KEY (id),
         CONSTRAINT ck_informe_null
-            CHECK (contenido IS NOT NULL)
+            CHECK (motivo IS NOT NULL AND
+                   patologia IS NOT NULL AND
+                   contenido IS NOT NULL)
 );
 
 -- Tabla cita
