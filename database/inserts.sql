@@ -8250,3 +8250,36 @@ INSERT INTO especialista (usuario_id, num_colegiado, descripcion, imagen, turno,
 -- Inserción de datos dummy en especialista
 INSERT INTO especialista (usuario_id, num_colegiado, descripcion, imagen, turno, especialidad_id, consulta_id)
 VALUES  (3, '12345678', 'Especialista en especialidades', 'imagen.jpg', 'diurno', 1, 1);
+
+-- Inserción de datos de medicamentos
+INSERT INTO medicamento (nombre, descripcion)
+VALUES
+    ('Paracetamol', 'Alivia el dolor y reduce la fiebre'),
+    ('Ibuprofeno', 'Antiinflamatorio no esteroideo que alivia el dolor, reduce la inflamación y baja la fiebre'),
+    ('Amoxicilina', 'Antibiótico que se usa para tratar varias infecciones bacterianas'),
+    ('Aspirina', 'Alivia el dolor leve a moderado, reduce la inflamación y baja la fiebre'),
+    ('Insulina', 'Hormona que regula el azúcar en la sangre'),
+    ('Metformina', 'Medicamento para la diabetes que ayuda a controlar el nivel de azúcar en la sangre'),
+    ('Simvastatina', 'Reduce los niveles de colesterol malo y triglicéridos en la sangre'),
+    ('Losartán', 'Trata la presión arterial alta y ayuda a prevenir los accidentes cerebrovasculares'),
+    ('Omeprazol', 'Reduce la cantidad de ácido producido en el estómago'),
+    ('Loratadina', 'Antihistamínico que alivia los síntomas de las alergias'),
+    ('Furosemida', 'Diurético que trata la retención de líquidos'),
+    ('Alprazolam', 'Trata los trastornos de ansiedad y el pánico'),
+    ('Sertralina', 'Antidepresivo que trata la depresión, el trastorno obsesivo-compulsivo y el trastorno de pánico'),
+    ('Ciprofloxacino', 'Antibiótico que trata una variedad de infecciones bacterianas'),
+    ('Clonazepam', 'Trata los trastornos convulsivos y de pánico'),
+    ('Atorvastatina', 'Reduce los niveles de colesterol malo y triglicéridos en la sangre'),
+    ('Enalapril', 'Trata la presión arterial alta y la insuficiencia cardíaca'),
+    ('Ranitidina', 'Reduce la cantidad de ácido producido en el estómago'),
+    ('Levotiroxina', 'Trata el hipotiroidismo al reemplazar la hormona tiroidea'),
+    ('Amiodarona', 'Trata los ritmos cardíacos anormales');
+
+-- Inserción de datos de la tabla paciente_medicamento
+INSERT INTO paciente_medicamento (paciente_id, medicamento_id, toma_diurna, toma_vespertina, toma_nocturna)
+VALUES
+    (2, 1, 1, 0, 1),  -- Asociar Paracetamol al paciente 2 con 1 toma diurna, 0 tomas vespertinas y 1 toma nocturna
+    (2, 3, 2, 1, 0),  -- Asociar Amoxicilina al paciente 2 con 2 tomas diurnas, 1 toma vespertina y 0 tomas nocturnas
+    (2, 5, 1, 1, 1),  -- Asociar Insulina al paciente 2 con 1 toma diurna, 1 toma vespertina y 1 toma nocturna
+    (2, 7, 0, 1, 2),  -- Asociar Simvastatina al paciente 2 con 0 tomas diurnas, 1 toma vespertina y 2 tomas nocturnas
+    (2, 9, 1, 0, 0);  -- Asociar Omeprazol al paciente 2 con 1 toma diurna, 0 tomas vespertinas y 0 tomas nocturnas
