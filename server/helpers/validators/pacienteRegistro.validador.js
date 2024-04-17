@@ -6,15 +6,7 @@ exports.validatePacienteRegister = [
     body('tipo_via')
         .trim()
         .notEmpty().withMessage('El tipo de vía es requerido.')
-        .isString().withMessage('El tipo de vía debe ser una cadena de texto.')
-        .custom((value) => {
-            const tipos_via = ['calle', 'avenida', 'paseo', 'plaza', 'camino', 'carretera', 'vía'];
-
-            if (!tipos_via.includes(value.toLowerCase())) {
-                throw new Error('El tipo de vía no es válido.');
-            }
-            return true;
-        }),
+        .isNumeric().withMessage('El tipo de vía ha de ser un valor numérico'),
 
     body('nombre_via')
         .trim()

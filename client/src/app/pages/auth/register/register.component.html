@@ -96,16 +96,10 @@
         <legend>Dirección y contacto</legend>
         <article class="place-field">
           <label for="place">Plaza/Calle</label>
-          <select formControlName="place" id="place"
-                  [ngClass]="{ 'invalid':
-                registerForm.get('place').invalid &&
-                sendedAttempt }"
-          >
-            <option value="0" disabled>Selecciona una opción</option>
-            @for (place of places; track place.id) {
-              <option value="{{ place.id }}">{{ place.nombre }}</option>
-            }
-          </select>
+          <select2  id="place" formControlName="place"
+                  [ngClass]="{ 'invalid': registerForm.get('place').invalid &&
+                sendedAttempt }" [data]="places" placeholder="Elige una opcion"> 
+          </select2>
         </article>
         <article class="address-field">
           <label for="address">Dirección</label>
@@ -114,7 +108,7 @@
                  formControlName="address"
                  [ngClass]="{ 'invalid':
                registerForm.get('address').invalid &&
-               sendedAttempt }"
+               sendedAttempt  } " 
           >
         </article>
         <article class="number-field">
@@ -149,29 +143,19 @@
         </article>
         <article class="province-field">
           <label for="province">Provincia</label>
-          <select formControlName="province" id="province"
+          <select2 formControlName="province" id="province"
                   [ngClass]="{ 'invalid':
                registerForm.get('province').invalid &&
-               sendedAttempt }"
-          >
-            <option value="0" disabled>Selecciona una provincia</option>
-            @for (province of provinces; track province) {
-              <option value="{{ province.id }}">{{ province.nombre }}</option>
-            }
-          </select>
+               sendedAttempt }" [data]="provinces" placeholder="Elige una opcion">
+          </select2>
         </article>
         <article class="city-field">
           <label for="city">Ciudad</label>
-          <select formControlName="city" id="city"
+          <select2 formControlName="city" id="city"
                   [ngClass]="{ 'invalid':
                registerForm.get('city').invalid &&
-               sendedAttempt }"
-          >
-            <option value="0" disabled>Selecciona una ciudad</option>
-            @for (municipio of municipios; track municipio.id) {
-              <option value="{{ municipio.id }}">{{ municipio.nombre }}</option>
-            }
-          </select>
+               sendedAttempt }" [data]="municipios" placeholder="Elige una opcion">
+          </select2>
         </article>
         <article class="postal-code-field">
           <label for="postal-code">CP</label>
@@ -239,12 +223,6 @@
               </li>
             }
 
-            @if (registerForm.get('gender').invalid) {
-              <li>
-                <strong>Género:</strong> Debe seleccionar una opción.
-              </li>
-            }
-
             @if (registerForm.get('email').invalid) {
               <li>
                 <strong>Correo electrónico:</strong> Debe tener un formato
@@ -299,9 +277,7 @@
 
             @if (registerForm.get('city').invalid) {
               <li>
-                <strong>Ciudad:</strong> Debe empezar por mayúscula y el resto de
-                letras en minúsculas, salvo en el caso de nombres de
-                ciudades compuestas.
+                <strong>Ciudad:</strong> Debe seleccionar una opción.
               </li>
             }
 

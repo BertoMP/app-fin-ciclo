@@ -15,7 +15,7 @@ export class AuthService {
   }
 
   register(newUser: UserModel): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/register`, newUser)
+    return this.http.post(`${this.apiUrl}/usuario/registro`, newUser)
       .pipe(catchError(this.handleError));
   }
 
@@ -30,6 +30,7 @@ export class AuthService {
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage: string = 'Ha ocurrido un error durante el proceso';
+    console.log(errorRes.error);
     if(!errorRes.error) {
       return throwError(() => new Error(errorMessage));
     }

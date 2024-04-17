@@ -211,6 +211,14 @@ select.invalid {
   border-color: red;
   background-color: lightcoral;
 }
+#province,#city,#place{
+  --select2-placeholder-color: black;
+}
+
+#province.invalid,#city.invalid,#place.invalid{
+  --select2-selection-background: lightcoral;
+  --select2-selection-border-color: red;
+}
 
 select.invalid > option {
   background-color: white;

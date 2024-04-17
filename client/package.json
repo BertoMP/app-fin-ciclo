@@ -25,6 +25,7 @@
     "@coreui/angular": "^4.7.18",
     "boxicons": "^2.1.4",
     "express": "^4.18.2",
+    "ng-select2-component": "^14.0.1",
     "remixicon": "^4.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

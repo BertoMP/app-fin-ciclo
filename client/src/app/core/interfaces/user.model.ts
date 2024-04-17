@@ -4,7 +4,6 @@ export interface UserModel {
   secondSurname: string,
   dni: string,
   dateOfBirth: string,
-  gender: string,
   email: string,
   password: string,
   place: string,

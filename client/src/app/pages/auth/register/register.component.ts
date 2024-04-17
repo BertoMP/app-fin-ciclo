@@ -20,6 +20,8 @@ import {TipoViaModel} from "../../../core/interfaces/tipo-via.model";
 import {MunicipioService} from "../../../core/services/municipio.service";
 import {TipoViaService} from "../../../core/services/tipo-via.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import { Select2Module,Select2Data } from 'ng-select2-component';
+import { skip } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +30,8 @@ import {HttpErrorResponse} from "@angular/common/http";
     ReactiveFormsModule,
     LowerCasePipe,
     NgClass,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    Select2Module
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
@@ -39,21 +42,9 @@ export class RegisterComponent implements OnInit {
   isLoading: boolean = false;
   error: string = null;
 
-  places: TipoViaModel[];
-  provinces: ProvinceModel[];
-  municipios: MunicipioModel[];
-
-  // SELECT2DATA
-  // Tienes que descomentar estas líneas para que funcione
-  // el código de abajo porque no se ha definido la interfaz
-  // select2Data en el proyecto, una vez instales el npm
-  // package de select2Data, podrás usarlo en el proyecto
-  // o al menos eso he entendido, en ese momento descomenta estas
-  // líneas y sigue con el código de abajo.
-
-  // places2Data: select2Data[] = [];
-  // provinces2Data: select2Data[] = [];
-  // municipios2Data: select2Data[] = [];
+  places: Select2Data;
+  provinces: Select2Data;
+  municipios: Select2Data;
 
   constructor(private provinceService: ProvinceService,
               private municipioService: MunicipioService,
@@ -114,7 +105,7 @@ export class RegisterComponent implements OnInit {
         ]
       ),
       'place': new FormControl(
-        '0',
+        null,
         [
           Validators.required
         ]
@@ -148,16 +139,15 @@ export class RegisterComponent implements OnInit {
         ]
       ),
       'province': new FormControl(
-        '0',
+        null,
         [
           Validators.required
         ]
       ),
       'city': new FormControl(
-        '0',
+        null,
         [
           Validators.required,
-          CustomValidators.validCity
         ]
       ),
       'postal-code': new FormControl(
@@ -186,24 +176,13 @@ export class RegisterComponent implements OnInit {
     this.tipoViaService.getTipoVia()
       .subscribe({
         next: (places: TipoViaModel[]) => {
-          this.places = places;
+          this.places = places.map((place: TipoViaModel) => {
+              return {
+                value: place.id,
+                label: place.nombre
+              }
+            });
 
-          // SELECT2DATA
-          // Una vez que tengas el npm package de select2Data
-          // puedes descomentar este código para que funcione
-          // el select2Data en el proyecto.
-          // Si funciona correctamente, se puede rehacer el código
-          // para evitar el paso previo de guardarlo en el array
-          // places y hacerlo directamente en el array places2Data.
-          // Lo mismo para el resto de subscripciones a servicios
-          // que se han hecho en este componente.
-
-          // this.places2Data = places.map((place: TipoViaModel) => {
-          //   return {
-          //     value: place.id,
-          //     label: place.nombre
-          //   }
-          // });
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching places', error.error);
@@ -213,34 +192,29 @@ export class RegisterComponent implements OnInit {
     this.provinceService.getProvinces()
       .subscribe({
         next: (provinces: ProvinceModel[]) => {
-          this.provinces = provinces;
-
-          // this.provinces2Data = provinces.map((province: ProvinceModel) => {
-          //   return {
-          //     value: province.id,
-          //     label: province.nombre
-          //   }
-          // });
+          this.provinces = provinces.map((place: TipoViaModel) => {
+            return {
+              value: place.id,
+              label: place.nombre
+            }
+          });
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching provinces', error.error);
         }
       });
-
     this.registerForm.get('province').valueChanges
       .subscribe({
         next: (province: string) => {
           this.municipioService.getMunicipios(province)
             .subscribe({
               next: (municipios: MunicipioModel[]) => {
-                this.municipios = municipios;
-
-                // this.municipios2Data = municipios.map((municipio: MunicipioModel) => {
-                //   return {
-                //     value: municipio.id,
-                //     label: municipio.nombre
-                //   }
-                // });
+                this.municipios = municipios.map((place: TipoViaModel) => {
+                  return {
+                    value: place.id,
+                    label: place.nombre
+                  }
+                });
               },
               error: (error: HttpErrorResponse) => {
                 console.error('Error fetching municipios', error.error);
@@ -259,16 +233,16 @@ export class RegisterComponent implements OnInit {
 
     this.isLoading = true;
     const newUser: UserModel = this.generateUser();
-
+    console.log(newUser);
     this.authService.register(newUser)
       .subscribe({
         next: (response) => {
           this.isLoading = false;
           this.registerForm.reset();
         },
-        error: (error: string): void => {
-          this.error = error;
+        error: (error: HttpErrorResponse): void => {
           this.isLoading = false;
+          console.log(error);
         }
       });
 
@@ -287,7 +261,6 @@ export class RegisterComponent implements OnInit {
       secondSurname: this.registerForm.get('second-surname').value,
       dni: this.registerForm.get('dni').value,
       dateOfBirth: this.registerForm.get('date-of-birth').value,
-      gender: this.registerForm.get('gender').value,
       email: this.registerForm.get('email').value,
       password: this.registerForm.get('password').value,
       place: this.registerForm.get('place').value,

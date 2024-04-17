@@ -104,17 +104,17 @@ export class CustomValidators {
     return null;
   }
 
-  static validCity(control: FormControl): {[s: string]: boolean} | null {
-    const value = control.value;
-    const regex: RegExp
-      = new RegExp('^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(\\s(de|del|la))*(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$');
+  // static validCity(control: FormControl): {[s: string]: boolean} | null {
+  //   const value = control.value;
+  //   const regex: RegExp
+  //     = new RegExp('^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(\\s(de|del|la))*(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$');
 
-    if (!regex.test(value)) {
-      return {'isInvalidCity': true}
-    }
+  //   if (!regex.test(value)) {
+  //     return {'isInvalidCity': true}
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
   static validPostalCode(control: FormControl): {[s: string]: boolean} | null {
     const value = control.value;

@@ -40,6 +40,10 @@ p {
     margin: auto;
 }
 
+.mision img{
+    object-fit: cover;
+}
+
 .mision {
     flex-flow: row;
 }
