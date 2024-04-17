@@ -1,8 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const destroyFile = (filePath) => {
-    const absolutePath = path.join(__dirname, '..', '..', filePath);
+const destroyFile = (filePath, absolute = false) => {
+    let absolutePath = filePath;
+
+    if (!absolute) {
+        absolutePath = path.join(__dirname, '..', '..', filePath);
+    }
+
     if (fs.existsSync(absolutePath)) {
         fs.unlink(absolutePath, unlinkError => {
             if (unlinkError) {

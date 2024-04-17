@@ -10,6 +10,7 @@ const provinciaRoutes = require('./api/provincia.routes');
 const municipioRoutes = require('./api/municipio.routes');
 const tipoViaRoutes = require('./api/tipoVia.routes');
 const consultaRoutes = require('./api/consulta.routes');
+const pacienteMedicamentoRoutes = require('./api/pacienteMedicamento.routes');
 
 router.use(usuarioRoutes);
 router.use(medicamentoRoutes);
@@ -21,5 +22,6 @@ router.use(provinciaRoutes);
 router.use(municipioRoutes);
 router.use(tipoViaRoutes);
 router.use(consultaRoutes);
+router.use(pacienteMedicamentoRoutes);
 
 module.exports = router;

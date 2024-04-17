@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Receta de Medicamentos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        thead {
+            background-color: #adabab;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #d5d0d0;
+        }
+
+        .fecha {
+            margin-top: 2rem;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<h1 style="text-align: center;">Receta de Medicamentos</h1>
+<p><strong>Paciente:</strong> {{datos_paciente.nombre}} {{datos_paciente.primer_apellido}} {{datos_paciente.segundo_apellido}}</p>
+<table>
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Toma Diurna</th>
+        <th>Toma Vespertina</th>
+        <th>Toma Nocturna</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each medicacion_asociada}}
+        <tr>
+            <td>{{this.nombre}}</td>
+            <td>{{this.pauta.toma_diurna}}</td>
+            <td>{{this.pauta.toma_vespertina}}</td>
+            <td>{{this.pauta.toma_nocturna}}</td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+<p class="fecha">Coslada, a {{dia}} de {{mes}} de {{ano}}</p>
+</body>
+</html>

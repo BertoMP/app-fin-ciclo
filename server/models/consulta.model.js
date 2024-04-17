@@ -1,7 +1,7 @@
 class ConsultaModel {
     static async findAll(dbConn, page) {
         const limit = 10;
-        const offset = ((page - 1) * limit) + 1;
+        const offset = ((page - 1) * limit);
 
         const query =
             'SELECT consulta.id, consulta.nombre, especialidad.nombre AS nombre_especialidad, ' +

@@ -6,7 +6,7 @@ class TensionArterialModel {
         const paciente_id = searchValues.paciente_id;
 
         const limit = 10;
-        const offset = ((page - 1) * limit) + 1;
+        const offset = ((page - 1) * limit);
 
         const query =
             'SELECT fecha, hora, sistolica, diastolica, pulsaciones_minuto FROM tension_arterial ' +
