@@ -1,11 +1,11 @@
 const router = require('express').Router();
 const ConsultaController = require('../../controllers/consulta.controller');
 
-const tokenVerify = require('../../util/jwt/tokenVerify');
-const tokenRole = require('../../util/jwt/tokenRole');
+const tokenVerify = require('../../helpers/jwt/tokenVerify');
+const tokenRole = require('../../helpers/jwt/tokenRole');
 
-const { validateConsulta } = require("../../util/validators/consulta.validator");
-const { validateParams } = require("../../util/validators/params.validator");
+const { validateConsulta } = require("../../helpers/validators/consulta.validator");
+const { validateParams } = require("../../helpers/validators/params.validator");
 
 // Rutas GET
 router.get('/consulta',

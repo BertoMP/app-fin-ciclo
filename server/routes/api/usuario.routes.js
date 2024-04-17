@@ -2,14 +2,14 @@ const router = require('express').Router();
 const UsuarioController = require('../../controllers/usuario.controller');
 const multer = require('../../util/functions/multer');
 
-const tokenVerify = require('../../util/jwt/tokenVerify');
-const tokenRole = require('../../util/jwt/tokenRole');
+const tokenVerify = require('../../helpers/jwt/tokenVerify');
+const tokenRole = require('../../helpers/jwt/tokenRole');
 
-const { validateUserRegister } = require("../../util/validators/usuarioRegistro.validator");
-const { validateUserLogin } = require("../../util/validators/usuarioLogin.validator");
-const { validatePacienteRegister } = require("../../util/validators/pacienteRegistro.validador");
-const { validateEspecialistaRegister } = require("../../util/validators/especialistaRegistro.validator");
-const { validateUserPasswordChange } = require("../../util/validators/usuarioPasswordChange.validator");
+const { validateUserRegister } = require("../../helpers/validators/usuarioRegistro.validator");
+const { validateUserLogin } = require("../../helpers/validators/usuarioLogin.validator");
+const { validatePacienteRegister } = require("../../helpers/validators/pacienteRegistro.validador");
+const { validateEspecialistaRegister } = require("../../helpers/validators/especialistaRegistro.validator");
+const { validateUserPasswordChange } = require("../../helpers/validators/usuarioPasswordChange.validator");
 const {cleanupFiles} = require("../../util/middleware/cleanupFiles");
 
 // Rutas POST

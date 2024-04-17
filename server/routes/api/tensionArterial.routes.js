@@ -1,13 +1,13 @@
 const router = require('express').Router();
 const tensionArterialController = require('../../controllers/tensionArterial.controller');
 
-const tokenVerify = require('../../util/jwt/tokenVerify');
-const tokenRole = require('../../util/jwt/tokenRole');
-const tokenId = require('../../util/jwt/tokenId');
+const tokenVerify = require('../../helpers/jwt/tokenVerify');
+const tokenRole = require('../../helpers/jwt/tokenRole');
+const tokenId = require('../../helpers/jwt/tokenId');
 
-const { validateTensionArterial } = require('../../util/validators/tensionArterial.validator');
-const { validateQueryParams } = require('../../util/validators/queryParams.validator');
-const {validateParams} = require("../../util/validators/params.validator");
+const { validateTensionArterial } = require('../../helpers/validators/tensionArterial.validator');
+const { validateQueryParams } = require('../../helpers/validators/queryParams.validator');
+const {validateParams} = require("../../helpers/validators/params.validator");
 
 // Rutas GET
 router.get('/tension-arterial/:id',

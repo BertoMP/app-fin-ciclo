@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const municipioController = require('../../controllers/municipio.controller');
-const {validateParams} = require("../../util/validators/params.validator");
+const {validateParams} = require("../../helpers/validators/params.validator");
 
 // Ruta GET
 router.get('/municipio/:id',

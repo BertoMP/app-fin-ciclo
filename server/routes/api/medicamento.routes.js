@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const MedicamentoController =
     require('../../controllers/medicamento.controller');
-const tokenVerify = require('../../util/jwt/tokenVerify');
-const tokenRole = require('../../util/jwt/tokenRole');
+const tokenVerify = require('../../helpers/jwt/tokenVerify');
+const tokenRole = require('../../helpers/jwt/tokenRole');
 
-const { validateMedicamento } = require('../../util/validators/medicamento.validator');
-const { validateQueryParams } = require("../../util/validators/queryParams.validator");
-const {validateParams} = require("../../util/validators/params.validator");
+const { validateMedicamento } = require('../../helpers/validators/medicamento.validator');
+const { validateQueryParams } = require("../../helpers/validators/queryParams.validator");
+const {validateParams} = require("../../helpers/validators/params.validator");
 
 // Rutas GET
 router.get('/medicamento',

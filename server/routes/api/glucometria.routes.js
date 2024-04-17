@@ -1,13 +1,13 @@
 const router = require('express').Router();
 const glucometriaController = require('../../controllers/glucometria.controller');
 
-const tokenVerify = require('../../util/jwt/tokenVerify');
-const tokenRole = require('../../util/jwt/tokenRole');
-const tokenId = require('../../util/jwt/tokenId');
+const tokenVerify = require('../../helpers/jwt/tokenVerify');
+const tokenRole = require('../../helpers/jwt/tokenRole');
+const tokenId = require('../../helpers/jwt/tokenId');
 
-const { validateGlucometria } = require('../../util/validators/glucometria.validator');
-const { validateQueryParams } = require("../../util/validators/queryParams.validator");
-const {validateParams} = require("../../util/validators/params.validator");
+const { validateGlucometria } = require('../../helpers/validators/glucometria.validator');
+const { validateQueryParams } = require("../../helpers/validators/queryParams.validator");
+const {validateParams} = require("../../helpers/validators/params.validator");
 
 // Rutas GET
 router.get('/glucometria/:id',

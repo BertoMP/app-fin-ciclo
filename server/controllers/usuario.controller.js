@@ -7,8 +7,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const fileDestroy = require('../util/functions/destroyFile');
-const createToken = require('../util/jwt/createToken');
-const createResetToken = require('../util/jwt/createResetToken');
+const createToken = require('../helpers/jwt/createToken');
+const createResetToken = require('../helpers/jwt/createResetToken');
 
 exports.postRegistro = async (req, res) => {
     try {

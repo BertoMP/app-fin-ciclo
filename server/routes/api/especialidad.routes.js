@@ -3,11 +3,11 @@ const EspecialidadController = require('../../controllers/especialidad.controlle
 
 const multer = require('../../util/functions/multer');
 
-const tokenVerify = require('../../util/jwt/tokenVerify');
-const tokenRole = require('../../util/jwt/tokenRole');
+const tokenVerify = require('../../helpers/jwt/tokenVerify');
+const tokenRole = require('../../helpers/jwt/tokenRole');
 
-const { validateEspecialidad } = require("../../util/validators/especialidad.validator");
-const { validateParams } = require("../../util/validators/params.validator");
+const { validateEspecialidad } = require("../../helpers/validators/especialidad.validator");
+const { validateParams } = require("../../helpers/validators/params.validator");
 
 const { cleanupFiles } = require("../../util/middleware/cleanupFiles");
 

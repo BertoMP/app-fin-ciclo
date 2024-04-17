@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const ContactoController = require('../../controllers/contacto.controller');
 
-const { validateContacto } = require("../../util/validators/contacto.validator");
+const { validateContacto } = require("../../helpers/validators/contacto.validator");
 
 // Rutas POST
 router.post('/contacto',
