@@ -58,10 +58,11 @@ __Backend__:
 - _dotenv_: Librería que permite cargar variables de entorno desde un 
 archivo `.env`. 
 - _express_: Framework de Node.js que permite crear aplicaciones web y APIs.
-- _express-handlebars_: Motor de plantillas para Express.js basado en Handlebars
-que permite reorganizar las plantillas en diseños, páginas y partes.
 - _express-validator_: Middleware de Express.js que permite validar y limpiar
 datos de entrada.
+- _handlebars_: Motor de plantillas que permite la generación de HTML dinámico.
+- _html-pdf_: Librería que permite la generación de archivos PDF a partir de
+código HTML.
 - _jsonwebtoken_: Librería que permite la generación y verificación de tokens 
 JWT.
 - _moment-timezone_: Librería que permite trabajar con fechas y horas en diferentes
