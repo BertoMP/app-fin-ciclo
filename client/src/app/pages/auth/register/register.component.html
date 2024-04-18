@@ -98,7 +98,7 @@
           <label for="place">Plaza/Calle</label>
           <select2  id="place" formControlName="place"
                   [ngClass]="{ 'invalid': registerForm.get('place').invalid &&
-                sendedAttempt }" [data]="places" placeholder="Elige una opcion"> 
+                sendedAttempt }" [data]="places" placeholder="Elige una opcion">
           </select2>
         </article>
         <article class="address-field">
@@ -108,7 +108,7 @@
                  formControlName="address"
                  [ngClass]="{ 'invalid':
                registerForm.get('address').invalid &&
-               sendedAttempt  } " 
+               sendedAttempt  } "
           >
         </article>
         <article class="number-field">

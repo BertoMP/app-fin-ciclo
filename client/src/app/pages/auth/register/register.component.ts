@@ -21,7 +21,6 @@ import {MunicipioService} from "../../../core/services/municipio.service";
 import {TipoViaService} from "../../../core/services/tipo-via.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import { Select2Module,Select2Data } from 'ng-select2-component';
-import { skip } from 'rxjs';
 
 @Component({
   selector: 'app-register',

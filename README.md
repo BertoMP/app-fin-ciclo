@@ -3,7 +3,7 @@
 Este es un proyecto de fin de ciclo desarrollado por 
 [Alberto Martínez Pérez](https://github.com/BertoMP)
 y [Rafael Romero Roibu](https://github.com/romraf) utilizando las tecnologías
-Angular 17 para el _frontend_, Node.js (v. 20.12.2) para el _backend_ 
+Angular 17.3.5 para el _frontend_, Node.js (v. 20.12.2) para el _backend_ 
 y MySQL para la base de datos.
 
 Nuestro _frontend_ se encarga de la interfaz de usuario y la comunicación con el 
@@ -49,7 +49,13 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 ### Paquetes y librerías utilizadas
 
 __Frontend__:
-- _select2_: Librería jQuery que permite la creación de selectores personalizados.
+- _@popperjs/core_: Librería que permite la gestión de _popovers_ y _tooltips_.
+- _bootstrap_: Framework de CSS que permite la creación de interfaces web.
+- _bootstrap-icons_: Librería que proporciona iconos de Bootstrap.
+- _jquery_: Librería de JavaScript que permite la manipulación del DOM.
+- _ngprime_: Librería de componentes de Angular.
+- _ng-select2-component_: Componente de Angular que permite la integración de
+la librería Select2 para la creación de elementos select con barra de búsqueda.
 
 __Backend__:
 - _bcryptjs_: Librería cuya finalidad es el cifrado de contraseñas.
