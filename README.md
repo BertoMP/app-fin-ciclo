@@ -41,7 +41,7 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 * ___Frontend___: ![Angular](https://img.shields.io/badge/-Angular-DD0031?style=flat&logo=angular) 
 ![TypeScript](https://img.shields.io/badge/-TypeScript-007ACC?style=flat&logo=typescript)
 ![HTML5](https://img.shields.io/badge/-HTML5-E34F26?style=flat&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/-CSS3-1572B6?style=flat&logo=css3)
+* ___Estilos___: ![Bootstrap](https://img.shields.io/badge/-Bootstrap-563D7C?style=flat&logo=bootstrap) ![CSS3](https://img.shields.io/badge/-CSS3-1572B6?style=flat&logo=css3)
 * ___Backend___: ![Node.js](https://img.shields.io/badge/-Node.js-339933?style=flat&logo=node.js&logoColor=white) 
 ![Express.js](https://img.shields.io/badge/-Express.js-404D59?style=flat)
 * ___Base de Datos___: ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?style=flat&logo=mysql&logoColor=white)
