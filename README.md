@@ -77,6 +77,7 @@ zonas horarias.
 a través de formularios `multipart/form-data`.
 - _mysql2_: Librería que permite la conexión a bases de datos MySQL.
 - _nodemailer_: Librería que permite enviar correos electrónicos desde Node.js.
+- _qrcode_: Librería que permite la generación de códigos QR.
 
 ## Características principales
 
