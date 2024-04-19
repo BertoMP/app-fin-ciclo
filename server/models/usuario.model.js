@@ -64,6 +64,19 @@ class UsuarioModel {
             throw new Error('Error al actualizar la contraseña.');
         }
     }
+
+    static async getEmailById(dbConn, id) {
+        const query =
+            'SELECT email FROM usuario ' +
+            'WHERE id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [id]);
+            return rows[0];
+        } catch (err) {
+            throw new Error('Error al obtener el email.');
+        }
+    }
 }
 
 module.exports = UsuarioModel;

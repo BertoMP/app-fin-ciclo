@@ -52,6 +52,84 @@ class PdfService {
             });
         });
     }
+
+    static async generateInforme(informe) {
+        const template = fs.readFileSync(path.join(templatesSource, 'informe.handlebars'), 'utf8');
+        const compiledTemplate = handlebars.compile(template);
+
+        const html = compiledTemplate(informe);
+
+        const options = {
+            format: 'A4',
+            orientation: 'portrait',
+            border: {
+                top: '1cm',
+                right: '1cm',
+                bottom: '1cm',
+                left: '1cm'
+            },
+            header: {
+                "height": "25mm",
+                "contents": '<div style="text-align: right;">Clínica Médica Coslada, SL</div>'
+            },
+            footer: {
+                "height": "25mm",
+                "contents": '<div style="text-align: center;">Clínica Médica Coslada, SL</div>'
+            }
+        };
+
+        const pdf = PDFDocument.create(html, options);
+        const pdfPath = path.join(__dirname, `../tmp/pdfs/informe_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}_${informe.datos_cita.fecha}.pdf`);
+
+        return new Promise((resolve, reject) => {
+            pdf.toFile(pdfPath, (err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(pdfPath);
+                }
+            });
+        });
+    }
+
+    static async generateCitaPDF(cita, qr) {
+        const template = fs.readFileSync(path.join(templatesSource, 'cita.handlebars'), 'utf8');
+        const compiledTemplate = handlebars.compile(template);
+
+        const html = compiledTemplate({ cita, qr });
+
+        const options = {
+            format: 'A4',
+            orientation: 'portrait',
+            border: {
+                top: '1cm',
+                right: '1cm',
+                bottom: '1cm',
+                left: '1cm'
+            },
+            header: {
+                "height": "25mm",
+                "contents": '<div style="text-align: right;">Clínica Médica Coslada, SL</div>'
+            },
+            footer: {
+                "height": "25mm",
+                "contents": '<div style="text-align: center;">Clínica Médica Coslada, SL</div>'
+            }
+        };
+
+        const pdf = PDFDocument.create(html, options);
+        const pdfPath = path.join(__dirname, `../tmp/pdfs/cita_${cita.paciente_primer_apellido}_${cita.paciente_segundo_apellido}_${cita.fecha}.pdf`);
+
+        return new Promise((resolve, reject) => {
+            pdf.toFile(pdfPath, (err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(pdfPath);
+                }
+            });
+        });
+    }
 }
 
 module.exports = PdfService;

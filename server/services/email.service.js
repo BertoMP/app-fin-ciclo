@@ -69,6 +69,44 @@ class EmailService {
             throw err;
         }
     }
+
+    static async sendPdfCita(newCita, emailPaciente, pdf) {
+        const transporter = nodeMailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_ACCOUNT,
+                pass: process.env.EMAIL_PASS
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+        const templatePath = path.join(templatesPath, 'cita.handlebars');
+        const source = fs.readFileSync(templatePath, 'utf8');
+        const template = handlebars.compile(source);
+
+        const html = template({ newCita });
+
+        const mailDetails = {
+            from: process.env.EMAIL_ACCOUNT,
+            to: emailPaciente,
+            subject: `Cita - ${newCita.fecha}`,
+            html: html,
+            attachments: [
+                {
+                    filename: `cita_${newCita.fecha}.pdf`,
+                    path: pdf
+                }
+            ]
+        }
+
+        try {
+            return await transporter.sendMail(mailDetails);
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 
 module.exports = EmailService;

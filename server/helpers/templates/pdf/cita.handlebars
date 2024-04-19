@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Cita Médica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section .title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Cita Médica</h1>
+    <h2>Cita ID: {{datos_cita.id}}</h2>
+</div>
+
+<div class="section">
+    <div class="title">Datos del Paciente:</div>
+    <p>Nombre: {{datos_paciente.paciente_nombre}} {{datos_paciente.paciente_primer_apellido}} {{datos_paciente.paciente_segundo_apellido}}</p>
+</div>
+
+<div class="section">
+    <div class="title">Datos del Especialista:</div>
+    <p>Nombre: {{datos_especialista.especialista_nombre}} {{datos_especialista.especialista_primer_apellido}} {{datos_especialista.especialista_segundo_apellido}}</p>
+    <p>Especialidad: {{datos_especialista.especialidad_nombre}}</p>
+</div>
+
+<div class="section">
+    <div class="title">Datos de la Cita:</div>
+    <p>Fecha: {{datos_cita.fecha}}</p>
+    <p>Hora: {{datos_cita.hora}}</p>
+    <p>Consulta: {{datos_cita.consulta_nombre}}</p>
+</div>
+
+<div class="section">
+    <div class="title">Código QR:</div>
+    <img src="{{codigo_qr}}" alt="Código QR">
+</div>
+</body>
+</html>

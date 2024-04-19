@@ -42,6 +42,10 @@ class UsuarioService {
         }
     }
 
+    static async getEmailById(id) {
+        return await UsuarioModel.getEmailById(dbConn, id);
+    }
+
     static async readUsuarioByEmail(email) {
        return await UsuarioModel.findByEmail(dbConn, email);
     }
