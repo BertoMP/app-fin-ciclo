@@ -10,7 +10,7 @@ const { validateParams } = require("../../helpers/validators/params.validator");
 const { validateQueryParams } = require("../../helpers/validators/queryParams.validator");
 
 // Rutas GET
-router.get('/cita/:id',
+router.get('/cita/:user_id',
     tokenVerify,
     tokenRole([2]),
     tokenId,
@@ -33,7 +33,7 @@ router.post('/cita',
     CitaController.createCita);
 
 // Rutas DELETE
-router.delete('/cita/:id',
+router.delete('/cita/:user_id/:id',
     tokenVerify,
     tokenRole([2]),
     validateParams,

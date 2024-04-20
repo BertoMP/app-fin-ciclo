@@ -54,6 +54,15 @@ class TensionArterialModel {
             throw new Error('No se pudo crear la medición de tensión arterial.');
         }
     }
+
+    static async deleteTensionesArterialesByUserId(dbConn, paciente_id) {
+        const query = 'DELETE FROM tension_arterial WHERE paciente_id = ?';
+        try {
+            await dbConn.execute(query, [paciente_id]);
+        } catch (err) {
+            throw new Error('No se pudo eliminar las mediciones de tensión arterial.');
+        }
+    }
 }
 
 module.exports = TensionArterialModel;

@@ -1,5 +1,6 @@
 const CitaService = require('../services/cita.service');
 const UsuarioService = require('../services/usuario.service');
+const EspecialistaService = require('../services/especialista.service');
 const pdfService = require("../services/pdf.service");
 const emailService = require("../services/email.service");
 
@@ -8,7 +9,7 @@ const qrcode = require("../util/functions/createQr");
 
 exports.getCitas = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
-    const paciente_id = req.params.id;
+    const paciente_id = req.params.user_id;
 
     try {
         const {
@@ -26,13 +27,15 @@ exports.getCitas = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/cita?page=${page - 1}`
+            ? `/api/cita/${paciente_id}?page=${page - 1}`
             : null;
         const next = page < paginas_totales
-            ? `/api/cita?page=${page + 1}`
+            ? `/api/cita/${paciente_id}?page=${page + 1}`
             : null;
         const result_min = (page - 1) * 10 + 1;
-        const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;
+        const result_max = resultados[0].citas.length === 10
+            ? page * 10
+            : (page - 1) * 10 + resultados[0].citas.length;
 
         return res.status(200).json({
             prev,
@@ -74,20 +77,50 @@ exports.createCita = async (req, res) => {
     }
 
     let pdf;
-    let newCita;
+    let idCita;
 
     try {
         const citaExists = await CitaService.readCitaByData(cita);
 
         if (citaExists) {
             return res.status(404).json({
-                errors: ['La cita que intenta crear ya existe.']
+                errors: ['La cita que intenta crear no esta disponible.']
             });
         }
 
-        const idCita = await CitaService.createCita(cita);
+        const especialista =
+            await EspecialistaService.readEspecialistaByEspecialistaId(cita.especialista_id);
 
-        newCita = await CitaService.readCitaById(idCita);
+        if (!especialista) {
+            return res.status(404).json({
+                errors: ['El especialista seleccionado no existe.']
+            });
+        }
+
+        const citaHora = new Date(`1970-01-01T${cita.hora}Z`);
+
+        const diurnoInicio = new Date('1970-01-01T08:00:00Z');
+        const diurnoFin = new Date('1970-01-01T14:00:00Z');
+
+        const vespertinoInicio = new Date('1970-01-01T14:30:00Z');
+        const vespertinoFin = new Date('1970-01-01T20:00:00Z');
+
+        if (especialista.turno === 'no-trabajando'
+            || especialista.turno === 'diurno'
+            && (citaHora < diurnoInicio
+                || citaHora > diurnoFin)
+            || especialista.turno === 'vespertino'
+            && (citaHora < vespertinoInicio
+                || citaHora > vespertinoFin)) {
+            return res.status(404).json({
+                errors: ['El especialista no trabaja en el horario seleccionado.']
+            });
+        }
+
+        idCita = await CitaService.createCita(cita);
+
+        const newCita = await CitaService.readCitaById(idCita);
+
         const qr = await qrcode.generateQRCode(newCita);
 
         pdf = await pdfService.generateCitaPDF(newCita, qr);
@@ -96,7 +129,7 @@ exports.createCita = async (req, res) => {
 
         await emailService.sendPdfCita(newCita, emailPaciente, pdf);
 
-        destroyFile(pdf);
+        destroyFile(pdf, true);
 
         return res.status(201).json({
             message: 'Cita creada correctamente.'
@@ -104,11 +137,11 @@ exports.createCita = async (req, res) => {
 
     } catch (err) {
         if (pdf) {
-            destroyFile(pdf);
+            destroyFile(pdf, true);
         }
 
-        if (newCita) {
-            await CitaService.deleteCita(newCita.id);
+        if (idCita) {
+            await CitaService.deleteCita(idCita);
         }
 
         return res.status(500).json({
@@ -126,6 +159,12 @@ exports.deleteCita = async (req, res) => {
         if (!cita) {
             return res.status(404).json({
                 errors: ['La cita que intenta eliminar no existe.']
+            });
+        }
+
+        if (cita.datos_paciente.paciente_id !== req.user.user_id) {
+            return res.status(403).json({
+                errors: ['No tienes permiso para eliminar esta cita.']
             });
         }
 

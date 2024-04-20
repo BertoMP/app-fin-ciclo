@@ -4,8 +4,8 @@ const multer = require('../../util/functions/multer');
 
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
+const tokenId = require('../../helpers/jwt/tokenId');
 
-const { validateUserRegister } = require("../../helpers/validators/usuarioRegistro.validator");
 const { validateUserLogin } = require("../../helpers/validators/usuarioLogin.validator");
 const { validatePacienteRegister } = require("../../helpers/validators/pacienteRegistro.validador");
 const { validateEspecialistaRegister } = require("../../helpers/validators/especialistaRegistro.validator");
@@ -46,6 +46,14 @@ router.post('/usuario/contrasena-reset',
 router.put('/usuario/password',
     validateUserPasswordChange,
     UsuarioController.postUpdatePassword
+);
+
+// Rutas DELETE
+router.delete('/usuario/borrar-usuario/:user_id',
+    tokenVerify,
+    tokenRole([2]),
+    tokenId,
+    UsuarioController.deleteUsuario
 );
 
 module.exports = router;

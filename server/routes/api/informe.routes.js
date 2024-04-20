@@ -12,14 +12,14 @@ const { validateParams } = require("../../helpers/validators/params.validator");
 router.get('/informe/:id',
     tokenVerify,
     tokenRole([2, 3]),
-    tokenId(),
+    tokenId,
     validateParams,
     InformeController.getInforme);
 
 router.get('/informe/genera-pdf/:id',
     tokenVerify,
     tokenRole([2, 3]),
-    tokenId(),
+    tokenId,
     validateParams,
     InformeController.generaInformePDF);
 

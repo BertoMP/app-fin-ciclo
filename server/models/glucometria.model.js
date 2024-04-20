@@ -52,6 +52,15 @@ class GlucometriaModel {
             throw new Error('No se pudo crear la medición de glucosa.');
         }
     }
+
+    static async deleteGlucometriasByUserId(dbConn, paciente_id) {
+        const query = 'DELETE FROM glucometria WHERE paciente_id = ?';
+        try {
+            await dbConn.execute(query, [paciente_id]);
+        } catch (err) {
+            throw new Error('No se pudieron eliminar las mediciones de glucosa.');
+        }
+    }
 }
 
 module.exports = GlucometriaModel;

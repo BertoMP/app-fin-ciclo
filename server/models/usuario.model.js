@@ -72,9 +72,20 @@ class UsuarioModel {
 
         try {
             const [rows] = await dbConn.execute(query, [id]);
-            return rows[0];
+            return rows[0].email;
         } catch (err) {
             throw new Error('Error al obtener el email.');
+        }
+    }
+
+    static async delete(dbConn, id) {
+        const query =
+            'DELETE FROM usuario WHERE id = ?';
+
+        try {
+            await dbConn.execute(query, [id]);
+        } catch (err) {
+            throw new Error('Error al eliminar el usuario.');
         }
     }
 }

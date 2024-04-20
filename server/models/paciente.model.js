@@ -44,16 +44,14 @@ class PacienteModel {
         }
     }
 
-    static async findByDni(dbConn, dni) {
+    static async deletePacienteByUserId(dbConn, usuario_id) {
         const query =
-            'SELECT * FROM paciente ' +
-            'WHERE dni = ?';
+            'DELETE FROM paciente WHERE usuario_id = ?';
 
         try {
-            const [rows] = await dbConn.execute(query, [dni]);
-            return rows[0];
+            await dbConn.execute(query, [usuario_id]);
         } catch (err) {
-            throw new Error('Error al obtener el paciente.');
+            throw new Error('Error al eliminar el paciente.');
         }
     }
 }

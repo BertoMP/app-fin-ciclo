@@ -8,6 +8,16 @@ class TokenModel {
             throw new Error('Error al crear el token.');
         }
     }
+
+    static async deleteTokensByUserId(dbConn, idUser) {
+        const query = 'DELETE FROM token WHERE usuario_id = ?';
+
+        try {
+            await dbConn.query(query, [idUser]);
+        } catch (err) {
+            throw new Error('Error al eliminar el token.');
+        }
+    }
 }
 
 module.exports = TokenModel;

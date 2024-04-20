@@ -49,6 +49,19 @@ class EspecialistaModel {
             throw new Error('Error al obtener el especialista.');
         }
     }
+
+    static async findEspecialistaById(dbConn, especialista_id) {
+        const query =
+            'SELECT * FROM especialista ' +
+            'WHERE usuario_id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [especialista_id]);
+            return rows[0];
+        } catch (err) {
+            throw new Error('Error al obtener el turno del especialista.');
+        }
+    }
 }
 
 module.exports = EspecialistaModel;

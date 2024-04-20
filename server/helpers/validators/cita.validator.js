@@ -12,15 +12,22 @@ exports.validateCita = [
     body('fecha')
         .trim()
         .notEmpty().withMessage('La fecha es requerida')
-        .isDate().withMessage('La fecha debe ser una fecha válida'),
+        .isDate().withMessage('La fecha debe ser una fecha válida')
+        .custom((value) => {
+            const regex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!regex.test(value)) {
+                throw new Error('La fecha debe ser un formato YYYY-MM-DD');
+            }
+            return true;
+        }),
     body('hora')
         .trim()
         .notEmpty().withMessage('La hora es requerida')
         .isString().withMessage('La hora debe ser un texto')
         .custom((value) => {
-            const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+            const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]:00$/;
             if (!regex.test(value)) {
-                throw new Error('La hora debe ser un formato HH:mm');
+                throw new Error('La hora debe ser un formato HH:mm:ss');
             }
             return true;
         }),

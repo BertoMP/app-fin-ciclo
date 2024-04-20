@@ -82,6 +82,19 @@ class InformeModel {
             throw new Error('Error al crear el informe.');
         }
     }
+
+    static async deleteInformes(dbConn, ids) {
+        const query =
+            'DELETE FROM informe WHERE FIND_IN_SET(id, ?)';
+
+        try {
+            const idsString = ids.join(',');
+
+            await dbConn.execute(query, [idsString]);
+        } catch (err) {
+            throw new Error('Error al eliminar el informe.');
+        }
+    }
 }
 
 module.exports = InformeModel;

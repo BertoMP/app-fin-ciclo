@@ -9,7 +9,6 @@ class MunicipioModel {
             const [rows] = await dbConn.execute(query, [id]);
             return rows;
         } catch (err) {
-            console.log(err);
             throw new Error('Error al obtener los municipios.');
         }
     }

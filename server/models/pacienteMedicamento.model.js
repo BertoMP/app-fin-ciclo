@@ -36,8 +36,6 @@ class PacienteMedicamentoModel {
             }));
             return { datos_paciente, medicacion_asociada };
         } catch (err) {
-            console.log(err);
-
             throw new Error('No se pudieron obtener los medicamentos del paciente.');
         }
     }
@@ -103,6 +101,17 @@ class PacienteMedicamentoModel {
             await dbConn.execute(query, [paciente_id, medicamento_id]);
         } catch (err) {
             throw new Error('No se pudo eliminar el medicamento de la receta del paciente.');
+        }
+    }
+
+    static async deleteMedicamentosByUserId(dbConn, paciente_id) {
+        const query =
+            'DELETE FROM paciente_medicamento WHERE paciente_id = ?';
+
+        try {
+            await dbConn.execute(query, [paciente_id]);
+        } catch (err) {
+            throw new Error('No se pudieron eliminar los medicamentos de la receta del paciente.');
         }
     }
 }

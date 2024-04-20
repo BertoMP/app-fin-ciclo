@@ -12,6 +12,7 @@ const tipoViaRoutes = require('./api/tipoVia.routes');
 const consultaRoutes = require('./api/consulta.routes');
 const pacienteMedicamentoRoutes = require('./api/pacienteMedicamento.routes');
 const informeRoutes = require('./api/informe.routes');
+const citaRoutes = require('./api/cita.routes');
 
 router.use(usuarioRoutes);
 router.use(medicamentoRoutes);
@@ -25,5 +26,6 @@ router.use(tipoViaRoutes);
 router.use(consultaRoutes);
 router.use(pacienteMedicamentoRoutes);
 router.use(informeRoutes);
+router.use(citaRoutes);
 
 module.exports = router;

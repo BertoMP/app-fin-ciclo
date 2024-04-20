@@ -20,7 +20,7 @@ exports.postRegistro = async (req, res) => {
             });
         }
 
-        const patientExists = await PacienteService.readPacienteByDni(req.body.dni);
+        const patientExists = await UsuarioService.readUsuarioByDNI(req.body.dni);
 
         if (patientExists) {
             return res.status(409).json({
@@ -46,6 +46,8 @@ exports.postRegistro = async (req, res) => {
         }
 
         await UsuarioService.createUsuarioPaciente(user, patient);
+
+        await EmailService.sendWelcomeEmail(req.body.email, req.body.nombre);
 
         return res.status(201).json({ message: 'Usuario creado exitosamente.' });
     } catch (err) {
@@ -198,6 +200,22 @@ exports.postUpdatePassword = async (req, res) => {
 
         return res.status(200).json({
             message: 'Contraseña actualizada exitosamente.'
+        });
+    } catch (err) {
+        return res.status(500).json({
+            errors: [err.message]
+        });
+    }
+}
+
+exports.deleteUsuario = async (req, res) => {
+    const id = req.params.user_id;
+
+    try {
+        await UsuarioService.deleteUsuario(id);
+
+        return res.status(200).json({
+            message: 'Usuario eliminado exitosamente.'
         });
     } catch (err) {
         return res.status(500).json({

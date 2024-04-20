@@ -2,6 +2,12 @@ const dbConn = require('../util/database/database');
 const UsuarioModel = require('../models/usuario.model');
 const PacienteModel = require('../models/paciente.model');
 const EspecialistaModel = require('../models/especialista.model');
+const TokenModel = require('../models/token.model');
+const PacienteMedicamentoModel = require('../models/pacienteMedicamento.model');
+const TensionArterialModel = require('../models/tensionArterial.model');
+const GlucometriaModel = require('../models/glucometria.model');
+const InformeModel = require('../models/informe.model');
+const CitaModel = require('../models/cita.model');
 
 class UsuarioService {
     static async createUsuarioPaciente(usuario, paciente) {
@@ -56,6 +62,39 @@ class UsuarioService {
 
     static async updatePassword(email, password) {
         return await UsuarioModel.updatePassword(dbConn, email, password);
+    }
+
+    static async deleteUsuario(id) {
+        const conn = await dbConn.getConnection();
+
+        try {
+            await conn.beginTransaction();
+
+            await TokenModel.deleteTokensByUserId(conn, id);
+
+            await PacienteMedicamentoModel.deleteMedicamentosByUserId(conn, id);
+
+            await TensionArterialModel.deleteTensionesArterialesByUserId(conn, id);
+
+            await GlucometriaModel.deleteGlucometriasByUserId(conn, id);
+
+            const idInformes = await CitaModel.getInformesByUserId(conn, id);
+
+            await CitaModel.deleteCitasByUserId(conn, id);
+
+            await InformeModel.deleteInformes(conn, idInformes);
+
+            await PacienteModel.deletePacienteByUserId(conn, id);
+
+            await UsuarioModel.delete(conn, id);
+
+            await conn.commit();
+        } catch (err) {
+            await conn.rollback();
+            throw new Error('Error al eliminar el usuario.');
+        } finally {
+            conn.release();
+        }
     }
 }
 

@@ -11,11 +11,11 @@ const destroyFile = (filePath, absolute = false) => {
     if (fs.existsSync(absolutePath)) {
         fs.unlink(absolutePath, unlinkError => {
             if (unlinkError) {
-                console.log('Error al eliminar el archivo subido: ', unlinkError);
+                throw new Error(`Error al eliminar el archivo subido: ${unlinkError}`);
             }
         });
     } else {
-        console.log('El archivo no existe: ', absolutePath);
+        throw new Error(`El archivo no existe en: ${absolutePath}`);
     }
 }
 

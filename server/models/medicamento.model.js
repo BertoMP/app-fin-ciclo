@@ -8,8 +8,6 @@ class MedicamentoModel {
             'ORDER BY nombre ASC ' +
             'LIMIT ? OFFSET ?';
 
-        console.log(query, [`${limit}`, `${offset}`])
-
         try {
             const [rows] =
                 await dbConn.execute(query, [`${limit}`, `${offset}`]);

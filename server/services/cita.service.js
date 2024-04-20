@@ -3,15 +3,15 @@ const CitaModel = require('../models/cita.model');
 
 class CitaService {
     static async readCitas(page, paciente_id) {
-        await CitaModel.fetchAll(dbConn, page, paciente_id);
+        return await CitaModel.fetchAll(dbConn, page, paciente_id);
     }
 
     static async readCitaById(id) {
-        await CitaModel.fetchById(dbConn, id);
+        return await CitaModel.fetchById(dbConn, id);
     }
 
     static async readCitaByData(cita) {
-        await CitaModel.fetchByData(dbConn, cita);
+        return await CitaModel.fetchByData(dbConn, cita);
     }
 
     static async readCitasAgenda(especialista_id) {
@@ -19,11 +19,11 @@ class CitaService {
     }
 
     static async createCita(cita) {
-        await CitaModel.createCita(dbConn, cita);
+        return await CitaModel.createCita(dbConn, cita);
     }
 
     static async deleteCita(id) {
-        await CitaModel.deleteCita(dbConn, id);
+        return await CitaModel.deleteCita(dbConn, id);
     }
 }
 

@@ -9,6 +9,10 @@ class EspecialistaService {
     static async readEspecialistaByConsultaId(consulta_id) {
         return await EspecialistaModel.findByConsultaId(dbConn, consulta_id);
     }
+
+    static async readEspecialistaByEspecialistaId(especialista_id) {
+        return await EspecialistaModel.findEspecialistaById(dbConn, especialista_id);
+    }
 }
 
 module.exports = EspecialistaService;

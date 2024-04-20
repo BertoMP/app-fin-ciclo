@@ -25,9 +25,9 @@ class PdfService {
             orientation: 'portrait',
             border: {
                 top: '1cm',
-                right: '1cm',
+                right: '3cm',
                 bottom: '1cm',
-                left: '1cm'
+                left: '3cm'
             },
             header: {
                 "height": "25mm",
@@ -64,9 +64,9 @@ class PdfService {
             orientation: 'portrait',
             border: {
                 top: '1cm',
-                right: '1cm',
+                right: '3cm',
                 bottom: '1cm',
-                left: '1cm'
+                left: '3cm'
             },
             header: {
                 "height": "25mm",
@@ -103,9 +103,9 @@ class PdfService {
             orientation: 'portrait',
             border: {
                 top: '1cm',
-                right: '1cm',
+                right: '3cm',
                 bottom: '1cm',
-                left: '1cm'
+                left: '3cm'
             },
             header: {
                 "height": "25mm",
@@ -118,7 +118,12 @@ class PdfService {
         };
 
         const pdf = PDFDocument.create(html, options);
-        const pdfPath = path.join(__dirname, `../tmp/pdfs/cita_${cita.paciente_primer_apellido}_${cita.paciente_segundo_apellido}_${cita.fecha}.pdf`);
+        const pdfPath = path.join(__dirname, `../tmp/pdfs/cita_${cita.datos_paciente.nombre}_${cita.datos_paciente.primer_apellido}_${cita.datos_cita.fecha}.pdf`);
+
+        const dir = path.dirname(pdfPath);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
 
         return new Promise((resolve, reject) => {
             pdf.toFile(pdfPath, (err, res) => {

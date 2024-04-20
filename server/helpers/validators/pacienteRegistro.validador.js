@@ -99,11 +99,17 @@ exports.validatePacienteRegister = [
         .custom((value) => {
             const fecha_nacimiento = new Date(value);
             const fecha_actual = new Date();
-            const edad = fecha_actual.getFullYear() - fecha_nacimiento.getFullYear();
+            let edad = fecha_actual.getFullYear() - fecha_nacimiento.getFullYear();
 
-            if (edad < 18) {
-                throw new Error('El paciente debe ser mayor de edad.');
+            const mes = fecha_actual.getMonth() - fecha_nacimiento.getMonth();
+            if (mes < 0 || (mes === 0 && fecha_actual.getDate() < fecha_nacimiento.getDate())) {
+                edad--;
             }
+
+            if (edad > 120) {
+                throw new Error('La edad del paciente no puede ser mayor a 120 años.');
+            }
+
             return true;
         }),
 
