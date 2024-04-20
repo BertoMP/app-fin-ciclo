@@ -13,7 +13,7 @@ const { validateQueryParams } = require("../../helpers/validators/queryParams.va
 router.get('/cita/:id',
     tokenVerify,
     tokenRole([2]),
-    tokenId(),
+    tokenId,
     validateParams,
     validateQueryParams,
     CitaController.getCitas);
@@ -39,3 +39,4 @@ router.delete('/cita/:id',
     validateParams,
     CitaController.deleteCita);
 
+module.exports = router;
