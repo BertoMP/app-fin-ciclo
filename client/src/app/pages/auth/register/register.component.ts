@@ -232,7 +232,6 @@ export class RegisterComponent implements OnInit {
 
     this.isLoading = true;
     const newUser: UserModel = this.generateUser();
-    console.log(newUser);
     this.authService.register(newUser)
       .subscribe({
         next: (response) => {
@@ -241,7 +240,6 @@ export class RegisterComponent implements OnInit {
         },
         error: (error: HttpErrorResponse): void => {
           this.isLoading = false;
-          console.log(error);
         }
       });
 
