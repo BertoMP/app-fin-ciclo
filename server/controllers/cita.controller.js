@@ -1,8 +1,8 @@
 const CitaService = require('../services/cita.service');
 const UsuarioService = require('../services/usuario.service');
 const EspecialistaService = require('../services/especialista.service');
-const pdfService = require("../services/pdf.service");
-const emailService = require("../services/email.service");
+const PdfService = require("../services/pdf.service");
+const EmailService = require("../services/email.service");
 
 const destroyFile = require("../util/functions/destroyFile");
 const qrcode = require("../util/functions/createQr");
@@ -123,11 +123,11 @@ exports.createCita = async (req, res) => {
 
         const qr = await qrcode.generateQRCode(newCita);
 
-        pdf = await pdfService.generateCitaPDF(newCita, qr);
+        pdf = await PdfService.generateCitaPDF(newCita, qr);
 
         const emailPaciente = await UsuarioService.getEmailById(cita.paciente_id);
 
-        await emailService.sendPdfCita(newCita, emailPaciente, pdf);
+        await EmailService.sendPdfCita(newCita, emailPaciente, pdf);
 
         destroyFile(pdf, true);
 

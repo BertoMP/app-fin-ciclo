@@ -42,15 +42,7 @@ class PdfService {
         const pdf = PDFDocument.create(html, options);
         const pdfPath = path.join(__dirname, `../tmp/pdfs/receta_${medicamentos.datos_paciente.primer_apellido}_${medicamentos.datos_paciente.segundo_apellido}.pdf`);
 
-        return new Promise((resolve, reject) => {
-            pdf.toFile(pdfPath, (err, res) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(pdfPath);
-                }
-            });
-        });
+        return PdfService.createDirectoryAndGeneratePdf(pdf, pdfPath);
     }
 
     static async generateInforme(informe) {
@@ -81,15 +73,12 @@ class PdfService {
         const pdf = PDFDocument.create(html, options);
         const pdfPath = path.join(__dirname, `../tmp/pdfs/informe_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}_${informe.datos_cita.fecha}.pdf`);
 
-        return new Promise((resolve, reject) => {
-            pdf.toFile(pdfPath, (err, res) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(pdfPath);
-                }
-            });
-        });
+        const dir = path.dirname(pdfPath);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+
+        return PdfService.createDirectoryAndGeneratePdf(pdf, pdfPath);
     }
 
     static async generateCitaPDF(cita, qr) {
@@ -120,6 +109,10 @@ class PdfService {
         const pdf = PDFDocument.create(html, options);
         const pdfPath = path.join(__dirname, `../tmp/pdfs/cita_${cita.datos_paciente.nombre}_${cita.datos_paciente.primer_apellido}_${cita.datos_cita.fecha}.pdf`);
 
+        return PdfService.createDirectoryAndGeneratePdf(pdf, pdfPath);
+    }
+
+    static async createDirectoryAndGeneratePdf(pdf, pdfPath) {
         const dir = path.dirname(pdfPath);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });

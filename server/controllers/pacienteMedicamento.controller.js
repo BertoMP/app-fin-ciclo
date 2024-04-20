@@ -1,5 +1,5 @@
 const pacienteMedicamentoService = require('../services/pacienteMedicamento.service');
-const pdfService = require('../services/pdf.service');
+const PdfService = require('../services/pdf.service');
 const destroyFile = require('../util/functions/destroyFile');
 
 exports.getPacienteMedicamento = async (req, res) => {
@@ -22,7 +22,7 @@ exports.getPacienteMedicamentoPDF = async (req, res) => {
 
         const medicamentos = await pacienteMedicamentoService.readPacienteMedicamento(id);
 
-        const file = await pdfService.generateReceta(medicamentos);
+        const file = await PdfService.generateReceta(medicamentos);
 
         res.download(file, (err) => {
             if (err) {
