@@ -61,6 +61,7 @@ __Backend__:
 - _bcryptjs_: Librería cuya finalidad es el cifrado de contraseñas.
 - _cors_: Middleware de Express.js que permite habilitar CORS 
 (_Cross-Origin Resource Sharing_) con varias opciones.
+- _date-fns_: Librería que permite trabajar con fechas en JavaScript.
 - _dotenv_: Librería que permite cargar variables de entorno desde un 
 archivo `.env`. 
 - _express_: Framework de Node.js que permite crear aplicaciones web y APIs.
