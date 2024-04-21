@@ -2,7 +2,6 @@ const { param, validationResult } = require('express-validator');
 
 exports.validateConsultaIdParam = [
     param('consulta_id')
-        .optional()
         .isNumeric().withMessage('El ID debe ser un valor numérico.')
         .custom(value => {
             if (value < 1) {
