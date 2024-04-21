@@ -1,5 +1,6 @@
 const dbConn = require('../util/database/database');
 const InformeModel = require('../models/informe.model');
+const CitaModel = require('../models/cita.model');
 
 class InformeService {
     static async readInforme(id) {
@@ -7,7 +8,22 @@ class InformeService {
     }
 
     static async createInforme(informe) {
-        return await InformeModel.create(dbConn, informe);
+        const conn = await dbConn.getConnection();
+
+        try {
+            await conn.beginTransaction();
+
+            const informeId = await InformeModel.create(conn, informe);
+
+            await CitaModel.updateInformeId(conn, informe.cita_id, informeId);
+
+            await conn.commit();
+        } catch (err) {
+            await conn.rollback();
+            throw new Error('Error al crear el informe.');
+        } finally {
+            conn.release();
+        }
     }
 }
 

@@ -18,15 +18,9 @@ router.get('/informe/genera-pdf/:informe_id',
 
 router.get('/informe/:informe_id',
     tokenVerify,
-    tokenRole([3]),
+    tokenRole([2, 3]),
     tokenId,
     validateInformeIdParam,
-    InformeController.getInforme);
-
-router.get('/informe',
-    tokenVerify,
-    tokenRole([2]),
-    tokenId,
     InformeController.getInforme);
 
 // Rutas POST

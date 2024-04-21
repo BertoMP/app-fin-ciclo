@@ -113,20 +113,20 @@ exports.getListado = async (req, res) => {
 
 exports.postRegistro = async (req, res) => {
     try {
-        const userExists = await UsuarioService.readUsuarioByEmail(req.body.email);
+        const errors = [];
 
-        if (userExists) {
-            return res.status(409).json({
-                errors: ['El correo ya está en uso.']
-            });
+        const emailExists = await UsuarioService.readUsuarioByEmail(req.body.email);
+        if (emailExists) {
+            errors.push('El correo ya está en uso.');
         }
 
-        const patientExists = await UsuarioService.readUsuarioByDNI(req.body.dni);
+        const dniExists = await UsuarioService.readUsuarioByDNI(req.body.dni);
+        if (dniExists) {
+            errors.push('El DNI ya está en uso.');
+        }
 
-        if (patientExists) {
-            return res.status(409).json({
-                errors: ['El DNI ya está en uso.']
-            });
+        if (errors.length > 0) {
+            return res.status(409).json({ errors: errors });
         }
 
         const encryptedPassword = await createEncryptedPassword(req.body.password);
@@ -197,7 +197,7 @@ exports.postLogin = async (req, res) => {
     try {
         const user = await UsuarioService.readUsuarioByEmail(email);
         if (!user) {
-            return res.status(401).json({
+            return res.status(403).json({
                 errors: ['Correo o contraseña incorrectos.']
             });
         }
@@ -205,7 +205,7 @@ exports.postLogin = async (req, res) => {
         const validPassword = await bcrypt.compare(password, user.password);
 
         if (!validPassword) {
-            return res.status(401).json({
+            return res.status(403).json({
                 errors: ['Correo o contraseña incorrectos.']
             });
         }

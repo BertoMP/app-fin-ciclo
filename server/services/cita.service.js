@@ -15,7 +15,11 @@ class CitaService {
     }
 
     static async readCitasAgenda(especialista_id) {
-        await CitaModel.fetchAgenda(dbConn, especialista_id);
+        return await CitaModel.fetchAgenda(dbConn, especialista_id);
+    }
+
+    static async readPacienteIdByInformeId(informe_id) {
+        return await CitaModel.fetchPacienteIdByInformeId(dbConn, informe_id);
     }
 
     static async createCita(cita) {
