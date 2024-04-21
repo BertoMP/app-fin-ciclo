@@ -1,5 +1,5 @@
 const { body, validationResult } = require('express-validator');
-const {validateUserRegister} = require("./usuarioRegistro.validator");
+const { validateUserRegister } = require("./usuarioRegistro.validator");
 
 exports.validatePacienteRegister = [
     validateUserRegister,
@@ -108,6 +108,8 @@ exports.validatePacienteRegister = [
 
             if (edad > 120) {
                 throw new Error('La edad del paciente no puede ser mayor a 120 años.');
+            } else if (edad < 0) {
+                throw new Error('La edad no puede ser negativa');
             }
 
             return true;
