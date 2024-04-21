@@ -1,24 +1,29 @@
 const CitaService = require('../services/cita.service');
 const UsuarioService = require('../services/usuario.service');
 const EspecialistaService = require('../services/especialista.service');
-const pdfService = require("../services/pdf.service");
-const emailService = require("../services/email.service");
+const PdfService = require("../services/pdf.service");
+const EmailService = require("../services/email.service");
 
+const getSearchValues = require('../util/functions/getSearchValuesByDate');
 const destroyFile = require("../util/functions/destroyFile");
 const qrcode = require("../util/functions/createQr");
 
 exports.getCitas = async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const paciente_id = req.params.user_id;
-
     try {
+        const searchValues = getSearchValues(req, true);
+
+        const page = searchValues.page;
+        const fechaInicio = searchValues.fechaInicio;
+        const fechaFin = searchValues.fechaFin;
+        const paciente_id = searchValues.paciente_id;
+
         const {
             rows: resultados,
             actualPage: pagina_actual,
             total: cantidad_citas,
             totalPages: paginas_totales
         } =
-            await CitaService.readCitas(page, paciente_id);
+            await CitaService.readCitas(searchValues);
 
         if (page > 1 && page > paginas_totales) {
             return res.status(404).json({
@@ -27,15 +32,17 @@ exports.getCitas = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/cita/${paciente_id}?page=${page - 1}`
+            ? `/api/cita/${paciente_id}?page=${page - 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const next = page < paginas_totales
-            ? `/api/cita/${paciente_id}?page=${page + 1}`
+            ? `/api/cita/${paciente_id}?page=${page + 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const result_min = (page - 1) * 10 + 1;
         const result_max = resultados[0].citas.length === 10
             ? page * 10
             : (page - 1) * 10 + resultados[0].citas.length;
+        const fecha_inicio = fechaInicio;
+        const fecha_fin = fechaFin;
 
         return res.status(200).json({
             prev,
@@ -45,6 +52,8 @@ exports.getCitas = async (req, res) => {
             cantidad_citas,
             result_min,
             result_max,
+            fecha_inicio,
+            fecha_fin,
             resultados
         });
     } catch (err) {
@@ -55,7 +64,7 @@ exports.getCitas = async (req, res) => {
 }
 
 exports.getCitasAgenda = async (req, res) => {
-    const especialista_id = req.params.id;
+    const especialista_id = req.user_id;
 
     try {
         const citas = await CitaService.readCitasAgenda(especialista_id);
@@ -70,7 +79,7 @@ exports.getCitasAgenda = async (req, res) => {
 
 exports.createCita = async (req, res) => {
     const cita = {
-        paciente_id: req.body.paciente_id,
+        paciente_id: req.user_id,
         especialista_id: req.body.especialista_id,
         fecha: req.body.fecha,
         hora: req.body.hora,
@@ -123,11 +132,11 @@ exports.createCita = async (req, res) => {
 
         const qr = await qrcode.generateQRCode(newCita);
 
-        pdf = await pdfService.generateCitaPDF(newCita, qr);
+        pdf = await PdfService.generateCitaPDF(newCita, qr);
 
         const emailPaciente = await UsuarioService.getEmailById(cita.paciente_id);
 
-        await emailService.sendPdfCita(newCita, emailPaciente, pdf);
+        await EmailService.sendPdfCita(newCita, emailPaciente, pdf);
 
         destroyFile(pdf, true);
 
@@ -151,10 +160,11 @@ exports.createCita = async (req, res) => {
 }
 
 exports.deleteCita = async (req, res) => {
-    const id = req.params.id;
+    const citaId = req.params.cita_id;
+    const userId = req.user_id;
 
     try {
-        const cita = await CitaService.readCitaById(id);
+        const cita = await CitaService.readCitaById(citaId);
 
         if (!cita) {
             return res.status(404).json({
@@ -162,13 +172,13 @@ exports.deleteCita = async (req, res) => {
             });
         }
 
-        if (cita.datos_paciente.paciente_id !== req.user.user_id) {
+        if (cita.datos_paciente.paciente_id !== userId) {
             return res.status(403).json({
                 errors: ['No tienes permiso para eliminar esta cita.']
             });
         }
 
-        await CitaService.deleteCita(id);
+        await CitaService.deleteCita(citaId);
 
         return res.status(200).json({
             message: 'Cita eliminada correctamente.'

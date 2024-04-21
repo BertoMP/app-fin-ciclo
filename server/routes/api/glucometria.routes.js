@@ -3,26 +3,35 @@ const glucometriaController = require('../../controllers/glucometria.controller'
 
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenId = require('../../helpers/jwt/tokenId');
+const tokenUserId = require('../../helpers/jwt/tokenUserId');
 
 const { validateGlucometria } = require('../../helpers/validators/glucometria.validator');
-const { validateQueryParams } = require("../../helpers/validators/queryParams.validator");
-const {validateParams} = require("../../helpers/validators/params.validator");
+const { validatePaginationQueryParams } = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const { validateDateQueryParams } = require("../../helpers/validators/queryParams/dateQueryParams.validator");
+const { validateUsuarioIdParam } = require("../../helpers/validators/params/usuarioIdParam.validator");
 
 // Rutas GET
-router.get('/glucometria/:id',
+router.get('/glucometria/:usuario_id',
     tokenVerify,
-    tokenRole([2, 3]),
-    tokenId,
-    validateParams,
-    validateQueryParams,
+    tokenRole([3]),
+    validateUsuarioIdParam,
+    validatePaginationQueryParams,
+    validateDateQueryParams,
+    glucometriaController.getGlucometria);
+
+router.get('/glucometria',
+    tokenVerify,
+    tokenRole([2]),
+    tokenUserId,
+    validatePaginationQueryParams,
+    validateDateQueryParams,
     glucometriaController.getGlucometria);
 
 // Rutas POST
 router.post('/glucometria',
     tokenVerify,
     tokenRole([2]),
-    tokenId,
+    tokenUserId,
     validateGlucometria,
     glucometriaController.postGlucometria);
 

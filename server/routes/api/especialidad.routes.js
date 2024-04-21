@@ -7,16 +7,17 @@ const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
 
 const { validateEspecialidad } = require("../../helpers/validators/especialidad.validator");
-const { validateParams } = require("../../helpers/validators/params.validator");
+const { validateEspecialidadIdParam } = require("../../helpers/validators/params/especialidadIdParam.validator");
 
 const { cleanupFiles } = require("../../util/middleware/cleanupFiles");
 
 // Rutas GET
+router.get('/especialidad/:especialidad_id',
+    validateEspecialidadIdParam,
+    EspecialidadController.getEspecialidadById);
+
 router.get('/especialidad',
     EspecialidadController.getEspecialidades);
-router.get('/especialidad/:id',
-    validateParams,
-    EspecialidadController.getEspecialidadById);
 
 // Rutas POST
 router.post('/especialidad',
@@ -28,19 +29,19 @@ router.post('/especialidad',
     EspecialidadController.createEspecialidad);
 
 // Rutas PUT
-router.put('/especialidad/:id',
+router.put('/especialidad/:especialidad_id',
     tokenVerify,
     tokenRole([1]),
     multer.single('imagen'),
-    validateParams,
+    validateEspecialidadIdParam,
     validateEspecialidad,
     EspecialidadController.updateEspecialidad);
 
 // Rutas DELETE
-router.delete('/especialidad/:id',
+router.delete('/especialidad/:especialidad_id',
     tokenVerify,
     tokenRole([1]),
-    validateParams,
+    validateEspecialidadIdParam,
     EspecialidadController.deleteEspecialidad);
 
 module.exports = router;

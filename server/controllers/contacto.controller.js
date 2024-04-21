@@ -1,4 +1,4 @@
-const emailService = require('../services/email.service');
+const EmailService = require('../services/email.service');
 
 exports.postContacto = async (req, res) => {
     const contacto = {
@@ -9,7 +9,7 @@ exports.postContacto = async (req, res) => {
     }
 
     try {
-        await emailService.sendContactEmail(contacto);
+        await EmailService.sendContactEmail(contacto);
         return res.status(200).json({ message: 'Mensaje enviado exitosamente.' });
     } catch (err) {
         return res.status(500).json({

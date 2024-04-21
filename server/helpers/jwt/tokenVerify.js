@@ -13,13 +13,13 @@ module.exports = (req, res, next) => {
                     errors: ['El token ha expirado. Inicia sesión de nuevo.']
                 });
             } else {
-                return res.status(401).json({
+                return res.status(403).json({
                     errors: ['Token inválido.']
                 });
             }
         }
     } else {
-        return res.status(401).json({
+        return res.status(403).json({
             errors: ['No se proporcionó ningún token.']
         });
     }

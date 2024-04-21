@@ -1,5 +1,5 @@
 const InformeService = require('../services/informe.service');
-const pdfService = require("../services/pdf.service");
+const PdfService = require("../services/pdf.service");
 const destroyFile = require("../util/functions/destroyFile");
 
 exports.getInforme = async (req, res) => {
@@ -34,7 +34,7 @@ exports.generaInformePDF = async (req, res) => {
             });
         }
 
-        const file = await pdfService.generateReceta(informe);
+        const file = await PdfService.generateReceta(informe);
 
         res.download(file, (err) => {
             if (err) {

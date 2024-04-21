@@ -5,19 +5,19 @@ const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
 
 const { validateConsulta } = require("../../helpers/validators/consulta.validator");
-const { validateParams } = require("../../helpers/validators/params.validator");
+const { validateConsultaIdParam } = require("../../helpers/validators/params/consultaIdParam.validator");
 
 // Rutas GET
+router.get('/consulta/:consulta_id',
+    tokenVerify,
+    tokenRole([1]),
+    validateConsultaIdParam,
+    ConsultaController.getConsultaById);
+
 router.get('/consulta',
     tokenVerify,
     tokenRole([1]),
     ConsultaController.getConsultas);
-
-router.get('/consulta/:id',
-    tokenVerify,
-    tokenRole([1]),
-    validateParams,
-    ConsultaController.getConsultaById);
 
 // Rutas POST
 router.post('/consulta',
@@ -27,18 +27,18 @@ router.post('/consulta',
     ConsultaController.createConsulta);
 
 // Rutas PUT
-router.put('/consulta/:id',
+router.put('/consulta/:consulta_id',
     tokenVerify,
     tokenRole([1]),
-    validateParams,
+    validateConsultaIdParam,
     validateConsulta,
     ConsultaController.updateConsulta);
 
 // Rutas DELETE
-router.delete('/consulta/:id',
+router.delete('/consulta/:consulta_id',
     tokenVerify,
     tokenRole([1]),
-    validateParams,
+    validateConsultaIdParam,
     ConsultaController.deleteConsulta);
 
 module.exports = router;

@@ -1,18 +1,7 @@
 const { param, validationResult } = require('express-validator');
 
-exports.validateParams = [
-    param('id')
-        .optional()
-        .isNumeric().withMessage('El ID debe ser un valor numérico.')
-        .custom(value => {
-            if (value < 1) {
-                throw new Error('El ID debe ser un valor positivo.');
-            }
-
-            return true;
-        }),
-    param('idMedicamento')
-        .optional()
+exports.validateMedicamentoIdParam = [
+    param('medicamento_id')
         .isNumeric().withMessage('El ID del medicamento debe ser un valor numérico.')
         .custom(value => {
             if (value < 1) {

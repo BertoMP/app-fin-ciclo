@@ -1,11 +1,8 @@
 class PacienteMedicamentoModel {
     static async fetchAll(dbConn, id) {
-        const query =
+        const patientQuery = 'SELECT nombre, primer_apellido, segundo_apellido FROM usuario WHERE id = ?';
+        const medicamentQuery =
             'SELECT ' +
-            'usuario.nombre AS paciente_nombre, ' +
-            'usuario.primer_apellido AS paciente_primer_apellido, ' +
-            'usuario.segundo_apellido AS paciente_segundo_apellido, ' +
-            'paciente_medicamento.paciente_id AS paciente_id, ' +
             'paciente_medicamento.medicamento_id AS medicamento_id, ' +
             'medicamento.nombre AS medicamento_nombre, ' +
             'medicamento.descripcion AS medicamento_descripcion, ' +
@@ -13,18 +10,19 @@ class PacienteMedicamentoModel {
             'paciente_medicamento.toma_vespertina AS toma_vespertina, ' +
             'paciente_medicamento.toma_nocturna AS toma_nocturna ' +
             'FROM paciente_medicamento ' +
-            'INNER JOIN usuario ON usuario.id = paciente_medicamento.paciente_id ' +
             'INNER JOIN medicamento ON medicamento.id = paciente_medicamento.medicamento_id ' +
             'WHERE paciente_id = ?';
         try {
-            const [rows] = await dbConn.execute(query, [id]);
+            const [patientRows] = await dbConn.execute(patientQuery, [id]);
+            const [medicamentRows] = await dbConn.execute(medicamentQuery, [id]);
+
             const datos_paciente = {
-                paciente_id: rows[0].paciente_id,
-                nombre: rows[0].paciente_nombre,
-                primer_apellido: rows[0].paciente_primer_apellido,
-                segundo_apellido: rows[0].paciente_segundo_apellido
+                paciente_id: id,
+                nombre: patientRows[0].nombre,
+                primer_apellido: patientRows[0].primer_apellido,
+                segundo_apellido: patientRows[0].segundo_apellido
             };
-            const medicacion_asociada = rows.map(row => ({
+            const medicacion_asociada = medicamentRows.map(row => ({
                 medicamento_id: row.medicamento_id,
                 nombre: row.medicamento_nombre,
                 descripcion: row.medicamento_descripcion,

@@ -1,6 +1,7 @@
-const glucometriaService = require('../services/glucometria.service');
+const GlucometriaService = require('../services/glucometria.service');
+const PacienteService = require('../services/paciente.service');
 const momentTz = require('moment-timezone');
-const getSearchValues = require('../util/functions/getSearchValues');
+const getSearchValues = require('../util/functions/getSearchValuesByDate');
 
 exports.getGlucometria = async (req, res) => {
     try {
@@ -11,13 +12,21 @@ exports.getGlucometria = async (req, res) => {
         const fechaFin = searchValues.fechaFin;
         const paciente_id = searchValues.paciente_id;
 
+        const pacienteExists = await PacienteService.readPacienteByUserId(paciente_id);
+
+        if (!pacienteExists) {
+            return res.status(404).json({
+                errors: ['El paciente no existe.']
+            });
+        }
+
         const {
             rows: resultados,
             total: cantidad_glucometrias,
             actualPage: pagina_actual,
             totalPages: paginas_totales
         } =
-            await glucometriaService.readGlucometria(searchValues);
+            await GlucometriaService.readGlucometria(searchValues);
 
         if (page > 1 && page > paginas_totales) {
             return res.status(404).json({
@@ -26,10 +35,10 @@ exports.getGlucometria = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/glucometria/${paciente_id}?page=${page - 1}`
+            ? `/api/glucometria/${paciente_id}?page=${page - 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const next = page < paginas_totales
-            ? `/api/glucometria/${paciente_id}?page=${page + 1}`
+            ? `/api/glucometria/${paciente_id}?page=${page + 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const result_min = (page - 1) * 10 + 1;
         const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;
@@ -66,7 +75,7 @@ exports.postGlucometria = async (req, res) => {
     const hora = momentTz.tz(new Date(), 'Europe/Madrid')
         .format('HH:mm:ss');
     const medicion = req.body.medicion;
-    const paciente_id = req.body.user_id;
+    const paciente_id = req.user_id;
 
     const glucometria = {
         paciente_id: paciente_id,
@@ -76,7 +85,7 @@ exports.postGlucometria = async (req, res) => {
     }
 
     try {
-        await glucometriaService.createGlucometria(glucometria);
+        await GlucometriaService.createGlucometria(glucometria);
 
         return res.status(201).json({ message: 'Glucometría creada exitosamente.'});
     } catch (err) {

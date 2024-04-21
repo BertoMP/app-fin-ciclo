@@ -3,40 +3,42 @@ const CitaController = require('../../controllers/cita.controller');
 
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenId = require('../../helpers/jwt/tokenId');
+const tokenUserId = require('../../helpers/jwt/tokenUserId');
 
 const { validateCita } = require("../../helpers/validators/cita.validator");
-const { validateParams } = require("../../helpers/validators/params.validator");
-const { validateQueryParams } = require("../../helpers/validators/queryParams.validator");
+const { validateCitaIdParam } = require("../../helpers/validators/params/citaIdParam.validator");
+const { validatePaginationQueryParams } = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const { validateDateQueryParams } = require("../../helpers/validators/queryParams/dateQueryParams.validator");
 
 // Rutas GET
-router.get('/cita/:user_id',
-    tokenVerify,
-    tokenRole([2]),
-    tokenId,
-    validateParams,
-    validateQueryParams,
-    CitaController.getCitas);
-
-router.get('/cita-agenda/:id',
+router.get('/cita/agenda',
     tokenVerify,
     tokenRole([3]),
-    validateParams,
-    validateQueryParams,
+    tokenUserId,
     CitaController.getCitasAgenda);
+
+router.get('/cita',
+    tokenVerify,
+    tokenRole([2]),
+    tokenUserId,
+    validatePaginationQueryParams,
+    validateDateQueryParams,
+    CitaController.getCitas);
 
 // Rutas POST
 router.post('/cita',
     tokenVerify,
     tokenRole([2]),
+    tokenUserId,
     validateCita,
     CitaController.createCita);
 
 // Rutas DELETE
-router.delete('/cita/:user_id/:id',
+router.delete('/cita/:cita_id',
     tokenVerify,
     tokenRole([2]),
-    validateParams,
+    tokenUserId,
+    validateCitaIdParam,
     CitaController.deleteCita);
 
 module.exports = router;

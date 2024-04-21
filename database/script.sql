@@ -82,6 +82,7 @@ CREATE TABLE usuario (
     segundo_apellido    VARCHAR(255),
     dni                 VARCHAR(9),
     rol_id              INT,
+    refresh_token		VARCHAR(255),
         CONSTRAINT pk_usuario
             PRIMARY KEY (id),
         CONSTRAINT uq_usuario_email

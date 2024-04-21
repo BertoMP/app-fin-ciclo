@@ -10,6 +10,22 @@ const InformeModel = require('../models/informe.model');
 const CitaModel = require('../models/cita.model');
 
 class UsuarioService {
+    static async readAllUsuarios(searchValues) {
+        return await UsuarioModel.fetchAll(dbConn, searchValues);
+    }
+
+    static async readUsuarioPaciente(id) {
+        return await UsuarioModel.findPacienteById(dbConn, id);
+    }
+
+    static async readUsuarioEspecialista(id) {
+        return await UsuarioModel.findEspecialistaById(dbConn, id);
+    }
+
+    static async readUsuarioRoleById(id) {
+        return await UsuarioModel.findRoleById(dbConn, id);
+    }
+
     static async createUsuarioPaciente(usuario, paciente) {
         const conn = await dbConn.getConnection();
 
@@ -43,6 +59,44 @@ class UsuarioService {
         } catch (err) {
             await conn.rollback();
             throw new Error('Error al crear el usuario o el especialista.');
+        } finally {
+            conn.release();
+        }
+    }
+
+    static async updateUsuarioPaciente(usuario, paciente) {
+        const conn = await dbConn.getConnection();
+
+        try {
+            await conn.beginTransaction();
+
+            await UsuarioModel.update(conn, usuario);
+
+            await PacienteModel.update(conn, paciente);
+
+            await conn.commit();
+        } catch (err) {
+            await conn.rollback();
+            throw new Error('Error al actualizar el usuario o el paciente.');
+        } finally {
+            conn.release();
+        }
+    }
+
+    static async updateUsuarioEspecialista(usuario, especialista) {
+        const conn = await dbConn.getConnection();
+
+        try {
+            await conn.beginTransaction();
+
+            await UsuarioModel.update(conn, usuario);
+
+            await EspecialistaModel.update(conn, especialista);
+
+            await conn.commit();
+        } catch (err) {
+            await conn.rollback();
+            throw new Error('Error al actualizar el usuario o el especialista.');
         } finally {
             conn.release();
         }
@@ -95,6 +149,14 @@ class UsuarioService {
         } finally {
             conn.release();
         }
+    }
+
+    static async updateRefreshToken(email, refreshToken) {
+        return await UsuarioModel.updateRefreshToken(dbConn, email, refreshToken);
+    }
+
+    static async readUsuarioById(id) {
+        return await UsuarioModel.findById(dbConn, id);
     }
 }
 

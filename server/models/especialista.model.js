@@ -62,6 +62,28 @@ class EspecialistaModel {
             throw new Error('Error al obtener el turno del especialista.');
         }
     }
+
+    static async update(dbConn, especialista) {
+        const query =
+            'UPDATE especialista ' +
+            'SET especialidad_id = ?, ' +
+            'consulta_id = ?, ' +
+            'num_colegiado = ?, ' +
+            'descripcion = ?, ' +
+            'imagen = ?, ' +
+            'turno = ? ' +
+            'WHERE usuario_id = ?';
+
+        try {
+            await dbConn.execute(
+                query,
+                [especialista.especialidad_id, especialista.consulta_id,
+                    especialista.num_colegiado, especialista.descripcion,
+                    especialista.imagen, especialista.turno, especialista.usuario_id]);
+        } catch (err) {
+            throw new Error('Error al actualizar el especialista.');
+        }
+    }
 }
 
 module.exports = EspecialistaModel;

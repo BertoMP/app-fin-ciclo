@@ -19,6 +19,7 @@ class GlucometriaModel {
             const [rows] =
                 await dbConn.execute(query,
                     [fechaInicio, fechaFin, paciente_id, `${limit}`, `${offset}`]);
+
             const [count] =
                 await dbConn.execute(
                     'SELECT COUNT(*) AS count FROM glucometria ' +
