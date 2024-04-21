@@ -96,6 +96,14 @@ class UsuarioService {
             conn.release();
         }
     }
+
+    static async updateRefreshToken(email, refreshToken) {
+        return await UsuarioModel.updateRefreshToken(dbConn, email, refreshToken);
+    }
+
+    static async readUsuarioById(id) {
+        return await UsuarioModel.findById(dbConn, id);
+    }
 }
 
 module.exports = UsuarioService;

@@ -3,30 +3,36 @@ const InformeController = require('../../controllers/informe.controller');
 
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenId = require('../../helpers/jwt/tokenId');
+const tokenId = require('../../helpers/jwt/tokenUserId');
 
 const { validateInforme } = require("../../helpers/validators/informe.validator");
-const { validateParams } = require("../../helpers/validators/params.validator");
+const { validateInformeIdParam } = require("../../helpers/validators/params/informeIdParam.validator");
 
 // Rutas GET
-router.get('/informe/:id',
+router.get('/informe/genera-pdf/:informe_id',
     tokenVerify,
     tokenRole([2, 3]),
     tokenId,
-    validateParams,
+    validateInformeIdParam,
+    InformeController.generaInformePDF);
+
+router.get('/informe/:informe_id',
+    tokenVerify,
+    tokenRole([3]),
+    tokenId,
+    validateInformeIdParam,
     InformeController.getInforme);
 
-router.get('/informe/genera-pdf/:id',
+router.get('/informe',
     tokenVerify,
-    tokenRole([2, 3]),
+    tokenRole([2]),
     tokenId,
-    validateParams,
-    InformeController.generaInformePDF);
+    InformeController.getInforme);
 
 // Rutas POST
 router.post('/informe',
     tokenVerify,
-    tokenRole([2]),
+    tokenRole([3]),
     validateInforme,
     InformeController.createInforme);
 

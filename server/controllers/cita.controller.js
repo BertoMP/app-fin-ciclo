@@ -9,7 +9,7 @@ const qrcode = require("../util/functions/createQr");
 
 exports.getCitas = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
-    const paciente_id = req.params.user_id;
+    const paciente_id = req.user_id;
 
     try {
         const {
@@ -55,7 +55,7 @@ exports.getCitas = async (req, res) => {
 }
 
 exports.getCitasAgenda = async (req, res) => {
-    const especialista_id = req.params.id;
+    const especialista_id = req.user_id;
 
     try {
         const citas = await CitaService.readCitasAgenda(especialista_id);
@@ -70,7 +70,7 @@ exports.getCitasAgenda = async (req, res) => {
 
 exports.createCita = async (req, res) => {
     const cita = {
-        paciente_id: req.body.paciente_id,
+        paciente_id: req.user_id,
         especialista_id: req.body.especialista_id,
         fecha: req.body.fecha,
         hora: req.body.hora,
@@ -151,10 +151,11 @@ exports.createCita = async (req, res) => {
 }
 
 exports.deleteCita = async (req, res) => {
-    const id = req.params.id;
+    const citaId = req.params.cita_id;
+    const userId = req.user_id;
 
     try {
-        const cita = await CitaService.readCitaById(id);
+        const cita = await CitaService.readCitaById(citaId);
 
         if (!cita) {
             return res.status(404).json({
@@ -162,13 +163,13 @@ exports.deleteCita = async (req, res) => {
             });
         }
 
-        if (cita.datos_paciente.paciente_id !== req.user.user_id) {
+        if (cita.datos_paciente.paciente_id !== userId) {
             return res.status(403).json({
                 errors: ['No tienes permiso para eliminar esta cita.']
             });
         }
 
-        await CitaService.deleteCita(id);
+        await CitaService.deleteCita(citaId);
 
         return res.status(200).json({
             message: 'Cita eliminada correctamente.'

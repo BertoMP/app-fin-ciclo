@@ -88,6 +88,32 @@ class UsuarioModel {
             throw new Error('Error al eliminar el usuario.');
         }
     }
+
+    static async updateRefreshToken(dbConn, email, refreshToken) {
+        const query =
+            'UPDATE usuario ' +
+            'SET refresh_token = ? ' +
+            'WHERE email = ?';
+
+        try {
+            await dbConn.execute(query, [refreshToken, email]);
+        } catch (err) {
+            throw new Error('Error al actualizar el token de refresco.');
+        }
+    }
+
+    static async findById(dbConn, id) {
+        const query =
+            'SELECT * FROM usuario ' +
+            'WHERE id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [id]);
+            return rows[0];
+        } catch (err) {
+            throw new Error('Error al obtener el usuario.');
+        }
+    }
 }
 
 module.exports = UsuarioModel;

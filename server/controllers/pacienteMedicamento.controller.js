@@ -3,10 +3,16 @@ const PdfService = require('../services/pdf.service');
 const destroyFile = require('../util/functions/destroyFile');
 
 exports.getPacienteMedicamento = async (req, res) => {
-    try {
-        const { id } = req.params;
+    let paciente_id = 0;
 
-        const medicamentos = await pacienteMedicamentoService.readPacienteMedicamento(id);
+    if (req.user_role === 2) {
+        paciente_id = req.user_id;
+    } else if (req.user_role === 3) {
+        paciente_id = req.params.paciente_id;
+    }
+
+    try {
+        const medicamentos = await pacienteMedicamentoService.readPacienteMedicamento(paciente_id);
 
         return res.status(200).json(medicamentos);
     } catch (error) {
@@ -17,10 +23,16 @@ exports.getPacienteMedicamento = async (req, res) => {
 }
 
 exports.getPacienteMedicamentoPDF = async (req, res) => {
-    try {
-        const { id } = req.params;
+    let paciente_id = 0;
 
-        const medicamentos = await pacienteMedicamentoService.readPacienteMedicamento(id);
+    if (req.user_role === 2) {
+        paciente_id = req.user_id;
+    } else if (req.user_role === 3) {
+        paciente_id = req.params.paciente_id;
+    }
+
+    try {
+        const medicamentos = await pacienteMedicamentoService.readPacienteMedicamento(paciente_id);
 
         const file = await PdfService.generateReceta(medicamentos);
 

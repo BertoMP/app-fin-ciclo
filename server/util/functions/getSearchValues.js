@@ -15,13 +15,20 @@ const getSearchValues = (req) => {
                 .format('YYYY-MM-DD')
             : momentTz.tz()
                 .format('YYYY-MM-DD');
-    const paciente_id = req.params.id;
+
+    let paciente_id = 0;
+
+    if (req.user_role === 2) {
+        paciente_id = req.user_id;
+    } else if (req.user_role === 3) {
+        paciente_id = req.params.paciente_id;
+    }
 
     return {
         fechaInicio: fechaInicio,
         fechaFin: fechaFin,
         page: page,
-        paciente_id: paciente_id,
+        paciente_id: paciente_id
     };
 }
 

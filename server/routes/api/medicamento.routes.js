@@ -5,21 +5,22 @@ const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
 
 const { validateMedicamento } = require('../../helpers/validators/medicamento.validator');
-const { validateQueryParams } = require("../../helpers/validators/queryParams.validator");
-const {validateParams} = require("../../helpers/validators/params.validator");
+const { validatePaginationQueryParams } = require("../../helpers/validators/params/paginationQueryParams.validator");
+const { validateMedicamentoIdParam } = require("../../helpers/validators/params/medicamentoIdParam.validator");
 
 // Rutas GET
+router.get('/medicamento/:medicamento_id',
+    tokenVerify,
+    tokenRole([3]),
+    validateMedicamentoIdParam,
+    MedicamentoController.getMedicamentoById);
+
 router.get('/medicamento',
     tokenVerify,
     tokenRole([3]),
-    validateQueryParams,
+    validatePaginationQueryParams,
     MedicamentoController.getMedicamentos
 );
-router.get('/medicamento/:id',
-    tokenVerify,
-    tokenRole([3]),
-    validateParams,
-    MedicamentoController.getMedicamentoById);
 
 // Rutas POST
 router.post('/medicamento',
@@ -29,18 +30,18 @@ router.post('/medicamento',
     MedicamentoController.createMedicamento);
 
 // Rutas PUT
-router.put('/medicamento/:id',
+router.put('/medicamento/:medicamento_id',
     tokenVerify,
     tokenRole([3]),
-    validateParams,
+    validateMedicamentoIdParam,
     validateMedicamento,
     MedicamentoController.updateMedicamento);
 
 // Rutas DELETE
-router.delete('/medicamento/:id',
+router.delete('/medicamento/:medicamento_id',
     tokenVerify,
     tokenRole([3]),
-    validateParams,
+    validateMedicamentoIdParam,
     MedicamentoController.deleteMedicamento);
 
 

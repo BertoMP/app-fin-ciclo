@@ -3,19 +3,25 @@ const tensionArterialController = require('../../controllers/tensionArterial.con
 
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenId = require('../../helpers/jwt/tokenId');
+const tokenId = require('../../helpers/jwt/tokenUserId');
 
 const { validateTensionArterial } = require('../../helpers/validators/tensionArterial.validator');
-const { validateQueryParams } = require('../../helpers/validators/queryParams.validator');
-const {validateParams} = require("../../helpers/validators/params.validator");
+const { validatePaginationQueryParams } = require('../../helpers/validators/params/paginationQueryParams.validator');
+const { validatePacienteIdParam } = require('../../helpers/validators/params/pacienteIdParam.validator');
 
 // Rutas GET
-router.get('/tension-arterial/:id',
+router.get('/tension-arterial/:paciente_id',
     tokenVerify,
-    tokenRole([2, 3]),
+    tokenRole([3]),
+    validatePacienteIdParam,
+    validatePaginationQueryParams,
+    tensionArterialController.getTensionArterial);
+
+router.get('/tension-arterial',
+    tokenVerify,
+    tokenRole([2]),
     tokenId,
-    validateParams,
-    validateQueryParams,
+    validatePaginationQueryParams,
     tensionArterialController.getTensionArterial);
 
 // Rutas POST

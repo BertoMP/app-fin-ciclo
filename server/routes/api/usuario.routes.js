@@ -2,15 +2,16 @@ const router = require('express').Router();
 const UsuarioController = require('../../controllers/usuario.controller');
 const multer = require('../../util/functions/multer');
 
+const { cleanupFiles } = require("../../util/middleware/cleanupFiles");
+
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenId = require('../../helpers/jwt/tokenId');
+const tokenId = require('../../helpers/jwt/tokenUserId');
 
 const { validateUserLogin } = require("../../helpers/validators/usuarioLogin.validator");
 const { validatePacienteRegister } = require("../../helpers/validators/pacienteRegistro.validador");
 const { validateEspecialistaRegister } = require("../../helpers/validators/especialistaRegistro.validator");
 const { validateUserPasswordChange } = require("../../helpers/validators/usuarioPasswordChange.validator");
-const {cleanupFiles} = require("../../util/middleware/cleanupFiles");
 
 // Rutas POST
 router.post('/usuario/registro',
@@ -42,6 +43,15 @@ router.post('/usuario/contrasena-reset',
     UsuarioController.postResetPassword
 );
 
+router.post('/usuario/refresh-token',
+    UsuarioController.postRefreshToken
+);
+
+router.post('/usuario/logout',
+    tokenVerify,
+    tokenId,
+    UsuarioController.postLogout);
+
 // Rutas PUT
 router.put('/usuario/password',
     validateUserPasswordChange,
@@ -49,7 +59,7 @@ router.put('/usuario/password',
 );
 
 // Rutas DELETE
-router.delete('/usuario/borrar-usuario/:user_id',
+router.delete('/usuario/borrar-usuario',
     tokenVerify,
     tokenRole([2]),
     tokenId,

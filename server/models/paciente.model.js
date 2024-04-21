@@ -44,6 +44,19 @@ class PacienteModel {
         }
     }
 
+    static async findByUserId(dbConn, usuario_id) {
+        const query =
+            'SELECT * FROM paciente ' +
+            'WHERE usuario_id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [usuario_id]);
+            return rows[0];
+        } catch (err) {
+            throw new Error('Error al obtener el paciente.');
+        }
+    }
+
     static async deletePacienteByUserId(dbConn, usuario_id) {
         const query =
             'DELETE FROM paciente WHERE usuario_id = ?';
