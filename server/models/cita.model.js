@@ -184,18 +184,18 @@ class CitaModel {
         const query =
             'SELECT ' +
             '   cita.id, ' +
-            '   cita.fecha, ' +
             '   cita.hora, ' +
             '   cita.informe_id, ' +
-            '   paciente_user.id AS paciente_id,' +
-            '   paciente_user.num_historia_clinica AS paciente_historia_clinica, ' +
-            '   paciente_user.nombre AS paciente_nombre, ' +
-            '   paciente_user.primer_apellido AS paciente_primer_apellido, ' +
-            '   paciente_user.segundo_apellido AS paciente_segundo_apellido ' +
+            '   paciente.num_historia_clinica AS paciente_historia_clinica, ' +
+            '   usuario.nombre AS paciente_nombre, ' +
+            '   usuario.primer_apellido AS paciente_primer_apellido, ' +
+            '   usuario.segundo_apellido AS paciente_segundo_apellido ' +
             'FROM ' +
             '   cita ' +
             'INNER JOIN ' +
-            '   paciente ON cita.paciente_id = paciente.id ' +
+            '   paciente ON cita.paciente_id = paciente.usuario_id ' +
+            'INNER JOIN ' +
+            '   usuario ON paciente.usuario_id = usuario.id ' +
             'WHERE ' +
             '   especialista_id = ? ' +
             '   AND fecha = CURDATE() ';
@@ -204,6 +204,7 @@ class CitaModel {
             const [rows] = await dbConn.execute(query, [especialista_id]);
             return rows;
         } catch (err) {
+            console.log(err);
             throw new Error('Error al obtener la agenda.');
         }
     }
@@ -269,6 +270,33 @@ class CitaModel {
             await dbConn.execute(query, [paciente_id]);
         } catch (err) {
             throw new Error('Error al eliminar las citas.');
+        }
+    }
+
+    static async fetchPacienteIdByInformeId(dbConn, informe_id) {
+        const query =
+            'SELECT paciente_id ' +
+            'FROM cita ' +
+            'WHERE informe_id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [informe_id]);
+            return rows[0].paciente_id;
+        } catch (err) {
+            throw new Error('Error al obtener el ID del paciente.');
+        }
+    }
+
+    static async updateInformeId(dbConn, cita_id, informe_id) {
+        const query =
+            'UPDATE cita ' +
+            'SET informe_id = ? ' +
+            'WHERE id = ?';
+
+        try {
+            await dbConn.execute(query, [informe_id, cita_id]);
+        } catch (err) {
+            throw new Error('Error al actualizar el ID del informe.');
         }
     }
 }

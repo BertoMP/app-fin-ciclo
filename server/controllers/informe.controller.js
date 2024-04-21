@@ -1,18 +1,15 @@
 const InformeService = require('../services/informe.service');
+const CitaService = require('../services/cita.service');
 const PdfService = require("../services/pdf.service");
 const destroyFile = require("../util/functions/destroyFile");
 
 exports.getInforme = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const user_role = req.user_role;
+    const informe_id = parseInt(req.params.informe_id);
 
     try {
-        const informe = await InformeService.readInforme(id);
-
-        if (!informe) {
-            return res.status(404).json({
-                errors: ['Informe no encontrado.']
-            });
-        }
+        const informe = await fetchInforme(user_role, informe_id, req, res);
+        if (!informe) return;
 
         return res.status(200).json(informe);
     } catch (err) {
@@ -23,18 +20,14 @@ exports.getInforme = async (req, res) => {
 }
 
 exports.generaInformePDF = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const user_role = req.user_role;
+    const informe_id = parseInt(req.params.informe_id);
 
     try {
-        const informe = await InformeService.readInforme(id);
+        const informe = await fetchInforme(user_role, informe_id, req, res);
+        if (!informe) return;
 
-        if (!informe) {
-            return res.status(404).json({
-                errors: ['Informe no encontrado.']
-            });
-        }
-
-        const file = await PdfService.generateReceta(informe);
+        const file = await PdfService.generateInforme(informe);
 
         res.download(file, (err) => {
             if (err) {
@@ -61,6 +54,7 @@ exports.createInforme = async (req, res) => {
             motivo: req.body.motivo,
             patologia: req.body.patologia,
             contenido: req.body.contenido,
+            cita_id: req.body.cita_id
         }
 
         await InformeService.createInforme(informe);
@@ -73,4 +67,23 @@ exports.createInforme = async (req, res) => {
             errors: [err.message]
         });
     }
+}
+
+async function fetchInforme(user_role, informe_id, req, res) {
+    const pacienteId = await CitaService.readPacienteIdByInformeId(informe_id);
+
+    if (!pacienteId) {
+        return res.status(404).json({
+            errors: ['Informe no encontrado.']
+        });
+    }
+
+    if (user_role === 2 && pacienteId !== req.user_id) {
+        return res.status(403).json({
+            errors: ['No tienes permiso para realizar esta acción.']
+        });
+    }
+
+    const informe = await InformeService.readInforme(informe_id);
+    return informe;
 }

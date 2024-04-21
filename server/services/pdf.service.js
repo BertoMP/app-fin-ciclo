@@ -71,7 +71,7 @@ class PdfService {
         };
 
         const pdf = PDFDocument.create(html, options);
-        const pdfPath = path.join(__dirname, `../tmp/pdfs/informe_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}_${informe.datos_cita.fecha}.pdf`);
+        const pdfPath = path.join(__dirname, `../tmp/pdfs/informe_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}.pdf`);
 
         const dir = path.dirname(pdfPath);
         if (!fs.existsSync(dir)) {
