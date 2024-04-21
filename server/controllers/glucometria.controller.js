@@ -1,7 +1,7 @@
 const GlucometriaService = require('../services/glucometria.service');
 const PacienteService = require('../services/paciente.service');
 const momentTz = require('moment-timezone');
-const getSearchValues = require('../util/functions/getSearchValues');
+const getSearchValues = require('../util/functions/getSearchValuesByDate');
 
 exports.getGlucometria = async (req, res) => {
     try {
@@ -35,10 +35,10 @@ exports.getGlucometria = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/glucometria/${paciente_id}?page=${page - 1}`
+            ? `/api/glucometria/${paciente_id}?page=${page - 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const next = page < paginas_totales
-            ? `/api/glucometria/${paciente_id}?page=${page + 1}`
+            ? `/api/glucometria/${paciente_id}?page=${page + 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const result_min = (page - 1) * 10 + 1;
         const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;

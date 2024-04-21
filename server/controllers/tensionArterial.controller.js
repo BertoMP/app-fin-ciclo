@@ -1,6 +1,6 @@
 const tensionArterialService = require('../services/tensionArterial.service');
 const momentTz = require('moment-timezone');
-const getSearchValues = require('../util/functions/getSearchValues');
+const getSearchValues = require('../util/functions/getSearchValuesByDate');
 
 exports.getTensionArterial = async (req, res) => {
     try {
@@ -26,10 +26,10 @@ exports.getTensionArterial = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/tensionArterial/${paciente_id}?page=${page - 1}`
+            ? `/api/tensionArterial/${paciente_id}?page=${page - 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const next = page < paginas_totales
-            ? `/api/tensionArterial/${paciente_id}?page=${page + 1}`
+            ? `/api/tensionArterial/${paciente_id}?page=${page + 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const result_min = (page - 1) * 10 + 1;
         const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;

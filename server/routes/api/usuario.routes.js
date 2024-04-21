@@ -12,10 +12,34 @@ const { validateUserLogin } = require("../../helpers/validators/usuarioLogin.val
 const { validatePacienteRegister } = require("../../helpers/validators/pacienteRegistro.validador");
 const { validateEspecialistaRegister } = require("../../helpers/validators/especialistaRegistro.validator");
 const { validateUserPasswordChange } = require("../../helpers/validators/usuarioPasswordChange.validator");
+const { validateRoleQueryParams } = require("../../helpers/validators/queryParams/roleQueryParams.validator");
+const { validateUsuarioIdParam } = require("../../helpers/validators/params/usuarioIdParam.validator");
+
+
+// Rutas GET
+router.get('/usuario/:usuario_id',
+    tokenVerify,
+    tokenRole([1]),
+    validateUsuarioIdParam,
+    UsuarioController.getUsuario
+);
+
+router.get('/usuario',
+    tokenVerify,
+    tokenRole([2]),
+    tokenId,
+    UsuarioController.getUsuario
+);
+
+router.get('/usuario/listado',
+    tokenVerify,
+    tokenRole([1]),
+    validateRoleQueryParams,
+    UsuarioController.getListado
+);
 
 // Rutas POST
 router.post('/usuario/registro',
-    multer.none(),
     validatePacienteRegister,
     UsuarioController.postRegistro
 );
@@ -30,7 +54,6 @@ router.post('/usuario/registro-especialista',
 );
 
 router.post('/usuario/login',
-    multer.none(),
     validateUserLogin,
     UsuarioController.postLogin
 );
@@ -54,8 +77,32 @@ router.post('/usuario/logout',
 
 // Rutas PUT
 router.put('/usuario/password',
+    tokenVerify,
+    tokenId,
     validateUserPasswordChange,
     UsuarioController.postUpdatePassword
+);
+
+router.put('/usuario/actualizar-usuario/:usuario_id',
+    tokenVerify,
+    tokenRole([1]),
+    validateUsuarioIdParam,
+    UsuarioController.putUsuarioPaciente
+);
+
+router.put('/usuario/actualizar-usuario',
+    tokenVerify,
+    tokenRole([2]),
+    tokenId,
+    UsuarioController.putUsuarioPaciente
+);
+
+router.put('/usuario/actualizar-especialista/:usuario_id',
+    tokenVerify,
+    tokenRole([1]),
+    multer.single('imagen'),
+    validateUsuarioIdParam,
+    UsuarioController.putUsuarioEspecialista
 );
 
 // Rutas DELETE

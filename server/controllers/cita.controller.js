@@ -4,21 +4,26 @@ const EspecialistaService = require('../services/especialista.service');
 const PdfService = require("../services/pdf.service");
 const EmailService = require("../services/email.service");
 
+const getSearchValues = require('../util/functions/getSearchValuesByDate');
 const destroyFile = require("../util/functions/destroyFile");
 const qrcode = require("../util/functions/createQr");
 
 exports.getCitas = async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const paciente_id = req.user_id;
-
     try {
+        const searchValues = getSearchValues(req, true);
+
+        const page = searchValues.page;
+        const fechaInicio = searchValues.fechaInicio;
+        const fechaFin = searchValues.fechaFin;
+        const paciente_id = searchValues.paciente_id;
+
         const {
             rows: resultados,
             actualPage: pagina_actual,
             total: cantidad_citas,
             totalPages: paginas_totales
         } =
-            await CitaService.readCitas(page, paciente_id);
+            await CitaService.readCitas(searchValues);
 
         if (page > 1 && page > paginas_totales) {
             return res.status(404).json({
@@ -27,15 +32,17 @@ exports.getCitas = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/cita/${paciente_id}?page=${page - 1}`
+            ? `/api/cita/${paciente_id}?page=${page - 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const next = page < paginas_totales
-            ? `/api/cita/${paciente_id}?page=${page + 1}`
+            ? `/api/cita/${paciente_id}?page=${page + 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const result_min = (page - 1) * 10 + 1;
         const result_max = resultados[0].citas.length === 10
             ? page * 10
             : (page - 1) * 10 + resultados[0].citas.length;
+        const fecha_inicio = fechaInicio;
+        const fecha_fin = fechaFin;
 
         return res.status(200).json({
             prev,
@@ -45,6 +52,8 @@ exports.getCitas = async (req, res) => {
             cantidad_citas,
             result_min,
             result_max,
+            fecha_inicio,
+            fecha_fin,
             resultados
         });
     } catch (err) {

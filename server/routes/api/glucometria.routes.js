@@ -6,23 +6,25 @@ const tokenRole = require('../../helpers/jwt/tokenRole');
 const tokenUserId = require('../../helpers/jwt/tokenUserId');
 
 const { validateGlucometria } = require('../../helpers/validators/glucometria.validator');
-const { validatePaginationQueryParams } = require("../../helpers/validators/params/paginationQueryParams.validator");
-const { validatePacienteIdParam } = require("../../helpers/validators/params/pacienteIdParam.validator");
+const { validatePaginationQueryParams } = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const { validateDateQueryParams } = require("../../helpers/validators/queryParams/dateQueryParams.validator");
+const { validateUsuarioIdParam } = require("../../helpers/validators/params/usuarioIdParam.validator");
 
 // Rutas GET
-router.get('/glucometria/:paciente_id',
+router.get('/glucometria/:usuario_id',
     tokenVerify,
     tokenRole([3]),
-    validatePacienteIdParam,
+    validateUsuarioIdParam,
     validatePaginationQueryParams,
+    validateDateQueryParams,
     glucometriaController.getGlucometria);
 
 router.get('/glucometria',
     tokenVerify,
     tokenRole([2]),
     tokenUserId,
-    validatePacienteIdParam,
     validatePaginationQueryParams,
+    validateDateQueryParams,
     glucometriaController.getGlucometria);
 
 // Rutas POST

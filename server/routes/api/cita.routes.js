@@ -7,7 +7,8 @@ const tokenUserId = require('../../helpers/jwt/tokenUserId');
 
 const { validateCita } = require("../../helpers/validators/cita.validator");
 const { validateCitaIdParam } = require("../../helpers/validators/params/citaIdParam.validator");
-const { validatePaginationQueryParams } = require("../../helpers/validators/params/paginationQueryParams.validator");
+const { validatePaginationQueryParams } = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const { validateDateQueryParams } = require("../../helpers/validators/queryParams/dateQueryParams.validator");
 
 // Rutas GET
 router.get('/cita/agenda',
@@ -21,6 +22,7 @@ router.get('/cita',
     tokenRole([2]),
     tokenUserId,
     validatePaginationQueryParams,
+    validateDateQueryParams,
     CitaController.getCitas);
 
 // Rutas POST

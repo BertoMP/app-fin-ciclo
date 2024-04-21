@@ -67,6 +67,33 @@ class PacienteModel {
             throw new Error('Error al eliminar el paciente.');
         }
     }
+
+    static async update(dbConn, paciente) {
+        const query =
+            'UPDATE paciente ' +
+            'SET fecha_nacimiento = ?, ' +
+            'tipo_via = ?, ' +
+            'nombre_via = ?, ' +
+            'numero = ?, ' +
+            'piso = ?, ' +
+            'puerta = ?, ' +
+            'municipio = ?, ' +
+            'codigo_postal = ?, ' +
+            'tel_fijo = ?, ' +
+            'tel_movil = ? ' +
+            'WHERE usuario_id = ?';
+
+        try {
+            await dbConn.execute(
+                query,
+                [paciente.fecha_nacimiento, paciente.tipo_via, paciente.nombre_via,
+                    paciente.numero, paciente.piso, paciente.puerta, paciente.municipio,
+                    paciente.codigo_postal, paciente.tel_fijo, paciente.tel_movil,
+                    paciente.usuario_id]);
+        } catch (err) {
+            throw new Error('Error al actualizar el paciente.');
+        }
+    }
 }
 
 module.exports = PacienteModel;

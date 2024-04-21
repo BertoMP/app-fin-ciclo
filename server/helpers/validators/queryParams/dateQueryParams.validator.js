@@ -1,10 +1,6 @@
 const { query, validationResult } = require('express-validator');
 
-exports.validatePaginationQueryParams = [
-    query('page')
-        .optional()
-        .isNumeric().withMessage('El número de página debe ser un valor numérico.'),
-
+exports.validateDateQueryParams = [
     query('fechaInicio')
         .optional()
         .isDate().withMessage('La fecha de inicio debe ser una fecha válida.')

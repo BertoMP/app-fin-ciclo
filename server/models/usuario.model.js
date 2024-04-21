@@ -1,4 +1,145 @@
 class UsuarioModel {
+    static async fetchAll(dbConn, searchValues) {
+        const page = searchValues.page;
+        const role_id = searchValues.role;
+
+        const limit = 10;
+        const offset = ((page - 1) * limit);
+
+        let query =
+            'SELECT ' +
+            '   usuario.id,' +
+            '   email,' +
+            '   usuario.nombre,' +
+            '   primer_apellido,' +
+            '   segundo_apellido,' +
+            '   dni,' +
+            '   rol_id,' +
+            '   rol.nombre AS nombre_rol ' +
+            'FROM ' +
+            '   usuario ' +
+            'INNER JOIN ' +
+            '   rol ON usuario.rol_id = rol.id ';
+
+        let countQuery = 'SELECT COUNT(*) AS count FROM usuario';
+
+        let queryParams = [`${limit}`, `${offset}`];
+        let countParams = [];
+
+        if (role_id) {
+            query += 'WHERE rol_id = ? ';
+            countQuery += ' WHERE rol_id = ?';
+            queryParams.unshift(`${role_id}`);
+            countParams.push(`${role_id}`);
+        }
+
+        query += 'ORDER BY usuario.id ASC ' +
+            'LIMIT ? OFFSET ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, queryParams);
+            const [count] = await dbConn.execute(countQuery, countParams);
+            const total = count[0].count;
+            const actualPage = page;
+            const totalPages = Math.ceil(total / limit);
+
+            return { rows, total, actualPage, totalPages };
+        } catch (err) {
+            console.log(err);
+            throw new Error('Error al obtener los usuarios.');
+        }
+    }
+
+    static async findPacienteById(dbConn, id) {
+        const query =
+            'SELECT ' +
+            '   usuario.id,' +
+            '   email,' +
+            '   usuario.nombre,' +
+            '   primer_apellido,' +
+            '   segundo_apellido,' +
+            '   dni,' +
+            '   num_historia_clinica, ' +
+            '   fecha_nacimiento, ' +
+            '   tipo_via, ' +
+            '   nombre_via, ' +
+            '   numero, ' +
+            '   piso, ' +
+            '   puerta, ' +
+            '   provincia_id, ' +
+            '   municipio, ' +
+            '   codigo_postal, ' +
+            '   tel_fijo, ' +
+            '   tel_movil ' +
+            'FROM ' +
+            '   usuario ' +
+            'INNER JOIN ' +
+            '   rol ON usuario.rol_id = rol.id ' +
+            'INNER JOIN ' +
+            '   paciente ON usuario.id = paciente.usuario_id ' +
+            'INNER JOIN ' +
+            '   municipio ON paciente.municipio = municipio.id ' +
+            'INNER JOIN ' +
+            '   provincia ON municipio.provincia_id = provincia.id ' +
+            'WHERE ' +
+            '   usuario.id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [id]);
+            let paciente = rows[0];
+            paciente.fecha_nacimiento = new Date(paciente.fecha_nacimiento).toISOString().split('T')[0];
+            return paciente;
+        } catch (err) {
+            throw new Error('Error al obtener el paciente.');
+        }
+    }
+
+    static async findEspecialistaById(dbConn, id) {
+        const query =
+            'SELECT ' +
+            '   usuario.id,' +
+            '   email,' +
+            '   usuario.nombre,' +
+            '   primer_apellido,' +
+            '   segundo_apellido,' +
+            '   dni,' +
+            '   num_colegiado, ' +
+            '   descripcion, ' +
+            '   especialidad_id, ' +
+            '   consulta_id, ' +
+            '   turno, ' +
+            '   imagen, ' +
+            '   descripcion ' +
+            'FROM ' +
+            '   usuario ' +
+            'INNER JOIN ' +
+            '   rol ON usuario.rol_id = rol.id ' +
+            'INNER JOIN ' +
+            '   especialista ON usuario.id = especialista.usuario_id ' +
+            'WHERE ' +
+            '   usuario.id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [id]);
+            return rows[0];
+        } catch (err) {
+            throw new Error('Error al obtener el especialista.');
+        }
+    }
+
+    static async findRoleById(dbConn, id) {
+        const query =
+            'SELECT rol_id FROM usuario ' +
+            'WHERE id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [id]);
+            return rows[0].rol_id;
+        } catch (err) {
+            throw new Error('Error al obtener el rol del usuario.');
+        }
+    }
+
     static async findByEmail(dbConn, email) {
         const query =
             'SELECT * FROM usuario ' +
@@ -104,7 +245,7 @@ class UsuarioModel {
 
     static async findById(dbConn, id) {
         const query =
-            'SELECT * FROM usuario ' +
+            'SELECT FROM usuario ' +
             'WHERE id = ?';
 
         try {
@@ -112,6 +253,23 @@ class UsuarioModel {
             return rows[0];
         } catch (err) {
             throw new Error('Error al obtener el usuario.');
+        }
+    }
+
+    static async update(dbConn, usuario) {
+        const query =
+            'UPDATE usuario ' +
+            'SET email = ?, nombre = ?, primer_apellido = ?, ' +
+            'segundo_apellido = ?, dni = ? ' +
+            'WHERE id = ?';
+
+        try {
+            await dbConn.execute(
+                query,
+                [usuario.email, usuario.nombre, usuario.primer_apellido,
+                    usuario.segundo_apellido, usuario.dni, usuario.id]);
+        } catch (err) {
+            throw new Error('Error al actualizar el usuario.');
         }
     }
 }

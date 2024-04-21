@@ -8,7 +8,7 @@ exports.getPacienteMedicamento = async (req, res) => {
     if (req.user_role === 2) {
         paciente_id = req.user_id;
     } else if (req.user_role === 3) {
-        paciente_id = req.params.paciente_id;
+        paciente_id = req.params.usuario_id;
     }
 
     try {
@@ -28,7 +28,7 @@ exports.getPacienteMedicamentoPDF = async (req, res) => {
     if (req.user_role === 2) {
         paciente_id = req.user_id;
     } else if (req.user_role === 3) {
-        paciente_id = req.params.paciente_id;
+        paciente_id = req.params.usuario_id;
     }
 
     try {

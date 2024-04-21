@@ -1,7 +1,12 @@
 const { format } = require('date-fns');
 
 class CitaModel {
-    static async fetchAll(dbConn, page, paciente_id) {
+    static async fetchAll(dbConn, searchValues) {
+        const page = searchValues.page;
+        const paciente_id = searchValues.paciente_id;
+        const fechaInicio = searchValues.fechaInicio;
+        const fechaFin = searchValues.fechaFin;
+
         const limit = 10;
         const offset = ((page - 1) * limit);
 
@@ -35,6 +40,7 @@ class CitaModel {
             '   consulta ON especialista.consulta_id = consulta.id ' +
             'WHERE ' +
             '   cita.paciente_id = ? ' +
+            '   AND cita.fecha BETWEEN ? AND ? ' +
             'ORDER BY ' +
             '   cita.fecha DESC, ' +
             '   cita.hora DESC ' +
@@ -42,11 +48,13 @@ class CitaModel {
 
         try {
             const [rows] =
-                await dbConn.execute(query, [paciente_id, `${limit}`, `${offset}`]);
+                await dbConn.execute(query, [paciente_id, fechaInicio, fechaFin, `${limit}`, `${offset}`]);
             const [count] =
                 await dbConn.execute(
-                    'SELECT COUNT(*) AS count FROM cita WHERE paciente_id = ?',
-                    [paciente_id]
+                    'SELECT COUNT(*) AS count FROM cita ' +
+                    'WHERE paciente_id = ? ' +
+                    'AND fecha BETWEEN ? AND ?',
+                    [paciente_id, fechaInicio, fechaFin]
                 );
             const total = count[0].count;
             const actualPage = page;
@@ -83,6 +91,7 @@ class CitaModel {
 
             return { rows: [formattedRows], total, actualPage, totalPages };
         } catch (err) {
+            console.log(err);
             throw new Error('No se pudieron obtener las citas.');
         }
     }

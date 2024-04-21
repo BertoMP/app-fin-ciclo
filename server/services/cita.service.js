@@ -2,8 +2,8 @@ const dbConn = require('../util/database/database');
 const CitaModel = require('../models/cita.model');
 
 class CitaService {
-    static async readCitas(page, paciente_id) {
-        return await CitaModel.fetchAll(dbConn, page, paciente_id);
+    static async readCitas(searchValues) {
+        return await CitaModel.fetchAll(dbConn, searchValues);
     }
 
     static async readCitaById(id) {

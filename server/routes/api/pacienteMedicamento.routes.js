@@ -6,14 +6,14 @@ const tokenRole = require('../../helpers/jwt/tokenRole');
 const tokenUserId = require('../../helpers/jwt/tokenUserId');
 
 const { validatePacienteMedicamento } = require('../../helpers/validators/pacienteMedicamento.validator');
-const { validatePacienteIdParam } = require("../../helpers/validators/params/pacienteIdParam.validator");
+const { validateUsuarioIdParam } = require("../../helpers/validators/params/usuarioIdParam.validator");
 const { validateMedicamentoIdParam } = require("../../helpers/validators/params/medicamentoIdParam.validator");
 
 // Rutas GET
-router.get('/paciente-medicamento/pdf/:paciente_id',
+router.get('/paciente-medicamento/pdf/:usuario_id',
     tokenVerify,
     tokenRole([3]),
-    validatePacienteIdParam,
+    validateUsuarioIdParam,
     pacienteMedicamentoController.getPacienteMedicamentoPDF);
 
 router.get('/paciente-medicamento/pdf',
@@ -22,10 +22,10 @@ router.get('/paciente-medicamento/pdf',
     tokenUserId,
     pacienteMedicamentoController.getPacienteMedicamentoPDF);
 
-router.get('/paciente-medicamento/:paciente_id',
+router.get('/paciente-medicamento/:usuario_id',
     tokenVerify,
     tokenRole([3]),
-    validatePacienteIdParam,
+    validateUsuarioIdParam,
     pacienteMedicamentoController.getPacienteMedicamento);
 
 router.get('/paciente-medicamento',
@@ -35,27 +35,27 @@ router.get('/paciente-medicamento',
     pacienteMedicamentoController.getPacienteMedicamento);
 
 // Rutas POST
-router.post('/paciente-medicamento/:paciente_id',
+router.post('/paciente-medicamento/:usuario_id',
     tokenVerify,
     tokenRole([3]),
-    validatePacienteIdParam,
+    validateUsuarioIdParam,
     validatePacienteMedicamento,
     pacienteMedicamentoController.postPacienteMedicamento);
 
 // Rutas PUT
-router.put('/paciente-medicamento/:paciente_id/:medicamento_id',
+router.put('/paciente-medicamento/:usuario_id/:medicamento_id',
     tokenVerify,
     tokenRole([3]),
-    validatePacienteIdParam,
+    validateUsuarioIdParam,
     validateMedicamentoIdParam,
     validatePacienteMedicamento,
     pacienteMedicamentoController.putPacienteMedicamento);
 
 // Rutas DELETE
-router.delete('/paciente-medicamento/:paciente_id/:medicamento_id',
+router.delete('/paciente-medicamento/:usuario_id/:medicamento_id',
     tokenVerify,
     tokenRole([3]),
-    validatePacienteIdParam,
+    validateUsuarioIdParam,
     validateMedicamentoIdParam,
     pacienteMedicamentoController.deletePacienteMedicamento);
 

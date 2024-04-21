@@ -5,7 +5,8 @@ const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
 
 const { validateMedicamento } = require('../../helpers/validators/medicamento.validator');
-const { validatePaginationQueryParams } = require("../../helpers/validators/params/paginationQueryParams.validator");
+const { validatePaginationQueryParams } = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const { validateDateQueryParams } = require("../../helpers/validators/queryParams/dateQueryParams.validator");
 const { validateMedicamentoIdParam } = require("../../helpers/validators/params/medicamentoIdParam.validator");
 
 // Rutas GET
@@ -19,6 +20,7 @@ router.get('/medicamento',
     tokenVerify,
     tokenRole([3]),
     validatePaginationQueryParams,
+    validateDateQueryParams,
     MedicamentoController.getMedicamentos
 );
 
