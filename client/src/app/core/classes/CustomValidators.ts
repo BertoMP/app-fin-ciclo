@@ -1,53 +1,53 @@
-import {FormControl, FormGroup} from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 
 export class CustomValidators {
-  static validEmail(control: FormControl): {[s: string]: boolean} | null {
+  static validEmail(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp = new RegExp('^[\\w.%+-]+@[a-z\\d]+(\\.[a-zA-Z]{2,})*$');
 
     if (!regex.test(value)) {
-      return {'isInvalidMail': true}
+      return { 'isInvalidMail': true }
     }
 
     return null;
   }
 
-  static validName(control: FormControl): {[s: string]: boolean} | null {
+  static validName(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp
       = new RegExp('^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$');
 
     if (!regex.test(value)) {
-      return {'isInvalidName': true}
+      return { 'isInvalidName': true }
     }
 
     return null;
   }
 
-  static validSurname(control: FormControl): {[s: string]: boolean} | null {
+  static validSurname(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp
       = new RegExp('^((de|del|la)\\s)*[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+([\\s|\\-][A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$');
 
     if (!regex.test(value)) {
-      return {'isInvalidSurname': true}
+      return { 'isInvalidSurname': true }
     }
 
     return null;
   }
 
-  static validDni(control: FormControl): {[s: string]: boolean} | null {
+  static validDni(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp = new RegExp('^[0-9]{8}[A-Z]$');
 
     if (!regex.test(value)) {
-      return {'isInvalidDni': true}
+      return { 'isInvalidDni': true }
     }
 
     return null;
   }
 
-  static validDateOfBirth(control: FormControl): {[s: string]: boolean} | null {
+  static validDateOfBirth(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
 
@@ -57,57 +57,57 @@ export class CustomValidators {
 
     const mes = fecha_actual.getMonth() - fecha_nacimiento.getMonth();
     if (mes < 0 || (mes === 0 && fecha_actual.getDate() < fecha_nacimiento.getDate())) {
-        edad--;
+      edad--;
     }
 
-    if (!regex.test(value) || edad >= 120) {
-      return {'isInvalidDateOfBirth': true}
+    if (!regex.test(value) || edad > 120 || edad < 0) {
+      return { 'isInvalidDateOfBirth': true }
     }
 
     return null;
   }
 
-  static validPassword(control: FormControl): {[s: string]: boolean} | null {
+  static validPassword(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp
       = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,}$');
 
     if (!regex.test(value)) {
-      return {'isInvalidPassword': true}
+      return { 'isInvalidPassword': true }
     }
 
     return null;
   }
 
-  static validAddress(control: FormControl): {[s: string]: boolean} | null {
+  static validAddress(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp =
       new RegExp('^((de|del|la)\\s)*[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$');
 
     if (!regex.test(value)) {
-      return {'isInvalidAddress': true}
+      return { 'isInvalidAddress': true }
     }
 
     return null;
   }
 
-  static validNumber(control: FormControl): {[s: string]: boolean} | null {
+  static validNumber(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp = new RegExp('^[1-9]\\d{0,3}$');
 
     if (!regex.test(value)) {
-      return {'isInvalidNumber': true}
+      return { 'isInvalidNumber': true }
     }
 
     return null;
   }
 
-  static validDoor(control: FormControl): {[s: string]: boolean} | null {
+  static validDoor(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp = new RegExp('^(([1-9]\\d{0,3})|[A-ZÑ])$');
 
     if (!regex.test(value)) {
-      return {'isInvalidDoor': true}
+      return { 'isInvalidDoor': true }
     }
 
     return null;
@@ -125,34 +125,34 @@ export class CustomValidators {
   //   return null;
   // }
 
-  static validPostalCode(control: FormControl): {[s: string]: boolean} | null {
+  static validPostalCode(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp = new RegExp('^\\d{5}$');
 
     if (!regex.test(value)) {
-      return {'isInvalidPostalCode': true}
+      return { 'isInvalidPostalCode': true }
     }
 
     return null;
   }
 
-  static validPhone(control: FormControl): {[s: string]: boolean} | null {
+  static validPhone(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp = new RegExp('^((\\+34|0034)\\s)?9[0-9]{8}$');
 
     if (!regex.test(value)) {
-      return {'isInvalidPhone': true}
+      return { 'isInvalidPhone': true }
     }
 
     return null;
   }
 
-  static validMobile(control: FormControl): {[s: string]: boolean} | null {
+  static validMobile(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp = new RegExp('^((\\+34|0034)\\s)?[67][0-9]{8}$');
 
     if (!regex.test(value)) {
-      return {'isInvalidMobile': true}
+      return { 'isInvalidMobile': true }
     }
 
     return null;

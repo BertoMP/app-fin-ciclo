@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           this.isLoading = false;
           this.loginForm.reset();
+          alert(response.message);
         },
         error: (error: string): void => {
           this.error = error;

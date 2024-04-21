@@ -24,16 +24,13 @@
              id="password"
              formControlName="password"
       >
-      @if (loginForm.get('password').invalid
-      && loginForm.get('password').dirty) {
         @if (loginForm.get('password').invalid
         && loginForm.get('password').dirty) {
           <p class="invalid">La contraseña es necesaria para iniciar sesión.</p>
         }
-      }
     </section>
     <section>
-      <button type="button" routerLink="/auth/fogotten-password"
+      <button type="button" routerLink="/auth/forgotten-password"
       >He olvidado mi contraseña
       </button>
     </section>

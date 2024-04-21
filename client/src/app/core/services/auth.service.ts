@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   login(email: string, passsword: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/login`, {
+    return this.http.post(`${this.apiUrl}/usuario/login`, {
       email: email,
       password: passsword
     }
@@ -29,8 +29,8 @@ export class AuthService {
 
 
   private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage: string = errorRes.error.errors[0]??'Ha ocurrido un error durante el proceso';
-    console.log(errorRes.error);
+    let errorMessage: string = errorRes.error.errors??'Ha ocurrido un error durante el proceso';
+    
 
     return throwError(() => new Error(errorMessage));
   }

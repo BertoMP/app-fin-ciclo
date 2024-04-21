@@ -6,7 +6,7 @@ import {
   Validators
 } from "@angular/forms";
 import { CustomValidators } from "../../../core/classes/CustomValidators";
-import { LowerCasePipe, NgClass } from "@angular/common";
+import { CommonModule, LowerCasePipe, NgClass } from "@angular/common";
 import { ProvinceService } from "../../../core/services/province.service";
 import { Router } from "@angular/router";
 import { UserModel } from "../../../core/interfaces/user.model";
@@ -30,7 +30,8 @@ import { Select2Module, Select2Data } from 'ng-select2-component';
     LowerCasePipe,
     NgClass,
     LoadingSpinnerComponent,
-    Select2Module
+    Select2Module,
+    CommonModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
@@ -39,7 +40,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   sendedAttempt: boolean = false;
   isLoading: boolean = false;
-  error: string = null;
+  errores: string[] = [];
 
   places: Select2Data;
   provinces: Select2Data;
@@ -241,7 +242,8 @@ export class RegisterComponent implements OnInit {
         },
         error: (error: HttpErrorResponse): void => {
           this.isLoading = false;
-          this.error=error.message;        }
+          this.errores=error.message.split(',');   
+           }
       });
 
   }

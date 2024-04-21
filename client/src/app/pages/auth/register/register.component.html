@@ -306,8 +306,8 @@
             }
           </ul>
         </section>
-      } @else if (error) {
-        <p class="error-message">{{ error }}</p>
+      } @else if (errores.length>0) {
+          <p class="error-message" *ngFor="let error of errores">{{ error }}</p>
       }
       <section class="btn-section">
         <button type="submit">Registrarse</button>
