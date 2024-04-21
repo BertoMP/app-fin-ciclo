@@ -2,7 +2,6 @@ const { param, validationResult } = require('express-validator');
 
 exports.validateProvinciaIdParam = [
     param('provincia_id')
-        .optional()
         .isNumeric().withMessage('El ID de la provincia debe ser un valor numérico.')
         .custom(value => {
             if (value < 1) {
