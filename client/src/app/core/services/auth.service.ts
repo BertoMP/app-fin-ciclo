@@ -29,21 +29,8 @@ export class AuthService {
 
 
   private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage: string = 'Ha ocurrido un error durante el proceso';
-    if(!errorRes.error) {
-      return throwError(() => new Error(errorMessage));
-    }
-
-    switch (errorRes.error) {
-      case 'EMAIL_EXISTS':
-        errorMessage = 'El email ya se encuentra en uso.';
-        break;
-      case 'EMAIL_NOT_FOUND':
-      case 'INVALID_PASSWORD':
-      case 'INVALID_LOGIN_CREDENTIALS':
-        errorMessage = 'Email y/o contraseña incorrectos.'
-        break;
-    }
+    let errorMessage: string = errorRes.error.errors[0]??'Ha ocurrido un error durante el proceso';
+    console.log(errorRes.error);
 
     return throwError(() => new Error(errorMessage));
   }

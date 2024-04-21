@@ -1,26 +1,26 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators
 } from "@angular/forms";
-import {CustomValidators} from "../../../core/classes/CustomValidators";
-import {LowerCasePipe, NgClass} from "@angular/common";
-import {ProvinceService} from "../../../core/services/province.service";
-import {Router} from "@angular/router";
-import {UserModel} from "../../../core/interfaces/user.model";
-import {AuthService} from "../../../core/services/auth.service";
+import { CustomValidators } from "../../../core/classes/CustomValidators";
+import { LowerCasePipe, NgClass } from "@angular/common";
+import { ProvinceService } from "../../../core/services/province.service";
+import { Router } from "@angular/router";
+import { UserModel } from "../../../core/interfaces/user.model";
+import { AuthService } from "../../../core/services/auth.service";
 import {
   LoadingSpinnerComponent
 } from "../../../shared/components/loading-spinner/loading-spinner.component";
-import {ProvinceModel} from "../../../core/interfaces/province.model";
-import {MunicipioModel} from "../../../core/interfaces/municipio.model";
-import {TipoViaModel} from "../../../core/interfaces/tipo-via.model";
-import {MunicipioService} from "../../../core/services/municipio.service";
-import {TipoViaService} from "../../../core/services/tipo-via.service";
-import {HttpErrorResponse} from "@angular/common/http";
-import { Select2Module,Select2Data } from 'ng-select2-component';
+import { ProvinceModel } from "../../../core/interfaces/province.model";
+import { MunicipioModel } from "../../../core/interfaces/municipio.model";
+import { TipoViaModel } from "../../../core/interfaces/tipo-via.model";
+import { MunicipioService } from "../../../core/services/municipio.service";
+import { TipoViaService } from "../../../core/services/tipo-via.service";
+import { HttpErrorResponse } from "@angular/common/http";
+import { Select2Module, Select2Data } from 'ng-select2-component';
 
 @Component({
   selector: 'app-register',
@@ -46,10 +46,10 @@ export class RegisterComponent implements OnInit {
   municipios: Select2Data;
 
   constructor(private provinceService: ProvinceService,
-              private municipioService: MunicipioService,
-              private tipoViaService: TipoViaService,
-              private router: Router,
-              private authService: AuthService) {
+    private municipioService: MunicipioService,
+    private tipoViaService: TipoViaService,
+    private router: Router,
+    private authService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -176,11 +176,11 @@ export class RegisterComponent implements OnInit {
       .subscribe({
         next: (places: TipoViaModel[]) => {
           this.places = places.map((place: TipoViaModel) => {
-              return {
-                value: place.id,
-                label: place.nombre
-              }
-            });
+            return {
+              value: place.id,
+              label: place.nombre
+            }
+          });
 
         },
         error: (error: HttpErrorResponse) => {
@@ -236,20 +236,19 @@ export class RegisterComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.isLoading = false;
-          this.registerForm.reset();
           alert('Te has registrado correctamente');
-          setTimeout(()=>{this.router.navigate(['auth/login'])},3000);
+          this.router.navigate(['auth/login']);
         },
         error: (error: HttpErrorResponse): void => {
           this.isLoading = false;
-        }
+          this.error=error.message;        }
       });
 
   }
 
   onCancel(): void {
     this.router.navigate(['/auth/login'])
-      .then(() => {})
+      .then(() => { })
       .catch((error) => console.error('Error navigating to login', error));
   }
 
@@ -271,7 +270,7 @@ export class RegisterComponent implements OnInit {
       municipio: this.registerForm.get('municipio').value,
       tel_fijo: this.registerForm.get('tel_fijo').value,
       tel_movil: this.registerForm.get('tel_movil').value,
-      codigo_postal:this.registerForm.get('codigo_postal').value
+      codigo_postal: this.registerForm.get('codigo_postal').value
     }
   }
 }
