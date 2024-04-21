@@ -8,18 +8,8 @@ module.exports = (req, res, next) => {
             const decodedToken =
                 jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-            let user_id = req.params.user_id;
-
-            if (!user_id) {
-                user_id = req.body.user_id;
-            }
-
-            if (decodedToken.user_role !== 3
-                && decodedToken.user_id !== parseInt(user_id)) {
-                return res.status(403).json({
-                    errors: ['No tienes permiso para acceder a esta información.'],
-                });
-            }
+            // Extraer el userId del token decodificado y almacenar el userId en el objeto req
+            req.userId = decodedToken.user_id;
 
             next();
         } catch (error) {
