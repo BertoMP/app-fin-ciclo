@@ -197,7 +197,7 @@ exports.postLogin = async (req, res) => {
     try {
         const user = await UsuarioService.readUsuarioByEmail(email);
         if (!user) {
-            return res.status(401).json({
+            return res.status(403).json({
                 errors: ['Correo o contraseña incorrectos.']
             });
         }
@@ -205,7 +205,7 @@ exports.postLogin = async (req, res) => {
         const validPassword = await bcrypt.compare(password, user.password);
 
         if (!validPassword) {
-            return res.status(401).json({
+            return res.status(403).json({
                 errors: ['Correo o contraseña incorrectos.']
             });
         }
