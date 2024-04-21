@@ -15,9 +15,9 @@
           <label for="name">Nombre</label>
           <input type="text"
                  id="name"
-                 formControlName="name"
+                 formControlName="nombre"
                  [ngClass]="{'invalid':
-               registerForm.get('name').invalid
+               registerForm.get('nombre').invalid
                && sendedAttempt
                }"
           >
@@ -26,9 +26,9 @@
           <label for="first-surname">Primer apellido</label>
           <input type="text"
                  id="first-surname"
-                 formControlName="first-surname"
+                 formControlName="primer_apellido"
                  [ngClass]="{ 'invalid':
-               registerForm.get('first-surname').invalid &&
+               registerForm.get('primer_apellido').invalid &&
                sendedAttempt
                }"
           >
@@ -37,9 +37,9 @@
           <label for="second-surname">Segundo apellido</label>
           <input type="text"
                  id="second-surname"
-                 formControlName="second-surname"
+                 formControlName="segundo_apellido"
                  [ngClass]="{ 'invalid':
-               registerForm.get('second-surname').invalid
+               registerForm.get('segundo_apellido').invalid
                && sendedAttempt
                }"
           >
@@ -59,9 +59,9 @@
           <label for="date-of-birth">Fecha de nacimiento</label>
           <input type="date"
                  id="date-of-birth"
-                 formControlName="date-of-birth"
+                 formControlName="fecha_nacimiento"
                  [ngClass]="{ 'invalid':
-                registerForm.get('date-of-birth').invalid
+                registerForm.get('fecha_nacimiento').invalid
                 && sendedAttempt
                 }"
           >
@@ -96,8 +96,8 @@
         <legend>Dirección y contacto</legend>
         <article class="place-field">
           <label for="place">Plaza/Calle</label>
-          <select2  id="place" formControlName="place"
-                  [ngClass]="{ 'invalid': registerForm.get('place').invalid &&
+          <select2  id="place" formControlName="tipo_via"
+                  [ngClass]="{ 'invalid': registerForm.get('tipo_via').invalid &&
                 sendedAttempt }" [data]="places" placeholder="Elige una opcion">
           </select2>
         </article>
@@ -105,9 +105,9 @@
           <label for="address">Dirección</label>
           <input type="text"
                  id="address"
-                 formControlName="address"
+                 formControlName="nombre_via"
                  [ngClass]="{ 'invalid':
-               registerForm.get('address').invalid &&
+               registerForm.get('nombre_via').invalid &&
                sendedAttempt  } "
           >
         </article>
@@ -115,9 +115,9 @@
           <label for="number">Nº</label>
           <input type="number"
                  id="number"
-                 formControlName="number"
+                 formControlName="numero"
                  [ngClass]="{ 'invalid':
-               registerForm.get('number').invalid &&
+               registerForm.get('numero').invalid &&
                sendedAttempt }"
           >
         </article>
@@ -125,9 +125,9 @@
           <label for="floor">Piso</label>
           <input type="number"
                  id="floor"
-                 formControlName="floor"
+                 formControlName="piso"
                  [ngClass]="{ 'invalid':
-               registerForm.get('floor').invalid &&
+               registerForm.get('piso').invalid &&
                sendedAttempt }"
           >
         </article>
@@ -135,9 +135,9 @@
           <label for="door">Puerta</label>
           <input type="text"
                  id="door"
-                 formControlName="door"
+                 formControlName="puerta"
                  [ngClass]="{ 'invalid':
-               registerForm.get('door').invalid &&
+               registerForm.get('puerta').invalid &&
                sendedAttempt }"
           >
         </article>
@@ -151,33 +151,33 @@
         </article>
         <article class="city-field">
           <label for="city">Ciudad</label>
-          <select2 formControlName="city" id="city"
+          <select2 formControlName="municipio" id="city"
                   [ngClass]="{ 'invalid':
-               registerForm.get('city').invalid &&
+               registerForm.get('municipio').invalid &&
                sendedAttempt }" [data]="municipios" placeholder="Elige una opcion">
           </select2>
         </article>
         <article class="postal-code-field">
           <label for="postal-code">CP</label>
-          <input type="number" formControlName="postal-code" id="postal-code"
+          <input type="number" formControlName="codigo_postal" id="postal-code"
                  [ngClass]="{ 'invalid':
-               registerForm.get('postal-code').invalid &&
+               registerForm.get('codigo_postal').invalid &&
                sendedAttempt }"
           >
         </article>
         <article class="phone-field">
           <label for="phone">Teléfono</label>
-          <input type="text" formControlName="phone" id="phone"
+          <input type="text" formControlName="tel_fijo" id="phone"
                  [ngClass]="{ 'invalid':
-               registerForm.get('phone').invalid &&
+               registerForm.get('tel_fijo').invalid &&
                sendedAttempt }"
           >
         </article>
         <article class="mobile-field">
           <label for="mobile">Móvil</label>
-          <input type="text" formControlName="mobile" id="mobile"
+          <input type="text" formControlName="tel_movil" id="mobile"
                  [ngClass]="{ 'invalid':
-               registerForm.get('mobile').invalid &&
+               registerForm.get('tel_movil').invalid &&
                sendedAttempt }"
           >
         </article>
@@ -186,14 +186,14 @@
         <section class="error-message">
           <h3>Por favor, rellena todos los campos correctamente:</h3>
           <ul>
-            @if (registerForm.get('name').invalid) {
+            @if (registerForm.get('nombre').invalid) {
               <li>
                 <strong>Nombre:</strong> Debe empezar por mayúscula y el resto de
                 letras en minúsculas, salvo en el caso de nombres compuestos.
               </li>
             }
 
-            @if (registerForm.get('first-surname').invalid) {
+            @if (registerForm.get('primer_apellido').invalid) {
               <li>
                 <strong>Primer apellido:</strong> Debe empezar por mayúscula y
                 el resto de letras en minúsculas, salvo en el caso de apellidos
@@ -201,7 +201,7 @@
               </li>
             }
 
-            @if (registerForm.get('second-surname').invalid) {
+            @if (registerForm.get('segundo_apellido').invalid) {
               <li>
                 <strong>Segundo apellido:</strong> Debe empezar por mayúscula y
                 el resto de letras en minúsculas, salvo en el caso de apellidos
@@ -216,7 +216,7 @@
               </li>
             }
 
-            @if (registerForm.get('date-of-birth').invalid) {
+            @if (registerForm.get('fecha_nacimiento').invalid) {
               <li>
                 <strong>Fecha de nacimiento:</strong> Seleccione una fecha
                 usando el calendario o introduzca una en formato: DD/MM/AAAA.
@@ -237,13 +237,13 @@
               </li>
             }
 
-            @if (registerForm.get('place').invalid) {
+            @if (registerForm.get('tipo_via').invalid) {
               <li>
                 <strong>Plaza/Calle:</strong> Debe seleccionar una opción.
               </li>
             }
 
-            @if (registerForm.get('address').invalid) {
+            @if (registerForm.get('nombre_via').invalid) {
               <li>
                 <strong>Dirección:</strong> Debe empezar por mayúscula y el
                 resto de letras en minúsculas, salvo en el caso de nombres
@@ -251,19 +251,19 @@
               </li>
             }
 
-            @if (registerForm.get('number').invalid) {
+            @if (registerForm.get('numero').invalid) {
               <li>
                 <strong>Nº:</strong> Debe ser un número.
               </li>
             }
 
-            @if (registerForm.get('floor').invalid) {
+            @if (registerForm.get('piso').invalid) {
               <li>
                 <strong>Piso:</strong> Debe ser un número.
               </li>
             }
 
-            @if (registerForm.get('door').invalid) {
+            @if (registerForm.get('puerta').invalid) {
               <li>
                 <strong>Puerta:</strong> Debe ser un número o una letra mayúscula.
               </li>
@@ -275,19 +275,19 @@
               </li>
             }
 
-            @if (registerForm.get('city').invalid) {
+            @if (registerForm.get('municipio').invalid) {
               <li>
                 <strong>Ciudad:</strong> Debe seleccionar una opción.
               </li>
             }
 
-            @if (registerForm.get('postal-code').invalid) {
+            @if (registerForm.get('codigo_postal').invalid) {
               <li>
                 <strong>CP:</strong> Debe ser un número de 5 dígitos.
               </li>
             }
 
-            @if (registerForm.get('phone').invalid) {
+            @if (registerForm.get('tel_fijo').invalid) {
               <li>
                 <strong>Teléfono:</strong> Debe ser un número de 9 dígitos.
                 Empezando por 9. En el caso de prefijos internacionales, puede
@@ -296,7 +296,7 @@
               </li>
             }
 
-            @if (registerForm.get('mobile').invalid) {
+            @if (registerForm.get('tel_movil').invalid) {
               <li>
                 <strong>Móvil:</strong> Debe ser un número de 9 dígitos.
                 Empezando por 6 o por 7. En el caso de prefijos internacionales,

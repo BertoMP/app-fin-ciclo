@@ -54,21 +54,21 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerForm = new FormGroup<any>({
-      'name': new FormControl(
+      'nombre': new FormControl(
         null,
         [
           Validators.required,
           CustomValidators.validName
         ]
       ),
-      'first-surname': new FormControl(
+      'primer_apellido': new FormControl(
         null,
         [
           Validators.required,
           CustomValidators.validSurname
         ]
       ),
-      'second-surname': new FormControl(
+      'segundo_apellido': new FormControl(
         null,
         [
           Validators.required,
@@ -82,7 +82,7 @@ export class RegisterComponent implements OnInit {
           CustomValidators.validDni
         ]
       ),
-      'date-of-birth': new FormControl(
+      'fecha_nacimiento': new FormControl(
         null,
         [
           Validators.required,
@@ -103,34 +103,34 @@ export class RegisterComponent implements OnInit {
           CustomValidators.validPassword
         ]
       ),
-      'place': new FormControl(
+      'tipo_via': new FormControl(
         null,
         [
           Validators.required
         ]
       ),
-      'address': new FormControl(
+      'nombre_via': new FormControl(
         null,
         [
           Validators.required,
           CustomValidators.validAddress
         ]
       ),
-      'number': new FormControl(
+      'numero': new FormControl(
         null,
         [
           Validators.required,
           CustomValidators.validNumber
         ]
       ),
-      'floor': new FormControl(
+      'piso': new FormControl(
         null,
         [
           Validators.required,
           CustomValidators.validNumber
         ]
       ),
-      'door': new FormControl(
+      'puerta': new FormControl(
         null,
         [
           Validators.required,
@@ -143,27 +143,27 @@ export class RegisterComponent implements OnInit {
           Validators.required
         ]
       ),
-      'city': new FormControl(
+      'municipio': new FormControl(
         null,
         [
           Validators.required,
         ]
       ),
-      'postal-code': new FormControl(
+      'codigo_postal': new FormControl(
         null,
         [
           Validators.required,
           CustomValidators.validPostalCode
         ]
       ),
-      'phone': new FormControl(
+      'tel_fijo': new FormControl(
         null,
         [
           Validators.required,
           CustomValidators.validPhone
         ]
       ),
-      'mobile': new FormControl(
+      'tel_movil': new FormControl(
         null,
         [
           Validators.required,
@@ -237,6 +237,8 @@ export class RegisterComponent implements OnInit {
         next: (response) => {
           this.isLoading = false;
           this.registerForm.reset();
+          alert('Te has registrado correctamente');
+          setTimeout(()=>{this.router.navigate(['auth/login'])},3000);
         },
         error: (error: HttpErrorResponse): void => {
           this.isLoading = false;
@@ -253,22 +255,23 @@ export class RegisterComponent implements OnInit {
 
   private generateUser(): UserModel {
     return {
-      name: this.registerForm.get('name').value,
-      firstSurname: this.registerForm.get('first-surname').value,
-      secondSurname: this.registerForm.get('second-surname').value,
+      nombre: this.registerForm.get('nombre').value,
+      primer_apellido: this.registerForm.get('primer_apellido').value,
+      segundo_apellido: this.registerForm.get('segundo_apellido').value,
       dni: this.registerForm.get('dni').value,
-      dateOfBirth: this.registerForm.get('date-of-birth').value,
+      fecha_nacimiento: this.registerForm.get('fecha_nacimiento').value,
       email: this.registerForm.get('email').value,
       password: this.registerForm.get('password').value,
-      place: this.registerForm.get('place').value,
-      address: this.registerForm.get('address').value,
-      number: this.registerForm.get('number').value,
-      floor: this.registerForm.get('floor').value,
-      door: this.registerForm.get('door').value,
+      tipo_via: this.registerForm.get('tipo_via').value,
+      nombre_via: this.registerForm.get('nombre_via').value,
+      numero: this.registerForm.get('numero').value,
+      piso: this.registerForm.get('piso').value,
+      puerta: this.registerForm.get('puerta').value,
       province: this.registerForm.get('province').value,
-      city: this.registerForm.get('city').value,
-      phone: this.registerForm.get('phone').value,
-      mobile: this.registerForm.get('mobile').value
+      municipio: this.registerForm.get('municipio').value,
+      tel_fijo: this.registerForm.get('tel_fijo').value,
+      tel_movil: this.registerForm.get('tel_movil').value,
+      codigo_postal:this.registerForm.get('codigo_postal').value
     }
   }
 }

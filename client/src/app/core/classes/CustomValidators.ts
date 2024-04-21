@@ -51,7 +51,16 @@ export class CustomValidators {
     const value = control.value;
     const regex: RegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
 
-    if (!regex.test(value)) {
+    const fecha_nacimiento = new Date(value);
+    const fecha_actual = new Date();
+    let edad = fecha_actual.getFullYear() - fecha_nacimiento.getFullYear();
+
+    const mes = fecha_actual.getMonth() - fecha_nacimiento.getMonth();
+    if (mes < 0 || (mes === 0 && fecha_actual.getDate() < fecha_nacimiento.getDate())) {
+        edad--;
+    }
+
+    if (!regex.test(value) || edad >= 120) {
       return {'isInvalidDateOfBirth': true}
     }
 

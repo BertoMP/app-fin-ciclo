@@ -94,8 +94,9 @@ button:disabled {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-areas:
+    ". . ."
     "name first-surname second-surname"
-    "dni date-of-birth gender";
+    "dni date-of-birth .";
   gap: 1rem;
   align-content: center;
 }
@@ -112,7 +113,7 @@ button:disabled {
   grid-area: second-surname;
 }
 
-.dni-field{
+.dni-field {
   grid-area: dni;
 }
 
@@ -145,12 +146,16 @@ button:disabled {
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(3, 1fr);
   grid-template-areas:
-    "place address address number floor door"
-    "province province city city postal-code ."
-    "phone phone mobile mobile . .";
+    "legend  legend  . . . ."
+    " place address address number floor door"
+    "province province city city postal-code postal-code"
+    ". phone phone mobile  mobile .";
   gap: 1rem;
 }
 
+.form-contact-data legend{
+  grid-area: legend;
+}
 .place-field {
   grid-area: place;
 }
@@ -211,16 +216,21 @@ select.invalid {
   border-color: red;
   background-color: lightcoral;
 }
-#province,#city,#place{
+
+#province,
+#city,
+#place {
   --select2-placeholder-color: black;
 }
 
-#province.invalid,#city.invalid,#place.invalid{
+#province.invalid,
+#city.invalid,
+#place.invalid {
   --select2-selection-background: lightcoral;
   --select2-selection-border-color: red;
 }
 
-select.invalid > option {
+select.invalid>option {
   background-color: white;
 }
 
@@ -253,7 +263,7 @@ select.invalid > option {
     justify-content: space-evenly;
   }
 
-  .form-account-data > article {
+  .form-account-data>article {
     width: 50%;
   }
 }
@@ -291,7 +301,7 @@ select.invalid > option {
     justify-content: center;
   }
 
-  .form-account-data > article {
+  .form-account-data>article {
     width: 100%;
   }
 }
