@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {catchError, Observable, throwError} from "rxjs";
+import {catchError, Observable, tap, throwError} from "rxjs";
 import {environment} from "../../environments/environment";
 import {UserModel} from "../interfaces/user.model";
 
@@ -24,13 +24,32 @@ export class AuthService {
       email: email,
       password: passsword
     }
-    ).pipe(catchError(this.handleError));
+    ).pipe(
+      catchError(this.handleError),
+      tap((response) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('refreshToken', response.refreshToken);
+      }));
   }
 
+  getAuthToken(): string {
+    return localStorage.getItem('token')??'';
+  }
+
+  refreshToken(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/usuario/refresh-token`, {
+      refreshToken: localStorage.getItem('refreshToken')
+    }).pipe(
+      catchError(this.handleError),
+      tap((response) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('refreshToken', response.refreshToken);
+      }));
+  }
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage: string = errorRes.error.errors??'Ha ocurrido un error durante el proceso';
-    
+
 
     return throwError(() => new Error(errorMessage));
   }
