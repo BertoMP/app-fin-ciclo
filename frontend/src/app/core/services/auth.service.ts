@@ -4,6 +4,7 @@ import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
 import {environment} from "../../environments/environment";
 import {UserModel} from "../interfaces/user.model";
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 
 @Injectable({
@@ -32,7 +33,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/usuario/login`, {
       email: email,
       password: password
-    });
+    })
   }
 
   logout(): Observable<any> {
@@ -108,8 +109,6 @@ export class AuthService {
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage: string = errorRes.error.errors??'Ha ocurrido un error durante el proceso';
 
-    console.log(errorMessage);
-
-    return throwError(() => new Error(errorMessage));
+    return throwError(() => errorMessage);
   }
 }

@@ -7,7 +7,7 @@ import { catchError, switchMap, filter, take } from 'rxjs/operators';
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
 
-  private isRefreshing = false;
+  private isRefreshing: boolean = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(public authService: AuthService) {}
@@ -18,7 +18,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
       if (error instanceof HttpErrorResponse && error.status === 401) {
         return this.handle401Error(req, next);
       } else {
-        return throwError(() => new Error(error));
+        return throwError(() => error);
       }
     }));
   }
@@ -38,7 +38,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
           this.isRefreshing = false;
           this.authService.removeTokens();
           location.reload();
-          return throwError(() => new Error(error));
+          return throwError(() => error);
         })
       );
 

@@ -24,7 +24,7 @@ export class LoginInterceptor implements HttpInterceptor {
           }
         }),
         catchError((error) => {
-          return throwError(() => new Error(error));
+          return throwError(() => error);
         })
       );
   }

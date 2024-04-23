@@ -12,6 +12,7 @@ import {AuthService} from "../../../core/services/auth.service";
 import {
   LoadingSpinnerComponent
 } from "../../../shared/components/loading-spinner/loading-spinner.component";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-login',
@@ -76,8 +77,8 @@ export class LoginComponent implements OnInit {
           this.loginForm.reset();
           this.router.navigate(['/testeo']).then(r => {});
         },
-        error: (error: string): void => {
-          this.error = error.toString().replace(/Error: /g, ' ');
+        error: (error: HttpErrorResponse): void => {
+          this.error = error.error.errors[0].toString().replace(/Error: /g, '');
           this.isLoading = false;
         }
       });
