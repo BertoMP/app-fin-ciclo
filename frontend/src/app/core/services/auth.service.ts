@@ -65,6 +65,7 @@ export class AuthService {
     const refreshToken: string = this.getRefreshToken();
 
     if (!refreshToken || this.jwtHelper.isTokenExpired(refreshToken)) {
+      this.removeTokens();
       this.loggedInUser.next(false);
     }
 
