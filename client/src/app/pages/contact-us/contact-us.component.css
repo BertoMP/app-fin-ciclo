@@ -161,3 +161,38 @@ iframe{
     box-shadow: 0px 10px 50px gray;
     border-radius: 3px;
 }
+
+/* .error-message ul{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    margin-left: 5%;
+} */
+
+.error-message {
+    font-size: .8rem;
+    background-color: lightcoral !important;
+    border: 1px solid red;
+    padding: 0.5rem;
+    border-radius: 2px 2px 8px 8px;
+    height: fit-content;
+  }
+
+  .error-message ul {
+    padding: 1rem;
+  }
+  
+  .error-message li {
+    text-align: justify;
+  }
+
+  input.invalid,
+textarea.invalid {
+  border-color: red;
+  background-color: lightcoral;
+}
+
+input::placeholder,textarea::placeholder{
+    color: black;
+}
+  

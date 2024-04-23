@@ -5,6 +5,10 @@ exports.validateContacto = [
         .trim()
         .notEmpty().withMessage('El nombre no puede estar vacío.')
         .isString().withMessage('El nombre debe ser una cadena de texto.'),
+        body('descripcion')
+        .trim()
+        .notEmpty().withMessage('La descripción no puede estar vacía.')
+        .isString().withMessage('La descripción debe ser una cadena de texto.'),
     body('email')
         .trim()
         .notEmpty().withMessage('El email no puede estar vacío.')
