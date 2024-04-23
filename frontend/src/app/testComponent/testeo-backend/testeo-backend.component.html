@@ -1,0 +1,34 @@
+@if (isUserLoggedIn) {
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+              <h1>Dashboard</h1>
+              @switch (userRole) {
+                @case(1) {
+                  <p>Eres admin.</p>
+                }
+                @case(2) {
+                  <p>Eres paciente.</p>
+                }
+                @case(3) {
+                  <p>Eres doctor.</p>
+                }
+              }
+
+              <button class="btn btn-primary" (click)="onLogout()">Logout</button>
+              <button class="btn btn-primary" (click)="onListCitas()">Listado citas</button>
+              <button class="btn btn-primary" (click)="onListPacientes()">Listado usuarios</button>
+              <button class="btn btn-primary" (click)="onListMedicamentos()">Listado medicamentos</button>
+            </div>
+        </div>
+    </div>
+} @else {
+  <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Dashboard</h1>
+                <p>Debes estar logado para ver este contenido.</p>
+            </div>
+        </div>
+  </div>
+}

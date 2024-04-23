@@ -1,0 +1,52 @@
+@if (isLoading) {
+  <h2>Intentando login...</h2>
+  <app-loading-spinner></app-loading-spinner>
+} @else {
+  <form [formGroup]="loginForm" (ngSubmit)="onLoginAttempt()">
+    <h2>LOGIN</h2>
+    <section class="form-section">
+      <label for="email">Email</label>
+      <input type="email"
+             id="email"
+             formControlName="email"
+      >
+      @if (loginForm.get('email').invalid && loginForm.get('email').dirty) {
+        @if (loginForm.get('email').errors['required']) {
+          <p class="invalid">El email es necesario para iniciar sesión.</p>
+        } @else if (loginForm.get('email').errors['isInvalidMail']) {
+          <p class="invalid">El email ingresado no tiene un formato válido.</p>
+        }
+      }
+    </section>
+    <section class="form-section">
+      <label for="password">Contraseña</label>
+      <input type="password"
+             id="password"
+             formControlName="password"
+      >
+        @if (loginForm.get('password').invalid
+        && loginForm.get('password').dirty) {
+          <p class="invalid">La contraseña es necesaria para iniciar sesión.</p>
+        }
+    </section>
+    <section>
+      <button type="button" routerLink="/auth/forgotten-password"
+      >He olvidado mi contraseña
+      </button>
+    </section>
+    <section>
+      <button type="submit"
+              [disabled]="!loginForm.valid"
+      >Iniciar sesión
+      </button>
+    </section>
+  </form>
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+  <section>
+    <p>¿No tienes cuenta?
+      <button routerLink="/auth/register">Registrate</button>
+    </p>
+  </section>
+}

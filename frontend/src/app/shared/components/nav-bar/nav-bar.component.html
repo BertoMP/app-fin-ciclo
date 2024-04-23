@@ -1,0 +1,31 @@
+<section class="icons" (click)="onToggleMenu($event)">
+  @if (isMenuOpen) {
+    <i class="bi bi-x"></i>
+  } @else {
+    <i class="bi bi-list"></i>
+  }
+</section>
+
+<nav class="navbar">
+  <a [routerLink]="'/sobre-nosotros'" [routerLinkActive]="'active'">La clínica</a>
+  <a [routerLink]="'/nuestros-servicios'" [routerLinkActive]="'active'">Servicios</a>
+  <a [routerLink]="'/contacto'" [routerLinkActive]="'active'">Contacto</a>
+  @if (isUserLoggedIn) {
+    <a [routerLink]="'/testeo'" [routerLinkActive]="'active'">Testeo</a>
+  } @else {
+    <a [routerLink]="'/auth'" [routerLinkActive]="'active'">MediAPP</a>
+  }
+</nav>
+
+<nav class="navbar-mobile"
+     [ngClass]="{'open': isMenuOpen}"
+>
+  <a [routerLink]="'/sobre-nosotros'" style="--i:0" [routerLinkActive]="'active'">La clínica</a>
+  <a [routerLink]="'/nuestros-servicios'" style="--i:1" [routerLinkActive]="'active'">Servicios</a>
+  <a [routerLink]="'/contacto'" style="--i:2" [routerLinkActive]="'active'">Contacto</a>
+   @if (isUserLoggedIn) {
+      <a [routerLink]="'/testeo'" style="--i:3" [routerLinkActive]="'active'">Testeo</a>
+    } @else {
+      <a [routerLink]="'/auth'" style="--i:3" [routerLinkActive]="'active'">MediAPP</a>
+    }
+</nav>

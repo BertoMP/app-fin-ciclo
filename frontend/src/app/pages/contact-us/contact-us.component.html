@@ -1,0 +1,105 @@
+<div class="contacto">
+    <h1>Contacta con nosotros</h1>
+
+    <h2>¡ Contacta con nuestro equipo y ubícanos !</h2>
+    <section class="contenedor">
+        <a href="tel:{{staticTelef}}">
+            <img src="assets/img/icons/telephone-icon.png" class="icon horizontal" alt="Teléfono">
+            <p>Teléfono: {{staticTelef}}</p>
+        </a>
+        <a (click)="onClick(mapa)">
+            <img src="assets/img/icons/ubication-icon.png" class="icon vertical" alt="ubicación">
+            <p>Ubicación: {{staticUbication}}</p>
+        </a>
+        <a (click)="onClick(formulario)">
+            <img src="assets/img/icons/mail-icon.png" class="icon horizontal" alt="email">
+            <p>Email: {{staticEmail}}</p>
+        </a>
+    </section>
+
+    <h2>¡ Te esperamos en nuestra clínica !</h2>
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6074.3681938430345!2d-3.5589082244717587!3d40.42692225501965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42300e669f51a1%3A0xfac2e4067e66eeb4!2sIES%20Luis%20Braille!5e0!3m2!1ses!2ses!4v1712695884441!5m2!1ses!2ses"
+        title="Ubicación clínica" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        gestureHandling="none" class="mapaUbicacion" #mapa></iframe>
+
+    <h2>¡ Cuéntanos tu experiencia !</h2>
+    <form class="contenedor" #formulario [formGroup]="registerForm" (ngSubmit)="onSubmitEmail()" >
+        <h3>Haznos saber tu opinión</h3>
+        <input type="text" name="nombre" placeholder="Nombre*" formControlName="nombre" 
+        [ngClass]="{'invalid':
+        registerForm.get('nombre').invalid
+        && sendedAttempt
+        }">
+        <br><br>
+        <input type="text" name="descripcion" placeholder="Descripción*" formControlName="descripcion"
+         [ngClass]="{'invalid':
+        registerForm.get('descripcion').invalid
+        && sendedAttempt
+        }">
+        <br><br>
+        <input type="text" name="email" placeholder="Email*" formControlName="email" 
+        [ngClass]="{'invalid':
+        registerForm.get('email').invalid
+        && sendedAttempt
+        }">
+        <br><br>
+        <input type="text" name="telefono" placeholder="Telefono*" formControlName="telefono" 
+        [ngClass]="{'invalid':
+        registerForm.get('telefono').invalid
+        && sendedAttempt
+        }">
+        <br><br>
+        <textarea placeholder="Cuéntanos cualquier incidencia" formControlName="mensaje" 
+        [ngClass]="{'invalid':
+        registerForm.get('mensaje').invalid
+        && sendedAttempt
+        }"></textarea>
+        <div class="botones">
+            <button type="submit">Enviar</button>
+            <button type="reset">Borrar</button>
+        </div>
+        @if (registerForm.invalid && sendedAttempt) {
+        <h3>Por favor, rellena todos los campos correctamente:</h3>
+        <section class="error-message">
+            <ul>
+                @if (registerForm.get('nombre').invalid) {
+                <li>
+                    <strong>Nombre:</strong> Debe empezar por mayúscula y el resto de
+                    letras en minúsculas, salvo en el caso de nombres compuestos.
+                </li>
+                }
+
+                @if (registerForm.get('descripcion').invalid) {
+                <li>
+                    <strong>Descripción:</strong> Es un campo requerido.
+                </li>
+                }
+
+                @if (registerForm.get('email').invalid) {
+                <li>
+                    <strong>Email:</strong> Debe tener un formato
+                    válido (usuario&#64;dominio.com | usuario&#64;dominio).
+                </li>
+                }
+
+                @if (registerForm.get('telefono').invalid) {
+                <li>
+                    <strong>Teléfono:</strong> Debe ser un número de 9 dígitos.
+                    Empezando por 6 o por 7. En el caso de prefijos internacionales,
+                    puede colocar el valor de las siguientes formas: +34 623456789 o
+                    0034 723456789.
+                </li>
+                }
+                @if (registerForm.get('mensaje').invalid) {
+                <li>
+                    <strong>Mensaje:</strong> Es un campo requerido.
+                </li>
+                }
+            </ul>
+        </section>
+        } @else if (errores.length>0) {
+            <p class="error-message" *ngFor="let error of errores">{{ error }}</p>
+        }
+    </form>
+</div>

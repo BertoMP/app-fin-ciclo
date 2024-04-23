@@ -1,0 +1,13 @@
+<article class="card">
+  <figure>
+    <img src="{{ info.image }}" alt="Imagen de {{ info.title | lowercase }}">
+  </figure>
+  <section class="contenido">
+    <h3>{{ info.title }}</h3>
+    <p>{{ info.description }}</p>
+    <article>
+      <button [routerLink]="routerLink" [fragment]="fragment"
+      >Ver especialistas</button>
+    </article>
+  </section>
+</article>
