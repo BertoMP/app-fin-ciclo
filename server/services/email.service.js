@@ -91,7 +91,7 @@ class EmailService {
         const mailDetails = {
             from: process.env.EMAIL_ACCOUNT,
             to: process.env.EMAIL_ACCOUNT,
-            subject: `Nuevo mensaje de contacto - ${contacto.nombre}`,
+            subject: `${contacto.descripcion}`,
             html: html
         }
 

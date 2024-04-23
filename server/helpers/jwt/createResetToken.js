@@ -6,7 +6,7 @@ const createResetToken = (user) => {
     };
 
     return jwt.sign(payload, process.env.JWT_RESET_SECRET_KEY,
-        { expiresIn: '1h'
+        { expiresIn: '5h'
         });
 }
 

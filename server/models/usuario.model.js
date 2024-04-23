@@ -230,14 +230,14 @@ class UsuarioModel {
         }
     }
 
-    static async updateRefreshToken(dbConn, email, refreshToken) {
+    static async updateRefreshToken(dbConn, userId, refreshToken) {
         const query =
             'UPDATE usuario ' +
             'SET refresh_token = ? ' +
-            'WHERE email = ?';
+            'WHERE id = ?';
 
         try {
-            await dbConn.execute(query, [refreshToken, email]);
+            await dbConn.execute(query, [refreshToken, userId]);
         } catch (err) {
             throw new Error('Error al actualizar el token de refresco.');
         }
@@ -245,7 +245,7 @@ class UsuarioModel {
 
     static async findById(dbConn, id) {
         const query =
-            'SELECT FROM usuario ' +
+            'SELECT * FROM usuario ' +
             'WHERE id = ?';
 
         try {

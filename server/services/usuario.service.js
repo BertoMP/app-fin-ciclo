@@ -151,8 +151,8 @@ class UsuarioService {
         }
     }
 
-    static async updateRefreshToken(email, refreshToken) {
-        return await UsuarioModel.updateRefreshToken(dbConn, email, refreshToken);
+    static async updateRefreshToken(userId, refreshToken) {
+        return await UsuarioModel.updateRefreshToken(dbConn, userId, refreshToken);
     }
 
     static async readUsuarioById(id) {

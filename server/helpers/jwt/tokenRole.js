@@ -2,12 +2,12 @@ const jwt = require('jsonwebtoken');
 
 module.exports = (roles) => {
     return (req, res, next) => {
-        let token = req.headers['authorization'];
-        if (token) {
-            token = token.split('Bearer ')[1];
+        let accessToken = req.headers['authorization'];
+        if (accessToken) {
+            accessToken = accessToken.split('Bearer ')[1];
             try {
                 const decodedToken =
-                    jwt.verify(token, process.env.JWT_SECRET_KEY);
+                    jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
 
                 if (!decodedToken || !roles.includes(decodedToken.user_role)) {
                     return res.status(403).json({

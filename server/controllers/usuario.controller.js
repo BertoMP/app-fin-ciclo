@@ -213,12 +213,12 @@ exports.postLogin = async (req, res) => {
         const accessToken = createToken(user);
         const refreshToken = createRefreshToken(user);
 
-        await UsuarioService.updateRefreshToken(email, refreshToken);
+        await UsuarioService.updateRefreshToken(user.id, refreshToken);
 
         return res.status(200).json({
             message: 'Inicio de sesión exitoso.',
-            token: accessToken,
-            refreshToken: refreshToken
+            access_token: accessToken,
+            refresh_token: refreshToken
         });
     } catch (err) {
         return res.status(500).json({ errors: [err.message] });
@@ -253,10 +253,10 @@ exports.postForgotPassword = async (req, res) => {
 }
 
 exports.postResetPassword = async (req, res) => {
-    const token = req.body.token;
+    const accessToken = req.body.access_token;
     const newPassword = req.body.password;
 
-    jwt.verify(token, process.env.JWT_RESET_SECRET_KEY, async (err, decodedToken) => {
+    jwt.verify(accessToken, process.env.JWT_RESET_SECRET_KEY, async (err, decodedToken) => {
         if (err) {
             return res.status(403).json({
                 errors: ['Token invalido o expirado.']
@@ -340,6 +340,7 @@ exports.postRefreshToken = async (req, res) => {
     const refreshToken = req.body.refresh_token;
 
     if (!refreshToken) {
+        console.log('No se proporcionó el token de actualización.')
         return res.status(403).json({
             errors: ['No se proporcionó el token de actualización.']
         });
@@ -364,12 +365,12 @@ exports.postRefreshToken = async (req, res) => {
         const newAccessToken = createToken(user);
         const newRefreshToken = createRefreshToken(user);
 
-        await UsuarioService.updateRefreshToken(user.email, newRefreshToken);
+        await UsuarioService.updateRefreshToken(user.id, newRefreshToken);
 
         return res.status(200).json({
             message: 'Token de acceso renovado exitosamente.',
-            accessToken: newAccessToken,
-            refreshToken: newRefreshToken
+            access_token: newAccessToken,
+            refresh_token: newRefreshToken
         });
     } catch (err) {
         return res.status(403).json({
