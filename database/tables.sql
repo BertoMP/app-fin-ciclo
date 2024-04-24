@@ -23,6 +23,10 @@ DROP TABLE IF EXISTS codigo_postal_municipio;
 DROP TABLE IF EXISTS codigo_postal;
 DROP TABLE IF EXISTS municipio;
 DROP TABLE IF EXISTS provincia;
+DROP TABLE IF EXISTS patologia;
+DROP TABLE IF EXISTS informe_patologia;
+DROP TABLE IF EXISTS paciente_medicamento_toma;
+DROP TABLE IF EXISTS toma;
 
 -- Eliminación de los eventos si existen
 DROP EVENT IF EXISTS limpiar_tabla_tokens;
@@ -397,16 +401,3 @@ CREATE TABLE paciente_medicamento_toma (
             FOREIGN KEY (toma_id)
             REFERENCES toma (id)
 );
-
--- Creación de los eventos
--- Evento para limpiar la tabla tokens
-DELIMITER $$
-
-CREATE EVENT limpiar_tabla_tokens
-    ON SCHEDULE EVERY 1 DAY STARTS CONCAT(CURRENT_DATE, ' 02:00:00')
-    DO
-    BEGIN
-        TRUNCATE TABLE token;
-    END $$
-
-DELIMITER ;

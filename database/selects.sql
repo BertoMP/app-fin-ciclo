@@ -34,11 +34,17 @@ SELECT * FROM cita;
 -- Select de la tabla medicamento
 SELECT * FROM medicamento;
 
--- Select de la tabla paciente_medicamento
-SELECT * FROM paciente_medicamento;
+-- Select de la tabla paciente_toma_medicamento
+SELECT * FROM paciente_toma_medicamento;
 
 -- Select de la tabla tension_arterial
 SELECT * FROM tension_arterial;
 
 -- Select de la tabla glucometria
 SELECT * FROM glucometria;
+
+-- Select de la tabla patologia
+SELECT * FROM patologia;
+
+-- Select de la tabla toma
+SELECT * FROM toma;
