@@ -9,8 +9,6 @@ const storage = multer.diskStorage({
         } else if (req.path.includes('especialistas')
             || req.path.includes('registro-especialista')) {
             uploadPath += '/especialistas';
-        } else if (req.path.includes('pacientes')) {
-            uploadPath += '/pacientes';
         } else {
             cb(new Error('Invalid path'), null);
             return;
