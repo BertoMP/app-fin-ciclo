@@ -19,6 +19,8 @@ DROP TABLE IF EXISTS token;
 DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS rol;
 DROP TABLE IF EXISTS tipo_via;
+DROP TABLE IF EXISTS codigo_postal_municipio;
+DROP TABLE IF EXISTS codigo_postal;
 DROP TABLE IF EXISTS municipio;
 DROP TABLE IF EXISTS provincia;
 
@@ -38,14 +40,35 @@ CREATE TABLE provincia (
 
 -- Tabla municipio
 CREATE TABLE municipio (
-	id				INT AUTO_INCREMENT,
     provincia_id	INT,
+    id				VARCHAR(255),
     nombre			VARCHAR(255),
 		CONSTRAINT pk_municipio
 			PRIMARY KEY (id),
 		CONSTRAINT fk_municipio_provincia
 			FOREIGN KEY (provincia_id) 
             REFERENCES provincia (id)
+);
+
+-- Tabla codigo_postal
+CREATE TABLE codigo_postal (
+	codigo_postal	VARCHAR(255),
+		CONSTRAINT pk_codigo_postal
+			PRIMARY KEY (codigo_postal)
+);
+
+-- Tabla codigo_postal_municipio
+CREATE TABLE codigo_postal_municipio (
+	codigo_postal_id	VARCHAR(255),
+    municipio_id		VARCHAR(255),
+		CONSTRAINT pk_codigo_postal_municipio
+			PRIMARY KEY (codigo_postal_id, municipio_id),
+		CONSTRAINT fk_codigo_postal
+			FOREIGN KEY (codigo_postal_id)
+            REFERENCES codigo_postal (codigo_postal),
+		CONSTRAINT fk_municipio
+			FOREIGN KEY (municipio_id)
+            REFERENCES municipio (id)
 );
 
 -- Tabla tipo_via
@@ -189,8 +212,8 @@ CREATE TABLE paciente (
     numero                  INT,
     piso                    INT,
     puerta                  VARCHAR(255),
-    municipio               INT,
-    codigo_postal           INT,
+    municipio               VARCHAR(255),
+    codigo_postal           VARCHAR(255),
     tel_fijo                INT,
     tel_movil               INT,
         CONSTRAINT pk_paciente
@@ -209,8 +232,8 @@ CREATE TABLE paciente (
                    codigo_postal IS NOT NULL AND
                    tel_fijo IS NOT NULL AND
                    tel_movil IS NOT NULL),
-        CONSTRAINT ck_paciente_codigo_postal
-            CHECK (codigo_postal BETWEEN 10000 AND 99999),
+		CONSTRAINT ck_paciente_codigo_postal
+			CHECK (codigo_postal REGEXP '^[0-9]{5}$'),
         CONSTRAINT ck_paciente_tel_fijo
             CHECK (tel_fijo REGEXP '^(\\+34|0034|34)?-?9[0-9]{8}$'),
         CONSTRAINT ck_paciente_tel_movil
@@ -221,6 +244,9 @@ CREATE TABLE paciente (
         CONSTRAINT fk_paciente_municipio
             FOREIGN KEY (municipio)
             REFERENCES municipio (id),
+		CONSTRAINT fk_paciente_codigo_postal
+			FOREIGN KEY (codigo_postal)
+            REFERENCES codigo_postal (codigo_postal),
         CONSTRAINT fk_paciente_usuario
             FOREIGN KEY (usuario_id)
             REFERENCES usuario (id)
@@ -230,14 +256,40 @@ CREATE TABLE paciente (
 CREATE TABLE informe (
     id          INT AUTO_INCREMENT,
     motivo      VARCHAR(255),
-    patologia   VARCHAR(255),
     contenido   TEXT,
         CONSTRAINT pk_informe
             PRIMARY KEY (id),
         CONSTRAINT ck_informe_null
             CHECK (motivo IS NOT NULL AND
-                   patologia IS NOT NULL AND
                    contenido IS NOT NULL)
+);
+
+-- Tabla patologia
+CREATE TABLE patologia (
+    id          INT AUTO_INCREMENT,
+    nombre      VARCHAR(255),
+    descripcion TEXT,
+        CONSTRAINT pk_patologia
+            PRIMARY KEY (id),
+        CONSTRAINT uq_patologia_nombre
+            UNIQUE (nombre),
+        CONSTRAINT ck_patologia_null
+            CHECK (nombre IS NOT NULL AND
+                   descripcion IS NOT NULL)
+);
+
+-- Tabla informe_patologia
+CREATE TABLE informe_patologia (
+    informe_id      INT,
+    patologia_id    INT,
+        CONSTRAINT pk_informe_patologia
+            PRIMARY KEY (informe_id, patologia_id),
+        CONSTRAINT fk_informe_patologia_informe
+            FOREIGN KEY (informe_id)
+            REFERENCES informe (id),
+        CONSTRAINT fk_informe_patologia_patologia
+            FOREIGN KEY (patologia_id)
+            REFERENCES patologia (id)
 );
 
 -- Tabla cita
@@ -273,20 +325,17 @@ CREATE TABLE cita (
 
 -- Tabla tension_arterial
 CREATE TABLE tension_arterial (
-    id                  INT AUTO_INCREMENT,
+    paciente_id         INT,
+    fecha               DATE,
+    hora                TIME,
     sistolica           INT,
     diastolica          INT,
     pulsaciones_minuto  INT,
-    fecha               DATE,
-    hora                TIME,
-    paciente_id         INT,
         CONSTRAINT pk_tension_arterial
-            PRIMARY KEY (id),
+            PRIMARY KEY (paciente_id, fecha, hora),
         CONSTRAINT ck_tension_arterial_null
             CHECK (sistolica IS NOT NULL AND
                    diastolica IS NOT NULL AND
-                   fecha IS NOT NULL AND
-                   hora IS NOT NULL AND
                    pulsaciones_minuto IS NOT NULL),
         CONSTRAINT fk_tension_arterial_paciente
             FOREIGN KEY (paciente_id)
@@ -295,17 +344,14 @@ CREATE TABLE tension_arterial (
 
 -- Tabla glucometria
 CREATE TABLE glucometria (
-    id          INT AUTO_INCREMENT,
-    medicion    INT,
+    paciente_id INT,
     fecha       DATE,
     hora        TIME,
-    paciente_id INT,
+    medicion    INT,
         CONSTRAINT pk_glucometria
-            PRIMARY KEY (id),
+            PRIMARY KEY (paciente_id, fecha, hora),
         CONSTRAINT ck_glucometria_null
-            CHECK (medicion IS NOT NULL AND
-                   fecha IS NOT NULL AND
-                   hora IS NOT NULL),
+            CHECK (medicion IS NOT NULL),
         CONSTRAINT fk_glucometria_paciente
             FOREIGN KEY (paciente_id)
             REFERENCES paciente (usuario_id)
@@ -325,27 +371,34 @@ CREATE TABLE medicamento (
                    descripcion IS NOT NULL)
 );
 
--- Tabla paciente_medicamento
-CREATE TABLE paciente_medicamento (
-    paciente_id     INT,
-    medicamento_id  INT,
-    toma_diurna     INT,
-    toma_vespertina INT,
-    toma_nocturna   INT,
-        CONSTRAINT pk_paciente_medicamento
-            PRIMARY KEY (paciente_id, medicamento_id),
-        CONSTRAINT ck_paciente_medicamento_null
-            CHECK (toma_diurna IS NOT NULL AND
-                   toma_vespertina IS NOT NULL AND
-                   toma_nocturna IS NOT NULL),
-        CONSTRAINT fk_paciente_medicamento_paciente
-            FOREIGN KEY (paciente_id)
-            REFERENCES paciente (usuario_id),
-        CONSTRAINT fk_paciente_medicamento_medicamento
-            FOREIGN KEY (medicamento_id)
-            REFERENCES medicamento (id)
+-- Tabla toma
+CREATE TABLE toma (
+	id			INT AUTO_INCREMENT,
+    hora		DATETIME,
+    dosis		INT,
+		CONSTRAINT pk_toma
+			PRIMARY KEY (id)
 );
 
+-- Tabla paciente_medicamento_toma
+CREATE TABLE paciente_medicamento_toma (
+	paciente_id		INT,
+    medicamento_id	INT,
+    toma_id			INT,
+		CONSTRAINT pk_paciente_medicamento_toma
+			PRIMARY KEY (paciente_id, medicamento_id, toma_id),
+		CONSTRAINT fk_paciente_medicamento_tom
+			FOREIGN KEY (paciente_id)
+            REFERENCES paciente (usuario_id),
+        CONSTRAINT fk_medicamento_toma
+            FOREIGN KEY (medicamento_id)
+            REFERENCES medicamento (id),
+        CONSTRAINT fk_toma
+            FOREIGN KEY (toma_id)
+            REFERENCES toma (id)
+);
+
+-- Creación de los eventos
 -- Evento para limpiar la tabla tokens
 DELIMITER $$
 
