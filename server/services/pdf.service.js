@@ -1,4 +1,4 @@
-const PDFDocument = require('html-pdf');
+const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 const handlebars = require('handlebars');
@@ -18,115 +18,84 @@ class PdfService {
 
         medicamentos.ano = `${date.getFullYear()}`;
 
-        const html = compiledTemplate(medicamentos);
+        const bodyHtml = compiledTemplate(medicamentos);
 
-        const options = {
-            format: 'A4',
-            orientation: 'portrait',
-            border: {
-                top: '1cm',
-                right: '3cm',
-                bottom: '1cm',
-                left: '3cm'
-            },
-            header: {
-                "height": "25mm",
-                "contents": '<div style="text-align: right;">Clínica Médica Coslada, SL</div>'
-            },
-            footer: {
-                "height": "25mm",
-                "contents": '<div style="text-align: center;">Clínica Médica Coslada, SL</div>'
-            }
-        };
+        const filename = `receta_${medicamentos.datos_paciente.primer_apellido}_${medicamentos.datos_paciente.segundo_apellido}.pdf`;
 
-        const pdf = PDFDocument.create(html, options);
-        const pdfPath = path.join(__dirname, `../tmp/pdfs/receta_${medicamentos.datos_paciente.primer_apellido}_${medicamentos.datos_paciente.segundo_apellido}.pdf`);
-
-        return PdfService.createDirectoryAndGeneratePdf(pdf, pdfPath);
+        return await this.generatePDFWithTemplate(bodyHtml, filename);
     }
 
     static async generateInforme(informe) {
         const template = fs.readFileSync(path.join(templatesSource, 'informe.handlebars'), 'utf8');
         const compiledTemplate = handlebars.compile(template);
 
-        const html = compiledTemplate(informe);
+        const bodyHtml = compiledTemplate(informe);
 
-        const options = {
-            format: 'A4',
-            orientation: 'portrait',
-            border: {
-                top: '1cm',
-                right: '3cm',
-                bottom: '1cm',
-                left: '3cm'
-            },
-            header: {
-                "height": "25mm",
-                "contents": '<div style="text-align: right;">Clínica Médica Coslada, SL</div>'
-            },
-            footer: {
-                "height": "25mm",
-                "contents": '<div style="text-align: center;">Clínica Médica Coslada, SL</div>'
-            }
-        };
+        const filename = `informe_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}.pdf`;
 
-        const pdf = PDFDocument.create(html, options);
-        const pdfPath = path.join(__dirname, `../tmp/pdfs/informe_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}.pdf`);
-
-        const dir = path.dirname(pdfPath);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-        }
-
-        return PdfService.createDirectoryAndGeneratePdf(pdf, pdfPath);
+        return await this.generatePDFWithTemplate(bodyHtml, filename);
     }
 
     static async generateCitaPDF(cita, qr) {
         const template = fs.readFileSync(path.join(templatesSource, 'cita.handlebars'), 'utf8');
         const compiledTemplate = handlebars.compile(template);
 
-        const html = compiledTemplate({ cita, qr });
+        const bodyHtml = compiledTemplate({ cita, qr });
 
-        const options = {
-            format: 'A4',
-            orientation: 'portrait',
-            border: {
-                top: '1cm',
-                right: '3cm',
-                bottom: '1cm',
-                left: '3cm'
-            },
-            header: {
-                "height": "25mm",
-                "contents": '<div style="text-align: right;">Clínica Médica Coslada, SL</div>'
-            },
-            footer: {
-                "height": "25mm",
-                "contents": '<div style="text-align: center;">Clínica Médica Coslada, SL</div>'
-            }
-        };
+        const filename = `cita_${cita.datos_paciente.nombre}_${cita.datos_paciente.primer_apellido}_${cita.datos_cita.fecha}.pdf`;
 
-        const pdf = PDFDocument.create(html, options);
-        const pdfPath = path.join(__dirname, `../tmp/pdfs/cita_${cita.datos_paciente.nombre}_${cita.datos_paciente.primer_apellido}_${cita.datos_cita.fecha}.pdf`);
-
-        return PdfService.createDirectoryAndGeneratePdf(pdf, pdfPath);
+        return await this.generatePDFWithTemplate(bodyHtml, filename);
     }
 
-    static async createDirectoryAndGeneratePdf(pdf, pdfPath) {
+    static async generatePDFWithTemplate(bodyHtml, filename) {
+        const pdfPath = path.join(__dirname, `../tmp/pdfs/${filename}`);
+
         const dir = path.dirname(pdfPath);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
         }
 
-        return new Promise((resolve, reject) => {
-            pdf.toFile(pdfPath, (err, res) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(pdfPath);
-                }
-            });
-        });
+        await this.generatePDF(bodyHtml, pdfPath);
+
+        return pdfPath;
+    }
+
+    static async generatePDF(bodyHtml, pdfPath) {
+        const header = fs.readFileSync(path.join(templatesSource, 'header.handlebars'), 'utf8');
+        const compiledHeader = handlebars.compile(header);
+
+        const footer = fs.readFileSync(path.join(templatesSource, 'footer.handlebars'), 'utf8');
+        const compiledFooter = handlebars.compile(footer);
+
+        const headerHtml = compiledHeader({});
+        const footerHtml = compiledFooter({});
+
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(bodyHtml);
+
+        const options = {
+            format: 'A4',
+            displayHeaderFooter: true,
+            printBackground: true,
+            headerTemplate: headerHtml,
+            footerTemplate: footerHtml,
+            margin: {
+                top: '2cm',
+                right: '3cm',
+                bottom: '2cm',
+                left: '3cm'
+            },
+        };
+
+        const dir = path.dirname(pdfPath);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+
+        await page.pdf({ path: pdfPath, ...options });
+
+        await browser.close();
     }
 }
 

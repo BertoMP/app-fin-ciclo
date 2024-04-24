@@ -50,8 +50,10 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 
 __Frontend__:
 - _@popperjs/core_: Librería que permite la gestión de _popovers_ y _tooltips_.
+- _@types/file-saver_: Tipado de TypeScript para la librería FileSaver.
 - _bootstrap_: Framework de CSS que permite la creación de interfaces web.
 - _bootstrap-icons_: Librería que proporciona iconos de Bootstrap.
+- _file-saver_: Librería que permite la descarga de archivos desde el navegador.
 - _jquery_: Librería de JavaScript que permite la manipulación del DOM.
 - _ngprime_: Librería de componentes de Angular.
 - _ng-select2-component_: Componente de Angular que permite la integración de
@@ -68,8 +70,6 @@ archivo `.env`.
 - _express-validator_: Middleware de Express.js que permite validar y limpiar
 datos de entrada.
 - _handlebars_: Motor de plantillas que permite la generación de HTML dinámico.
-- _html-pdf_: Librería que permite la generación de archivos PDF a partir de
-código HTML.
 - _jsonwebtoken_: Librería que permite la generación y verificación de tokens 
 JWT.
 - _moment-timezone_: Librería que permite trabajar con fechas y horas en diferentes
@@ -78,6 +78,7 @@ zonas horarias.
 a través de formularios `multipart/form-data`.
 - _mysql2_: Librería que permite la conexión a bases de datos MySQL.
 - _nodemailer_: Librería que permite enviar correos electrónicos desde Node.js.
+- _puppeteer_: Librería que permite la generación de PDFs a partir de páginas web.
 - _qrcode_: Librería que permite la generación de códigos QR.
 
 ## Características principales
