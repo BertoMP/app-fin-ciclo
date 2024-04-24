@@ -45,7 +45,6 @@ class UsuarioModel {
 
             return { rows, total, actualPage, totalPages };
         } catch (err) {
-            console.log(err);
             throw new Error('Error al obtener los usuarios.');
         }
     }

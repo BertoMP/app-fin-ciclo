@@ -91,7 +91,6 @@ class CitaModel {
 
             return { rows: [formattedRows], total, actualPage, totalPages };
         } catch (err) {
-            console.log(err);
             throw new Error('No se pudieron obtener las citas.');
         }
     }
@@ -204,7 +203,6 @@ class CitaModel {
             const [rows] = await dbConn.execute(query, [especialista_id]);
             return rows;
         } catch (err) {
-            console.log(err);
             throw new Error('Error al obtener la agenda.');
         }
     }
