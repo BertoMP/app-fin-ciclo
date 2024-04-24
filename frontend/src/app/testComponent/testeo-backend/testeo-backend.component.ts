@@ -4,6 +4,7 @@ import {TesteoBackendService} from "../testeo-backend.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-testeo-backend',
@@ -84,6 +85,17 @@ export class TesteoBackendComponent implements OnInit, OnDestroy {
         },
         error: (error: HttpErrorResponse) => {
           console.error('No se pudo obtener la lista de medicamentos.');
+        }
+      });
+  }
+
+  onGetReceta(): void {
+    this.testeoBack.generaReceta()
+      .subscribe({
+        next: () => {
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('No se pudo generar la receta.', error);
         }
       });
   }
