@@ -8,18 +8,15 @@ class PdfService {
     static async generateReceta(medicamentos) {
         const template = fs.readFileSync(path.join(templatesSource, 'receta.handlebars'), 'utf8');
         const compiledTemplate = handlebars.compile(template);
-
         const date = new Date();
-        medicamentos.dia = `${date.getDate()}`;
-
         const monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio",
             "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-        medicamentos.mes = monthNames[date.getMonth()];
 
+        medicamentos.dia = `${date.getDate()}`;
+        medicamentos.mes = monthNames[date.getMonth()];
         medicamentos.ano = `${date.getFullYear()}`;
 
         const bodyHtml = compiledTemplate(medicamentos);
-
         const filename = `receta_${medicamentos.datos_paciente.primer_apellido}_${medicamentos.datos_paciente.segundo_apellido}.pdf`;
 
         return await this.generatePDFWithTemplate(bodyHtml, filename);
@@ -28,9 +25,7 @@ class PdfService {
     static async generateInforme(informe) {
         const template = fs.readFileSync(path.join(templatesSource, 'informe.handlebars'), 'utf8');
         const compiledTemplate = handlebars.compile(template);
-
         const bodyHtml = compiledTemplate(informe);
-
         const filename = `informe_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}.pdf`;
 
         return await this.generatePDFWithTemplate(bodyHtml, filename);
@@ -87,11 +82,6 @@ class PdfService {
                 left: '3cm'
             },
         };
-
-        const dir = path.dirname(pdfPath);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-        }
 
         await page.pdf({ path: pdfPath, ...options });
 
