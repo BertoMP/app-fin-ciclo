@@ -78,12 +78,10 @@ export class ContactUsComponent implements OnInit {
       return;
     }else{
       this.sendedAttempt=false;
-      console.log("Enviado");
     }
 
 
     const newCorreo: ContactoModel = this.generateContacto();
-    console.log(newCorreo);
     this.contactoService.mandarCorreo(newCorreo)
       .subscribe({
         next: (response) => {

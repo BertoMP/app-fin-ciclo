@@ -21,6 +21,10 @@ import { MunicipioService } from "../../../core/services/municipio.service";
 import { TipoViaService } from "../../../core/services/tipo-via.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Select2Module, Select2Data } from 'ng-select2-component';
+import {
+  CodigoPostalService
+} from "../../../core/services/codigo-postal.service";
+import {CodigoPostalModel} from "../../../core/interfaces/codigo-postal.model";
 
 @Component({
   selector: 'app-register',
@@ -45,10 +49,12 @@ export class RegisterComponent implements OnInit {
   places: Select2Data;
   provinces: Select2Data;
   municipios: Select2Data;
+  codigosPostales: Select2Data;
 
   constructor(private provinceService: ProvinceService,
     private municipioService: MunicipioService,
     private tipoViaService: TipoViaService,
+    private codigoPostalService: CodigoPostalService,
     private router: Router,
     private authService: AuthService) {
   }
@@ -192,10 +198,10 @@ export class RegisterComponent implements OnInit {
     this.provinceService.getProvinces()
       .subscribe({
         next: (provinces: ProvinceModel[]) => {
-          this.provinces = provinces.map((place: TipoViaModel) => {
+          this.provinces = provinces.map((province: ProvinceModel) => {
             return {
-              value: place.id,
-              label: place.nombre
+              value: province.id,
+              label: province.nombre
             }
           });
         },
@@ -209,10 +215,10 @@ export class RegisterComponent implements OnInit {
           this.municipioService.getMunicipios(province)
             .subscribe({
               next: (municipios: MunicipioModel[]) => {
-                this.municipios = municipios.map((place: TipoViaModel) => {
+                this.municipios = municipios.map((municipio: MunicipioModel) => {
                   return {
-                    value: place.id,
-                    label: place.nombre
+                    value: municipio.id,
+                    label: municipio.nombre
                   }
                 });
               },
@@ -220,6 +226,26 @@ export class RegisterComponent implements OnInit {
                 console.error('Error fetching municipios', error.error);
               }
             });
+        }
+      });
+    this.registerForm.get('municipio').valueChanges
+      .subscribe({
+        next: (municipio: string) => {
+          this.codigoPostalService.getCodigosPostales(municipio)
+            .subscribe({
+              next: (codigosPostales: CodigoPostalModel[]) => {
+                this.codigosPostales = codigosPostales.map((codigoPostal: CodigoPostalModel) => {
+                  return {
+                    value: codigoPostal.codigo_postal_id,
+                    label: codigoPostal.codigo_postal_id
+                  }
+                });
+              },
+              error: (error: HttpErrorResponse) => {
+                console.error('Error fetching codigos_postales', error.error);
+              }
+
+            })
         }
       });
   }

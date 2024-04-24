@@ -219,13 +219,15 @@ select.invalid {
 
 #province,
 #city,
-#place {
+#place,
+#postal-code {
   --select2-placeholder-color: black;
 }
 
 #province.invalid,
 #city.invalid,
-#place.invalid {
+#place.invalid,
+#postal-code.invalid {
   --select2-selection-background: lightcoral;
   --select2-selection-border-color: red;
 }

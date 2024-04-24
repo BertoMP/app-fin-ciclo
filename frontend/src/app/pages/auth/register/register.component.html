@@ -159,11 +159,11 @@
         </article>
         <article class="postal-code-field">
           <label for="postal-code">CP</label>
-          <input type="number" formControlName="codigo_postal" id="postal-code"
-                 [ngClass]="{ 'invalid':
+          <select2 formControlName="codigo_postal" id="postal-code"
+                  [ngClass]="{ 'invalid':
                registerForm.get('codigo_postal').invalid &&
-               sendedAttempt }"
-          >
+               sendedAttempt }" [data]="codigosPostales" placeholder="Elige una opcion">
+          </select2>
         </article>
         <article class="phone-field">
           <label for="phone">Teléfono</label>
