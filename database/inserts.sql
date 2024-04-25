@@ -33866,14 +33866,29 @@ VALUES
     (10, '123456793', 'Especialista en hematología con un enfoque en el diagnóstico y tratamiento de enfermedades de la sangre. Ha trabajado en varios hospitales de renombre y tiene una amplia formación en el campo.', 'imagen_hematologia.jpg', 'no-trabajando', 5, 5);
 
 -- Inserción de datos en la tabla informe
-INSERT INTO informe (motivo, patologia, contenido)
+INSERT INTO informe (motivo, contenido)
 VALUES
-    ('Dolor en el pecho', 'Arritmia', 'El paciente presenta dolor en el pecho y palpitaciones. Se recomienda realizar un electrocardiograma para evaluar la presencia de arritmias.'),
-    ('Erupción cutánea', 'Dermatitis', 'El paciente presenta una erupción cutánea en el brazo derecho. Se recomienda aplicar una crema hidratante y evitar el contacto con sustancias irritantes.'),
-    ('Fatiga y aumento de peso', 'Hipotiroidismo', 'El paciente presenta fatiga, aumento de peso y piel seca. Se recomienda realizar un análisis de sangre para evaluar la función tiroidea.'),
-    ('Dolor abdominal', 'Gastritis', 'El paciente presenta dolor abdominal y acidez estomacal. Se recomienda realizar una endoscopia para evaluar la presencia de gastritis.'),
-    ('Anemia y fatiga', 'Anemia ferropénica', 'El paciente presenta anemia y fatiga. Se recomienda realizar un análisis de sangre para evaluar los niveles de hierro y hemoglobina.');
+    ('Dolor en el pecho', 'El paciente presenta dolor en el pecho y palpitaciones. Se recomienda realizar un electrocardiograma para evaluar la presencia de arritmias.'),
+    ('Erupción cutánea',  'El paciente presenta una erupción cutánea en el brazo derecho. Se recomienda aplicar una crema hidratante y evitar el contacto con sustancias irritantes.'),
+    ('Fatiga y aumento de peso',  'El paciente presenta fatiga, aumento de peso y piel seca. Se recomienda realizar un análisis de sangre para evaluar la función tiroidea.'),
+    ('Dolor abdominal','El paciente presenta dolor abdominal y acidez estomacal. Se recomienda realizar una endoscopia para evaluar la presencia de gastritis.'),
+    ('Anemia y fatiga',  'El paciente presenta anemia y fatiga. Se recomienda realizar un análisis de sangre para evaluar los niveles de hierro y hemoglobina.');
 
+-- Inserción de datos en la tabla patologia
+INSERT INTO patologia (nombre, descripcion) 
+VALUES 
+    ('Diabetes', 'Enfermedad crónica que se caracteriza por niveles elevados de glucosa en sangre debido a la incapacidad del cuerpo para producir o utilizar adecuadamente insulina.'),
+    ('Hipertensión', 'Afección en la cual la presión arterial en las arterias es persistentemente elevada, aumentando el riesgo de enfermedades cardíacas, accidentes cerebrovasculares, etc.'),
+    ('Asma', 'Trastorno crónico de las vías respiratorias que causa inflamación y estrechamiento, provocando dificultad para respirar, tos y sibilancias.'),
+    ('Artritis', 'Inflamación de una o más articulaciones, que puede causar dolor, hinchazón y dificultad para moverse.'),
+    ('Depresión', 'Trastorno del estado de ánimo que provoca sentimientos de tristeza, pérdida de interés o placer, cambios en el apetito o el sueño, y dificultad para concentrarse.'),
+    ('Ansiedad', 'Trastorno mental caracterizado por preocupación, miedo o nerviosismo excesivo, que puede interferir con la vida diaria.'),
+    ('Enfermedad de Alzheimer', 'Trastorno neurodegenerativo progresivo que causa deterioro cognitivo y funcional, afectando la memoria, el pensamiento y el comportamiento.'),
+    ('Arritmia', 'Alteración en el ritmo cardíaco, que puede manifestarse como latidos irregulares, demasiado rápidos o demasiado lentos.'),
+    ('Dermatitis', 'Inflamación de la piel que puede causar enrojecimiento, picazón, descamación y otras molestias.'),
+    ('Hipotiroidismo', 'Trastorno en el cual la glándula tiroides no produce suficiente hormona tiroidea, lo que puede causar fatiga, aumento de peso, piel seca y otros síntomas.'),
+    ('Gastritis', 'Inflamación del revestimiento del estómago, que puede causar dolor abdominal, indigestión, náuseas y otros síntomas.'),
+    ('Anemia Ferropénica', 'Deficiencia de hierro en el cuerpo que conduce a una disminución en el número de glóbulos rojos y la capacidad de transportar oxígeno, resultando en fatiga, debilidad y otros síntomas.');
 -- Inserción de datos en la tabla cita
 INSERT INTO cita (fecha, hora, especialista_id, paciente_id, informe_id)
 VALUES
@@ -33944,17 +33959,10 @@ VALUES
     (4, 130, 85, '2024-05-22', '11:00:00', 75),
     (5, 140, 90, '2024-05-23', '12:00:00', 80),
     (8, 150, 95, '2024-05-24', '13:00:00', 85),
-    (11, 160, 100, '2024-03-25', '14:00:00', 90),
     (2, 120, 80, '2024-05-26', '10:00:00', 70),
     (4, 130, 85, '2024-05-27', '11:00:00', 75),
     (5, 140, 90, '2024-05-28', '12:00:00', 80),
-    (8, 150, 95, '2024-05-29', '13:00:00', 85),
-    (11, 160, 100, '2024-03-30', '14:00:00', 90),
-    (11, 160, 100, '2024-03-10', '14:00:00', 90),
-    (11, 160, 100, '2024-03-11', '14:00:00', 90),
-    (11, 160, 100, '2024-03-09', '14:00:00', 90),
-    (11, 160, 100, '2024-03-08', '14:00:00', 90),
-    (11, 160, 100, '2024-03-07', '14:00:00', 90);
+    (8, 150, 95, '2024-05-29', '13:00:00', 85);
 
 -- Inserción de datos en la tabla glucometria
 INSERT INTO glucometria (paciente_id, medicion, fecha, hora)
