@@ -5,6 +5,7 @@ import { ContactoModel } from '../../core/interfaces/contacto.model';
 import { CustomValidators } from '../../core/classes/CustomValidators';
 import { ContactoService } from '../../core/services/contacto.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-contact-us',
@@ -85,7 +86,12 @@ export class ContactUsComponent implements OnInit {
     this.contactoService.mandarCorreo(newCorreo)
       .subscribe({
         next: (response) => {
-          alert('Correo enviado correctamente');
+          Swal.fire({
+            title:'Enhorabuena',
+              text:'Correo enviado correctamente',
+              icon:'success',
+              width: '50%'
+          });
         },
         error: (error: HttpErrorResponse): void => {
           this.errores=error.message.split(',');
@@ -103,5 +109,4 @@ export class ContactUsComponent implements OnInit {
       mensaje: this.registerForm.get('mensaje').value
     }
   }
-
 }

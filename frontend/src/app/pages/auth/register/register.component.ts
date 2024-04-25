@@ -25,6 +25,7 @@ import {
   CodigoPostalService
 } from "../../../core/services/codigo-postal.service";
 import {CodigoPostalModel} from "../../../core/interfaces/codigo-postal.model";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -263,8 +264,13 @@ export class RegisterComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.isLoading = false;
-          alert('Te has registrado correctamente');
-          this.router.navigate(['auth/login']);
+          Swal.fire({
+            title:'Enhorabuena',
+            text:'Has conseguido registrarte correctamente',
+            icon:'success',
+            width: '50%'
+        });
+        this.router.navigate(['auth/login']);
         },
         error: (error: HttpErrorResponse): void => {
           this.isLoading = false;
