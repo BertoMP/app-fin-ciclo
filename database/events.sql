@@ -1,3 +1,6 @@
+-- Eliminación de los eventos si existen
+DROP EVENT IF EXISTS limpiar_tabla_tokens;
+
 -- Creación de los eventos
 USE clinica;
 
