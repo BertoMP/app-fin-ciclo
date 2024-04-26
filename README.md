@@ -63,6 +63,7 @@ __Frontend__:
 - _ngprime_: Librería de componentes de Angular.
 - _ng-select2-component_: Componente de Angular que permite la integración de
 la librería Select2 para la creación de elementos select con barra de búsqueda.
+- _sweetalert2_: Librería que permite la creación de alertas personalizadas.
 
 __Backend__:
 - _bcryptjs_: Librería cuya finalidad es el cifrado de contraseñas.
