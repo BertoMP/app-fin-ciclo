@@ -269,8 +269,15 @@ export class RegisterComponent implements OnInit {
             text:'Has conseguido registrarte correctamente',
             icon:'success',
             width: '50%'
-        });
-        this.router.navigate(['auth/login']);
+          })
+            .then(() => {
+              this.router.navigate(['auth/login'])
+                .then(() => { })
+                .catch((error) => console.error('Error navigating to login', error));
+            })
+            .catch(() => {
+              console.log('Se produjo un error.')
+            });
         },
         error: (error: HttpErrorResponse): void => {
           this.isLoading = false;

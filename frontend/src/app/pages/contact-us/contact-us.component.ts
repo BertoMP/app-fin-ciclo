@@ -18,21 +18,19 @@ import Swal from 'sweetalert2';
 })
 
 export class ContactUsComponent implements OnInit {
-  registerForm: FormGroup;
+  contactForm: FormGroup;
   sendedAttempt: boolean = false;
   errores: string[] = [];
-
 
   staticEmail: string = 'clinicamedicacoslada@gmail.com';
   staticUbication: string = 'Calle Coslada 4º 1ºB';
   staticTelef: string = '642 111 111';
 
-  onClick(elemento:HTMLElement) {
-    elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  constructor(private contactoService: ContactoService) {
   }
 
   ngOnInit(): void {
-    this.registerForm = new FormGroup<any>({
+    this.contactForm = new FormGroup<any>({
       'nombre': new FormControl(
         null,
         [
@@ -68,19 +66,17 @@ export class ContactUsComponent implements OnInit {
       ),
     });
   }
-  constructor(private contactoService: ContactoService) {
-    this.contactoService=contactoService;
+
+  onClick(elemento:HTMLElement) {
+    elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   onSubmitEmail(): void {
     this.sendedAttempt = true;
 
-    if (this.registerForm.invalid) {
+    if (this.contactForm.invalid) {
       return;
-    }else{
-      this.sendedAttempt=false;
     }
-
 
     const newCorreo: ContactoModel = this.generateContacto();
     this.contactoService.mandarCorreo(newCorreo)
@@ -88,10 +84,16 @@ export class ContactUsComponent implements OnInit {
         next: (response) => {
           Swal.fire({
             title:'Enhorabuena',
-              text:'Correo enviado correctamente',
-              icon:'success',
-              width: '50%'
-          });
+            text:'Correo enviado correctamente',
+            icon:'success',
+            width: '50%'
+          })
+            .then(() => {
+              this.sendedAttempt = false;
+              this.contactForm.reset();
+            })
+            .catch(() => {
+              console.log('Se produjo un error.') });
         },
         error: (error: HttpErrorResponse): void => {
           this.errores=error.message.split(',');
@@ -102,11 +104,11 @@ export class ContactUsComponent implements OnInit {
 
   private generateContacto(): ContactoModel {
     return {
-      nombre: this.registerForm.get('nombre').value,
-      descripcion:this.registerForm.get('descripcion').value,
-      email: this.registerForm.get('email').value,
-      telefono: this.registerForm.get('telefono').value,
-      mensaje: this.registerForm.get('mensaje').value
+      nombre: this.contactForm.get('nombre').value,
+      descripcion:this.contactForm.get('descripcion').value,
+      email: this.contactForm.get('email').value,
+      telefono: this.contactForm.get('telefono').value,
+      mensaje: this.contactForm.get('mensaje').value
     }
   }
 }
