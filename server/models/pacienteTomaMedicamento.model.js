@@ -7,7 +7,6 @@ class PacienteTomaMedicamentoModel {
         try {
             await dbConn.execute(query, [pacienteId, medicamentoId, tomaId]);
         } catch (error) {
-            console.log(pacienteId, medicamentoId, tomaId);
             throw new Error('Error al guardar la receta.');
         }
     }
@@ -103,13 +102,11 @@ class PacienteTomaMedicamentoModel {
                 });
             }
 
-            // Convertir el objeto a un array
             return Object.values(result).map(paciente => ({
                 paciente: paciente.paciente,
                 prescripcion: Object.values(paciente.prescripcion)
             }));
         } catch (error) {
-            console.log(error);
             throw new Error('Error al buscar las prescripciones.');
         }
     }

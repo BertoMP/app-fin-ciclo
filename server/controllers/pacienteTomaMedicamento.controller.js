@@ -3,11 +3,11 @@ const pacienteTomaMedicamentoService = require('../services/pacienteTomaMedicame
 exports.getRecetas = async (req, res) => {
     let paciente_id = req.params.usuario_id;
 
-    // if (req.user_role === 2) {
-    //     paciente_id = req.user_id;
-    // } else if (req.user_role === 3) {
-    //     paciente_id = req.params.usuario_id;
-    // }
+    if (req.user_role === 2) {
+        paciente_id = req.user_id;
+    } else if (req.user_role === 3) {
+        paciente_id = req.params.usuario_id;
+    }
 
     try {
         const prescripciones = await pacienteTomaMedicamentoService.findPrescripciones(paciente_id);

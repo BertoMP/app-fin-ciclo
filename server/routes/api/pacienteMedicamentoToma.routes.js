@@ -16,9 +16,9 @@ router.get('/prescripcion',
     pacienteTomaMedicamentoController.getRecetas);
 
 router.get('/prescripcion/:usuario_id',
-    // tokenVerify,
-    // tokenRole([3]),
-    // validateUsuarioIdParam,
+    tokenVerify,
+    tokenRole([3]),
+    validateUsuarioIdParam,
     pacienteTomaMedicamentoController.getRecetas);
 
 // router.get('/receta/pdf',
