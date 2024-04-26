@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS token;
 DROP TABLE IF EXISTS codigo_postal_municipio;
 DROP TABLE IF EXISTS informe_patologia;
 DROP TABLE IF EXISTS informe;
-DROP TABLE IF EXISTS paciente_medicamento_toma;
+DROP TABLE IF EXISTS paciente_toma_medicamento;
 DROP TABLE IF EXISTS paciente;
 DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS rol;
@@ -376,7 +376,7 @@ CREATE TABLE medicamento
 CREATE TABLE toma
 (
     id              INT AUTO_INCREMENT,
-    hora            DATETIME,
+    hora            TIME,
     dosis           INT,
     fecha_inicio    DATE,
     fecha_fin       DATE,
@@ -389,8 +389,8 @@ CREATE TABLE toma
                fecha_inicio IS NOT NULL)
 );
 
--- Tabla paciente_medicamento_toma
-CREATE TABLE paciente_medicamento_toma
+-- Tabla paciente_toma_medicamento
+CREATE TABLE paciente_toma_medicamento
 (
     paciente_id    INT,
     medicamento_id INT,

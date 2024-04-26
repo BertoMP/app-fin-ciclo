@@ -37,6 +37,9 @@ SELECT * FROM medicamento;
 -- Select de la tabla paciente_toma_medicamento
 SELECT * FROM paciente_toma_medicamento;
 
+-- Select de la tabla toma
+SELECT * FROM toma;
+
 -- Select de la tabla tension_arterial
 SELECT * FROM tension_arterial;
 
