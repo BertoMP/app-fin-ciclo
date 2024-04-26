@@ -3,7 +3,6 @@ const UsuarioModel = require('../models/usuario.model');
 const PacienteModel = require('../models/paciente.model');
 const EspecialistaModel = require('../models/especialista.model');
 const TokenModel = require('../models/token.model');
-const PacienteMedicamentoModel = require('../models/pacienteMedicamento.model');
 const TensionArterialModel = require('../models/tensionArterial.model');
 const GlucometriaModel = require('../models/glucometria.model');
 const InformeModel = require('../models/informe.model');
@@ -126,7 +125,7 @@ class UsuarioService {
 
             await TokenModel.deleteTokensByUserId(conn, id);
 
-            await PacienteMedicamentoModel.deleteMedicamentosByUserId(conn, id);
+            // await PacienteMedicamentoModel.deleteMedicamentosByUserId(conn, id);
 
             await TensionArterialModel.deleteTensionesArterialesByUserId(conn, id);
 
