@@ -13,6 +13,8 @@ exports.validatePacienteMedicamentoToma = [
         .isNumeric().withMessage('El medicamento debe ser un valor numérico.'),
     body('prescripcion.*.tomas')
         .isArray().withMessage('Las tomas del medicamento deben ser un arreglo de objetos.'),
+    body('prescripcion.*.tomas.*.toma_id')
+        .custom(value => value === null || typeof value === 'number').withMessage('El identificador de la toma debe ser null o un valor numérico.'),
     body('prescripcion.*.tomas.*.dosis')
         .trim()
         .notEmpty().withMessage('La dosis es requerida.')
@@ -39,7 +41,11 @@ exports.validatePacienteMedicamentoToma = [
                 throw new Error('La fecha de inicio debe tener el formato YYYY-MM-DD.');
             }
 
-            if (new Date(value) < new Date()) {
+            const fechaAyer = new Date();
+            fechaAyer.setDate(fechaAyer.getDate() - 1);
+            fechaAyer.setHours(0, 0, 0, 0);
+
+            if (new Date(value) < fechaAyer) {
                 throw new Error('La fecha de inicio no puede ser menor a la fecha actual.');
             }
 
@@ -55,7 +61,11 @@ exports.validatePacienteMedicamentoToma = [
                 throw new Error('La fecha de fin debe tener el formato YYYY-MM-DD.');
             }
 
-            if (new Date(value) < new Date()) {
+            const fechaAyer = new Date();
+            fechaAyer.setDate(fechaAyer.getDate() - 1);
+            fechaAyer.setHours(0, 0, 0, 0);
+
+            if (new Date(value) < fechaAyer) {
                 throw new Error('La fecha de fin no puede ser menor a la fecha actual.');
             }
 
@@ -63,7 +73,6 @@ exports.validatePacienteMedicamentoToma = [
             const medicamentoIndex = pathParts[1];
             const tomaIndex = pathParts[3];
 
-            // Comprobación de que los elementos existen antes de intentar acceder a sus propiedades
             if (req.body.prescripcion[medicamentoIndex] && req.body.prescripcion[medicamentoIndex].tomas[tomaIndex]) {
                 const fechaInicio = req.body.prescripcion[medicamentoIndex].tomas[tomaIndex].fecha_inicio;
 

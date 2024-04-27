@@ -12,12 +12,12 @@ class PdfService {
         const monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio",
             "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 
-        medicamentos.dia = `${date.getDate()}`;
-        medicamentos.mes = monthNames[date.getMonth()];
-        medicamentos.ano = `${date.getFullYear()}`;
+        medicamentos[0].fecha = `${date.getDate()} de ${monthNames[date.getMonth()]} de ${date.getFullYear()}`;
 
-        const bodyHtml = compiledTemplate(medicamentos);
-        const filename = `receta_${medicamentos.datos_paciente.primer_apellido}_${medicamentos.datos_paciente.segundo_apellido}.pdf`;
+        console.log(medicamentos[0]);
+
+        const bodyHtml = compiledTemplate(medicamentos[0]);
+        const filename = `receta_${medicamentos[0].paciente.primer_apellido}_${medicamentos[0].paciente.segundo_apellido}.pdf`;
 
         return await this.generatePDFWithTemplate(bodyHtml, filename);
     }

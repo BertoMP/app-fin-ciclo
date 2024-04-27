@@ -7,6 +7,8 @@ const TensionArterialModel = require('../models/tensionArterial.model');
 const GlucometriaModel = require('../models/glucometria.model');
 const InformeModel = require('../models/informe.model');
 const CitaModel = require('../models/cita.model');
+const PacienteTomaMedicamentoModel = require('../models/pacienteTomaMedicamento.model');
+const TomaModel = require('../models/toma.model');
 
 class UsuarioService {
     static async readAllUsuarios(searchValues) {
@@ -125,7 +127,12 @@ class UsuarioService {
 
             await TokenModel.deleteTokensByUserId(conn, id);
 
-            // await PacienteMedicamentoModel.deleteMedicamentosByUserId(conn, id);
+            const idsTomas = await PacienteTomaMedicamentoModel.findTomasByUserId(conn, id);
+
+            for (const idToma of idsTomas) {
+                await PacienteTomaMedicamentoModel.deleteToma(conn, idToma);
+                await TomaModel.deleteToma(conn, idToma);
+            }
 
             await TensionArterialModel.deleteTensionesArterialesByUserId(conn, id);
 
@@ -135,7 +142,9 @@ class UsuarioService {
 
             await CitaModel.deleteCitasByUserId(conn, id);
 
-            await InformeModel.deleteInformes(conn, idInformes);
+            for (const idInforme of idInformes) {
+                await InformeModel.deleteInforme(conn, idInforme);
+            }
 
             await PacienteModel.deletePacienteByUserId(conn, id);
 

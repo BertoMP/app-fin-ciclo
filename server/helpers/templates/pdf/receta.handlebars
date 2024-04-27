@@ -31,31 +31,44 @@
             margin-top: 2rem;
             text-align: right;
         }
+
+        .medicamento {
+            page-break-inside: avoid;
+        }
     </style>
 </head>
 <body>
 <h1 style="text-align: center;">Receta de Medicamentos</h1>
-<p><strong>Paciente:</strong> {{datos_paciente.nombre}} {{datos_paciente.primer_apellido}} {{datos_paciente.segundo_apellido}}</p>
-<table>
-    <thead>
-    <tr>
-        <th>Nombre</th>
-        <th>Toma Diurna</th>
-        <th>Toma Vespertina</th>
-        <th>Toma Nocturna</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#each medicacion_asociada}}
-        <tr>
-            <td>{{this.nombre}}</td>
-            <td>{{this.pauta.toma_diurna}}</td>
-            <td>{{this.pauta.toma_vespertina}}</td>
-            <td>{{this.pauta.toma_nocturna}}</td>
-        </tr>
-    {{/each}}
-    </tbody>
-</table>
-<p class="fecha">Coslada, a {{dia}} de {{mes}} de {{ano}}</p>
+<p><strong>Paciente: </strong>{{paciente.nombre}} {{paciente.primer_apellido}} {{paciente.segundo_apellido}}</p>
+<p><strong>Número de Historia Clínica: </strong>{{paciente.num_historia_clinica}}</p>
+{{#each prescripcion}}
+    <section class="medicamento">
+        <h2>{{nombre}}</h2>
+        <p><strong>Descripción: </strong>{{descripcion}}</p>
+        <table>
+            <thead>
+            <tr>
+                <th>Hora</th>
+                <th>Dosis</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha de fin</th>
+                <th>Observaciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each tomas}}
+                <tr>
+                    <td>{{hora}}</td>
+                    <td>{{dosis}}</td>
+                    <td>{{fecha_inicio}}</td>
+                    <td>{{fecha_fin}}</td>
+                    <td>{{observaciones}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </section>
+{{/each}}
+<p class="fecha">Coslada, a {{fecha}}</p>
 </body>
 </html>

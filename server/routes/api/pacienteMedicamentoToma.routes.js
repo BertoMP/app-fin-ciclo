@@ -7,13 +7,21 @@ const tokenUserId = require('../../helpers/jwt/tokenUserId');
 
 const { validatePacienteMedicamentoToma } = require('../../helpers/validators/pacienteMedicamentoToma.validator');
 const { validateUsuarioIdParam } = require("../../helpers/validators/params/usuarioIdParam.validator");
+const {validateTomaIdParam} = require("../../helpers/validators/params/tomaIdParam");
+const {validateMedicamentoIdParam} = require("../../helpers/validators/params/medicamentoIdParam.validator");
 
 // Rutas GET
-router.get('/prescripcion',
+router.get('/prescripcion/pdf/:usuario_id',
+    tokenVerify,
+    tokenRole([3]),
+    validateUsuarioIdParam,
+    pacienteTomaMedicamentoController.getRecetaPDF);
+
+router.get('/prescripcion/pdf',
     tokenVerify,
     tokenRole([2]),
     tokenUserId,
-    pacienteTomaMedicamentoController.getRecetas);
+    pacienteTomaMedicamentoController.getRecetaPDF);
 
 router.get('/prescripcion/:usuario_id',
     tokenVerify,
@@ -21,17 +29,11 @@ router.get('/prescripcion/:usuario_id',
     validateUsuarioIdParam,
     pacienteTomaMedicamentoController.getRecetas);
 
-// router.get('/receta/pdf',
-//     tokenVerify,
-//     tokenRole([2]),
-//     tokenUserId,
-//     pacienteMedicamentoTomaController.getRecetaPDF);
-//
-// router.get('/receta/pdf/:usuario_id',
-//     tokenVerify,
-//     tokenRole([3]),
-//     validateUsuarioIdParam,
-//     pacienteMedicamentoTomaController.getRecetaPDF);
+router.get('/prescripcion',
+    tokenVerify,
+    tokenRole([2]),
+    tokenUserId,
+    pacienteTomaMedicamentoController.getRecetas);
 
 // Rutas POST
 router.post('/prescripcion',
@@ -39,5 +41,19 @@ router.post('/prescripcion',
     tokenRole([3]),
     validatePacienteMedicamentoToma,
     pacienteTomaMedicamentoController.postReceta);
+
+// Rutas DELETE
+router.delete('/prescripcion/borrar-toma/:toma_id',
+    tokenVerify,
+    tokenRole([3]),
+    validateTomaIdParam,
+    pacienteTomaMedicamentoController.deleteToma);
+
+router.delete('/prescripcion/borrar-medicamento/:usuario_id/:medicamento_id',
+    tokenVerify,
+    tokenRole([3]),
+    validateUsuarioIdParam,
+    validateMedicamentoIdParam,
+    pacienteTomaMedicamentoController.deleteMedicamento);
 
 module.exports = router;

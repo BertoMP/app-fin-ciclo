@@ -9,6 +9,14 @@ class TomaService {
             throw new Error('Error al guardar la toma.');
         }
     }
+
+    static async deleteToma(conn, id) {
+        try {
+            await TomaModel.deleteToma(conn, id);
+        } catch (error) {
+            throw new Error('Error al eliminar la toma.');
+        }
+    }
 }
 
 module.exports = TomaService;

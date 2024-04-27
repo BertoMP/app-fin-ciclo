@@ -1,79 +1,45 @@
 const { format } = require('date-fns');
 
 class PacienteTomaMedicamentoModel {
-    static async createPacienteTomaMedicamento(dbConn, pacienteId, medicamentoId, tomaId) {
-        const query = 'INSERT INTO paciente_toma_medicamento (paciente_id, medicamento_id, toma_id) VALUES (?, ?, ?)';
-
-        try {
-            await dbConn.execute(query, [pacienteId, medicamentoId, tomaId]);
-        } catch (error) {
-            throw new Error('Error al guardar la receta.');
-        }
-    }
-
-    static async findToma(dbConn, pacienteId, medicamentoId, prescripcion) {
-        const dosis = prescripcion.dosis;
-        const hora = prescripcion.hora;
-        const fecha_inicio = prescripcion.fecha_inicio;
-
-        const query =
-            'SELECT toma_id FROM paciente_toma_medicamento ' +
-            'INNER JOIN toma ON paciente_toma_medicamento.toma_id = toma.id ' +
-            'INNER JOIN medicamento ON paciente_toma_medicamento.medicamento_id = medicamento.id ' +
-            'WHERE paciente_id = ? ' +
-            '   AND medicamento_id = ? ' +
-            '   AND dosis = ? ' +
-            '   AND hora = ? ' +
-            '   AND fecha_inicio = ?';
-
-        try {
-            const result = await dbConn.execute(query, [pacienteId, medicamentoId, dosis, hora, fecha_inicio]);
-
-            return result[0][0];
-        } catch (error) {
-            throw new Error('Error al buscar la toma.');
-        }
-    }
-
     static async findPrescripciones(dbConn, pacienteId) {
         const query =
-            "SELECT " +
-            "   usuario.id as pacienteID, " +
-            "   usuario.nombre, " +
-            "   usuario.primer_apellido, " +
-            "   usuario.segundo_apellido, " +
-            "   paciente.num_historia_clinica, " +
-            "   medicamento.id as medicamentoID, " +
-            "   medicamento.nombre as medicamentoNombre, " +
-            "   medicamento.descripcion, " +
-            "   toma.id as tomaID, " +
-            "   toma.hora, " +
-            "   toma.dosis, " +
-            "   toma.fecha_inicio, " +
-            "   toma.fecha_fin, " +
-            "   toma.observaciones " +
-            "FROM " +
-            "   paciente_toma_medicamento " +
-            "INNER JOIN " +
-            "   paciente on paciente.usuario_id = paciente_toma_medicamento.paciente_id " +
-            "INNER JOIN " +
-            "   usuario on usuario.id = paciente.usuario_id " +
-            "INNER JOIN " +
-            "   medicamento on medicamento.id = paciente_toma_medicamento.medicamento_id " +
-            "INNER JOIN " +
-            "   toma on toma.id = paciente_toma_medicamento.toma_id " +
-            "WHERE " +
-            "   usuario.id = ?";
+            'SELECT ' +
+            '   usuario.id as paciente_id, ' +
+            '   usuario.nombre, ' +
+            '   usuario.primer_apellido, ' +
+            '   usuario.segundo_apellido, ' +
+            '   paciente.num_historia_clinica, ' +
+            '   medicamento.id as medicamento_id, ' +
+            '   medicamento.nombre as medicamento_nombre, ' +
+            '   medicamento.descripcion, ' +
+            '   toma.id as toma_id, ' +
+            '   toma.hora, ' +
+            '   toma.dosis, ' +
+            '   toma.fecha_inicio, ' +
+            '   toma.fecha_fin, ' +
+            '   toma.observaciones ' +
+            'FROM ' +
+            '   paciente_toma_medicamento ' +
+            'INNER JOIN ' +
+            '   paciente on paciente.usuario_id = paciente_toma_medicamento.paciente_id ' +
+            'INNER JOIN ' +
+            '   usuario on usuario.id = paciente.usuario_id ' +
+            'INNER JOIN ' +
+            '   medicamento on medicamento.id = paciente_toma_medicamento.medicamento_id ' +
+            'INNER JOIN ' +
+            '   toma on toma.id = paciente_toma_medicamento.toma_id ' +
+            'WHERE ' +
+            '   usuario.id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [pacienteId]);
 
             const result = {};
             for (const row of rows) {
-                if (!result[row.pacienteID]) {
-                    result[row.pacienteID] = {
+                if (!result[row.paciente_id]) {
+                    result[row.paciente_id] = {
                         paciente: {
-                            pacienteID: row.pacienteID,
+                            paciente_id: row.paciente_id,
                             nombre: row.nombre,
                             primer_apellido: row.primer_apellido,
                             segundo_apellido: row.segundo_apellido,
@@ -83,17 +49,17 @@ class PacienteTomaMedicamentoModel {
                     };
                 }
 
-                if (!result[row.pacienteID].prescripcion[row.medicamentoID]) {
-                    result[row.pacienteID].prescripcion[row.medicamentoID] = {
-                        medicamentoId: row.medicamentoID,
-                        nombre: row.medicamentoNombre,
+                if (!result[row.paciente_id].prescripcion[row.medicamento_id]) {
+                    result[row.paciente_id].prescripcion[row.medicamento_id] = {
+                        medicamento_id: row.medicamento_id,
+                        nombre: row.medicamento_nombre,
                         descripcion: row.descripcion,
                         tomas: []
                     };
                 }
 
-                result[row.pacienteID].prescripcion[row.medicamentoID].tomas.push({
-                    tomaID: row.tomaID,
+                result[row.paciente_id].prescripcion[row.medicamento_id].tomas.push({
+                    toma_id: row.toma_id,
                     hora: row.hora,
                     dosis: row.dosis,
                     fecha_inicio: format(new Date(row.fecha_inicio), 'dd-MM-yyyy'),
@@ -108,6 +74,112 @@ class PacienteTomaMedicamentoModel {
             }));
         } catch (error) {
             throw new Error('Error al buscar las prescripciones.');
+        }
+    }
+    
+    static async createPacienteTomaMedicamento(dbConn, pacienteId, medicamentoId, tomaId) {
+        const query = 'INSERT INTO paciente_toma_medicamento (paciente_id, medicamento_id, toma_id) VALUES (?, ?, ?)';
+
+        try {
+            await dbConn.execute(query, [pacienteId, medicamentoId, tomaId]);
+        } catch (error) {
+            throw new Error('Error al guardar la receta.');
+        }
+    }
+
+    static async findPrescripcion(dbConn, pacienteId, medicamentoId) {
+        const query =
+            'SELECT ' +
+            '   toma_id ' +
+            'FROM ' +
+            '   paciente_toma_medicamento ' +
+            'WHERE ' +
+            '   paciente_id = ? ' +
+            '   AND medicamento_id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [pacienteId, medicamentoId]);
+
+            return rows.map(row => row.toma_id);
+        } catch (error) {
+            throw new Error('Error al buscar la prescripción.');
+        }
+    }
+
+    static async updateToma(conn, idToma, prescripcion) {
+        const dosis = prescripcion.dosis;
+        const hora = prescripcion.hora;
+        const fecha_inicio = prescripcion.fecha_inicio;
+        const fecha_fin = prescripcion.fecha_fin ?? null;
+        const observaciones = prescripcion.observaciones ?? null;
+
+        const query =
+            'UPDATE toma ' +
+            'SET ' +
+            '   dosis = ?, ' +
+            '   hora = ?, ' +
+            '   fecha_inicio = ?, ' +
+            '   fecha_fin = ?, ' +
+            '   observaciones = ? ' +
+            'WHERE id = ?';
+
+        try {
+            await conn.execute(query, [dosis, hora, fecha_inicio, fecha_fin, observaciones, idToma]);
+        } catch (error) {
+            throw new Error('Error al actualizar la toma.');
+        }
+    }
+
+    static async deleteToma(conn, idToma) {
+        const query =
+            'DELETE ' +
+            'FROM paciente_toma_medicamento ' +
+            'WHERE toma_id = ?';
+
+        try {
+            await conn.execute(query, [idToma]);
+        } catch (error) {
+            throw new Error('Error al eliminar la toma.');
+        }
+    }
+
+    static async findTomasByUserId(dbConn, pacienteId) {
+        const query =
+            'SELECT ' +
+            '   toma_id ' +
+            'FROM ' +
+            '   paciente_toma_medicamento ' +
+            'WHERE ' +
+            '   paciente_id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [pacienteId]);
+
+            return rows.map(row => row.toma_id);
+        } catch (error) {
+            throw new Error('Error al buscar las tomas.');
+        }
+    }
+
+    static async findTomaByHora(dbConn, pacienteId, medicamentoId, hora) {
+        const query =
+            'SELECT ' +
+            '   toma_id ' +
+            'FROM ' +
+            '   paciente_toma_medicamento ' +
+            'INNER JOIN ' +
+            '   toma ON toma.id = paciente_toma_medicamento.toma_id ' +
+            'WHERE ' +
+            '   paciente_id = ? ' +
+            '   AND medicamento_id = ? ' +
+            '   AND hora = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [pacienteId, medicamentoId, hora]);
+
+            return rows[0];
+        } catch (error) {
+            throw new Error('Error al buscar la toma.');
         }
     }
 }

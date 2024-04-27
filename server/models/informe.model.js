@@ -91,14 +91,12 @@ class InformeModel {
         }
     }
 
-    static async deleteInformes(dbConn, ids) {
+    static async deleteInforme(dbConn, informeId) {
         const query =
-            'DELETE FROM informe WHERE FIND_IN_SET(id, ?)';
+            'DELETE FROM informe WHERE id = ?';
 
         try {
-            const idsString = ids.join(',');
-
-            await dbConn.execute(query, [idsString]);
+            await dbConn.execute(query, [informeId]);
         } catch (err) {
             throw new Error('Error al eliminar el informe.');
         }

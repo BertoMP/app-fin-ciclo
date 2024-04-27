@@ -17,6 +17,18 @@ class TomaModel {
             throw new Error('Error al guardar la toma.');
         }
     }
+
+    static async deleteToma(dbConn, id) {
+        const query =
+            'DELETE FROM toma ' +
+            'WHERE id = ?';
+
+        try {
+            await dbConn.execute(query, [id]);
+        } catch (err) {
+            throw new Error('Error al eliminar la toma.');
+        }
+    }
 }
 
 module.exports = TomaModel;

@@ -18,6 +18,15 @@ exports.validateCita = [
             if (!regex.test(value)) {
                 throw new Error('La fecha debe ser un formato YYYY-MM-DD');
             }
+
+            const fechaAyer = new Date();
+            fechaAyer.setDate(fechaAyer.getDate() - 1);
+            fechaAyer.setHours(0, 0, 0, 0);
+
+            if (new Date(value) < fechaAyer) {
+                throw new Error('La fecha de cita no puede ser menor a la fecha actual.');
+            }
+
             return true;
         }),
     body('hora')
