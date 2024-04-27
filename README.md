@@ -63,6 +63,7 @@ __Frontend__:
 - _ngprime_: Librería de componentes de Angular.
 - _ng-select2-component_: Componente de Angular que permite la integración de
 la librería Select2 para la creación de elementos select con barra de búsqueda.
+- _ngx-pagination_: Componente de Angular que permite la paginación de elementos.
 - _sweetalert2_: Librería que permite la creación de alertas personalizadas.
 
 __Backend__:
@@ -80,8 +81,6 @@ datos de entrada.
 JWT.
 - _moment-timezone_: Librería que permite trabajar con fechas y horas en diferentes
 zonas horarias.
-- _multer_: Middleware de Express.js que permite gestionar la carga de archivos
-a través de formularios `multipart/form-data`.
 - _mysql2_: Librería que permite la conexión a bases de datos MySQL.
 - _nodemailer_: Librería que permite enviar correos electrónicos desde Node.js.
 - _puppeteer_: Librería que permite la generación de PDFs a partir de páginas web.
