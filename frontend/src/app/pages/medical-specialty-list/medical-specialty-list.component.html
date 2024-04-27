@@ -1,9 +1,19 @@
 <h2>ESPECIALIDADES MÉDICAS</h2>
-<section class="card-container">
-  @for (specialty of specialties; track specialty.nombre) {
-    <app-vertical-card [info]="specialty"
-                       [routerLink]="['/nuestros-servicios/listado-de-especialistas']"
-                       [fragment]="specialty.nombre | lowercase | removeAccents"
-    ></app-vertical-card>
-  }
-</section>
+@if (specialties) {
+  <pagination-controls (pageChange)="actualPage = $event; getSpecialties(actualPage)"
+                       maxSize="5"
+                       directionLinks="true"
+                       previousLabel="Anterior"
+                       nextLabel="Siguiente"
+  ></pagination-controls>
+  <section class="card-container">
+    <div *ngFor="let specialty of specialties | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
+      <app-vertical-card [info]="specialty"
+                         [routerLink]="'/nuestros-servicios/listado-de-especialistas'"
+                         [fragment]="specialty.nombre | lowercase | removeAccents"
+      ></app-vertical-card>
+    </div>
+  </section>
+} @else {
+  <app-loading-spinner></app-loading-spinner>
+}

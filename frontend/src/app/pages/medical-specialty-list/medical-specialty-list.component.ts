@@ -8,8 +8,13 @@ import {
 import {
   VerticalCardComponent
 } from "../../shared/components/vertical-card/vertical-card.component";
-import {LowerCasePipe} from "@angular/common";
+import {LowerCasePipe, NgForOf, NgIf} from "@angular/common";
 import {RemoveAccentsPipe} from "../../shared/pipes/remove-accents.pipe";
+import {Subscription} from "rxjs";
+import {
+  LoadingSpinnerComponent
+} from "../../shared/components/loading-spinner/loading-spinner.component";
+import {NgxPaginationModule} from "ngx-pagination";
 
 @Component({
   selector: 'app-medical-specialty-list',
@@ -17,18 +22,51 @@ import {RemoveAccentsPipe} from "../../shared/pipes/remove-accents.pipe";
   imports: [
     VerticalCardComponent,
     LowerCasePipe,
-    RemoveAccentsPipe
+    RemoveAccentsPipe,
+    LoadingSpinnerComponent,
+    NgxPaginationModule,
+    NgForOf,
+    NgIf
   ],
   templateUrl: './medical-specialty-list.component.html',
   styleUrl: './medical-specialty-list.component.scss'
 })
 export class MedicalSpecialtyListComponent implements OnInit {
+  especialidadesSubscripcion: Subscription;
   specialties: MedicalSpecialtyModel[];
+  error: boolean = false;
+
+  nextPageUrl: string;
+  previousPageUrl: string;
+  actualPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
 
   constructor(private medicalSpecialtiesService: MedicalSpecialtiesService) {
   }
 
   ngOnInit(): void {
-    this.specialties = this.medicalSpecialtiesService.getSpecialties();
+    this.actualPage = 1;
+
+    this.getSpecialties(this.actualPage);
+  }
+
+  getSpecialties(page: number): void {
+    this.especialidadesSubscripcion =
+      this.medicalSpecialtiesService.getSpecialties(page)
+        .subscribe({
+          next: (response) => {
+            this.specialties = response.resultados;
+            this.nextPageUrl = response.next;
+            this.previousPageUrl = response.prev;
+            this.totalPages = response.paginas_totales;
+            this.totalItems = response.cantidad_especialidades;
+            this.itemsPerPage = response.items_pagina;
+          },
+          error: () => {
+            this.error = true;
+          }
+        });
   }
 }
