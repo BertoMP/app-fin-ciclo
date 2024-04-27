@@ -150,7 +150,7 @@ CREATE TABLE especialidad
     id          INT AUTO_INCREMENT,
     nombre      VARCHAR(255),
     descripcion TEXT,
-    imagen      TEXT,
+    imagen      LONGTEXT,
     CONSTRAINT pk_especialidad
         PRIMARY KEY (id),
     CONSTRAINT uq_especialidad_nombre
@@ -182,7 +182,7 @@ CREATE TABLE especialista
     usuario_id      INT,
     num_colegiado   VARCHAR(255),
     descripcion     TEXT,
-    imagen          VARCHAR(255),
+    imagen          LONGTEXT,
     turno           VARCHAR(255),
     especialidad_id INT,
     consulta_id     INT,

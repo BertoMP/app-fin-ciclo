@@ -1,3 +1,6 @@
+-- Selección de la base de datos
+USE clinica;
+
 -- Habilitar el planificador de eventos
 SET GLOBAL event_scheduler = ON;
 
@@ -18,6 +21,8 @@ DELIMITER ;
 
 
 DELIMITER //
+
+-- Evento para eliminar las tomas vencidas de la tabla toma y de paciente_toma_medicamento
 CREATE EVENT eliminar_tomas_vencidas_event
     ON SCHEDULE EVERY 1 DAY
         STARTS CONCAT(CURRENT_DATE, ' 02:00:00')
