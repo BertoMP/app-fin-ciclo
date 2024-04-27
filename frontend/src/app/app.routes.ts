@@ -15,6 +15,8 @@ import {
 import {
   TesteoBackendComponent
 } from "./testComponent/testeo-backend/testeo-backend.component";
+import { ForgottenPasswordComponent } from './pages/auth/forgotten-password/forgotten-password.component';
+import { RefreshPasswordComponent } from './pages/auth/refresh-password/refresh-password.component';
 
 export const routes: Routes = [
   {
@@ -43,6 +45,15 @@ export const routes: Routes = [
   {
     path: 'auth/register',
     component: RegisterComponent
+  },
+  {
+    path:'auth/forgotten-password',
+    // component:ForgottenPasswordComponent
+    component:RefreshPasswordComponent
+  },
+  {
+    path:'auth/refresh-password',
+    component:RefreshPasswordComponent
   },
   {
     path: 'nuestros-servicios',
