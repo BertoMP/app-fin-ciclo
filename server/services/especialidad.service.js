@@ -14,6 +14,10 @@ class EspecialidadService {
         return await EspecialidadModel.findByNombre(dbConn, nombre);
     }
 
+    static async readEspecialidesEspecialistas() {
+        return await EspecialidadModel.fetchAllEspecialidadesEspecialistas(dbConn);
+    }
+
     static async createEspecialidad(especialidad) {
         return await EspecialidadModel.save(dbConn, especialidad);
     }

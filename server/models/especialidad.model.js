@@ -1,16 +1,4 @@
 class EspecialidadModel {
-    /*
-     * Obtiene todas las especialidades de la base de datos, utilizando
-     * paginación.
-     *
-     * @param {object} dbConn - Conexión a la base de datos.
-     * @param {number} page - Página a obtener.
-     *
-     * @returns {object} - Objeto con las especialidades, el total de
-     * especialidades, la página actual y el total de páginas.
-     *
-     * @throws {Error} - Error de la base de datos.
-     */
     static async fetchAll(dbConn, page) {
         const limit = 10;
         const offset = ((page - 1) * limit);
@@ -33,6 +21,59 @@ class EspecialidadModel {
 
             return { rows, total, actualPage, totalPages };
         } catch (err) {
+            throw new Error('Error al obtener las especialidades.');
+        }
+    }
+
+    static async fetchAllEspecialidadesEspecialistas(dbConn) {
+        const query =
+            'SELECT' +
+            '    especialidad.id AS especialidad_id,' +
+            '    especialidad.nombre AS especialidad_nombre,' +
+            '    usuario.id AS usuario_id,' +
+            '    usuario.nombre AS especialista_nombre,' +
+            '    usuario.primer_apellido ,' +
+            '    usuario.segundo_apellido ,' +
+            '    especialista.imagen ' +
+            'FROM' +
+            '    especialidad ' +
+            'INNER JOIN' +
+            '    especialista ON especialidad.id = especialista.especialidad_id ' +
+            'INNER JOIN' +
+            '    usuario ON especialista.usuario_id = usuario.id ' +
+            'WHERE' +
+            '    especialista.turno <> ? ' +
+            'ORDER BY' +
+            '    especialidad.id ASC, ' +
+            '    usuario.id ASC';
+
+        try {
+            const [rows] = await dbConn.execute(query, ['no-trabajando']);
+            const especialidades = [];
+            let currentEspecialidad = null;
+
+            rows.forEach(row => {
+                if (!currentEspecialidad || currentEspecialidad.id !== row.especialidad_id) {
+                    currentEspecialidad = {
+                        id: row.especialidad_id,
+                        nombre: row.especialidad_nombre,
+                        especialistas: []
+                    };
+                    especialidades.push(currentEspecialidad);
+                }
+
+                currentEspecialidad.especialistas.push({
+                    id: row.usuario_id,
+                    nombre: row.especialista_nombre,
+                    primer_apellido: row.primer_apellido,
+                    segundo_apellido: row.segundo_apellido,
+                    imagen: row.imagen
+                });
+            });
+
+            return especialidades;
+        } catch (err) {
+            console.log(err);
             throw new Error('Error al obtener las especialidades.');
         }
     }

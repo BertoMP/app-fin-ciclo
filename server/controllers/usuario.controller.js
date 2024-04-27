@@ -172,7 +172,7 @@ exports.postRegistroEspecialista = async (req, res) => {
         const specialist = {
             num_colegiado: req.body.num_colegiado,
             descripcion: req.body.descripcion,
-            imagen: req.file.path,
+            imagen: req.body.imagen,
             turno: req.body.turno,
             especialidad_id: req.body.especialidad_id,
             consulta_id: req.body.consulta_id
@@ -458,11 +458,8 @@ exports.putUsuarioEspecialista = async (req, res) => {
             descripcion: req.body.descripcion,
             turno: req.body.turno,
             especialidad_id: req.body.especialidad_id,
-            consulta_id: req.body.consulta_id
-        }
-
-        if (req.file) {
-            specialist.imagen = req.file.path;
+            consulta_id: req.body.consulta_id,
+            imagen: req.body.imagen
         }
 
         await UsuarioService.updateUsuarioEspecialista(specialist);

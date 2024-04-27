@@ -24,6 +24,39 @@ class EspecialistaModel {
         }
     }
 
+    static async findById(dbConn, usuario_id) {
+        const query =
+            'SELECT' +
+            '    especialista.usuario_id,' +
+            '    usuario.nombre,' +
+            '    usuario.primer_apellido,' +
+            '    usuario.segundo_apellido,' +
+            '    especialista.descripcion,' +
+            '    especialista.imagen,' +
+            '    especialista.turno,' +
+            '    especialista.num_colegiado,' +
+            '    especialidad.nombre AS especialidad,' +
+            '    consulta.nombre AS consulta_nombre ' +
+            'FROM' +
+            '    especialista ' +
+            'INNER JOIN' +
+            '    usuario ON especialista.usuario_id = usuario.id ' +
+            'INNER JOIN' +
+            '    especialidad ON especialista.especialidad_id = especialidad.id ' +
+            'INNER JOIN' +
+            '    consulta ON especialista.consulta_id = consulta.id ' +
+            'WHERE' +
+            '    especialista.usuario_id = ?';
+
+        try {
+            const [rows] = await dbConn.execute(query, [usuario_id]);
+            return rows[0];
+        } catch (err) {
+            console.log(err);
+            throw new Error('Error al obtener el especialista.');
+        }
+    }
+
     static async findByNumColegiado(dbConn, num_colegiado) {
         const query =
             'SELECT * FROM especialista ' +

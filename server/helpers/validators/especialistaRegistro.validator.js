@@ -1,11 +1,9 @@
 const { body, validationResult } = require('express-validator');
-const { validateImage } = require("./imagen.validator");
 const {validateUserRegister} = require("./usuarioRegistro.validator");
 
 
 exports.validateEspecialistaRegister = [
     validateUserRegister,
-    validateImage,
     body('num_colegiado')
         .trim()
         .notEmpty().withMessage('El número de colegiado es requerido.')
@@ -39,6 +37,10 @@ exports.validateEspecialistaRegister = [
         .trim()
         .notEmpty().withMessage('La consulta es requerida.')
         .isNumeric().withMessage('La consulta debe ser un valor numérico.'),
+    body('imagen')
+        .trim()
+        .notEmpty().withMessage('La imagen del especialista no puede estar vacía.')
+        .isString().withMessage('La imagen del especialista es requerida.'),
 
     (req, res, next) => {
         const errors = validationResult(req);

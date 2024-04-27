@@ -64,6 +64,18 @@ exports.getEspecialidadById = async (req, res) => {
     }
 }
 
+exports.getEspecialidadesEspecialistas = async (req, res) => {
+    try {
+        const especialidades = await EspecialidadService.readEspecialidesEspecialistas();
+
+        return res.status(200).json(especialidades);
+    } catch (err) {
+        return res.status(500).json({
+            errors: [err.message]
+        });
+    }
+}
+
 exports.createEspecialidad = async (req, res) => {
     try {
         const especialidad = {

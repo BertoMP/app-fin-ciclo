@@ -2,6 +2,10 @@ const dbConn = require('../util/database/database');
 const EspecialistaModel = require('../models/especialista.model');
 
 class EspecialistaService {
+    static async readEspecialistaById(id) {
+        return await EspecialistaModel.findById(dbConn, id);
+    }
+
     static async readEspecialistaByNumColegiado(num_colegiado) {
         return await EspecialistaModel.findByNumColegiado(dbConn, num_colegiado);
     }

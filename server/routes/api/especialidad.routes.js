@@ -10,6 +10,9 @@ const { validateEspecialidadIdParam } = require("../../helpers/validators/params
 const { cleanupFiles } = require("../../util/middleware/cleanupFiles");
 
 // Rutas GET
+router.get('/especialidad/especialista',
+    EspecialidadController.getEspecialidadesEspecialistas);
+
 router.get('/especialidad/:especialidad_id',
     validateEspecialidadIdParam,
     EspecialidadController.getEspecialidadById);

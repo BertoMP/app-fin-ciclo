@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const UsuarioController = require('../../controllers/usuario.controller');
-const multer = require('../../util/functions/multer');
 
 const { cleanupFiles } = require("../../util/middleware/cleanupFiles");
 
@@ -47,7 +46,6 @@ router.post('/usuario/registro',
 router.post('/usuario/registro-especialista',
     tokenVerify,
     tokenRole([1]),
-    multer.single('imagen'),
     validateEspecialistaRegister,
     cleanupFiles,
     UsuarioController.postRegistroEspecialista
@@ -101,7 +99,6 @@ router.put('/usuario/actualizar-usuario',
 router.put('/usuario/actualizar-especialista/:usuario_id',
     tokenVerify,
     tokenRole([1]),
-    multer.single('imagen'),
     validateUsuarioIdParam,
     UsuarioController.putUsuarioEspecialista
 );
