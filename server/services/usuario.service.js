@@ -11,8 +11,8 @@ const PacienteTomaMedicamentoModel = require('../models/pacienteTomaMedicamento.
 const TomaModel = require('../models/toma.model');
 
 class UsuarioService {
-    static async readAllUsuarios(searchValues) {
-        return await UsuarioModel.fetchAll(dbConn, searchValues);
+    static async readAllUsuarios(searchValues, limit) {
+        return await UsuarioModel.fetchAll(dbConn, searchValues, limit);
     }
 
     static async readUsuarioPaciente(id) {

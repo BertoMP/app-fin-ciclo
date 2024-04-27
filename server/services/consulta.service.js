@@ -2,8 +2,8 @@ const dbConn = require('../util/database/database');
 const ConsultaModel = require('../models/consulta.model');
 
 class ConsultaService {
-    static async readConsultas(page) {
-        return await ConsultaModel.findAll(dbConn, page);
+    static async readConsultas(page, limit) {
+        return await ConsultaModel.findAll(dbConn, page, limit);
     }
 
     static async readConsultaById(id) {

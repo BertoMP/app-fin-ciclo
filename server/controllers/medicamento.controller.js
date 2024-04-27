@@ -14,6 +14,7 @@ exports.getMedicamentosPrescripcion = async (req, res) => {
 
 exports.getMedicamentos = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
+    const limit = 4;
 
     try {
         const {
@@ -22,7 +23,7 @@ exports.getMedicamentos = async (req, res) => {
             total: cantidad_medicamentos,
             totalPages: paginas_totales
         } =
-            await MedicamentoService.readMedicamentos(page);
+            await MedicamentoService.readMedicamentos(page, limit);
 
         if (page > 1 && page > paginas_totales) {
             return res.status(404).json({
@@ -31,13 +32,14 @@ exports.getMedicamentos = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/medicamento?page=${page - 1}`
+            ? `/medicamento?page=${page - 1}`
             : null;
         const next = page < paginas_totales
-            ? `/api/medicamento?page=${page + 1}`
+            ? `/medicamento?page=${page + 1}`
             : null;
-        const result_min = (page - 1) * 10 + 1;
-        const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;
+        const result_min = (page - 1) * limit + 1;
+        const result_max = resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
+        const items_pagina = limit;
 
         return res.status(200).json({
             prev,
@@ -45,6 +47,7 @@ exports.getMedicamentos = async (req, res) => {
             pagina_actual,
             paginas_totales,
             cantidad_medicamentos,
+            items_pagina,
             result_min,
             result_max,
             resultados

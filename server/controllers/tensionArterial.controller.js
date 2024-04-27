@@ -3,6 +3,8 @@ const momentTz = require('moment-timezone');
 const getSearchValues = require('../util/functions/getSearchValuesByDate');
 
 exports.getTensionArterial = async (req, res) => {
+    const limit = 10;
+
     try {
         const searchValues = getSearchValues(req);
 
@@ -17,7 +19,7 @@ exports.getTensionArterial = async (req, res) => {
             actualPage: pagina_actual,
             totalPages: paginas_totales
         } =
-            await tensionArterialService.readTensionArterial(searchValues);
+            await tensionArterialService.readTensionArterial(searchValues, limit);
 
         if (page > 1 && page > paginas_totales) {
             return res.status(404).json({
@@ -26,15 +28,16 @@ exports.getTensionArterial = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/tensionArterial/${paciente_id}?page=${page - 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+            ? `/tensionArterial/${paciente_id}?page=${page - 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const next = page < paginas_totales
-            ? `/api/tensionArterial/${paciente_id}?page=${page + 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+            ? `/tensionArterial/${paciente_id}?page=${page + 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
-        const result_min = (page - 1) * 10 + 1;
-        const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;
+        const result_min = (page - 1) * limit + 1;
+        const result_max = resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
         const fecha_inicio = fechaInicio;
         const fecha_fin = fechaFin;
+        const items_pagina = limit;
 
         resultados.forEach(tensionArterial => {
             tensionArterial.fecha = momentTz.tz(tensionArterial.fecha, 'Europe/Madrid')
@@ -47,6 +50,7 @@ exports.getTensionArterial = async (req, res) => {
             result_min,
             result_max,
             cantidad_tensionArterial,
+            items_pagina,
             pagina_actual,
             paginas_totales,
             fecha_inicio,

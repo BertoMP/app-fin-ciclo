@@ -2,8 +2,8 @@ const dbConn = require('../util/database/database');
 const TensionArterialModel = require('../models/tensionArterial.model');
 
 class TensionArterialService {
-    static async readTensionArterial(searchValues) {
-        return await TensionArterialModel.fetchAll(dbConn, searchValues);
+    static async readTensionArterial(searchValues, limit) {
+        return await TensionArterialModel.fetchAll(dbConn, searchValues, limit);
     }
 
     static async createTensionArterial(tensionArterial) {

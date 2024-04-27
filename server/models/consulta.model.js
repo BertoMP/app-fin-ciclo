@@ -1,6 +1,5 @@
 class ConsultaModel {
-    static async findAll(dbConn, page) {
-        const limit = 10;
+    static async findAll(dbConn, page, limit) {
         const offset = ((page - 1) * limit);
 
         const query =

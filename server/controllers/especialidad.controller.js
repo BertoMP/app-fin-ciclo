@@ -1,8 +1,8 @@
 const EspecialidadService = require('../services/especialidad.service');
-const destroyFile = require('../util/functions/destroyFile');
 
 exports.getEspecialidades = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
+    const limit = 4;
 
     try {
         const {
@@ -10,7 +10,7 @@ exports.getEspecialidades = async (req, res) => {
             total: cantidad_especialidades,
             actualPage: pagina_actual,
             totalPages: paginas_totales
-        } = await EspecialidadService.readEspecialidades(page);
+        } = await EspecialidadService.readEspecialidades(page, limit);
 
         if (page > 1 && page > paginas_totales) {
             return res.status(404).json({
@@ -19,13 +19,14 @@ exports.getEspecialidades = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/especialidad?page=${page - 1}`
+            ? `/especialidad?page=${page - 1}`
             : null;
         const next = page < paginas_totales
-            ? `/api/especialidad?page=${page + 1}`
+            ? `/especialidad?page=${page + 1}`
             : null;
-        const result_min = (page - 1) * 10 + 1;
-        const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;
+        const result_min = (page - 1) * limit + 1;
+        const result_max = resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
+        const items_pagina = limit;
 
         return res.status(200).json({
             prev,
@@ -33,6 +34,7 @@ exports.getEspecialidades = async (req, res) => {
             pagina_actual,
             paginas_totales,
             cantidad_especialidades,
+            items_pagina,
             result_min,
             result_max,
             resultados

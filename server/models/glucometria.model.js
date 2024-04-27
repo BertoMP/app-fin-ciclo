@@ -1,11 +1,10 @@
 class GlucometriaModel {
-    static async fetchAll(dbConn, searchValues) {
+    static async fetchAll(dbConn, searchValues, limit) {
         const page = searchValues.page;
         const fechaInicio = searchValues.fechaInicio;
         const fechaFin = searchValues.fechaFin;
         const paciente_id = searchValues.paciente_id;
 
-        const limit = 10;
         const offset = ((page - 1) * limit);
 
         const query =

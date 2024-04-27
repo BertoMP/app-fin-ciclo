@@ -9,6 +9,8 @@ const destroyFile = require("../util/functions/destroyFile");
 const qrcode = require("../util/functions/createQr");
 
 exports.getCitas = async (req, res) => {
+    const limit = 10;
+
     try {
         const searchValues = getSearchValues(req, true);
 
@@ -23,7 +25,7 @@ exports.getCitas = async (req, res) => {
             total: cantidad_citas,
             totalPages: paginas_totales
         } =
-            await CitaService.readCitas(searchValues);
+            await CitaService.readCitas(searchValues, limit);
 
         if (page > 1 && page > paginas_totales) {
             return res.status(404).json({
@@ -32,17 +34,18 @@ exports.getCitas = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/cita/${paciente_id}?page=${page - 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+            ? `/cita/${paciente_id}?page=${page - 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
         const next = page < paginas_totales
-            ? `/api/cita/${paciente_id}?page=${page + 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+            ? `/cita/${paciente_id}?page=${page + 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
             : null;
-        const result_min = (page - 1) * 10 + 1;
-        const result_max = resultados[0].citas.length === 10
-            ? page * 10
-            : (page - 1) * 10 + resultados[0].citas.length;
+        const result_min = (page - 1) * limit + 1;
+        const result_max = resultados[0].citas.length === limit
+            ? page * limit
+            : (page - 1) * limit + resultados[0].citas.length;
         const fecha_inicio = fechaInicio;
         const fecha_fin = fechaFin;
+        const items_pagina = limit;
 
         return res.status(200).json({
             prev,
@@ -52,6 +55,7 @@ exports.getCitas = async (req, res) => {
             cantidad_citas,
             result_min,
             result_max,
+            items_pagina,
             fecha_inicio,
             fecha_fin,
             resultados

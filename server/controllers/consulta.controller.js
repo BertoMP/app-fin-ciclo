@@ -3,6 +3,7 @@ const EspecialistaService = require('../services/especialista.service');
 
 exports.getConsultas = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
+    const limit = 10;
 
     try {
         const {
@@ -10,7 +11,7 @@ exports.getConsultas = async (req, res) => {
             total: cantidad_consultas,
             actualPage: pagina_actual,
             totalPages: paginas_totales
-        } = await ConsultaService.readConsultas(page);
+        } = await ConsultaService.readConsultas(page, limit);
 
         if (page > 1 && page > paginas_totales) {
             return res.status(404).json({
@@ -19,13 +20,14 @@ exports.getConsultas = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/consulta?page=${page - 1}`
+            ? `/consulta?page=${page - 1}`
             : null;
         const next = page < paginas_totales
-            ? `/api/consulta?page=${page + 1}`
+            ? `/consulta?page=${page + 1}`
             : null;
-        const result_min = (page - 1) * 10 + 1;
-        const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;
+        const result_min = (page - 1) * limit + 1;
+        const result_max = resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
+        const items_pagina = limit;
 
         return res.status(200).json({
             prev,
@@ -33,6 +35,7 @@ exports.getConsultas = async (req, res) => {
             pagina_actual,
             paginas_totales,
             cantidad_consultas,
+            items_pagina,
             result_min,
             result_max,
             resultados

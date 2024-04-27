@@ -15,6 +15,7 @@ exports.getPatologiasInforme = async (req, res) => {
 
 exports.getPatologias = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
+    const limit = 10;
 
     try {
         const {
@@ -22,7 +23,7 @@ exports.getPatologias = async (req, res) => {
             actualPage: pagina_actual,
             total: cantidad_patologias,
             totalPages: paginas_totales
-        } = await PatologiaService.readPatologias(page);
+        } = await PatologiaService.readPatologias(page, limit);
 
         if (page > 1 && page > paginas_totales) {
             return res.status(404).json({
@@ -31,13 +32,13 @@ exports.getPatologias = async (req, res) => {
         }
 
         const prev = page > 1
-            ? `/api/patologia?page=${page - 1}`
+            ? `/patologia?page=${page - 1}`
             : null;
         const next = page < paginas_totales
-            ? `/api/patologia?page=${page + 1}`
+            ? `/patologia?page=${page + 1}`
             : null;
-        const result_min = (page - 1) * 10 + 1;
-        const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;
+        const result_min = (page - 1) * limit + 1;
+        const result_max = resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
 
         return res.status(200).json({
             prev,

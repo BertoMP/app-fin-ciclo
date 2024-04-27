@@ -1,13 +1,12 @@
 const { format } = require('date-fns');
 
 class CitaModel {
-    static async fetchAll(dbConn, searchValues) {
+    static async fetchAll(dbConn, searchValues, limit) {
         const page = searchValues.page;
         const paciente_id = searchValues.paciente_id;
         const fechaInicio = searchValues.fechaInicio;
         const fechaFin = searchValues.fechaFin;
 
-        const limit = 10;
         const offset = ((page - 1) * limit);
 
         const query =

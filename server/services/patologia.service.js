@@ -6,8 +6,8 @@ class PatologiaService {
         return await PatologiaModel.fetchAllInforme(dbConn);
     }
 
-    static async readPatologias(page) {
-        return await PatologiaModel.fetchAll(dbConn, page);
+    static async readPatologias(page, limit) {
+        return await PatologiaModel.fetchAll(dbConn, page, limit);
     }
 
     static async readPatologiaById(id) {

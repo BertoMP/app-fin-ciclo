@@ -6,8 +6,8 @@ class MedicamentoService {
         return await MedicamentoModel.fetchAllPrescripcion(dbConn);
     }
 
-    static async readMedicamentos(page) {
-        return await MedicamentoModel.fetchAll(dbConn, page);
+    static async readMedicamentos(page, limit) {
+        return await MedicamentoModel.fetchAll(dbConn, page, limit);
     }
 
     static async readMedicamentoById(id) {

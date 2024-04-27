@@ -2,8 +2,8 @@ const dbConn = require('../util/database/database');
 const GlucometriaModel = require('../models/glucometria.model');
 
 class GlucometriaService {
-    static async readGlucometria(searchValues) {
-        return await GlucometriaModel.fetchAll(dbConn, searchValues);
+    static async readGlucometria(searchValues, limit) {
+        return await GlucometriaModel.fetchAll(dbConn, searchValues, limit);
     }
 
     static async createGlucometria(glucometria) {

@@ -2,8 +2,8 @@ const dbConn = require('../util/database/database');
 const EspecialidadModel = require('../models/especialidad.model');
 
 class EspecialidadService {
-    static async readEspecialidades(page) {
-        return await EspecialidadModel.fetchAll(dbConn, page);
+    static async readEspecialidades(page, limit) {
+        return await EspecialidadModel.fetchAll(dbConn, page, limit);
     }
 
     static async readEspecialidadById(id) {

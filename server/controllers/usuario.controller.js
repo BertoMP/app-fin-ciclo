@@ -61,6 +61,8 @@ exports.getUsuario = async (req, res) => {
 }
 
 exports.getListado = async (req, res) => {
+    const limit = 10;
+
     try {
         const searchValues = getSearchValuesByRole(req);
 
@@ -73,7 +75,7 @@ exports.getListado = async (req, res) => {
             total: cantidad_usuarios,
             totalPages: paginas_totales
         } =
-            await UsuarioService.readAllUsuarios(searchValues);
+            await UsuarioService.readAllUsuarios(searchValues, limit);
 
         if (page > 1 && page > paginas_totales) {
             return res.status(404).json({
@@ -83,16 +85,17 @@ exports.getListado = async (req, res) => {
 
         const prev = page > 1
             ? role_id
-                ? `/api/usuario/listado?page=${page - 1}&role=${role_id}`
-                : `/api/usuario/listado?page=${page - 1}`
+                ? `/usuario/listado?page=${page - 1}&role=${role_id}`
+                : `/usuario/listado?page=${page - 1}`
             : null;
         const next = page < paginas_totales
             ? role_id
-                ? `/api/usuario/listado?page=${page + 1}&role=${role_id}`
-                : `/api/usuario/listado?page=${page + 1}`
+                ? `/usuario/listado?page=${page + 1}&role=${role_id}`
+                : `/usuario/listado?page=${page + 1}`
             : null;
-        const result_min = (page - 1) * 10 + 1;
-        const result_max = resultados.length === 10 ? page * 10 : (page - 1) * 10 + resultados.length;
+        const result_min = (page - 1) * limit + 1;
+        const result_max = resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
+        const items_pagina = limit;
 
         const users = {
             prev,
@@ -100,6 +103,7 @@ exports.getListado = async (req, res) => {
             pagina_actual,
             paginas_totales,
             cantidad_usuarios,
+            items_pagina,
             result_min,
             result_max,
             resultados

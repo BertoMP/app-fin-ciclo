@@ -1,9 +1,8 @@
 class UsuarioModel {
-    static async fetchAll(dbConn, searchValues) {
+    static async fetchAll(dbConn, searchValues, limit) {
         const page = searchValues.page;
         const role_id = searchValues.role;
 
-        const limit = 10;
         const offset = ((page - 1) * limit);
 
         let query =

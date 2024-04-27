@@ -1,6 +1,5 @@
 class EspecialidadModel {
-    static async fetchAll(dbConn, page) {
-        const limit = 10;
+    static async fetchAll(dbConn, page, limit) {
         const offset = ((page - 1) * limit);
 
         const query =
