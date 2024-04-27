@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomValidators } from '../../../core/classes/CustomValidators';
 import Swal from 'sweetalert2';
 import { RefreshPasswordModel } from '../../../core/interfaces/refresh-password.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RefreshPasswordService } from '../../../core/services/refresh-password.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-refresh-password',
@@ -16,18 +17,25 @@ import { RefreshPasswordService } from '../../../core/services/refresh-password.
   templateUrl: './refresh-password.component.html',
   styleUrl: './refresh-password.component.scss'
 })
-export class RefreshPasswordComponent implements OnInit {
+export class RefreshPasswordComponent implements OnInit, OnDestroy {
   contactForm: FormGroup;
   sendedAttempt: boolean = false;
   contrasenasIguales: boolean = false;
   errores: string[] = [];
+  suscripcionRuta: Subscription;
+  token: string;
 
   constructor(
     private router: Router,
-    private refreshPasswordService: RefreshPasswordService) {
+    private refreshPasswordService: RefreshPasswordService,
+    private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+    this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
+      this.token = params['token'] || null;
+    });
+
     this.contactForm = new FormGroup<any>({
       'password': new FormControl(
         null,
@@ -46,6 +54,10 @@ export class RefreshPasswordComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.suscripcionRuta.unsubscribe();
+  }
+
   onRegisterAttempt(): void {
     this.sendedAttempt = true;
     this.checkPasswordRecover();
@@ -59,6 +71,8 @@ export class RefreshPasswordComponent implements OnInit {
       });
       return;
     }
+
+   
 
     const newPassword: RefreshPasswordModel = this.generatePassword();
     this.refreshPasswordService.renovarContrasena(newPassword)
@@ -80,8 +94,8 @@ export class RefreshPasswordComponent implements OnInit {
             });
         },
         error: (error: HttpErrorResponse): void => {
-          this.errores=error.message.split(',');
-           }
+          this.errores = error.message.split(',');
+        }
       });
 
   }
@@ -89,13 +103,14 @@ export class RefreshPasswordComponent implements OnInit {
   checkPasswordRecover(): void {
     const password = this.contactForm.get('password').value;
     const check_password = this.contactForm.get('checkPassword').value;
-    this.contrasenasIguales = (password === check_password && password!=null && check_password!=null) ? true : false;
+    this.contrasenasIguales = (password === check_password && password != null && check_password != null) ? true : false;
   }
 
   private generatePassword(): RefreshPasswordModel {
     return {
       password: this.contactForm.get('password').value,
-      confirm_password:  this.contactForm.get('checkPassword').value,
+      confirm_password: this.contactForm.get('checkPassword').value,
+      token:this.token
     }
   }
 }

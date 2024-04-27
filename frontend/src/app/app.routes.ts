@@ -48,11 +48,10 @@ export const routes: Routes = [
   },
   {
     path:'auth/forgotten-password',
-    // component:ForgottenPasswordComponent
-    component:RefreshPasswordComponent
+    component:ForgottenPasswordComponent
   },
   {
-    path:'auth/refresh-password',
+    path:'auth/reset-password/:token',
     component:RefreshPasswordComponent
   },
   {

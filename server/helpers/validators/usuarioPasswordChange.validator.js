@@ -10,7 +10,7 @@ exports.validateUserPasswordChange = [
             return regex.test(value);
         }).withMessage('La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número.'),
 
-    body('confirm-password')
+    body('confirm_password')
         .trim()
         .notEmpty().withMessage('La confirmación de la contraseña es requerida.')
         .isString().withMessage('La confirmación de la contraseña debe ser una cadena de texto.')

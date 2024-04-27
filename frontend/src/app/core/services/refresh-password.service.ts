@@ -15,7 +15,7 @@ export class RefreshPasswordService {
   constructor(private http: HttpClient) { }
 
   renovarContrasena(passwordRefresh: RefreshPasswordModel): Observable<any> {
-    return this.http.post(`${this.apiUrl}/contrasena-reset`, passwordRefresh)
+    return this.http.post(`${this.apiUrl}/usuario/contrasena-reset`, passwordRefresh)
       .pipe(catchError(this.handleError));
   }
 
