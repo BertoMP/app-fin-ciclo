@@ -1,9 +1,9 @@
 <h2>ESPECIALIDADES MÉDICAS</h2>
 <section class="card-container">
-  @for (specialty of specialties; track specialty.title) {
+  @for (specialty of specialties; track specialty.nombre) {
     <app-vertical-card [info]="specialty"
                        [routerLink]="['/nuestros-servicios/listado-de-especialistas']"
-                       [fragment]="specialty.title | lowercase | removeAccents"
+                       [fragment]="specialty.nombre | lowercase | removeAccents"
     ></app-vertical-card>
   }
 </section>

@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/testeo']).then(r => {});
     }
 
-
     this.loginForm = new FormGroup<any>({
       'email': new FormControl(
         null,
