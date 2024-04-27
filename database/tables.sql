@@ -26,6 +26,7 @@ DROP TABLE IF EXISTS provincia;
 DROP TABLE IF EXISTS patologia;
 DROP TABLE IF EXISTS toma;
 DROP TABLE IF EXISTS medicamento;
+DROP TABLE IF EXISTS error_log;
 
 -- Creación de las tablas
 -- Tabla provincia
@@ -403,4 +404,15 @@ CREATE TABLE paciente_toma_medicamento
         FOREIGN KEY (medicamento_id) REFERENCES medicamento (id),
     CONSTRAINT fk_toma
         FOREIGN KEY (toma_id) REFERENCES toma (id)
+);
+
+-- Tabla error_log
+CREATE TABLE error_log (
+    id          INT AUTO_INCREMENT,
+    errno       INT,
+    sql_state	CHAR(5),
+    error_text  VARCHAR(255),
+    timestamp   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pk_error_log
+        PRIMARY KEY (id)
 );
