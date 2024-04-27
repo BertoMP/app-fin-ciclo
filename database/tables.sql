@@ -150,13 +150,11 @@ CREATE TABLE especialidad
     id          INT AUTO_INCREMENT,
     nombre      VARCHAR(255),
     descripcion TEXT,
-    imagen      VARCHAR(255),
+    imagen      TEXT,
     CONSTRAINT pk_especialidad
         PRIMARY KEY (id),
     CONSTRAINT uq_especialidad_nombre
         UNIQUE (nombre),
-    CONSTRAINT up_especialidad_imagen
-        UNIQUE (imagen),
     CONSTRAINT ck_especialidad_null
         CHECK (nombre       IS NOT NULL AND
                descripcion  IS NOT NULL AND
