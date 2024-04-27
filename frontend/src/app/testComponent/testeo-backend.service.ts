@@ -25,7 +25,7 @@ export class TesteoBackendService {
   }
 
   generaReceta() {
-    const url: string = `${this.apiUrl}/paciente-medicamento/pdf`;
+    const url: string = `${this.apiUrl}/prescripcion/pdf`;
 
     return this.fileDownloader.downloadFile(url, 'receta.pdf');
   }
