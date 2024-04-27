@@ -42,6 +42,8 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 ![Angular](https://img.shields.io/badge/-Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white) 
 ![TypeScript](https://img.shields.io/badge/-TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![HTML5](https://img.shields.io/badge/-HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+* ___Plantillas___:  
+![Handlebars](https://img.shields.io/badge/-Handlebars-F0772B?style=for-the-badge&logo=handlebars&logoColor=white)
 * ___Estilos___:  
 ![Bootstrap](https://img.shields.io/badge/-Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![SCSS](https://img.shields.io/badge/-SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)
@@ -50,6 +52,10 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 ![Express.js](https://img.shields.io/badge/-Express.js-404D59?style=for-the-badge&logo=express&logoColor=white)
 * ___Base de Datos___:  
 ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![PL/SQL](https://img.shields.io/badge/-PL/SQL-F80000?style=for-the-badge&logo=oracle&logoColor=white)
+* ___Control de Versiones___:  
+![Git](https://img.shields.io/badge/-Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 
 ### Paquetes y librerías utilizadas
 
