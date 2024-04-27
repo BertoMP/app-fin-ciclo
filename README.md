@@ -56,7 +56,9 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 * ___Control de Versiones___:  
 ![Git](https://img.shields.io/badge/-Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
-
+* ___Autenticación___:  
+![JWT](https://img.shields.io/badge/-JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+  
 ### Paquetes y librerías utilizadas
 
 __Frontend__:
