@@ -148,6 +148,7 @@ export class TesteoBackendComponent implements OnInit, OnDestroy {
     if (event.target.files && event.target.files[0]) {
       this.fileUploadService.toBase64(event.target.files[0]).then(base64 => {
         this.imageForm.get('image').setValue(base64);
+        console.log(base64);
       });
     }
   }
