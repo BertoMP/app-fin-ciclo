@@ -20,6 +20,19 @@
               <button class="btn btn-primary" (click)="onListPacientes()">Listado usuarios</button>
               <button class="btn btn-primary" (click)="onListMedicamentos()">Listado medicamentos</button>
               <button class="btn btn-primary" (click)="onGetReceta()">Genera receta</button>
+
+              <section>
+                <form [formGroup]="imageForm" (ngSubmit)="onSubmit()">
+                  <input type="file" (change)="onFileSelect($event)" />
+                  <button type="submit">Submit</button>
+                </form>
+              </section>
+
+              @if (especialidades) {
+                <app-vertical-card [info]="especialidades"></app-vertical-card>
+              } @else {
+                <app-loading-spinner></app-loading-spinner>
+              }
             </div>
         </div>
     </div>

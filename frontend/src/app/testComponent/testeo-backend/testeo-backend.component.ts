@@ -5,11 +5,31 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {saveAs} from 'file-saver';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from "@angular/forms";
+import {FileUploadService} from "../../core/services/file-uploader.service";
+import {
+  MedicalSpecialtyModel
+} from "../../core/interfaces/medical-specialty.model";
+import {
+  VerticalCardComponent
+} from "../../shared/components/vertical-card/vertical-card.component";
+import {
+  LoadingSpinnerComponent
+} from "../../shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-testeo-backend',
   standalone: true,
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    VerticalCardComponent,
+    LoadingSpinnerComponent
+  ],
   templateUrl: './testeo-backend.component.html',
   styleUrl: './testeo-backend.component.scss'
 })
@@ -19,8 +39,13 @@ export class TesteoBackendComponent implements OnInit, OnDestroy {
   userId: number = 0;
   loggedInSubscription: Subscription;
 
+  especialidades: MedicalSpecialtyModel;
+
+  imageForm: FormGroup;
+
   constructor(private authService: AuthService,
               private testeoBack: TesteoBackendService,
+              private fileUploadService: FileUploadService,
               private router: Router) {
   }
 
@@ -34,6 +59,25 @@ export class TesteoBackendComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.imageForm = new FormGroup({
+      image: new FormControl(
+        null,
+        [Validators.required]
+      ),
+    });
+
+    this.testeoBack.getEspecialidad()
+      .subscribe({
+        next: (response: MedicalSpecialtyModel) => {
+          this.especialidades = response;
+
+          console.log(this.especialidades);
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error(error.error);
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -96,6 +140,40 @@ export class TesteoBackendComponent implements OnInit, OnDestroy {
         },
         error: (error: HttpErrorResponse) => {
           console.error('No se pudo generar la receta.', error);
+        }
+      });
+  }
+
+  onFileSelect(event: { target: { files: File[]; }; }) {
+    if (event.target.files && event.target.files[0]) {
+      this.fileUploadService.toBase64(event.target.files[0]).then(base64 => {
+        this.imageForm.get('image').setValue(base64);
+      });
+    }
+  }
+
+  onSubmit() {
+    const especialidad: MedicalSpecialtyModel = {
+      id: "1",
+      nombre: 'Cardiología',
+      descripcion: 'Especialidad médica que se encarga del diagnóstico y tratamiento de las enfermedades del corazón y del aparato circulatorio.',
+      imagen: this.imageForm.get('image').value
+    }
+
+    this.testeoBack.submitForm(especialidad)
+      .subscribe({
+        next: (response: MedicalSpecialtyModel) => {
+          this.testeoBack.getEspecialidad().subscribe({
+            next: (response: MedicalSpecialtyModel) => {
+              this.especialidades = response;
+            },
+            error: (error: HttpErrorResponse) => {
+              console.error(error.error);
+            }
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('No se pudo subir la imagen.', error);
         }
       });
   }

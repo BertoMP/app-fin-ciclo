@@ -1,8 +1,6 @@
 const {body, validationResult } = require("express-validator");
-const { validateImage } = require("./imagen.validator");
 
 exports.validateEspecialidad = [
-    validateImage,
     body('nombre')
         .trim()
         .notEmpty().withMessage('El nombre de la especialidad no puede estar vacío.')
@@ -11,6 +9,10 @@ exports.validateEspecialidad = [
         .trim()
         .notEmpty().withMessage('La descripción de la especialidad no puede estar vacía.')
         .isString().withMessage('La descripción de la especialidad es requerida.'),
+    body('imagen')
+        .trim()
+        .notEmpty().withMessage('La imagen de la especialidad no puede estar vacía.')
+        .isString().withMessage('La imagen de la especialidad es requerida.'),
 
     (req, res, next) => {
         const errors = validationResult(req);

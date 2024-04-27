@@ -40,7 +40,7 @@ class UsuarioService {
             await conn.commit();
         } catch (err) {
             await conn.rollback();
-            throw new Error('Error al crear el usuario o el paciente.');
+            throw new Error(err);
         } finally {
             conn.release();
         }
@@ -59,7 +59,7 @@ class UsuarioService {
             await conn.commit();
         } catch (err) {
             await conn.rollback();
-            throw new Error('Error al crear el usuario o el especialista.');
+            throw new Error(err);
         } finally {
             conn.release();
         }
@@ -78,7 +78,7 @@ class UsuarioService {
             await conn.commit();
         } catch (err) {
             await conn.rollback();
-            throw new Error('Error al actualizar el usuario o el paciente.');
+            throw new Error(err);
         } finally {
             conn.release();
         }
@@ -97,7 +97,7 @@ class UsuarioService {
             await conn.commit();
         } catch (err) {
             await conn.rollback();
-            throw new Error('Error al actualizar el usuario o el especialista.');
+            throw new Error(err);
         } finally {
             conn.release();
         }
@@ -153,7 +153,7 @@ class UsuarioService {
             await conn.commit();
         } catch (err) {
             await conn.rollback();
-            throw new Error('Error al eliminar el usuario.');
+            throw new Error(err);
         } finally {
             conn.release();
         }

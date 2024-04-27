@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const EspecialidadController = require('../../controllers/especialidad.controller');
 
-const multer = require('../../util/functions/multer');
-
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
 
@@ -23,7 +21,6 @@ router.get('/especialidad',
 router.post('/especialidad',
     tokenVerify,
     tokenRole([1]),
-    multer.single('imagen'),
     validateEspecialidad,
     cleanupFiles,
     EspecialidadController.createEspecialidad);
@@ -32,7 +29,6 @@ router.post('/especialidad',
 router.put('/especialidad/:especialidad_id',
     tokenVerify,
     tokenRole([1]),
-    multer.single('imagen'),
     validateEspecialidadIdParam,
     validateEspecialidad,
     EspecialidadController.updateEspecialidad);

@@ -8,24 +8,24 @@ export class MedicalSpecialtiesService {
   specialties: MedicalSpecialtyModel[]
     = [
     {
-      title: 'Cardiología',
-      description: 'Especialidad médica que se encarga del estudio del corazón y su funcionamiento.',
-      image: 'assets/img/cardiologia.jpg'
+      nombre: 'Cardiología',
+      descripcion: 'Especialidad médica que se encarga del estudio del corazón y su funcionamiento.',
+      imagen: 'assets/img/cardiologia.jpg'
     },
     {
-      title: 'Dermatología',
-      description: 'Especialidad médica que se encarga del estudio de la piel y sus enfermedades.',
-      image: 'assets/img/dermatologia.jpg'
+      nombre: 'Dermatología',
+      descripcion: 'Especialidad médica que se encarga del estudio de la piel y sus enfermedades.',
+      imagen: 'assets/img/dermatologia.jpg'
     },
     {
-      title: 'Endocrinología',
-      description: 'Especialidad médica que se encarga del estudio de las glándulas y sus enfermedades.',
-      image: 'assets/img/endocrinologia.jpg'
+      nombre: 'Endocrinología',
+      descripcion: 'Especialidad médica que se encarga del estudio de las glándulas y sus enfermedades.',
+      imagen: 'assets/img/endocrinologia.jpg'
     },
     {
-      title: 'Neurología',
-      description: 'Especialidad médica que se encarga del estudio del sistema nervioso y sus enfermedades.',
-      image: 'assets/img/neurologia.jpg'
+      nombre: 'Neurología',
+      descripcion: 'Especialidad médica que se encarga del estudio del sistema nervioso y sus enfermedades.',
+      imagen: 'assets/img/neurologia.jpg'
     }
   ]
   constructor() { }

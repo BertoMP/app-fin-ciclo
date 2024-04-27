@@ -49,7 +49,7 @@ class PacienteTomaMedicamentoService {
             await conn.commit();
         } catch (err) {
             await conn.rollback();
-            throw new Error('Error al guardar la receta.');
+            throw new Error(err);
         } finally {
             conn.release();
         }
@@ -58,8 +58,8 @@ class PacienteTomaMedicamentoService {
     static async findPrescripciones(pacienteId) {
         try {
             return await PacienteTomaMedicamentoModel.findPrescripciones(dbConn, pacienteId);
-        } catch (error) {
-            throw new Error('Error al buscar las prescripciones.');
+        } catch (err) {
+            throw new Error(err);
         }
     }
 
@@ -74,9 +74,9 @@ class PacienteTomaMedicamentoService {
             await TomaService.deleteToma(conn, tomaId);
 
             await conn.commit();
-        } catch (error) {
+        } catch (err) {
             await conn.rollback();
-            throw new Error('Error al eliminar la toma.');
+            throw new Error(err);
         }
     }
 
@@ -94,9 +94,9 @@ class PacienteTomaMedicamentoService {
             }
 
             await conn.commit();
-        } catch (error) {
+        } catch (err) {
             await conn.rollback();
-            throw new Error('Error al eliminar el medicamento.');
+            throw new Error(err);
         }
     }
 }

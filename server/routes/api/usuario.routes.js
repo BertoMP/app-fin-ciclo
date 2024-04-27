@@ -63,6 +63,7 @@ router.post('/usuario/contrasena-olvidada',
 );
 
 router.post('/usuario/contrasena-reset',
+    validateUserPasswordChange,
     UsuarioController.postResetPassword
 );
 
@@ -76,7 +77,7 @@ router.post('/usuario/logout',
     UsuarioController.postLogout);
 
 // Rutas PUT
-router.put('/usuario/password',
+router.put('/usuario/actualizar-password',
     tokenVerify,
     tokenId,
     validateUserPasswordChange,

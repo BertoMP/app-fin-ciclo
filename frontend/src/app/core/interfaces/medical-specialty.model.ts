@@ -1,5 +1,6 @@
 export interface MedicalSpecialtyModel {
-  title: string;
-  description: string;
-  image: string;
+  id?: string;
+  nombre: string;
+  descripcion: string;
+  imagen: string;
 }

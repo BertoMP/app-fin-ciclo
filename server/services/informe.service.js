@@ -20,7 +20,7 @@ class InformeService {
             await conn.commit();
         } catch (err) {
             await conn.rollback();
-            throw new Error('Error al crear el informe.');
+            throw new Error(err);
         } finally {
             conn.release();
         }

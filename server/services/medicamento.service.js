@@ -2,6 +2,10 @@ const dbConn = require('../util/database/database');
 const MedicamentoModel = require('../models/medicamento.model');
 
 class MedicamentoService {
+    static async readMedicamentosPrescripcion() {
+        return await MedicamentoModel.fetchAllPrescripcion(dbConn);
+    }
+
     static async readMedicamentos(page) {
         return await MedicamentoModel.fetchAll(dbConn, page);
     }
@@ -16,10 +20,6 @@ class MedicamentoService {
 
     static async createMedicamento(medicamento) {
         await MedicamentoModel.save(dbConn, medicamento);
-    }
-
-    static async deleteMedicamento(id) {
-        await MedicamentoModel.deleteById(dbConn, id);
     }
 
     static async updateMedicamento(id, medicamento) {
