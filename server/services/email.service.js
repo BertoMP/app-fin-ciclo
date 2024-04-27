@@ -26,7 +26,7 @@ class EmailService {
 
     static async sendPasswordResetEmail(to, user, resetToken) {
         const transporter = this.createTransporter();
-        const compiledTemplate = this.compileTemplate('reset-password.handlebars', {user, resetLink: `${process.env.ANGULAR_HOST}/reset-password/${resetToken}`});
+        const compiledTemplate = this.compileTemplate('reset-password.handlebars', {user, resetLink: `${process.env.ANGULAR_HOST}/auth/reset-password/${resetToken}`});
 
         const mailDetails = this.createMailDetails(
             "clinicamedicacoslada@gmail.com",

@@ -253,7 +253,7 @@ exports.postForgotPassword = async (req, res) => {
 }
 
 exports.postResetPassword = async (req, res) => {
-    const accessToken = req.body.access_token;
+    const accessToken = req.body.token;
     const newPassword = req.body.password;
 
     jwt.verify(accessToken, process.env.JWT_RESET_SECRET_KEY, async (err, decodedToken) => {
