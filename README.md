@@ -62,6 +62,7 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 __Frontend__:
 - _@popperjs/core_: Librería que permite la gestión de _popovers_ y _tooltips_.
 - _@types/file-saver_: Tipado de TypeScript para la librería FileSaver.
+- _@auth0/angular-jwt_: Librería que permite la gestión de tokens JWT en Angular.
 - _bootstrap_: Framework de CSS que permite la creación de interfaces web.
 - _bootstrap-icons_: Librería que proporciona iconos de Bootstrap.
 - _file-saver_: Librería que permite la descarga de archivos desde el navegador.
