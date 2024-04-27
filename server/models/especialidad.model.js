@@ -73,6 +73,7 @@ class EspecialidadModel {
         try {
             await dbConn.execute(query, [nombre, descripcion, imagen]);
         } catch (err) {
+            console.log(err);
             throw new Error('Error al crear la especialidad.');
         }
     }
@@ -92,6 +93,7 @@ class EspecialidadModel {
     static async updateById(dbConn, id, especialidad) {
         const nombre = especialidad.nombre;
         const descripcion = especialidad.descripcion;
+        const imagen = especialidad.imagen;
 
         try {
             const currentEspecialidad = await this.findById(dbConn, id);
@@ -103,11 +105,13 @@ class EspecialidadModel {
             const query =
                 'UPDATE especialidad ' +
                 'SET nombre = ?, ' +
-                'descripcion = ? ' +
+                'descripcion = ?, ' +
+                'imagen = ? ' +
                 'WHERE id = ?';
 
-            await dbConn.execute(query, [nombre, descripcion, id]);
+            await dbConn.execute(query, [nombre, descripcion, imagen, id]);
         } catch (err) {
+            console.log(err)
             throw new Error('Error al actualizar la especialidad.');
         }
     }

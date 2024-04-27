@@ -45,7 +45,7 @@ exports.getEspecialidades = async (req, res) => {
 }
 
 exports.getEspecialidadById = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.especialidad_id);
 
     try {
         const especialidad = await EspecialidadService.readEspecialidadById(id);
@@ -69,14 +69,13 @@ exports.createEspecialidad = async (req, res) => {
         const especialidad = {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
-            imagen: req.file.path
+            imagen: req.body.imagen
         }
 
         const especialidadExists =
             await EspecialidadService.readEspecialidadByNombre(especialidad.nombre);
 
         if (especialidadExists) {
-            destroyFile(req.file.path);
             return res.status(409).json({
                 errors: ['Ya existe una especialidad con ese nombre.']
             });
@@ -86,9 +85,6 @@ exports.createEspecialidad = async (req, res) => {
 
         return res.status(201).json({ message: 'Especialidad creada exitosamente.' });
     } catch (err) {
-        if (req.file) {
-            destroyFile(req.file.path);
-        }
         return res.status(500).json({
             errors: [err.message]
         });
@@ -96,8 +92,7 @@ exports.createEspecialidad = async (req, res) => {
 }
 
 exports.updateEspecialidad = async (req, res) => {
-    const id = parseInt(req.params.id);
-    let oldFilePath;
+    const id = parseInt(req.params.especialidad_id);
 
     try {
         const currentEspecialidad =
@@ -109,27 +104,18 @@ exports.updateEspecialidad = async (req, res) => {
             });
         }
 
-        oldFilePath = currentEspecialidad.imagen;
-
         const especialidad = {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
-            imagen: req.file.path
+            imagen: req.body.imagen
         }
 
         await EspecialidadService.updateEspecialidad(id, especialidad);
-
-        if (oldFilePath) {
-            destroyFile(oldFilePath);
-        }
 
         return res.status(200).json({
             message: 'Especialidad actualizada exitosamente.'
         });
     } catch (err) {
-        if (req.file) {
-            destroyFile(req.file.path);
-        }
         return res.status(500).json({
             errors: [err.message]
         });
@@ -137,8 +123,7 @@ exports.updateEspecialidad = async (req, res) => {
 }
 
 exports.deleteEspecialidad = async (req, res) => {
-    const id = parseInt(req.params.id);
-    let oldFilePath;
+    const id = parseInt(req.params.especialidad_id);
 
     try {
         const currentEspecialidad =
@@ -150,13 +135,7 @@ exports.deleteEspecialidad = async (req, res) => {
             });
         }
 
-        oldFilePath = currentEspecialidad.imagen;
-
         await EspecialidadService.deleteEspecialidad(id);
-
-        if (oldFilePath) {
-            destroyFile(oldFilePath);
-        }
 
         return res.status(200).json({
             message: 'Especialidad eliminada exitosamente.'

@@ -1,10 +1,23 @@
 class MedicamentoModel {
+    static async fetchAllPrescripcion(dbConn) {
+        const query =
+            'SELECT id, nombre FROM medicamento ' +
+            'ORDER BY nombre ASC';
+
+        try {
+            const [rows] = await dbConn.execute(query);
+            return rows;
+        } catch (err) {
+            throw new Error('Error al obtener los medicamentos.');
+        }
+    }
+
     static async fetchAll(dbConn, page) {
         const limit = 10;
         const offset = ((page - 1) * limit);
 
         const query =
-            'SELECT nombre, descripcion FROM medicamento ' +
+            'SELECT id, nombre, descripcion FROM medicamento ' +
             'ORDER BY nombre ASC ' +
             'LIMIT ? OFFSET ?';
 
@@ -27,7 +40,7 @@ class MedicamentoModel {
 
     static async findById(dbConn, id) {
         const query =
-            'SELECT nombre, descripcion FROM medicamento ' +
+            'SELECT id, nombre, descripcion FROM medicamento ' +
             'WHERE id = ?';
 
         try {
@@ -40,7 +53,7 @@ class MedicamentoModel {
 
     static async findByNombre(dbConn, nombre) {
         const query =
-            'SELECT nombre, descripcion FROM medicamento ' +
+            'SELECT id, nombre, descripcion FROM medicamento ' +
             'WHERE nombre = ?';
 
         try {
@@ -63,18 +76,6 @@ class MedicamentoModel {
             await dbConn.execute(query, [nombre, descripcion]);
         } catch (err) {
             throw new Error('Error al crear el medicamento.');
-        }
-    }
-
-    static async deleteById(dbConn, id) {
-        const query =
-            'DELETE FROM medicamento ' +
-            'WHERE id = ?';
-
-        try {
-            await dbConn.execute(query, [id]);
-        } catch (err) {
-            throw new Error('Error al eliminar el medicamento.');
         }
     }
 

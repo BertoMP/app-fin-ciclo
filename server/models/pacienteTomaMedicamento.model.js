@@ -60,7 +60,7 @@ class PacienteTomaMedicamentoModel {
 
                 result[row.paciente_id].prescripcion[row.medicamento_id].tomas.push({
                     toma_id: row.toma_id,
-                    hora: row.hora,
+                    hora: format(new Date(`1970-01-01T${row.hora}Z`), 'HH:mm'),
                     dosis: row.dosis,
                     fecha_inicio: format(new Date(row.fecha_inicio), 'dd-MM-yyyy'),
                     fecha_fin: row.fecha_fin ? format(new Date(row.fecha_fin), 'dd-MM-yyyy') : null,

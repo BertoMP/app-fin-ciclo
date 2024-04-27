@@ -14,8 +14,6 @@ class PdfService {
 
         medicamentos[0].fecha = `${date.getDate()} de ${monthNames[date.getMonth()]} de ${date.getFullYear()}`;
 
-        console.log(medicamentos[0]);
-
         const bodyHtml = compiledTemplate(medicamentos[0]);
         const filename = `receta_${medicamentos[0].paciente.primer_apellido}_${medicamentos[0].paciente.segundo_apellido}.pdf`;
 

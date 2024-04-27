@@ -9,6 +9,12 @@ const { validatePaginationQueryParams } = require("../../helpers/validators/quer
 const { validateMedicamentoIdParam } = require("../../helpers/validators/params/medicamentoIdParam.validator");
 
 // Rutas GET
+router.get('/medicamento/prescripcion',
+    tokenVerify,
+    tokenRole([3]),
+    MedicamentoController.getMedicamentosPrescripcion
+);
+
 router.get('/medicamento/:medicamento_id',
     tokenVerify,
     tokenRole([3]),
@@ -36,13 +42,6 @@ router.put('/medicamento/:medicamento_id',
     validateMedicamentoIdParam,
     validateMedicamento,
     MedicamentoController.updateMedicamento);
-
-// Rutas DELETE
-router.delete('/medicamento/:medicamento_id',
-    tokenVerify,
-    tokenRole([3]),
-    validateMedicamentoIdParam,
-    MedicamentoController.deleteMedicamento);
 
 
 module.exports = router;

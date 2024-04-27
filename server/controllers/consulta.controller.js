@@ -45,7 +45,7 @@ exports.getConsultas = async (req, res) => {
 }
 
 exports.getConsultaById = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.consulta_id);
 
     try {
         const consulta = await ConsultaService.readConsultaById(id);
@@ -92,7 +92,7 @@ exports.createConsulta = async (req, res) => {
 }
 
 exports.updateConsulta = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.consulta_id);
 
     try {
         const consultaExists = await ConsultaService.readConsultaById(id);
@@ -129,7 +129,7 @@ exports.updateConsulta = async (req, res) => {
 }
 
 exports.deleteConsulta = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.consulta_id);
 
     try {
         const consulta = await ConsultaService.readConsultaById(id);

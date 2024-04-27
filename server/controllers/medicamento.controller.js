@@ -1,5 +1,17 @@
 const MedicamentoService = require('../services/medicamento.service');
 
+exports.getMedicamentosPrescripcion = async (req, res) => {
+    try {
+        const medicamentos = await MedicamentoService.readMedicamentosPrescripcion();
+
+        return res.status(200).json(medicamentos);
+    } catch (err) {
+        return res.status(500).json({
+            errors: [err.message]
+        });
+    }
+}
+
 exports.getMedicamentos = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
 
@@ -45,7 +57,7 @@ exports.getMedicamentos = async (req, res) => {
 }
 
 exports.getMedicamentoById = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.medicamento_id);
 
     try {
         const medicamento = await MedicamentoService.readMedicamentoById(id);
@@ -90,31 +102,8 @@ exports.createMedicamento = async (req, res) => {
     }
 }
 
-exports.deleteMedicamento = async (req, res) => {
-    const id = parseInt(req.params.id);
-
-    try {
-        const currentMedicamento =
-            await MedicamentoService.readMedicamentoById(id);
-
-        if (!currentMedicamento) {
-            return res.status(404).json({
-                errors: ['El medicamento no existe.']
-            });
-        }
-
-        await MedicamentoService.deleteMedicamento(id);
-
-        return res.status(200).json({ message: 'Medicamento eliminado.' });
-    } catch (err) {
-        return res.status(500).json({
-            errors: [err.message]
-        });
-    }
-}
-
 exports.updateMedicamento = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.medicamento_id);
     const medicamento = req.body;
 
     try {
