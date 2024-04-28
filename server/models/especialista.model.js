@@ -62,7 +62,7 @@ class EspecialistaModel {
                 segundo_apellido: row.segundo_apellido,
                 email: row.email,
                 descripcion: row.descripcion,
-                imagen: 'imagen',
+                imagen: row.imagen,
                 turno: row.turno,
                 num_colegiado: row.num_colegiado,
                 especialidad: {
