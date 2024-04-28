@@ -91,7 +91,7 @@ router.get('/tension-arterial/:usuario_id',
 
 /**
  * @swagger
- * /tension-arterial/{usuario_id}:
+ * /tension-arterial:
  *   get:
  *     summary: Obtiene las mediciones de tensión arterial de un usuario específico
  *     tags: [TensionArterial]
