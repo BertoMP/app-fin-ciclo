@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProfessionalDataService } from '../../core/services/professional-data.service';
 import { EspecialistDataModel } from '../../core/interfaces/especialist-data.model';
@@ -8,7 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-especialist-data',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './especialist-data.component.html',
   styleUrl: './especialist-data.component.scss'
 })

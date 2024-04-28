@@ -8,8 +8,13 @@ export interface EspecialistDataModel {
     imagen:string,
     turno:string,
     num_colegiado:number,
-    especialidad_id:number,
-    especialidad:string,
-    consulta_id:number,
-    consulta_nombre:string
+    especialidad:{
+        especialidad_id:number,
+        especialidad:string
+    },
+    consulta:{
+        consulta_id:number,
+        consulta_nombre:string
+    },
+    
 }
