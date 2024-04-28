@@ -153,6 +153,7 @@ class UsuarioModel {
             'SELECT ' +
             '   id, ' +
             '   email, ' +
+            '   password,' +
             '   nombre, ' +
             '   primer_apellido, ' +
             '   segundo_apellido, ' +
