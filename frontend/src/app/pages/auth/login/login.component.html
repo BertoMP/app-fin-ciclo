@@ -19,15 +19,12 @@
       }
     </section>
     <section class="form-section">
-      <label for="password">Contraseña</label>
-      <input type="password"
-             id="password"
-             formControlName="password"
-      >
-        @if (loginForm.get('password').invalid
-        && loginForm.get('password').dirty) {
-          <p class="invalid">La contraseña es necesaria para iniciar sesión.</p>
-        }
+      <label [for]="passwordId">Contraseña</label>
+      <app-password-input [id]="passwordId" formControlName="password"></app-password-input>
+      @if (loginForm.get('password').invalid
+      && loginForm.get('password').dirty) {
+        <p class="invalid">La contraseña es necesaria para iniciar sesión.</p>
+      }
     </section>
     <section>
       <button type="button" routerLink="/auth/forgotten-password"

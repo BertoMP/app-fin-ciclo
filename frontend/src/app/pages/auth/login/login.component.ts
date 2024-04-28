@@ -13,6 +13,9 @@ import {
   LoadingSpinnerComponent
 } from "../../../shared/components/loading-spinner/loading-spinner.component";
 import {HttpErrorResponse} from "@angular/common/http";
+import {
+  PasswordInputComponent
+} from "../../../shared/components/password-input/password-input.component";
 
 @Component({
   selector: 'app-login',
@@ -23,7 +26,8 @@ import {HttpErrorResponse} from "@angular/common/http";
     NgSwitch,
     NgSwitchCase,
     RouterLink,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    PasswordInputComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -36,12 +40,17 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService,
               private router: Router) {
   }
+  passwordId: string = 'password';
 
   ngOnInit(): void {
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/testeo']).then(r => {});
     }
 
+    this.initForm();
+  }
+
+  initForm(): void {
     this.loginForm = new FormGroup<any>({
       'email': new FormControl(
         null,

@@ -26,6 +26,9 @@ import {
 } from "../../../core/services/codigo-postal.service";
 import {CodigoPostalModel} from "../../../core/interfaces/codigo-postal.model";
 import Swal from 'sweetalert2';
+import {
+  PasswordInputComponent
+} from "../../../shared/components/password-input/password-input.component";
 
 @Component({
   selector: 'app-register',
@@ -36,7 +39,8 @@ import Swal from 'sweetalert2';
     NgClass,
     LoadingSpinnerComponent,
     Select2Module,
-    CommonModule
+    CommonModule,
+    PasswordInputComponent,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'

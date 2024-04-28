@@ -1,19 +1,31 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CustomValidators } from '../../../core/classes/CustomValidators';
+import {CommonModule} from '@angular/common';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import {CustomValidators} from '../../../core/classes/CustomValidators';
 import Swal from 'sweetalert2';
-import { RefreshPasswordModel } from '../../../core/interfaces/refresh-password.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
-import { RefreshPasswordService } from '../../../core/services/refresh-password.service';
-import { Subscription } from 'rxjs';
+import {
+  RefreshPasswordModel
+} from '../../../core/interfaces/refresh-password.model';
+import {ActivatedRoute, Router} from '@angular/router';
+import {HttpErrorResponse} from '@angular/common/http';
+import {
+  RefreshPasswordService
+} from '../../../core/services/refresh-password.service';
+import {Subscription} from 'rxjs';
+import {
+  PasswordInputComponent
+} from "../../../shared/components/password-input/password-input.component";
 
 @Component({
   selector: 'app-refresh-password',
   standalone: true,
   imports: [ReactiveFormsModule,
-    CommonModule],
+    CommonModule, PasswordInputComponent],
   templateUrl: './refresh-password.component.html',
   styleUrl: './refresh-password.component.scss'
 })
@@ -72,7 +84,6 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
       return;
     }
 
-   
 
     const newPassword: RefreshPasswordModel = this.generatePassword();
     this.refreshPasswordService.renovarContrasena(newPassword)
@@ -86,7 +97,8 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
           })
             .then(() => {
               this.router.navigate(['auth/login'])
-                .then(() => { })
+                .then(() => {
+                })
                 .catch((error) => console.error('Error navigating to login', error));
             })
             .catch(() => {
@@ -110,7 +122,7 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
     return {
       password: this.contactForm.get('password').value,
       confirm_password: this.contactForm.get('checkPassword').value,
-      token:this.token
+      token: this.token
     }
   }
 }

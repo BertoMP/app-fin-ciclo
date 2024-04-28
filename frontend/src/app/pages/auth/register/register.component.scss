@@ -48,17 +48,11 @@ label {
   display: block;
 }
 
-input,
-select {
-  width: 100%;
-  padding: .3rem 1rem;
-  margin: .3rem 0;
-  border: 1px solid #ccc;
+input {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
   border-radius: 1rem;
-}
-
-select>option {
-  text-align: left;
+  width: 100%;
 }
 
 button {
