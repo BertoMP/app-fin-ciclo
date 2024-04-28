@@ -1,18 +1,18 @@
 class EspecialistaModel {
     static async create(dbConn, especialista) {
-        const usuario_id = especialista.usuario_id;
-        const especialidad_id = especialista.especialidad_id;
-        const consulta_id = especialista.consulta_id;
-        const num_colegiado = especialista.num_colegiado;
-        const descripcion = especialista.descripcion;
-        const imagen = especialista.imagen;
-        const turno = especialista.turno;
+        const usuario_id        = especialista.usuario_id;
+        const especialidad_id   = especialista.especialidad_id;
+        const consulta_id       = especialista.consulta_id;
+        const num_colegiado     = especialista.num_colegiado;
+        const descripcion       = especialista.descripcion;
+        const imagen            = especialista.imagen;
+        const turno             = especialista.turno;
 
         const query =
             'INSERT INTO especialista ' +
-            '(usuario_id, especialidad_id, consulta_id, num_colegiado, ' +
-            'descripcion, imagen, turno) ' +
-            'VALUES (?, ?, ?, ?, ?, ?, ?)';
+            '(usuario_id, especialidad_id, consulta_id, num_colegiado,' +
+            ' descripcion, imagen, turno) ' +
+            '   VALUES (?, ?, ?, ?, ?, ?, ?)';
 
         try {
             await dbConn.execute(
@@ -35,7 +35,9 @@ class EspecialistaModel {
             '    especialista.imagen,' +
             '    especialista.turno,' +
             '    especialista.num_colegiado,' +
+            '    especialidad.id AS especialidad_id,' +
             '    especialidad.nombre AS especialidad,' +
+            '    consulta.id AS consulta_id ' +
             '    consulta.nombre AS consulta_nombre ' +
             'FROM' +
             '    especialista ' +
@@ -59,8 +61,18 @@ class EspecialistaModel {
 
     static async findByNumColegiado(dbConn, num_colegiado) {
         const query =
-            'SELECT * FROM especialista ' +
-            'WHERE num_colegiado = ?';
+            'SELECT ' +
+            '    usuario_id, ' +
+            '    especialidad_id, ' +
+            '    consulta_id, ' +
+            '    num_colegiado, ' +
+            '    descripcion, ' +
+            '    imagen, ' +
+            '    turno ' +
+            'FROM ' +
+            '   especialista ' +
+            'WHERE ' +
+            '   num_colegiado = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [num_colegiado]);
@@ -72,8 +84,18 @@ class EspecialistaModel {
 
     static async findByConsultaId(dbConn, consulta_id) {
         const query =
-            'SELECT * FROM especialista ' +
-            'WHERE consulta_id = ?';
+            'SELECT ' +
+            '    usuario_id, ' +
+            '    especialidad_id, ' +
+            '    consulta_id, ' +
+            '    num_colegiado, ' +
+            '    descripcion, ' +
+            '    imagen, ' +
+            '    turno ' +
+            'FROM ' +
+            '   especialista ' +
+            'WHERE ' +
+            '   consulta_id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [consulta_id]);
@@ -85,8 +107,18 @@ class EspecialistaModel {
 
     static async findEspecialistaById(dbConn, especialista_id) {
         const query =
-            'SELECT * FROM especialista ' +
-            'WHERE usuario_id = ?';
+            'SELECT ' +
+            '    usuario_id, ' +
+            '    especialidad_id, ' +
+            '    consulta_id, ' +
+            '    num_colegiado, ' +
+            '    descripcion, ' +
+            '    imagen, ' +
+            '    turno ' +
+            'FROM ' +
+            '   especialista ' +
+            'WHERE ' +
+            '   usuario_id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [especialista_id]);
@@ -97,22 +129,32 @@ class EspecialistaModel {
     }
 
     static async update(dbConn, especialista) {
+        const usuario_id        = especialista.usuario_id;
+        const especialidad_id   = especialista.especialidad_id;
+        const consulta_id       = especialista.consulta_id;
+        const num_colegiado     = especialista.num_colegiado;
+        const descripcion       = especialista.descripcion;
+        const imagen            = especialista.imagen;
+        const turno             = especialista.turno;
+
         const query =
-            'UPDATE especialista ' +
-            'SET especialidad_id = ?, ' +
-            'consulta_id = ?, ' +
-            'num_colegiado = ?, ' +
-            'descripcion = ?, ' +
-            'imagen = ?, ' +
-            'turno = ? ' +
-            'WHERE usuario_id = ?';
+            'UPDATE ' +
+            '   especialista ' +
+            'SET ' +
+            '   especialidad_id = ?, ' +
+            '   consulta_id = ?, ' +
+            '   num_colegiado = ?, ' +
+            '   descripcion = ?, ' +
+            '   imagen = ?, ' +
+            '   turno = ? ' +
+            'WHERE ' +
+            '   usuario_id = ?';
 
         try {
             await dbConn.execute(
                 query,
-                [especialista.especialidad_id, especialista.consulta_id,
-                    especialista.num_colegiado, especialista.descripcion,
-                    especialista.imagen, especialista.turno, especialista.usuario_id]);
+                [especialidad_id, consulta_id, num_colegiado, descripcion,
+                    imagen, turno, usuario_id]);
         } catch (err) {
             throw new Error('Error al actualizar el especialista.');
         }

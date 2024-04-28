@@ -3,8 +3,15 @@ class EspecialidadModel {
         const offset = ((page - 1) * limit);
 
         const query =
-            'SELECT * FROM especialidad ' +
-            'ORDER BY id ASC ' +
+            'SELECT ' +
+            '    id, ' +
+            '    nombre, ' +
+            '    descripcion, ' +
+            '    imagen ' +
+            'FROM ' +
+            '   especialidad ' +
+            'ORDER BY ' +
+            '   id ASC ' +
             'LIMIT ? OFFSET ?';
 
         try {
@@ -12,7 +19,10 @@ class EspecialidadModel {
                 await dbConn.execute(query, [`${limit}`, `${offset}`]);
             const [count] =
                 await dbConn.execute(
-                    'SELECT COUNT(*) AS count FROM especialidad'
+                    'SELECT ' +
+                    '   COUNT(*) AS count ' +
+                    'FROM ' +
+                    '   especialidad'
                 );
             const total = count[0].count;
             const actualPage = page;
@@ -78,7 +88,16 @@ class EspecialidadModel {
     }
 
     static async findById(dbConn, id) {
-        const query = `SELECT * FROM especialidad WHERE id = ?`;
+        const query =
+            'SELECT ' +
+            '    id, ' +
+            '    nombre, ' +
+            '    descripcion, ' +
+            '    imagen ' +
+            'FROM ' +
+            '   especialidad ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [id]);
@@ -90,8 +109,15 @@ class EspecialidadModel {
 
     static async findByNombre(dbConn, nombre) {
         const query =
-            'SELECT * FROM especialidad ' +
-            'WHERE nombre = ?';
+            'SELECT ' +
+            '    id, ' +
+            '    nombre, ' +
+            '    descripcion, ' +
+            '    imagen ' +
+            'FROM ' +
+            '   especialidad ' +
+            'WHERE ' +
+            '   nombre = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [nombre]);
@@ -102,9 +128,9 @@ class EspecialidadModel {
     }
 
     static async save(dbConn, especialidad) {
-        const nombre = especialidad.nombre;
-        const descripcion = especialidad.descripcion;
-        const imagen = especialidad.imagen;
+        const nombre        = especialidad.nombre;
+        const descripcion   = especialidad.descripcion;
+        const imagen        = especialidad.imagen;
 
         const query =
             'INSERT INTO especialidad (nombre, descripcion, imagen) ' +
@@ -120,8 +146,11 @@ class EspecialidadModel {
 
     static async deleteById(dbConn, id) {
         const query =
-            'DELETE FROM especialidad ' +
-            'WHERE id = ?';
+            'DELETE ' +
+            'FROM ' +
+            '   especialidad ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             await dbConn.execute(query, [id]);
@@ -131,9 +160,9 @@ class EspecialidadModel {
     }
 
     static async updateById(dbConn, id, especialidad) {
-        const nombre = especialidad.nombre;
-        const descripcion = especialidad.descripcion;
-        const imagen = especialidad.imagen;
+        const nombre        = especialidad.nombre;
+        const descripcion   = especialidad.descripcion;
+        const imagen        = especialidad.imagen;
 
         try {
             const currentEspecialidad = await this.findById(dbConn, id);
@@ -143,11 +172,14 @@ class EspecialidadModel {
             }
 
             const query =
-                'UPDATE especialidad ' +
-                'SET nombre = ?, ' +
-                'descripcion = ?, ' +
-                'imagen = ? ' +
-                'WHERE id = ?';
+                'UPDATE ' +
+                '   especialidad ' +
+                'SET ' +
+                '   nombre = ?, ' +
+                '   descripcion = ?, ' +
+                '   imagen = ? ' +
+                'WHERE ' +
+                '   id = ?';
 
             await dbConn.execute(query, [nombre, descripcion, imagen, id]);
         } catch (err) {

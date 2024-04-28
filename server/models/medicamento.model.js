@@ -1,8 +1,13 @@
 class MedicamentoModel {
     static async fetchAllPrescripcion(dbConn) {
         const query =
-            'SELECT id, nombre FROM medicamento ' +
-            'ORDER BY nombre ASC';
+            'SELECT ' +
+            '   id, ' +
+            '   nombre ' +
+            'FROM ' +
+            '   medicamento ' +
+            'ORDER BY ' +
+            '   nombre ASC';
 
         try {
             const [rows] = await dbConn.execute(query);
@@ -16,8 +21,14 @@ class MedicamentoModel {
         const offset = ((page - 1) * limit);
 
         const query =
-            'SELECT id, nombre, descripcion FROM medicamento ' +
-            'ORDER BY nombre ASC ' +
+            'SELECT ' +
+            '   id, ' +
+            '   nombre, ' +
+            '   descripcion ' +
+            'FROM ' +
+            '   medicamento ' +
+            'ORDER BY ' +
+            '   nombre ASC ' +
             'LIMIT ? OFFSET ?';
 
         try {
@@ -25,7 +36,10 @@ class MedicamentoModel {
                 await dbConn.execute(query, [`${limit}`, `${offset}`]);
             const [count] =
                 await dbConn.execute(
-                    'SELECT COUNT(*) AS count FROM medicamento'
+                    'SELECT ' +
+                    '   COUNT(*) AS count ' +
+                    'FROM ' +
+                    '   medicamento'
                 );
             const total = count[0].count;
             const actualPage = page;
@@ -39,8 +53,14 @@ class MedicamentoModel {
 
     static async findById(dbConn, id) {
         const query =
-            'SELECT id, nombre, descripcion FROM medicamento ' +
-            'WHERE id = ?';
+            'SELECT ' +
+            '   id, ' +
+            '   nombre, ' +
+            '   descripcion ' +
+            'FROM ' +
+            '   medicamento ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [id]);
@@ -52,8 +72,14 @@ class MedicamentoModel {
 
     static async findByNombre(dbConn, nombre) {
         const query =
-            'SELECT id, nombre, descripcion FROM medicamento ' +
-            'WHERE nombre = ?';
+            'SELECT ' +
+            '   id, ' +
+            '   nombre, ' +
+            '   descripcion ' +
+            'FROM ' +
+            '   medicamento ' +
+            'WHERE ' +
+            '   nombre = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [nombre]);
@@ -64,8 +90,8 @@ class MedicamentoModel {
     }
 
     static async save(dbConn, medicamento) {
-        const nombre = medicamento.nombre;
-        const descripcion = medicamento.descripcion;
+        const nombre        = medicamento.nombre;
+        const descripcion   = medicamento.descripcion;
 
         const query =
             'INSERT INTO medicamento (nombre, descripcion) ' +
@@ -79,8 +105,8 @@ class MedicamentoModel {
     }
 
     static async updateById(dbConn, id, medicamento) {
-        const nombre = medicamento.nombre;
-        const descripcion = medicamento.descripcion;
+        const nombre        = medicamento.nombre;
+        const descripcion   = medicamento.descripcion;
 
         try {
             const currentMedicamento = await this.findById(dbConn, id);
@@ -90,10 +116,13 @@ class MedicamentoModel {
             }
 
             const query =
-                'UPDATE medicamento ' +
-                'SET nombre = ?, ' +
-                'descripcion = ? ' +
-                'WHERE id = ?';
+                'UPDATE ' +
+                '   medicamento ' +
+                'SET ' +
+                '   nombre = ?, ' +
+                '   descripcion = ? ' +
+                'WHERE ' +
+                '   id = ?';
 
             await dbConn.execute(query, [nombre, descripcion, id]);
         } catch (err) {

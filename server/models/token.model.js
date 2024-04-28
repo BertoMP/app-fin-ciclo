@@ -1,6 +1,8 @@
 class TokenModel {
     static async create(dbConn, idUser, token) {
-        const query = 'INSERT INTO token (usuario_id, reset_token) VALUES (?, ?)';
+        const query =
+            'INSERT INTO token (usuario_id, reset_token) ' +
+            '   VALUES (?, ?)';
 
         try {
             await dbConn.query(query, [idUser, token]);
@@ -10,7 +12,12 @@ class TokenModel {
     }
 
     static async deleteTokensByUserId(dbConn, idUser) {
-        const query = 'DELETE FROM token WHERE usuario_id = ?';
+        const query =
+            'DELETE ' +
+            'FROM ' +
+            '   token ' +
+            'WHERE ' +
+            '   usuario_id = ?';
 
         try {
             await dbConn.query(query, [idUser]);

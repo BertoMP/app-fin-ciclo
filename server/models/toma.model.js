@@ -7,7 +7,8 @@ class TomaModel {
         const observaciones = prescripcion.observaciones??null;
 
         const query =
-            'INSERT INTO toma (dosis, hora, fecha_inicio, fecha_fin, observaciones) VALUES (?, ?, ?, ?, ?)';
+            'INSERT INTO toma (dosis, hora, fecha_inicio, fecha_fin, observaciones) ' +
+            '   VALUES (?, ?, ?, ?, ?)';
 
         try {
             const result = await dbConn.execute(query, [dosis, hora, fecha_inicio, fecha_fin, observaciones]);
@@ -20,8 +21,11 @@ class TomaModel {
 
     static async deleteToma(dbConn, id) {
         const query =
-            'DELETE FROM toma ' +
-            'WHERE id = ?';
+            'DELETE ' +
+            'FROM ' +
+            '   toma ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             await dbConn.execute(query, [id]);

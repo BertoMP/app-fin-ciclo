@@ -15,11 +15,15 @@ class CitaModel {
             '   cita.fecha, ' +
             '   cita.hora, ' +
             '   cita.informe_id, ' +
+            '   especialista_user.id AS especialista_id, ' +
             '   especialista_user.nombre AS especialista_nombre, ' +
             '   especialista_user.primer_apellido AS especialista_primer_apellido, ' +
             '   especialista_user.segundo_apellido AS especialista_segundo_apellido, ' +
+            '   especialidad.id AS especialidad_id, ' +
             '   especialidad.nombre AS especialidad_nombre, ' +
+            '   consulta.id AS consulta_id, ' +
             '   consulta.nombre AS consulta_nombre, ' +
+            '   paciente_user.id AS paciente_id, ' +
             '   paciente_user.nombre AS paciente_nombre, ' +
             '   paciente_user.primer_apellido AS paciente_primer_apellido, ' +
             '   paciente_user.segundo_apellido AS paciente_segundo_apellido ' +
@@ -72,17 +76,26 @@ class CitaModel {
                 }
 
                 acumulador.citas.push({
-                    datos_especialista: {
-                        nombre: cita.especialista_nombre,
-                        primer_apellido: cita.especialista_primer_apellido,
-                        segundo_apellido: cita.especialista_segundo_apellido,
-                        especialidad_nombre: cita.especialidad_nombre
-                    },
                     datos_cita: {
+                        id: cita.id,
                         fecha: fecha,
                         hora: cita.hora,
-                        consulta_nombre: cita.consulta_nombre
-                    }
+                        datos_especialista: {
+                            especialista_id: cita.especialista_id,
+                            nombre: cita.especialista_nombre,
+                            primer_apellido: cita.especialista_primer_apellido,
+                            segundo_apellido: cita.especialista_segundo_apellido,
+                            datos_especialidad: {
+                                especialidad_id: cita.especialidad_id,
+                                especialidad_nombre: cita.especialidad_nombre
+                            }
+                        },
+                        datos_consulta: {
+                            consulta_id: cita.consulta_id,
+                            consulta_nombre: cita.consulta_nombre
+                        },
+                        informe_id: cita.informe_id
+                    },
                 });
 
                 return acumulador;
@@ -90,6 +103,7 @@ class CitaModel {
 
             return { rows: [formattedRows], total, actualPage, totalPages };
         } catch (err) {
+            console.log(err);
             throw new Error('No se pudieron obtener las citas.');
         }
     }
@@ -101,15 +115,18 @@ class CitaModel {
             '   cita.fecha, ' +
             '   cita.hora, ' +
             '   cita.informe_id, ' +
-            '   cita.paciente_id AS paciente_id, ' +
+            '   especialista_user.id AS especialista_id, ' +
             '   especialista_user.nombre AS especialista_nombre, ' +
             '   especialista_user.primer_apellido AS especialista_primer_apellido, ' +
             '   especialista_user.segundo_apellido AS especialista_segundo_apellido, ' +
+            '   especialidad.id AS especialidad_id, ' +
+            '   especialidad.nombre AS especialidad_nombre, ' +
+            '   consulta.id AS consulta_id, ' +
+            '   consulta.nombre AS consulta_nombre, ' +
+            '   paciente_user.id AS paciente_id, ' +
             '   paciente_user.nombre AS paciente_nombre, ' +
             '   paciente_user.primer_apellido AS paciente_primer_apellido, ' +
-            '   paciente_user.segundo_apellido AS paciente_segundo_apellido, ' +
-            '   especialidad.nombre AS especialidad_nombre, ' +
-            '   consulta.nombre AS consulta_nombre ' +
+            '   paciente_user.segundo_apellido AS paciente_segundo_apellido ' +
             'FROM ' +
             '   cita ' +
             'INNER JOIN ' +
@@ -141,16 +158,25 @@ class CitaModel {
                         primer_apellido: cita.paciente_primer_apellido,
                         segundo_apellido: cita.paciente_segundo_apellido
                     },
-                    datos_especialista: {
-                        nombre: cita.especialista_nombre,
-                        primer_apellido: cita.especialista_primer_apellido,
-                        segundo_apellido: cita.especialista_segundo_apellido,
-                        especialidad_nombre: cita.especialidad_nombre
-                    },
                     datos_cita: {
+                        id: cita.id,
                         fecha: fecha,
                         hora: cita.hora,
-                        consulta_nombre: cita.consulta_nombre
+                        datos_especialista: {
+                            especialista_id: cita.especialista_id,
+                            nombre: cita.especialista_nombre,
+                            primer_apellido: cita.especialista_primer_apellido,
+                            segundo_apellido: cita.especialista_segundo_apellido,
+                            datos_especialidad: {
+                                especialidad_id: cita.especialidad_id,
+                                especialidad_nombre: cita.especialidad_nombre
+                            }
+                        },
+                        datos_consulta: {
+                            consulta_id: cita.consulta_id,
+                            consulta_nombre: cita.consulta_nombre
+                        },
+                        informe_id: cita.informe_id
                     }
                 };
             }
@@ -184,6 +210,7 @@ class CitaModel {
             '   cita.id, ' +
             '   cita.hora, ' +
             '   cita.informe_id, ' +
+            '   paciente.usuario_id AS paciente_id, ' +
             '   paciente.num_historia_clinica AS paciente_historia_clinica, ' +
             '   usuario.nombre AS paciente_nombre, ' +
             '   usuario.primer_apellido AS paciente_primer_apellido, ' +
@@ -207,27 +234,19 @@ class CitaModel {
     }
 
     static async createCita(dbConn, cita) {
-        const fecha = cita.fecha;
-        const hora = cita.hora;
-        const paciente_id = cita.paciente_id;
-        const especialista_id = cita.especialista_id;
+        const fecha             = cita.fecha;
+        const hora              = cita.hora;
+        const paciente_id       = cita.paciente_id;
+        const especialista_id   = cita.especialista_id;
 
         const query =
-            'INSERT INTO cita ' +
-            '(fecha, hora, paciente_id, especialista_id) ' +
-            'VALUES (?, ?, ?, ?)';
-
-        const queryId =
-            'SELECT id ' +
-            'FROM cita ' +
-            'WHERE fecha = ? AND hora = ? AND paciente_id = ? AND especialista_id = ? ' +
-            'ORDER BY id DESC LIMIT 1';
+            'INSERT INTO cita (fecha, hora, paciente_id, especialista_id) ' +
+            '   VALUES (?, ?, ?, ?)';
 
         try {
-            await dbConn.execute(query, [fecha, hora, paciente_id, especialista_id]);
+            const [rows] = await dbConn.execute(query, [fecha, hora, paciente_id, especialista_id]);
 
-            const [rows] = await dbConn.execute(queryId, [fecha, hora, paciente_id, especialista_id]);
-            return rows[0].id;
+            return rows.insertId;
         } catch (err) {
             throw new Error('Error al crear la cita.');
         }
@@ -235,8 +254,11 @@ class CitaModel {
 
     static async deleteCita(dbConn, id) {
         const query =
-            'DELETE FROM cita ' +
-            'WHERE id = ?';
+            'DELETE ' +
+            'FROM ' +
+            '   cita ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             await dbConn.execute(query, [id]);
@@ -247,9 +269,12 @@ class CitaModel {
 
     static async getInformesByUserId(dbConn, paciente_id) {
         const query =
-            'SELECT informe_id ' +
-            'FROM cita ' +
-            'WHERE paciente_id = ?';
+            'SELECT ' +
+            '   informe_id ' +
+            'FROM ' +
+            '   cita ' +
+            'WHERE ' +
+            '   paciente_id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [paciente_id]);
@@ -261,7 +286,11 @@ class CitaModel {
 
     static async deleteCitasByUserId(dbConn, paciente_id) {
         const query =
-            'DELETE FROM cita WHERE paciente_id = ?';
+            'DELETE ' +
+            'FROM ' +
+            '   cita ' +
+            'WHERE ' +
+            '   paciente_id = ?';
 
         try {
             await dbConn.execute(query, [paciente_id]);
@@ -272,9 +301,12 @@ class CitaModel {
 
     static async fetchPacienteIdByInformeId(dbConn, informe_id) {
         const query =
-            'SELECT paciente_id ' +
-            'FROM cita ' +
-            'WHERE informe_id = ?';
+            'SELECT ' +
+            '   paciente_id ' +
+            'FROM ' +
+            '   cita ' +
+            'WHERE ' +
+            '   informe_id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [informe_id]);
@@ -286,9 +318,12 @@ class CitaModel {
 
     static async updateInformeId(dbConn, cita_id, informe_id) {
         const query =
-            'UPDATE cita ' +
-            'SET informe_id = ? ' +
-            'WHERE id = ?';
+            'UPDATE ' +
+            '   cita ' +
+            'SET ' +
+            '   informe_id = ? ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             await dbConn.execute(query, [informe_id, cita_id]);

@@ -26,13 +26,19 @@ class UsuarioModel {
         let countParams = [];
 
         if (role_id) {
-            query += 'WHERE rol_id = ? ';
-            countQuery += ' WHERE rol_id = ?';
+            query +=
+                'WHERE ' +
+                '   rol_id = ? ';
+            countQuery +=
+                ' WHERE ' +
+                '   rol_id = ?';
             queryParams.unshift(`${role_id}`);
             countParams.push(`${role_id}`);
         }
 
-        query += 'ORDER BY usuario.id ASC ' +
+        query +=
+            'ORDER BY ' +
+            '   usuario.id ASC ' +
             'LIMIT ? OFFSET ?';
 
         try {
@@ -127,8 +133,12 @@ class UsuarioModel {
 
     static async findRoleById(dbConn, id) {
         const query =
-            'SELECT rol_id FROM usuario ' +
-            'WHERE id = ?';
+            'SELECT ' +
+            '   rol_id ' +
+            'FROM ' +
+            '   usuario ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [id]);
@@ -140,8 +150,18 @@ class UsuarioModel {
 
     static async findByEmail(dbConn, email) {
         const query =
-            'SELECT * FROM usuario ' +
-            'WHERE email = ?';
+            'SELECT ' +
+            '   id, ' +
+            '   email, ' +
+            '   nombre, ' +
+            '   primer_apellido, ' +
+            '   segundo_apellido, ' +
+            '   dni, ' +
+            '   rol_id ' +
+            'FROM ' +
+            '   usuario ' +
+            'WHERE ' +
+            '   email = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [email]);
@@ -153,8 +173,18 @@ class UsuarioModel {
 
     static async findByDNI(dbConn, dni) {
         const query =
-            'SELECT * FROM usuario ' +
-            'WHERE dni = ?';
+            'SELECT ' +
+            '   id, ' +
+            '   email, ' +
+            '   nombre, ' +
+            '   primer_apellido, ' +
+            '   segundo_apellido, ' +
+            '   dni, ' +
+            '   rol_id ' +
+            'FROM ' +
+            '   usuario ' +
+            'WHERE ' +
+            '   dni = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [dni]);
@@ -175,9 +205,9 @@ class UsuarioModel {
 
         const query =
             'INSERT INTO usuario ' +
-            '(email, password, nombre, primer_apellido, segundo_apellido,' +
+            '(email, password, nombre, primer_apellido, segundo_apellido, ' +
             ' dni, rol_id) ' +
-            'VALUES (?, ?, ?, ?, ?, ?, ?)';
+            '   VALUES (?, ?, ?, ?, ?, ?, ?)';
 
         try {
             const user = await dbConn.execute(
@@ -193,9 +223,12 @@ class UsuarioModel {
 
     static async updatePassword(dbConn, email, password) {
         const query =
-            'UPDATE usuario ' +
-            'SET password = ? ' +
-            'WHERE email = ?';
+            'UPDATE ' +
+            '   usuario ' +
+            'SET ' +
+            '   password = ? ' +
+            'WHERE ' +
+            '   email = ?';
 
         try {
             await dbConn.execute(query, [password, email]);
@@ -206,8 +239,12 @@ class UsuarioModel {
 
     static async getEmailById(dbConn, id) {
         const query =
-            'SELECT email FROM usuario ' +
-            'WHERE id = ?';
+            'SELECT ' +
+            '   email ' +
+            'FROM ' +
+            '   usuario ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [id]);
@@ -219,7 +256,11 @@ class UsuarioModel {
 
     static async delete(dbConn, id) {
         const query =
-            'DELETE FROM usuario WHERE id = ?';
+            'DELETE ' +
+            'FROM ' +
+            '   usuario ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             await dbConn.execute(query, [id]);
@@ -230,9 +271,12 @@ class UsuarioModel {
 
     static async updateRefreshToken(dbConn, userId, refreshToken) {
         const query =
-            'UPDATE usuario ' +
-            'SET refresh_token = ? ' +
-            'WHERE id = ?';
+            'UPDATE ' +
+            '   usuario ' +
+            'SET ' +
+            '   refresh_token = ? ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             await dbConn.execute(query, [refreshToken, userId]);
@@ -243,8 +287,18 @@ class UsuarioModel {
 
     static async findById(dbConn, id) {
         const query =
-            'SELECT * FROM usuario ' +
-            'WHERE id = ?';
+            'SELECT ' +
+            '   id, ' +
+            '   email, ' +
+            '   nombre, ' +
+            '   primer_apellido, ' +
+            '   segundo_apellido, ' +
+            '   dni, ' +
+            '   rol_id ' +
+            'FROM ' +
+            '   usuario ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [id]);
@@ -256,10 +310,16 @@ class UsuarioModel {
 
     static async update(dbConn, usuario) {
         const query =
-            'UPDATE usuario ' +
-            'SET email = ?, nombre = ?, primer_apellido = ?, ' +
-            'segundo_apellido = ?, dni = ? ' +
-            'WHERE id = ?';
+            'UPDATE ' +
+            '   usuario ' +
+            'SET ' +
+            '   email = ?, ' +
+            '   nombre = ?, ' +
+            '   primer_apellido = ?, ' +
+            '   segundo_apellido = ?, ' +
+            '   dni = ? ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             await dbConn.execute(

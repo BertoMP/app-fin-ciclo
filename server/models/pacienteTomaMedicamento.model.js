@@ -78,7 +78,9 @@ class PacienteTomaMedicamentoModel {
     }
     
     static async createPacienteTomaMedicamento(dbConn, pacienteId, medicamentoId, tomaId) {
-        const query = 'INSERT INTO paciente_toma_medicamento (paciente_id, medicamento_id, toma_id) VALUES (?, ?, ?)';
+        const query =
+            'INSERT INTO paciente_toma_medicamento (paciente_id, medicamento_id, toma_id) ' +
+            '   VALUES (?, ?, ?)';
 
         try {
             await dbConn.execute(query, [pacienteId, medicamentoId, tomaId]);
@@ -107,10 +109,10 @@ class PacienteTomaMedicamentoModel {
     }
 
     static async updateToma(conn, idToma, prescripcion) {
-        const dosis = prescripcion.dosis;
-        const hora = prescripcion.hora;
-        const fecha_inicio = prescripcion.fecha_inicio;
-        const fecha_fin = prescripcion.fecha_fin ?? null;
+        const dosis         = prescripcion.dosis;
+        const hora          = prescripcion.hora;
+        const fecha_inicio  = prescripcion.fecha_inicio;
+        const fecha_fin     = prescripcion.fecha_fin ?? null;
         const observaciones = prescripcion.observaciones ?? null;
 
         const query =

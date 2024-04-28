@@ -8,10 +8,18 @@ class GlucometriaModel {
         const offset = ((page - 1) * limit);
 
         const query =
-            'SELECT fecha, hora, medicion FROM glucometria ' +
-            'WHERE fecha BETWEEN ? AND ? ' +
-            'AND paciente_id = ? ' +
-            'ORDER BY fecha DESC, hora DESC ' +
+            'SELECT ' +
+            '   fecha, ' +
+            '   hora, ' +
+            '   medicion ' +
+            'FROM ' +
+            '   glucometria ' +
+            'WHERE ' +
+            '   fecha BETWEEN ? AND ? AND ' +
+            '   paciente_id = ? ' +
+            'ORDER BY ' +
+            '   fecha DESC, ' +
+            '   hora DESC ' +
             'LIMIT ? OFFSET ?';
 
         try {
@@ -21,9 +29,13 @@ class GlucometriaModel {
 
             const [count] =
                 await dbConn.execute(
-                    'SELECT COUNT(*) AS count FROM glucometria ' +
-                    'WHERE fecha BETWEEN ? AND ? ' +
-                    'AND paciente_id = ?',
+                    'SELECT ' +
+                    '   COUNT(*) AS count ' +
+                    'FROM ' +
+                    '   glucometria ' +
+                    'WHERE ' +
+                    '   fecha BETWEEN ? AND ? AND ' +
+                    '   paciente_id = ?',
                     [fechaInicio, fechaFin, paciente_id]
                 );
             const total = count[0].count;
@@ -37,10 +49,10 @@ class GlucometriaModel {
     }
 
     static async create(dbConn, glucometria) {
-        const paciente_id = glucometria.paciente_id;
-        const fecha = glucometria.fecha;
-        const hora = glucometria.hora;
-        const medicion = glucometria.medicion;
+        const paciente_id   = glucometria.paciente_id;
+        const fecha         = glucometria.fecha;
+        const hora          = glucometria.hora;
+        const medicion      = glucometria.medicion;
 
         const query =
             'INSERT INTO glucometria (paciente_id, fecha, hora, medicion) ' +
@@ -54,7 +66,12 @@ class GlucometriaModel {
     }
 
     static async deleteGlucometriasByUserId(dbConn, paciente_id) {
-        const query = 'DELETE FROM glucometria WHERE paciente_id = ?';
+        const query =
+            'DELETE ' +
+            'FROM ' +
+            '   glucometria ' +
+            'WHERE ' +
+            '   paciente_id = ?';
         try {
             await dbConn.execute(query, [paciente_id]);
         } catch (err) {

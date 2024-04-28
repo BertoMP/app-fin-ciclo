@@ -15,10 +15,10 @@ class PacienteModel {
 
         const query =
             'INSERT INTO paciente ' +
-            '(usuario_id, num_historia_clinica, fecha_nacimiento, tipo_via, ' +
-            'nombre_via, numero, piso, puerta, municipio, ' +
-            'codigo_postal, tel_fijo, tel_movil) ' +
-            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            '(usuario_id, num_historia_clinica, fecha_nacimiento, tipo_via,' +
+            ' nombre_via, numero, piso, puerta, municipio,' +
+            ' codigo_postal, tel_fijo, tel_movil) ' +
+            '   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         try {
             await dbConn.execute(

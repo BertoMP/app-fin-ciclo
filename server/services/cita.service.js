@@ -3,7 +3,7 @@ const CitaModel = require('../models/cita.model');
 
 class CitaService {
     static async readCitas(searchValues, limit) {
-        return await CitaModel.fetchAll(dbConn, searchValue, limit);
+        return await CitaModel.fetchAll(dbConn, searchValues, limit);
     }
 
     static async readCitaById(id) {

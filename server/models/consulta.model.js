@@ -3,14 +3,25 @@ class ConsultaModel {
         const offset = ((page - 1) * limit);
 
         const query =
-            'SELECT consulta.id, consulta.nombre, especialidad.nombre AS nombre_especialidad, ' +
-            '       usuario.nombre AS nombre_usuario, usuario.primer_apellido, ' +
-            '       usuario.segundo_apellido ' +
-            'FROM consulta ' +
-            'LEFT JOIN especialista ON consulta.id = especialista.consulta_id ' +
-            'LEFT JOIN usuario ON especialista.usuario_id = usuario.id ' +
-            'LEFT JOIN especialidad ON especialista.especialidad_id = especialidad.id ' +
-            'ORDER BY consulta.id ASC ' +
+            'SELECT ' +
+            '   consulta.id, ' +
+            '   consulta.nombre, ' +
+            '   especialidad.id AS especialidad_id, ' +
+            '   especialidad.nombre AS nombre_especialidad, ' +
+            '   usuario.id AS especialista_id,' +
+            '   usuario.nombre AS nombre_usuario, ' +
+            '   usuario.primer_apellido, ' +
+            '   usuario.segundo_apellido ' +
+            'FROM ' +
+            '   consulta ' +
+            'LEFT JOIN ' +
+            '   especialista ON consulta.id = especialista.consulta_id ' +
+            'LEFT JOIN ' +
+            '   usuario ON especialista.usuario_id = usuario.id ' +
+            'LEFT JOIN ' +
+            '   especialidad ON especialista.especialidad_id = especialidad.id ' +
+            'ORDER BY ' +
+            '   consulta.id ASC ' +
             'LIMIT ? OFFSET ?';
 
         try {
@@ -32,10 +43,14 @@ class ConsultaModel {
 
                 if (row.nombre_usuario) {
                     consultas[row.id].medicos_asociados.push({
+                        id: row.especialista_id,
                         nombre: row.nombre_usuario,
                         primer_apellido: row.primer_apellido,
                         segundo_apellido: row.segundo_apellido,
-                        especialidad: row.nombre_especialidad
+                        datos_especialidad: {
+                            id: row.especialidad_id,
+                            nombre: row.nombre_especialidad
+                        }
                     });
                 }
             });
@@ -48,14 +63,25 @@ class ConsultaModel {
 
     static async findById(dbConn, id) {
         const query =
-            'SELECT consulta.id, consulta.nombre, especialidad.nombre AS nombre_especialidad, ' +
-            '       usuario.nombre AS nombre_usuario, usuario.primer_apellido, ' +
-            '       usuario.segundo_apellido ' +
-            'FROM consulta ' +
-            'LEFT JOIN especialista ON consulta.id = especialista.consulta_id ' +
-            'LEFT JOIN usuario ON especialista.usuario_id = usuario.id ' +
-            'LEFT JOIN especialidad ON especialista.especialidad_id = especialidad.id ' +
-            'WHERE consulta.id = ?';
+            'SELECT ' +
+            '   consulta.id, ' +
+            '   consulta.nombre, ' +
+            '   especialidad.id AS especialidad_id, ' +
+            '   especialidad.nombre AS nombre_especialidad, ' +
+            '   usuario.id AS especialista_id,' +
+            '   usuario.nombre AS nombre_usuario, ' +
+            '   usuario.primer_apellido, ' +
+            '   usuario.segundo_apellido ' +
+            'FROM ' +
+            '   consulta ' +
+            'LEFT JOIN ' +
+            '   especialista ON consulta.id = especialista.consulta_id ' +
+            'LEFT JOIN ' +
+            '   usuario ON especialista.usuario_id = usuario.id ' +
+            'LEFT JOIN ' +
+            '   especialidad ON especialista.especialidad_id = especialidad.id ' +
+            'WHERE ' +
+            '   consulta.id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [id]);
@@ -68,10 +94,14 @@ class ConsultaModel {
 
             rows.forEach(row => {
                 consulta.medicos_asociados.push({
+                    id: row.especialista_id,
                     nombre: row.nombre_usuario,
                     primer_apellido: row.primer_apellido,
                     segundo_apellido: row.segundo_apellido,
-                    especialidad: row.nombre_especialidad
+                    datos_especialidad: {
+                        id: row.especialidad_id,
+                        nombre: row.nombre_especialidad
+                    }
                 });
             });
 
@@ -83,8 +113,12 @@ class ConsultaModel {
 
     static async findByName(dbConn, nombre) {
         const query =
-            'SELECT * FROM consulta ' +
-            'WHERE nombre = ?';
+            'SELECT ' +
+            '   id ' +
+            'FROM ' +
+            '   consulta ' +
+            'WHERE ' +
+            '   nombre = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [nombre]);
@@ -99,7 +133,7 @@ class ConsultaModel {
 
         const query =
             'INSERT INTO consulta (nombre) ' +
-            'VALUES (?)';
+            '   VALUES (?)';
 
         try {
             await dbConn.execute(query, [nombre]);
@@ -112,9 +146,12 @@ class ConsultaModel {
         const nombre = consulta.nombre;
 
         const query =
-            'UPDATE consulta ' +
-            'SET nombre = ? ' +
-            'WHERE id = ?';
+            'UPDATE ' +
+            '   consulta ' +
+            'SET ' +
+            '   nombre = ? ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             await dbConn.execute(query, [nombre, id]);
@@ -125,8 +162,11 @@ class ConsultaModel {
 
     static async delete(dbConn, id) {
         const query =
-            'DELETE FROM consulta ' +
-            'WHERE id = ?';
+            'DELETE ' +
+            'FROM ' +
+            '   consulta ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             await dbConn.execute(query, [id]);
@@ -134,8 +174,6 @@ class ConsultaModel {
             throw new Error('Error al eliminar la consulta.');
         }
     }
-
-
 }
 
 module.exports = ConsultaModel;

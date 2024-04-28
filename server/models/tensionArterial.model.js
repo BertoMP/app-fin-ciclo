@@ -1,17 +1,27 @@
 class TensionArterialModel {
     static async fetchAll(dbConn, searchValues, limit) {
-        const page = searchValues.page;
-        const fechaInicio = searchValues.fechaInicio;
-        const fechaFin = searchValues.fechaFin;
-        const paciente_id = searchValues.paciente_id;
+        const page          = searchValues.page;
+        const fechaInicio   = searchValues.fechaInicio;
+        const fechaFin      = searchValues.fechaFin;
+        const paciente_id   = searchValues.paciente_id;
 
         const offset = ((page - 1) * limit);
 
         const query =
-            'SELECT fecha, hora, sistolica, diastolica, pulsaciones_minuto FROM tension_arterial ' +
-            'WHERE fecha BETWEEN ? AND ? ' +
-            'AND paciente_id = ? ' +
-            'ORDER BY fecha DESC, hora DESC ' +
+            'SELECT ' +
+            '   fecha, ' +
+            '   hora, ' +
+            '   sistolica, ' +
+            '   diastolica, ' +
+            '   pulsaciones_minuto ' +
+            'FROM ' +
+            '   tension_arterial ' +
+            'WHERE ' +
+            '   fecha BETWEEN ? AND ? AND ' +
+            '   paciente_id = ? ' +
+            'ORDER BY ' +
+            '   fecha DESC, ' +
+            '   hora DESC ' +
             'LIMIT ? OFFSET ?';
 
         try {
@@ -20,9 +30,13 @@ class TensionArterialModel {
                     [fechaInicio, fechaFin, paciente_id, `${limit}`, `${offset}`]);
             const [count] =
                 await dbConn.execute(
-                    'SELECT COUNT(*) AS count FROM tension_arterial ' +
-                    'WHERE fecha BETWEEN ? AND ? ' +
-                    'AND paciente_id = ?',
+                    'SELECT ' +
+                    '   COUNT(*) AS count ' +
+                    'FROM ' +
+                    '   tension_arterial ' +
+                    'WHERE ' +
+                    '   fecha BETWEEN ? AND ? AND ' +
+                    '   paciente_id = ?',
                     [fechaInicio, fechaFin, paciente_id]
                 );
             const total = count[0].count;
@@ -36,16 +50,16 @@ class TensionArterialModel {
     }
 
     static async create(dbConn, tensionArterial) {
-        const paciente_id = tensionArterial.paciente_id;
-        const fecha = tensionArterial.fecha;
-        const hora = tensionArterial.hora;
-        const sistolica = tensionArterial.sistolica;
-        const diastolica = tensionArterial.diastolica;
-        const pulsaciones_minuto = tensionArterial.pulsaciones;
+        const paciente_id           = tensionArterial.paciente_id;
+        const fecha                 = tensionArterial.fecha;
+        const hora                  = tensionArterial.hora;
+        const sistolica             = tensionArterial.sistolica;
+        const diastolica            = tensionArterial.diastolica;
+        const pulsaciones_minuto    = tensionArterial.pulsaciones;
 
         const query =
             'INSERT INTO tension_arterial (paciente_id, fecha, hora, sistolica, diastolica, pulsaciones_minuto) ' +
-            'VALUES (?, ?, ?, ?, ?, ?)';
+            '   VALUES (?, ?, ?, ?, ?, ?)';
 
         try {
             await dbConn.execute(query, [paciente_id, fecha, hora, sistolica, diastolica, pulsaciones_minuto]);
@@ -55,7 +69,12 @@ class TensionArterialModel {
     }
 
     static async deleteTensionesArterialesByUserId(dbConn, paciente_id) {
-        const query = 'DELETE FROM tension_arterial WHERE paciente_id = ?';
+        const query =
+            'DELETE ' +
+            'FROM ' +
+            '   tension_arterial ' +
+            'WHERE ' +
+            '   paciente_id = ?';
         try {
             await dbConn.execute(query, [paciente_id]);
         } catch (err) {

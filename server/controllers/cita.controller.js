@@ -67,6 +67,29 @@ exports.getCitas = async (req, res) => {
     }
 }
 
+exports.getCitaById = async (req, res) => {
+    const citaId = req.params.cita_id;
+    const userId = req.user_id;
+
+    try {
+        const cita = await CitaService.readCitaById(citaId);
+
+        console.log(cita.datos_paciente.paciente_id, userId);
+
+        if (cita.datos_paciente.paciente_id !== userId) {
+            return res.status(403).json({
+                errors: ['No tienes permiso para obtener esta cita.']
+            });
+        }
+
+        return res.status(200).json(cita);
+    } catch (err) {
+        return res.status(500).json({
+            errors: [err.message]
+        });
+    }
+}
+
 exports.getCitasAgenda = async (req, res) => {
     const especialista_id = req.user_id;
 

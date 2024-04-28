@@ -1,8 +1,12 @@
 class CodigoPostalMunicipioModel {
     static async findByMunicipioId(dbConn, cod_municipio) {
         const query =
-            'SELECT codigo_postal_id FROM codigo_postal_municipio ' +
-            'WHERE municipio_id = ?';
+            'SELECT ' +
+            '   codigo_postal_id ' +
+            'FROM ' +
+            '   codigo_postal_municipio ' +
+            'WHERE ' +
+            '   municipio_id = ?';
 
         cod_municipio = cod_municipio.toString().padStart(5, '0');
 

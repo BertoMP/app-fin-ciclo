@@ -1,8 +1,11 @@
 class PatologiaModel {
     static async fetchAllInforme(dbConn) {
         const query =
-            'SELECT id, nombre ' +
-            'FROM patologia';
+            'SELECT ' +
+            '   id, ' +
+            '   nombre ' +
+            'FROM ' +
+            '   patologia';
 
         try {
             const [rows] = await dbConn.execute(query);
@@ -16,8 +19,12 @@ class PatologiaModel {
         const offset = ((page - 1) * limit);
 
         const query =
-            'SELECT id, nombre, descripcion ' +
-            'FROM patologia ' +
+            'SELECT ' +
+            '   id, ' +
+            '   nombre, ' +
+            '   descripcion ' +
+            'FROM ' +
+            '   patologia ' +
             'LIMIT ? OFFSET ?';
 
         try {
@@ -25,7 +32,10 @@ class PatologiaModel {
                 await dbConn.execute(query, [`${limit}`, `${offset}`]);
             const [count] =
                 await dbConn.execute(
-                    'SELECT COUNT(*) AS count FROM patologia'
+                    'SELECT ' +
+                    '   COUNT(*) AS count ' +
+                    'FROM ' +
+                    '   patologia'
                 );
             const total = count[0].count;
             const actualPage = page;
@@ -39,8 +49,14 @@ class PatologiaModel {
 
     static async findById(dbConn, id) {
         const query =
-            'SELECT id, nombre, descripcion FROM patologia ' +
-            'WHERE id = ?';
+            'SELECT ' +
+            '   id, ' +
+            '   nombre, ' +
+            '   descripcion ' +
+            'FROM ' +
+            '   patologia ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [id]);
@@ -52,8 +68,14 @@ class PatologiaModel {
 
     static async findByNombre(dbConn, nombre) {
         const query =
-            'SELECT id, nombre, descripcion FROM patologia ' +
-            'WHERE nombre = ?';
+            'SELECT ' +
+            '   id, ' +
+            '   nombre, ' +
+            '   descripcion ' +
+            'FROM ' +
+            '   patologia ' +
+            'WHERE ' +
+            '   nombre = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [nombre]);
@@ -64,12 +86,12 @@ class PatologiaModel {
     }
 
     static async save(dbConn, patologia) {
-        const nombre = patologia.nombre;
-        const descripcion = patologia.descripcion;
+        const nombre        = patologia.nombre;
+        const descripcion   = patologia.descripcion;
 
         const query =
             'INSERT INTO patologia (nombre, descripcion) ' +
-            'VALUES (?, ?)';
+            '   VALUES (?, ?)';
 
         try {
             await dbConn.execute(query, [nombre, descripcion]);
@@ -79,13 +101,17 @@ class PatologiaModel {
     }
 
     static async updateById(dbConn, id, patologia) {
-        const nombre = patologia.nombre;
-        const descripcion = patologia.descripcion;
+        const nombre        = patologia.nombre;
+        const descripcion   = patologia.descripcion;
 
         const query =
-            'UPDATE patologia ' +
-            'SET nombre = ?, descripcion = ? ' +
-            'WHERE id = ?';
+            'UPDATE ' +
+            '   patologia ' +
+            'SET ' +
+            '   nombre = ?, ' +
+            '   descripcion = ? ' +
+            'WHERE ' +
+            '   id = ?';
 
         try {
             await dbConn.execute(query, [nombre, descripcion, id]);

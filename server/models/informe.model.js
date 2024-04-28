@@ -80,12 +80,16 @@ class InformeModel {
     }
 
     static async create(dbConn, informe) {
+        const motivo        = informe.motivo;
+        const patologia     = informe.patologia;
+        const contenido     = informe.contenido;
+
         const query =
             'INSERT INTO informes (motivo, patologia, contenido) ' +
             '   VALUES (?, ?, ?)';
 
         try {
-            await dbConn.execute(query, [informe.motivo, informe.patologia, informe.contenido]);
+            await dbConn.execute(query, [motivo, patologia, contenido]);
         } catch (err) {
             throw new Error('Error al crear el informe.');
         }

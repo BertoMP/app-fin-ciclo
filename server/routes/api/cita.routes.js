@@ -17,6 +17,13 @@ router.get('/cita/agenda',
     tokenUserId,
     CitaController.getCitasAgenda);
 
+router.get('/cita/:cita_id',
+    tokenVerify,
+    tokenRole([2]),
+    tokenUserId,
+    validateCitaIdParam,
+    CitaController.getCitaById);
+
 router.get('/cita',
     tokenVerify,
     tokenRole([2]),
