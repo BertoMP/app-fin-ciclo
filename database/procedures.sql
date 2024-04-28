@@ -1,3 +1,6 @@
+-- Seleción de la base de datos
+USE clinica;
+
 -- Eliminación del procedimiento si existe
 DROP PROCEDURE IF EXISTS eliminar_tomas_vencidas_procedure;
 
