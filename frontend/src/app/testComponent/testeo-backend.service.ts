@@ -38,6 +38,12 @@ export class TesteoBackendService {
     return this.fileDownloader.downloadFile(url, 'receta.pdf');
   }
 
+  generaInforme() {
+    const url: string = `${this.apiUrl}/informe/pdf/1`;
+
+    return this.fileDownloader.downloadFile(url, 'informe.pdf');
+  }
+
   submitForm(especialidad: MedicalSpecialtyModel) {
     const id: string = especialidad.id ?? null;
 
