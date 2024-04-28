@@ -79,7 +79,7 @@ class EspecialidadModel {
                     imagen: row.imagen
                 });
             });
-
+   
             return especialidades;
         } catch (err) {
             console.log(err);

@@ -10,6 +10,7 @@ import {
   HorizontalCardComponent
 } from "../../shared/components/horizontal-card/horizontal-card.component";
 import {RemoveAccentsPipe} from "../../shared/pipes/remove-accents.pipe";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-professionals-list',
@@ -17,7 +18,8 @@ import {RemoveAccentsPipe} from "../../shared/pipes/remove-accents.pipe";
   imports: [
     LowerCasePipe,
     HorizontalCardComponent,
-    RemoveAccentsPipe
+    RemoveAccentsPipe,
+    RouterLink
   ],
   templateUrl: './professionals-list.component.html',
   styleUrl: './professionals-list.component.scss'
@@ -29,6 +31,10 @@ export class ProfessionalsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listOfData = this.medicalSpecialistListService.getMedicalSpecialistList();
-  }
+   this.medicalSpecialistListService.getMedicalSpecialistList().subscribe(
+    (res: MedicalSpecialistListModel[]) => {
+      this.listOfData=res;
+    }
+  );
+}
 }

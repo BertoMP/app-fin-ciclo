@@ -17,6 +17,7 @@ import {
 } from "./testComponent/testeo-backend/testeo-backend.component";
 import { ForgottenPasswordComponent } from './pages/auth/forgotten-password/forgotten-password.component';
 import { RefreshPasswordComponent } from './pages/auth/refresh-password/refresh-password.component';
+import { EspecialistDataComponent } from './pages/especialist-data/especialist-data.component';
 
 export const routes: Routes = [
   {
@@ -65,6 +66,10 @@ export const routes: Routes = [
   {
     path: 'listado-de-especialistas',
     component: ProfessionalsListComponent
+  },
+  {
+    path: 'listado-de-especialistas/:id',
+    component: EspecialistDataComponent
   },
   {
     path: '**',

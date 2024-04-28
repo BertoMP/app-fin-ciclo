@@ -9,7 +9,7 @@
   <section class="card-container">
     <div *ngFor="let specialty of specialties | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
       <app-vertical-card [info]="specialty"
-                         [routerLink]="'/nuestros-servicios/listado-de-especialistas'"
+                         [routerLink]="'/listado-de-especialistas'"
                          [fragment]="specialty.nombre | lowercase | removeAccents"
       ></app-vertical-card>
     </div>

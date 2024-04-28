@@ -1,23 +1,21 @@
 <section class="main-container">
   <h2>NUESTROS ESPECIALISTAS</h2>
   <section class="specialities-container">
-    @for (datum of listOfData; track datum.specialty) {
-      <section class="speciality-container"
-               id="{{ datum.specialty | lowercase | removeAccents }}">
-        <h3>Especialistas en {{ datum.specialty | lowercase }}</h3>
+    @for (datum of listOfData; track datum.id) {
+      <section class="speciality-container" id="{{datum.id}}">
+        <h3>Especialistas en {{ datum.nombre | lowercase }}</h3>
         <section class="specialists-container">
-        @for (doctor of datum.medicalSpecialists; track doctor.name) {
+        @for (doctor of datum.especialistas; track doctor.id) {
          <section class="specialist-container">
            <article>
              <figure>
-               <img src="{{ doctor.image }}" alt="{{ doctor.name }}">
+               <img src="{{ doctor.imagen }}" alt="{{ doctor.nombre }}">
              </figure>
            </article>
            <article class="specialist-info">
-             <h4>{{ doctor.name }} {{ doctor.surname }}</h4>
+             <h4>{{ doctor.nombre }} {{ doctor.primer_apellido }} {{doctor.segundo_apellido}}</h4>
              <section class="btn-container">
-               <button>Ver perfil</button>
-               <button>Agendar cita</button>
+               <button type="button" routerLink="/listado-de-especialistas/{{doctor.id}}">Ver perfil</button>
              </section>
            </article>
          </section>
