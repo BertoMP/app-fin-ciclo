@@ -6,37 +6,66 @@
         body {
             font-family: Arial, sans-serif;
         }
+
         .header {
             text-align: center;
             margin-bottom: 50px;
         }
+
         .section {
             margin-bottom: 30px;
         }
+
         .section .title {
             font-weight: bold;
             margin-bottom: 10px;
         }
+
         p {
             text-align: justify;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        thead {
+            background-color: #adabab;
+        }
+
+        th, td {
+            border: 2px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #d5d0d0;
+        }
+
+        .patologias {
+            page-break-inside: avoid;
         }
     </style>
 </head>
 <body>
 <div class="header">
     <h1>Informe Médico</h1>
-    <h2>Informe ID: {{datos_informe.id}}</h2>
 </div>
 
 <div class="section">
     <div class="title">Datos del Paciente:</div>
-    <p>Nombre: {{datos_paciente.nombre}} {{datos_paciente.primer_apellido}} {{datos_paciente.segundo_apellido}}</p>
+    <p>
+        Nombre: {{datos_paciente.nombre}} {{datos_paciente.primer_apellido}} {{datos_paciente.segundo_apellido}}</p>
     <p>Número de Historia Clínica: {{datos_paciente.num_historia_clinica}}</p>
 </div>
 
 <div class="section">
     <div class="title">Datos del Especialista:</div>
-    <p>Nombre: {{datos_especialista.nombre}} {{datos_especialista.primer_apellido}} {{datos_especialista.segundo_apellido}}</p>
+    <p>
+        Nombre: {{datos_especialista.nombre}} {{datos_especialista.primer_apellido}} {{datos_especialista.segundo_apellido}}</p>
     <p>Número de Colegiado: {{datos_especialista.num_colegiado}}</p>
     <p>Especialidad: {{datos_especialista.especialidad}}</p>
 </div>
@@ -50,8 +79,27 @@
 <div class="section">
     <div class="title">Datos del Informe:</div>
     <p>Motivo: {{datos_informe.motivo}}</p>
-    <p>Patología: {{datos_informe.patologia}}</p>
     <p>Contenido: {{datos_informe.contenido}}</p>
+</div>
+
+<div class="section patologias">
+    <div class="title">Patologías encontradas:</div>
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each datos_informe.patologias}}
+            <tr>
+                <td>{{this.nombre}}</td>
+                <td>{{this.descripcion}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

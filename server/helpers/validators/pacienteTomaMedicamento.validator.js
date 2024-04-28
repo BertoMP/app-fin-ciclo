@@ -1,6 +1,6 @@
 const {body, validationResult} = require('express-validator');
 
-exports.validatePacienteMedicamentoToma = [
+exports.validatePacienteTomaMedicamento = [
   body('paciente_id')
     .trim()
     .notEmpty().withMessage('El paciente es requerido.')

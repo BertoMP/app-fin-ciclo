@@ -1,26 +1,32 @@
-const { body, validationResult } = require('express-validator');
+const {body, validationResult} = require('express-validator');
 
 exports.validateInforme = [
-    body('motivo')
-        .trim()
-        .notEmpty().withMessage('El motivo es requerido.')
-        .isString().withMessage('El motivo debe ser un texto.'),
-    body('patologia')
-        .trim()
-        .notEmpty().withMessage('La patología es requerida.')
-        .isString().withMessage('La patología debe ser un texto.'),
-    body('contenido')
-        .trim()
-        .notEmpty().withMessage('El contenido es requerido.')
-        .isString().withMessage('El contenido debe ser un texto.'),
+  body('cita_id')
+    .trim()
+    .notEmpty().withMessage('La cita es requerida.')
+    .isNumeric().withMessage('La cita debe ser un número.'),
+  body('motivo')
+    .trim()
+    .notEmpty().withMessage('El motivo es requerido.')
+    .isString().withMessage('El motivo debe ser un texto.'),
+  body('patologias')
+    .isArray().withMessage('Las patologías deben ser un arreglo de texto.'),
+  body('patologias.*')
+    .trim()
+    .notEmpty().withMessage('El id de la patología es requerido.')
+    .isNumeric().withMessage('El id de la patología debe ser un número.'),
+  body('contenido')
+    .trim()
+    .notEmpty().withMessage('El contenido es requerido.')
+    .isString().withMessage('El contenido debe ser un texto.'),
 
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            const errorMessages = errors.array().map(error => error.msg);
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const errorMessages = errors.array().map(error => error.msg);
 
-            return res.status(409).json({ errors: errorMessages });
-        }
-        next();
+      return res.status(409).json({errors: errorMessages});
     }
+    next();
+  }
 ];
