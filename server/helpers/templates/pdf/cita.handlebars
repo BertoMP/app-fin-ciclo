@@ -6,13 +6,16 @@
         body {
             font-family: Arial, sans-serif;
         }
+
         .header {
             text-align: center;
             margin-bottom: 50px;
         }
+
         .section {
             margin-bottom: 30px;
         }
+
         .section .title {
             font-weight: bold;
             margin-bottom: 10px;
@@ -26,12 +29,14 @@
 
 <div class="section">
     <div class="title">Datos del Paciente:</div>
-    <p>Nombre: {{cita.datos_paciente.nombre}} {{cita.datos_paciente.primer_apellido}} {{cita.datos_paciente.segundo_apellido}}</p>
+    <p>
+        Nombre: {{cita.datos_paciente.nombre}} {{cita.datos_paciente.primer_apellido}} {{cita.datos_paciente.segundo_apellido}}</p>
 </div>
 
 <div class="section">
     <div class="title">Datos del Especialista:</div>
-    <p>Nombre: {{cita.datos_especialista.nombre}} {{cita.datos_especialista.primer_apellido}} {{cita.datos_especialista.segundo_apellido}}</p>
+    <p>
+        Nombre: {{cita.datos_especialista.nombre}} {{cita.datos_especialista.primer_apellido}} {{cita.datos_especialista.segundo_apellido}}</p>
     <p>Especialidad: {{cita.datos_especialista.especialidad_nombre}}</p>
 </div>
 

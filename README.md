@@ -58,6 +58,8 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 ![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 * ___Autenticación___:  
 ![JWT](https://img.shields.io/badge/-JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+* ___Documentación___:  
+![Swagger](https://img.shields.io/badge/-Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
   
 ### Paquetes y librerías utilizadas
 
@@ -94,6 +96,9 @@ zonas horarias.
 - _nodemailer_: Librería que permite enviar correos electrónicos desde Node.js.
 - _puppeteer_: Librería que permite la generación de PDFs a partir de páginas web.
 - _qrcode_: Librería que permite la generación de códigos QR.
+- _swagger-jsdoc_: Librería que permite la generación de documentación Swagger.
+- _swagger-ui-express_: Middleware de Express.js que permite la visualización de 
+documentación Swagger en una interfaz de usuario.
 
 ## Características principales
 

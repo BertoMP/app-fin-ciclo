@@ -40,12 +40,15 @@
 </head>
 <body>
 <h1 style="text-align: center;">Receta de Medicamentos</h1>
-<p><strong>Paciente: </strong>{{paciente.nombre}} {{paciente.primer_apellido}} {{paciente.segundo_apellido}}</p>
-<p><strong>Número de Historia Clínica: </strong>{{paciente.num_historia_clinica}}</p>
-{{#each prescripcion}}
+<p>
+    <strong>Paciente: </strong>{{datos_paciente.nombre}} {{datos_paciente.primer_apellido}} {{datos_paciente.segundo_apellido}}
+</p>
+<p><strong>Número de Historia
+    Clínica: </strong>{{datos_paciente.num_historia_clinica}}</p>
+{{#each prescripciones}}
     <section class="medicamento">
-        <h2>{{nombre}}</h2>
-        <p><strong>Descripción: </strong>{{descripcion}}</p>
+        <h2>{{this.medicamento.nombre}}</h2>
+        <p><strong>Descripción: </strong>{{this.medicamento.descripcion}}</p>
         <table>
             <thead>
             <tr>
@@ -57,7 +60,7 @@
             </tr>
             </thead>
             <tbody>
-            {{#each tomas}}
+            {{#each this.medicamento.tomas}}
                 <tr>
                     <td>{{hora}}</td>
                     <td>{{dosis}}</td>

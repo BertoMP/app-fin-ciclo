@@ -71,8 +71,6 @@ export class TesteoBackendComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: MedicalSpecialtyModel) => {
           this.especialidades = response;
-
-          console.log(this.especialidades);
         },
         error: (error: HttpErrorResponse) => {
           console.error(error.error);
@@ -148,9 +146,19 @@ export class TesteoBackendComponent implements OnInit, OnDestroy {
     if (event.target.files && event.target.files[0]) {
       this.fileUploadService.toBase64(event.target.files[0]).then(base64 => {
         this.imageForm.get('image').setValue(base64);
-        console.log(base64);
       });
     }
+  }
+
+  onGetInforme(): void {
+    this.testeoBack.generaInforme()
+      .subscribe({
+        next: () => {
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('No se pudo generar el informe.', error);
+        }
+      });
   }
 
   onSubmit() {

@@ -1,39 +1,39 @@
-const { query, validationResult } = require('express-validator');
+const {query, validationResult} = require('express-validator');
 
 exports.validateDateQueryParams = [
-    query('fechaInicio')
-        .optional()
-        .isDate().withMessage('La fecha de inicio debe ser una fecha válida.')
-        .custom(value => {
-            if (value > new Date().toISOString().split('T')[0]) {
-                throw new Error('La fecha de inicio no puede ser mayor a la fecha actual.');
-            }
+  query('fechaInicio')
+    .optional()
+    .isDate().withMessage('La fecha de inicio debe ser una fecha válida.')
+    .custom(value => {
+      if (value > new Date().toISOString().split('T')[0]) {
+        throw new Error('La fecha de inicio no puede ser mayor a la fecha actual.');
+      }
 
-            return true;
-        }),
+      return true;
+    }),
 
-    query('fechaFin')
-        .optional()
-        .isDate().withMessage('La fecha de fin debe ser una fecha válida.')
-        .custom((value, { req }) => {
-            if (value > new Date().toISOString().split('T')[0]) {
-                throw new Error('La fecha de fin no puede ser mayor a la fecha actual.');
-            }
+  query('fechaFin')
+    .optional()
+    .isDate().withMessage('La fecha de fin debe ser una fecha válida.')
+    .custom((value, {req}) => {
+      if (value > new Date().toISOString().split('T')[0]) {
+        throw new Error('La fecha de fin no puede ser mayor a la fecha actual.');
+      }
 
-            if (value < req.query.fechaInicio) {
-                throw new Error('La fecha de fin no puede ser menor a la fecha de inicio.');
-            }
+      if (value < req.query.fechaInicio) {
+        throw new Error('La fecha de fin no puede ser menor a la fecha de inicio.');
+      }
 
-            return true;
-        }),
+      return true;
+    }),
 
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            const errorMessages = errors.array().map(error => error.msg);
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const errorMessages = errors.array().map(error => error.msg);
 
-            return res.status(409).json({ errors: errorMessages });
-        }
-        next();
+      return res.status(409).json({errors: errorMessages});
     }
+    next();
+  }
 ];
