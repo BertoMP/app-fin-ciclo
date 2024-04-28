@@ -15,7 +15,7 @@ section {
 }
 
 div>section{
-    box-shadow: 0px 5px 50px cornflowerblue;
+    box-shadow: 0px 5px 40px gray;
 }
 
 section+section {
@@ -32,11 +32,15 @@ h1 {
 h2 {
     font-size: max(1.8vw, 20px);
     text-align: center;
+    font-weight: bold;
 }
 
 p {
     margin-top: 4%;
-    font-size: max(1.3vw, 15px);
+}
+
+p,a{
+    font-size: max(1.3vw, 13px);
 }
 
 p,h3 {
@@ -53,8 +57,24 @@ button {
     padding: 2%;
     width: 20%;
     border-color: transparent;
-    font-size: x-large;
+    font-size: max(1.5vw,15px);
     border-radius: 10px;
+    transition: 1s;
+}
+
+button:hover{
+    background-color: darkblue;
+    color: white;
+}
+
+a{
+    color: darkblue;
+    text-decoration: none;
+}
+
+a:hover{
+    transition: 1s;
+    color: white;
 }
 
 .data {
@@ -78,7 +98,7 @@ button {
 
 .description-data p {
     width: 90%;
-    font-size: max(1.5vw, 18px);
+    font-size: max(1.5vw, 15px);
 }
 
 .info {
@@ -98,6 +118,7 @@ button {
     padding: 0;
     margin-left: 0;
 }
+
 .consulta p + p{
     margin-left: 20%;
 }

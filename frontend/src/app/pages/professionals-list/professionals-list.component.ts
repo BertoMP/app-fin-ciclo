@@ -31,6 +31,11 @@ export class ProfessionalsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    document.querySelector('body').scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+    
    this.medicalSpecialistListService.getMedicalSpecialistList().subscribe(
     (res: MedicalSpecialistListModel[]) => {
       this.listOfData=res;
