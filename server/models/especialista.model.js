@@ -31,13 +31,14 @@ class EspecialistaModel {
             '    usuario.nombre,' +
             '    usuario.primer_apellido,' +
             '    usuario.segundo_apellido,' +
+            '    usuario.email,' +
             '    especialista.descripcion,' +
             '    especialista.imagen,' +
             '    especialista.turno,' +
             '    especialista.num_colegiado,' +
             '    especialidad.id AS especialidad_id,' +
             '    especialidad.nombre AS especialidad,' +
-            '    consulta.id AS consulta_id ' +
+            '    consulta.id AS consulta_id, ' +
             '    consulta.nombre AS consulta_nombre ' +
             'FROM' +
             '    especialista ' +
@@ -52,7 +53,27 @@ class EspecialistaModel {
 
         try {
             const [rows] = await dbConn.execute(query, [usuario_id]);
-            return rows[0];
+            const row = rows[0];
+
+            return {
+                usuario_id: row.usuario_id,
+                nombre: row.nombre,
+                primer_apellido: row.primer_apellido,
+                segundo_apellido: row.segundo_apellido,
+                email: row.email,
+                descripcion: row.descripcion,
+                imagen: 'imagen',
+                turno: row.turno,
+                num_colegiado: row.num_colegiado,
+                especialidad: {
+                    especialidad_id: row.especialidad_id,
+                    especialidad: row.especialidad
+                },
+                consulta: {
+                    consulta_id: row.consulta_id,
+                    consulta_nombre: row.consulta_nombre
+                }
+            };
         } catch (err) {
             console.log(err);
             throw new Error('Error al obtener el especialista.');
