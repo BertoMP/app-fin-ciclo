@@ -33,8 +33,11 @@ class PacienteModel {
 
     static async findByNumHistClinica(dbConn, num_hist_clinica) {
         const query =
-            'SELECT * FROM paciente ' +
-            'WHERE num_historia_clinica = ?';
+            'SELECT * ' +
+            'FROM ' +
+            '   paciente ' +
+            'WHERE ' +
+            '   num_historia_clinica = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [num_hist_clinica]);
@@ -46,8 +49,11 @@ class PacienteModel {
 
     static async findByUserId(dbConn, usuario_id) {
         const query =
-            'SELECT * FROM paciente ' +
-            'WHERE usuario_id = ?';
+            'SELECT * ' +
+            'FROM p' +
+            '   paciente ' +
+            'WHERE ' +
+            '   usuario_id = ?';
 
         try {
             const [rows] = await dbConn.execute(query, [usuario_id]);
@@ -70,18 +76,21 @@ class PacienteModel {
 
     static async update(dbConn, paciente) {
         const query =
-            'UPDATE paciente ' +
-            'SET fecha_nacimiento = ?, ' +
-            'tipo_via = ?, ' +
-            'nombre_via = ?, ' +
-            'numero = ?, ' +
-            'piso = ?, ' +
-            'puerta = ?, ' +
-            'municipio = ?, ' +
-            'codigo_postal = ?, ' +
-            'tel_fijo = ?, ' +
-            'tel_movil = ? ' +
-            'WHERE usuario_id = ?';
+            'UPDATE ' +
+            '   paciente ' +
+            'SET ' +
+            '   fecha_nacimiento = ?, ' +
+            '   tipo_via = ?, ' +
+            '   nombre_via = ?, ' +
+            '   numero = ?, ' +
+            '   piso = ?, ' +
+            '   puerta = ?, ' +
+            '   municipio = ?, ' +
+            '   codigo_postal = ?, ' +
+            '   tel_fijo = ?, ' +
+            '   tel_movil = ? ' +
+            'WHERE ' +
+            '   usuario_id = ?';
 
         try {
             await dbConn.execute(
