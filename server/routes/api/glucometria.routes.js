@@ -33,6 +33,12 @@ const {validateUsuarioIdParam} = require("../../helpers/validators/params/usuari
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/GlucometriaPaginada'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -81,6 +87,12 @@ router.get('/glucometria/:usuario_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/GlucometriaPaginada'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -130,12 +142,18 @@ router.get('/glucometria',
  *           schema:
  *             $ref: '#/components/schemas/GlucometriaPost'
  *     responses:
- *       201:
+ *       200:
  *         description: La medición de glucosa fue creada exitosamente
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:

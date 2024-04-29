@@ -30,6 +30,12 @@ const {validateConsultaIdParam} = require("../../helpers/validators/params/consu
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ConsultaItem'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -133,12 +139,18 @@ router.get('/consulta',
  *                 type: 'string'
  *                 description: 'El nombre de la consulta'
  *     responses:
- *       201:
+ *       200:
  *         description: Consulta creada correctamente
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -152,11 +164,11 @@ router.get('/consulta',
  *             schema:
  *               $ref: '#/components/schemas/TokenInvalidError'
  *       409:
- *         description: Conflicto en la validación o Ya existe una consulta con ese nombre
+ *         description: Ya existe una consulta con ese nombre
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ValidationError'
+ *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -203,6 +215,12 @@ router.post('/consulta',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -222,11 +240,11 @@ router.post('/consulta',
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
  *       409:
- *         description: Conflicto en la validación o Ya existe una consulta con ese nombre
+ *         description: Ya existe una consulta con ese nombre
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ValidationError'
+ *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -264,6 +282,12 @@ router.put('/consulta/:consulta_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -283,11 +307,11 @@ router.put('/consulta/:consulta_id',
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
  *       409:
- *         description: Conflicto en la validación o No se puede eliminar la consulta porque está asociada a un médico
+ *         description: No se puede eliminar la consulta porque está asociada a un médico
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ValidationError'
+ *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:

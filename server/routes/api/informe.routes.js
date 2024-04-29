@@ -31,6 +31,12 @@ const {validateInformeIdParam} = require("../../helpers/validators/params/inform
  *           application/pdf:
  *             schema:
  *               $ref: '#/components/schemas/InformePDF'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -49,12 +55,6 @@ const {validateInformeIdParam} = require("../../helpers/validators/params/inform
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Error de validación o El informe no pertenece al usuario
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -91,6 +91,12 @@ router.get('/informe/pdf/:informe_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Informe'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -109,12 +115,6 @@ router.get('/informe/pdf/:informe_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Error de validación o El informe no pertenece al usuario
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -145,7 +145,7 @@ router.get('/informe/:informe_id',
  *           schema:
  *             $ref: '#/components/schemas/InformePost'
  *     responses:
- *       201:
+ *       200:
  *         description: Informe creado correctamente
  *         content:
  *           application/json:
@@ -169,12 +169,6 @@ router.get('/informe/:informe_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TokenInvalidError'
- *       409:
- *         description: Error de validación o El informe no pertenece al usuario
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:

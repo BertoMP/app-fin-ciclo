@@ -130,6 +130,12 @@ router.get('/medicamento/:medicamento_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/MedicamentoPaginado'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -148,12 +154,6 @@ router.get('/medicamento/:medicamento_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Error de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -190,6 +190,12 @@ router.get('/medicamento',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -203,7 +209,7 @@ router.get('/medicamento',
  *             schema:
  *               $ref: '#/components/schemas/TokenInvalidError'
  *       409:
- *         description: Error de validación o Ya existe un medicamento con ese nombre
+ *         description: Ya existe un medicamento con ese nombre
  *         content:
  *           application/json:
  *             schema:
@@ -251,6 +257,12 @@ router.post('/medicamento',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -270,7 +282,7 @@ router.post('/medicamento',
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
  *       409:
- *         description: Error de validación o Ya existe un medicamento con ese nombre
+ *         description: Ya existe un medicamento con ese nombre
  *         content:
  *           application/json:
  *             schema:

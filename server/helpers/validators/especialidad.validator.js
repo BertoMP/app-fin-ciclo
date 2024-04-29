@@ -18,6 +18,8 @@ exports.validateEspecialidad = [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       req.validationErrors = errors.array().map(error => error.msg);
+
+      return res.status(400).json({errors: req.validationErrors});
     }
     next();
   }

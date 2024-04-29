@@ -84,7 +84,7 @@ exports.createConsulta = async (req, res) => {
 
     await ConsultaService.createConsulta(consulta);
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: 'Consulta creada correctamente.'
     });
   } catch (err) {

@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const UsuarioController = require('../../controllers/usuario.controller');
 
-const {cleanupFiles} = require("../../util/middleware/cleanupFiles");
-
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
 const tokenId = require('../../helpers/jwt/tokenUserId');
@@ -13,6 +11,8 @@ const {validateEspecialistaRegister} = require("../../helpers/validators/especia
 const {validateUserPasswordChange} = require("../../helpers/validators/usuarioPasswordChange.validator");
 const {validateRoleQueryParams} = require("../../helpers/validators/queryParams/roleQueryParams.validator");
 const {validateUsuarioIdParam} = require("../../helpers/validators/params/usuarioIdParam.validator");
+const {validatePacienteUpdate} = require("../../helpers/validators/pacienteUpdate.validator");
+const {validateEspecialistaUpdate} = require("../../helpers/validators/especialistaUpdate.validator");
 
 
 // Rutas GET
@@ -38,6 +38,12 @@ const {validateUsuarioIdParam} = require("../../helpers/validators/params/usuari
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Usuario'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -56,12 +62,6 @@ const {validateUsuarioIdParam} = require("../../helpers/validators/params/usuari
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Conflicto de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -90,6 +90,12 @@ router.get('/usuario/:usuario_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Usuario'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -108,12 +114,6 @@ router.get('/usuario/:usuario_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Conflicto de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -155,6 +155,12 @@ router.get('/usuario',
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/UsuarioPaginado'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -173,12 +179,6 @@ router.get('/usuario',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Conflicto de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -212,12 +212,18 @@ router.get('/usuario/listado',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
- *       409:
- *         description: Existe conflicto de validación o El correo o DNI ya está en uso
+ *       400:
+ *         description: Error de validación
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ValidationError'
+ *       409:
+ *         description: El correo o DNI ya está en uso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -250,6 +256,12 @@ router.post('/usuario/registro',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -267,13 +279,13 @@ router.post('/usuario/registro',
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ServerError'
+ *               $ref: '#/components/schemas/NotFoundError'
  *       409:
- *         description: Existe conflicto de validación o El correo ya está en uso o El DNI ya está en uso o El número de colegiado ya está en uso
+ *         description: El correo ya está en uso o El DNI ya está en uso o El número de colegiado ya está en uso
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ServerError'
+ *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -285,7 +297,6 @@ router.post('/usuario/registro-especialista',
   tokenVerify,
   tokenRole([1]),
   validateEspecialistaRegister,
-  cleanupFiles,
   UsuarioController.postRegistroEspecialista);
 
 /**
@@ -322,7 +333,7 @@ router.post('/usuario/registro-especialista',
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ServerError'
+ *               $ref: '#/components/schemas/IncorrectPassOrUserError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -619,6 +630,12 @@ router.put('/usuario/actualizar-password',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Usuario'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -648,6 +665,7 @@ router.put('/usuario/actualizar-usuario/:usuario_id',
   tokenVerify,
   tokenRole([1]),
   validateUsuarioIdParam,
+  validatePacienteUpdate,
   UsuarioController.putUsuarioPaciente);
 
 /**
@@ -671,6 +689,12 @@ router.put('/usuario/actualizar-usuario/:usuario_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Usuario'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -700,6 +724,7 @@ router.put('/usuario/actualizar-usuario',
   tokenVerify,
   tokenRole([2]),
   tokenId,
+  validatePacienteUpdate,
   UsuarioController.putUsuarioPaciente);
 
 /**
@@ -729,6 +754,12 @@ router.put('/usuario/actualizar-usuario',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/UsuarioEspecialista'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -758,6 +789,7 @@ router.put('/usuario/actualizar-especialista/:usuario_id',
   tokenVerify,
   tokenRole([1]),
   validateUsuarioIdParam,
+  validateEspecialistaUpdate,
   UsuarioController.putUsuarioEspecialista);
 
 // Rutas DELETE

@@ -154,7 +154,7 @@ exports.postRegistro = async (req, res) => {
 
     await EmailService.sendWelcomeEmail(req.body.email, req.body.nombre);
 
-    return res.status(201).json({message: 'Usuario creado exitosamente.'});
+    return res.status(200).json({message: 'Usuario creado exitosamente.'});
   } catch (err) {
     return res.status(500).json({errors: [err.message]});
   }
@@ -184,7 +184,7 @@ exports.postRegistroEspecialista = async (req, res) => {
 
     await UsuarioService.createUsuarioEspecialista(user, specialist);
 
-    return res.status(201).json({message: 'Usuario creado exitosamente.'});
+    return res.status(200).json({message: 'Usuario creado exitosamente.'});
   } catch (err) {
     if (req.file) {
       fileDestroy(req.file.path);

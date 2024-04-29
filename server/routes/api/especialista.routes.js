@@ -24,18 +24,18 @@ const {validateUsuarioIdParam} = require("../../helpers/validators/params/usuari
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Especialista'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       404:
  *         description: No se encontró el especialista
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *          description: Error de validación
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/ValidationError'
  *       500:
  *         description: Error del servidor
  *         content:

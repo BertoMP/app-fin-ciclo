@@ -195,49 +195,6 @@ const options = {
             },
           },
         },
-        ConsultaPaginada: {
-          type: 'object',
-          properties: {
-            prev: {
-              type: 'string',
-              description: 'URL de la página anterior',
-            },
-            next: {
-              type: 'string',
-              description: 'URL de la próxima página',
-            },
-            pagina_actual: {
-              type: 'integer',
-              description: 'Número de la página actual',
-            },
-            paginas_totales: {
-              type: 'integer',
-              description: 'Número total de páginas',
-            },
-            cantidad_consultas: {
-              type: 'integer',
-              description: 'Cantidad total de consultas',
-            },
-            result_min: {
-              type: 'integer',
-              description: 'Índice del primer resultado en la página actual',
-            },
-            result_max: {
-              type: 'integer',
-              description: 'Índice del último resultado en la página actual',
-            },
-            items_pagina: {
-              type: 'integer',
-              description: 'Cantidad de items por página',
-            },
-            resultados: {
-              type: 'array',
-              items: {
-                $ref: '#/components/schemas/ConsultaItem'
-              },
-            },
-          },
-        },
         CitaItem: {
           type: 'object',
           properties: {
@@ -332,12 +289,63 @@ const options = {
             },
           },
         },
+        ConsultaPaginada: {
+          type: 'object',
+          properties: {
+            prev: {
+              type: 'string',
+              description: 'URL de la página anterior',
+            },
+            next: {
+              type: 'string',
+              description: 'URL de la próxima página',
+            },
+            pagina_actual: {
+              type: 'integer',
+              description: 'Número de la página actual',
+            },
+            paginas_totales: {
+              type: 'integer',
+              description: 'Número total de páginas',
+            },
+            cantidad_consultas: {
+              type: 'integer',
+              description: 'Cantidad total de consultas',
+            },
+            result_min: {
+              type: 'integer',
+              description: 'Índice del primer resultado en la página actual',
+            },
+            result_max: {
+              type: 'integer',
+              description: 'Índice del último resultado en la página actual',
+            },
+            items_pagina: {
+              type: 'integer',
+              description: 'Cantidad de items por página',
+            },
+            resultados: {
+              type: 'array',
+              items: {
+                $ref: '#/components/schemas/ConsultaItem'
+              },
+            },
+          },
+        },
         CodigoPostalItem: {
           type: 'object',
           properties: {
             codigo_postal_id: {
               type: 'string',
               description: 'El código postal',
+            },
+          },
+        },
+        ConflictError: {
+          type: 'object',
+          properties: {
+            errors: {
+              type: 'string',
             },
           },
         },
@@ -740,6 +748,14 @@ const options = {
             },
           },
         },
+        IncorrectPasswordOrEmailError: {
+          type: 'object',
+          properties: {
+            errors: {
+              type: 'string',
+            },
+          },
+        },
         InformePost: {
           type: 'object',
           properties: {
@@ -861,10 +877,7 @@ const options = {
           type: 'object',
           properties: {
             errors: {
-              type: 'array',
-              items: {
-                type: 'string',
-              },
+              type: 'string',
             },
           },
         },
@@ -934,11 +947,20 @@ const options = {
             datos_paciente: {
               type: 'object',
               properties: {
-                id: { type: 'integer', description: 'ID del paciente' },
-                nombre: { type: 'string', description: 'Nombre del paciente' },
-                primer_apellido: { type: 'string', description: 'Primer apellido del paciente' },
-                segundo_apellido: { type: 'string', description: 'Segundo apellido del paciente' },
-                num_historia_clinica: { type: 'string', description: 'Número de historia clínica del paciente' },
+                id: {type: 'integer', description: 'ID del paciente'},
+                nombre: {type: 'string', description: 'Nombre del paciente'},
+                primer_apellido: {
+                  type: 'string',
+                  description: 'Primer apellido del paciente'
+                },
+                segundo_apellido: {
+                  type: 'string',
+                  description: 'Segundo apellido del paciente'
+                },
+                num_historia_clinica: {
+                  type: 'string',
+                  description: 'Número de historia clínica del paciente'
+                },
               },
             },
             prescripciones: {
@@ -949,20 +971,41 @@ const options = {
                   medicamento: {
                     type: 'object',
                     properties: {
-                      id: { type: 'integer', description: 'ID del medicamento' },
-                      nombre: { type: 'string', description: 'Nombre del medicamento' },
-                      descripcion: { type: 'string', description: 'Descripción del medicamento' },
+                      id: {type: 'integer', description: 'ID del medicamento'},
+                      nombre: {
+                        type: 'string',
+                        description: 'Nombre del medicamento'
+                      },
+                      descripcion: {
+                        type: 'string',
+                        description: 'Descripción del medicamento'
+                      },
                       tomas: {
                         type: 'array',
                         items: {
                           type: 'object',
                           properties: {
-                            id: { type: 'integer', description: 'ID de la toma' },
-                            hora: { type: 'string', description: 'Hora de la toma' },
-                            dosis: { type: 'integer', description: 'Dosis de la toma' },
-                            fecha_inicio: { type: 'string', description: 'Fecha de inicio de la toma' },
-                            fecha_fin: { type: 'string', description: 'Fecha de fin de la toma' },
-                            observaciones: { type: 'string', description: 'Observaciones de la toma' },
+                            id: {type: 'integer', description: 'ID de la toma'},
+                            hora: {
+                              type: 'string',
+                              description: 'Hora de la toma'
+                            },
+                            dosis: {
+                              type: 'integer',
+                              description: 'Dosis de la toma'
+                            },
+                            fecha_inicio: {
+                              type: 'string',
+                              description: 'Fecha de inicio de la toma'
+                            },
+                            fecha_fin: {
+                              type: 'string',
+                              description: 'Fecha de fin de la toma'
+                            },
+                            observaciones: {
+                              type: 'string',
+                              description: 'Observaciones de la toma'
+                            },
                           },
                         },
                       },
@@ -993,10 +1036,7 @@ const options = {
           type: 'object',
           properties: {
             errors: {
-              type: 'array',
-              items: {
                 type: 'string',
-              },
             },
           },
         },
@@ -1086,10 +1126,7 @@ const options = {
           type: 'object',
           properties: {
             errors: {
-              type: 'array',
-              items: {
-                type: 'string',
-              },
+              type: 'string',
             },
           },
         },
@@ -1097,10 +1134,7 @@ const options = {
           type: 'object',
           properties: {
             errors: {
-              type: 'array',
-              items: {
-                type: 'string',
-              },
+              type: 'string',
             },
           },
         },
@@ -1330,7 +1364,6 @@ const options = {
             },
           },
         },
-
         ValidationError: {
           type: 'object',
           properties: {

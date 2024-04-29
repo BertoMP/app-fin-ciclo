@@ -36,7 +36,7 @@ exports.postReceta = async (req, res) => {
   try {
     await PacienteTomaMedicamentoService.createPrescripcion(paciente_id, prescripcion);
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: 'Receta guardada correctamente.'
     });
   } catch (error) {
@@ -50,6 +50,14 @@ exports.deleteToma = async (req, res) => {
   const toma_id = req.params.toma_id;
 
   try {
+    const tomaExists = await PacienteTomaMedicamentoService.findToma(toma_id);
+
+    if (!tomaExists || tomaExists.length === 0) {
+      return res.status(404).json({
+        errors: ['La toma no existe.']
+      });
+    }
+
     await PacienteTomaMedicamentoService.deleteToma(toma_id);
 
     return res.status(200).json({
@@ -67,6 +75,14 @@ exports.deleteMedicamento = async (req, res) => {
   const medicamento_id = req.params.medicamento_id;
 
   try {
+    const medicamentoExists = await PacienteTomaMedicamentoService.findMedicamento(paciente_id, medicamento_id);
+
+    if (!medicamentoExists || medicamentoExists.length === 0) {
+      return res.status(404).json({
+        errors: ['El medicamento no existe.']
+      });
+    }
+
     await PacienteTomaMedicamentoService.deleteMedicamento(paciente_id, medicamento_id);
 
     return res.status(200).json({

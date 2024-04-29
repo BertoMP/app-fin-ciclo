@@ -55,6 +55,14 @@ class PacienteTomaMedicamentoService {
     }
   }
 
+  static async findMedicamento(pacienteId, medicamentoId) {
+    try {
+      return await PacienteTomaMedicamentoModel.findPrescripcion(dbConn, pacienteId, medicamentoId);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   static async findPrescripciones(pacienteId) {
     try {
       return await PacienteTomaMedicamentoModel.findPrescripciones(dbConn, pacienteId);

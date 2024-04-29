@@ -1,8 +1,6 @@
 const {body, validationResult} = require('express-validator');
-const {validateUserRegister} = require("./usuarioRegistro.validator");
 
-exports.validateEspecialistaRegister = [
-  validateUserRegister,
+exports.validateEspecialistaUpdate = [
   body('num_colegiado')
     .trim()
     .notEmpty().withMessage('El número de colegiado es requerido.')

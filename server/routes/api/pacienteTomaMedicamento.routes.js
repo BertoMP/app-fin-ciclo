@@ -34,6 +34,12 @@ const {validateMedicamentoIdParam} = require("../../helpers/validators/params/me
  *             schema:
  *               type: string
  *               format: binary
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -52,12 +58,6 @@ const {validateMedicamentoIdParam} = require("../../helpers/validators/params/me
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Conflicto en la validación
- *         content:
- *           application/json:
- *           schema:
- *             $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -154,6 +154,12 @@ router.get('/prescripcion/pdf',
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Prescripcion'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -172,12 +178,6 @@ router.get('/prescripcion/pdf',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Conflicto en la validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -294,6 +294,12 @@ router.get('/prescripcion',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Prescripcion'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -306,12 +312,6 @@ router.get('/prescripcion',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TokenInvalidError'
- *       409:
- *         description: Conflicto en la validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -352,6 +352,12 @@ router.post('/prescripcion',
  *                 message:
  *                   type: string
  *                   example: Toma eliminada correctamente
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -415,6 +421,12 @@ router.delete('/prescripcion/borrar-toma/:toma_id',
  *                 message:
  *                   type: string
  *                   example: Medicamento eliminado correctamente
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:

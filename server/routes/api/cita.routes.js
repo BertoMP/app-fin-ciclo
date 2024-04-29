@@ -81,6 +81,12 @@ router.get('/cita/agenda',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/CitaItem'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -147,6 +153,12 @@ router.get('/cita/:cita_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/CitaPaginada'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -220,6 +232,12 @@ router.get('/cita',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -238,12 +256,6 @@ router.get('/cita',
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Error de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ValidationError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -281,6 +293,12 @@ router.post('/cita',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:

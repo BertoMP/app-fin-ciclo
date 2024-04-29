@@ -103,7 +103,7 @@ exports.createEspecialidad = async (req, res) => {
 
     await EspecialidadService.createEspecialidad(especialidad);
 
-    return res.status(201).json({message: 'Especialidad creada exitosamente.'});
+    return res.status(200).json({message: 'Especialidad creada exitosamente.'});
   } catch (err) {
     return res.status(500).json({
       errors: [err.message]

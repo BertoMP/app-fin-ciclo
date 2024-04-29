@@ -70,7 +70,7 @@ exports.createInforme = async (req, res) => {
 
     await InformeService.createInforme(informe);
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: 'Informe creado correctamente.'
     });
   } catch (err) {

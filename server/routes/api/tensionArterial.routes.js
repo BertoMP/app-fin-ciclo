@@ -189,6 +189,12 @@ router.get('/tension-arterial',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -201,12 +207,6 @@ router.get('/tension-arterial',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TokenInvalidError'
- *       409:
- *         description: Conflicto de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:

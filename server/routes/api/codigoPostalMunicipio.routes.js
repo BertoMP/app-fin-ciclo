@@ -24,18 +24,18 @@ const codigoPostalController = require('../../controllers/codigoPostalMunicipio.
  *               type: 'array'
  *               items:
  *                 $ref: '#/components/schemas/CodigoPostalItem'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       404:
  *         description: El código postal no fue encontrado
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Error de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ValidationError'
  *       500:
  *         description: Error al obtener el código postal
  *         content:

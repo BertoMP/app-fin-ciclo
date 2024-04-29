@@ -8,8 +8,6 @@ const {validateEspecialidad} = require("../../helpers/validators/especialidad.va
 const {validateEspecialidadIdParam} = require("../../helpers/validators/params/especialidadIdParam.validator");
 const {validatePaginationQueryParams} = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
 
-const {cleanupFiles} = require("../../util/middleware/cleanupFiles");
-
 // Rutas GET
 /**
  * @swagger
@@ -91,6 +89,12 @@ router.get('/especialidad/especialista',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/EspecialidadItem'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -109,12 +113,6 @@ router.get('/especialidad/especialista',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *          description: Error de validación
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/ValidationError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -148,6 +146,12 @@ router.get('/especialidad/:especialidad_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/EspecialidadPaginada'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       404:
  *         description: No se encontró la página de especialidades
  *         content:
@@ -155,11 +159,11 @@ router.get('/especialidad/:especialidad_id',
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
  *       409:
- *         description: Conflicto con la validación o Ya existe una especialidad con ese nombre
+ *         description: Ya existe una especialidad con ese nombre
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ValidationError'
+ *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -203,6 +207,12 @@ router.get('/especialidad',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -216,11 +226,11 @@ router.get('/especialidad',
  *             schema:
  *               $ref: '#/components/schemas/TokenInvalidError'
  *       409:
- *         description: Conflicto con la validación o Ya existe una especialidad con ese nombre
+ *         description: Ya existe una especialidad con ese nombre
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ValidationError'
+ *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -273,6 +283,12 @@ router.post('/especialidad',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -292,11 +308,11 @@ router.post('/especialidad',
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
  *       409:
- *         description: Conflicto con la validación o Ya existe una especialidad con ese nombre
+ *         description: Ya existe una especialidad con ese nombre
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ValidationError'
+ *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -334,6 +350,12 @@ router.put('/especialidad/:especialidad_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -352,12 +374,6 @@ router.put('/especialidad/:especialidad_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Conflicto con la validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ValidationError'
  *       500:
  *         description: Error del servidor
  *         content:

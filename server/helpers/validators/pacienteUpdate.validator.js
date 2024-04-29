@@ -1,8 +1,6 @@
 const {body, validationResult} = require('express-validator');
-const {validateUserRegister} = require("./usuarioRegistro.validator");
 
-exports.validatePacienteRegister = [
-  validateUserRegister,
+exports.validatePacienteUpdate = [
   body('tipo_via')
     .trim()
     .notEmpty().withMessage('El tipo de vía es requerido.')

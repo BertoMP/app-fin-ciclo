@@ -177,7 +177,7 @@ exports.createCita = async (req, res) => {
 
     destroyFile(pdf, true);
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: 'Cita creada correctamente.'
     });
 

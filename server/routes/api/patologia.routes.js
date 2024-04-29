@@ -32,6 +32,12 @@ const {validatePatologia} = require("../../helpers/validators/patologia.validato
  *                   nombre:
  *                     type: string
  *                     description: El nombre de la patología
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -88,6 +94,12 @@ router.get('/patologia/informe',
  *                 descripcion:
  *                   type: string
  *                   description: La descripción de la patología
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -106,12 +118,6 @@ router.get('/patologia/informe',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Conflictos en la petición
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -145,6 +151,12 @@ router.get('/patologia/:patologia_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/PatologiaPaginada'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -163,12 +175,6 @@ router.get('/patologia/:patologia_id',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Conflictos en la petición
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConflictError'
  *       500:
  *         description: Error del servidor
  *         content:
@@ -198,12 +204,18 @@ router.get('/patologia',
  *           schema:
  *             $ref: '#/components/schemas/Patologia'
  *     responses:
- *       201:
+ *       200:
  *         description: Patología creada correctamente
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -217,7 +229,7 @@ router.get('/patologia',
  *             schema:
  *               $ref: '#/components/schemas/TokenInvalidError'
  *       409:
- *         description: Conflicto en la validación o La patología ya existe
+ *         description: La patología ya existe
  *         content:
  *           application/json:
  *             schema:
@@ -264,6 +276,12 @@ router.post('/patologia',
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       401:
  *         description: No autorizado
  *         content:
@@ -283,7 +301,7 @@ router.post('/patologia',
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
  *       409:
- *         description: Conflicto en la validación o Ya existe una patología con ese nombre
+ *         description: Ya existe una patología con ese nombre
  *         content:
  *           application/json:
  *             schema:

@@ -9,7 +9,6 @@ exports.validateUserPasswordChange = [
       const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
       return regex.test(value);
     }).withMessage('La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número.'),
-
   body('confirm_password')
     .trim()
     .notEmpty().withMessage('La confirmación de la contraseña es requerida.')
@@ -23,7 +22,7 @@ exports.validateUserPasswordChange = [
     if (!errors.isEmpty()) {
       const errorMessages = errors.array().map(error => error.msg);
 
-      return res.status(409).json({errors: errorMessages});
+      return res.status(400).json({errors: errorMessages});
     }
     next();
   }

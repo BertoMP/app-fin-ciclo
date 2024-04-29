@@ -23,12 +23,12 @@ const {validateContacto} = require("../../helpers/validators/contacto.validator"
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/SuccessMessage'
- *       409:
- *          description: Error de validación
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/ValidationError'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       500:
  *         description: Error al enviar el mensaje de contacto
  *         content:

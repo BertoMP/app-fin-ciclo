@@ -23,18 +23,18 @@ const {validateProvinciaIdParam} = require('../../helpers/validators/params/prov
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Municipio'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
  *       404:
  *         description: El municipio no fue encontrado
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/NotFoundError'
- *       409:
- *         description: Error de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ValidationError'
  *       500:
  *         description: Error al obtener el municipio
  *         content:

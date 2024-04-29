@@ -91,7 +91,7 @@ exports.postGlucometria = async (req, res) => {
   try {
     await GlucometriaService.createGlucometria(glucometria);
 
-    return res.status(201).json({message: 'Glucometría creada exitosamente.'});
+    return res.status(200).json({message: 'Glucometría creada exitosamente.'});
   } catch (err) {
     return res.status(500).json({
       errors: ['Error al crear la glucometría.'],
