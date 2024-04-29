@@ -25,7 +25,7 @@ class PacienteTomaMedicamentoService {
           let observaciones = toma.observaciones;
 
           if (observaciones) {
-            observaciones = observaciones.replace(/\n/g, '<br>');
+            observaciones = observaciones.replace(/(\r\n|\n|\r)/g, '<br>');
           }
 
           const prescripcion = {

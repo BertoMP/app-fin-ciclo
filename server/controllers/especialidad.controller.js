@@ -86,7 +86,7 @@ exports.getEspecialidadesEspecialistas = async (req, res) => {
 
 exports.createEspecialidad = async (req, res) => {
   let descripcion = req.body.descripcion;
-  descripcion = descripcion.replace(/\n/g, '<br>');
+  descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
 
   try {
     const especialidad = {
@@ -117,7 +117,7 @@ exports.createEspecialidad = async (req, res) => {
 exports.updateEspecialidad = async (req, res) => {
   const id = parseInt(req.params.especialidad_id);
   let descripcion = req.body.descripcion;
-  descripcion = descripcion.replace(/\n/g, '<br>');
+  descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
 
   try {
     const currentEspecialidad =

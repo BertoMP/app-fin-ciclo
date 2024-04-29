@@ -79,7 +79,7 @@ exports.getPatologiaById = async (req, res) => {
 
 exports.createPatologia = async (req, res) => {
   let descripcion = req.body.descripcion;
-  descripcion = descripcion.replace(/\n/g, '<br>');
+  descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
 
   const patologia = {
     nombre: req.body.nombre,
@@ -111,7 +111,7 @@ exports.updatePatologia = async (req, res) => {
   const id = parseInt(req.params.patologia_id);
 
   let descripcion = req.body.descripcion;
-  descripcion = descripcion.replace(/\n/g, '<br>');
+  descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
 
   const patologia = {
     nombre: req.body.nombre,

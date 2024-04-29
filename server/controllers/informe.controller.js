@@ -62,7 +62,7 @@ exports.generaInformePDF = async (req, res) => {
 exports.createInforme = async (req, res) => {
   try {
     let contenido = req.body.contenido;
-    contenido = contenido.replace(/\n/g, '<br>');
+    contenido = contenido.replace(/(\r\n|\n|\r)/g, '<br>');
 
     const informe = {
       motivo: req.body.motivo,

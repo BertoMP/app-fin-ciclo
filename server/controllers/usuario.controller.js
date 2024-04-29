@@ -174,7 +174,7 @@ exports.postRegistroEspecialista = async (req, res) => {
     const user = createUserObject(req, encryptedPassword, 3);
 
     let descripcion = req.body.descripcion;
-    descripcion = descripcion.replace(/\n/g, '<br>');
+    descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
 
     const specialist = {
       num_colegiado: req.body.num_colegiado,
