@@ -79,12 +79,14 @@ export class ContactUsComponent implements OnInit {
 
   onSubmitEmail(): void {
     this.sendedAttempt = true;
+    this.isSendingEmail = true;
 
     if (this.contactForm.invalid) {
+      this.isSendingEmail = false;
       return;
     }
 
-    this.isSendingEmail = true;
+
 
     const newCorreo: ContactoModel = this.generateContacto();
     this.contactoService.mandarCorreo(newCorreo)
