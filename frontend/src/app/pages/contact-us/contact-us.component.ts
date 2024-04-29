@@ -6,13 +6,18 @@ import { CustomValidators } from '../../core/classes/CustomValidators';
 import { ContactoService } from '../../core/services/contacto.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import {
+  LoadingSpinnerComponent
+} from "../../shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-contact-us',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    CommonModule],
+    CommonModule,
+    LoadingSpinnerComponent
+  ],
   templateUrl: './contact-us.component.html',
   styleUrl: './contact-us.component.scss'
 })
@@ -20,6 +25,7 @@ import Swal from 'sweetalert2';
 export class ContactUsComponent implements OnInit {
   contactForm: FormGroup;
   sendedAttempt: boolean = false;
+  isSendingEmail: boolean = false;
   errores: string[] = [];
 
   staticEmail: string = 'clinicamedicacoslada@gmail.com';
@@ -78,10 +84,13 @@ export class ContactUsComponent implements OnInit {
       return;
     }
 
+    this.isSendingEmail = true;
+
     const newCorreo: ContactoModel = this.generateContacto();
     this.contactoService.mandarCorreo(newCorreo)
       .subscribe({
         next: (response) => {
+          this.isSendingEmail = false;
           Swal.fire({
             title:'Enhorabuena',
             text:'Correo enviado correctamente',
@@ -97,7 +106,8 @@ export class ContactUsComponent implements OnInit {
         },
         error: (error: HttpErrorResponse): void => {
           this.errores=error.message.split(',');
-           }
+          this.isSendingEmail = false;
+        }
       });
 
   }
