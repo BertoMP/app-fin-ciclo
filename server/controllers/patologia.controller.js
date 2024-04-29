@@ -78,7 +78,13 @@ exports.getPatologiaById = async (req, res) => {
 }
 
 exports.createPatologia = async (req, res) => {
-  const patologia = req.body;
+  let descripcion = req.body.descripcion;
+  descripcion = descripcion.replace(/\n/g, '<br>');
+
+  const patologia = {
+    nombre: req.body.nombre,
+    descripcion: descripcion
+  }
 
   try {
     const patologiaExists = await PatologiaService.readPatologiaByNombre(patologia.nombre);
@@ -103,7 +109,14 @@ exports.createPatologia = async (req, res) => {
 
 exports.updatePatologia = async (req, res) => {
   const id = parseInt(req.params.patologia_id);
-  const patologia = req.body;
+
+  let descripcion = req.body.descripcion;
+  descripcion = descripcion.replace(/\n/g, '<br>');
+
+  const patologia = {
+    nombre: req.body.nombre,
+    descripcion: descripcion
+  }
 
   try {
     const currentPatologia = await PatologiaService.readPatologiaById(id);

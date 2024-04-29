@@ -1,12 +1,15 @@
 const EmailService = require('../services/email.service');
 
 exports.postContacto = async (req, res) => {
+  let mensaje = req.body.mensaje;
+  mensaje = mensaje.replace(/\n/g, '<br>');
+
   const contacto = {
     nombre: req.body.nombre,
     descripcion: req.body.descripcion,
     email: req.body.email,
     telefono: req.body.telefono,
-    mensaje: req.body.mensaje
+    mensaje: mensaje
   }
 
   try {

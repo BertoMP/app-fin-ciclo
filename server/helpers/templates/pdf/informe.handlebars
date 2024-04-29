@@ -57,15 +57,13 @@
 
 <div class="section">
     <div class="title">Datos del Paciente:</div>
-    <p>
-        Nombre: {{datos_paciente.nombre}} {{datos_paciente.primer_apellido}} {{datos_paciente.segundo_apellido}}</p>
+    <p>Nombre: {{datos_paciente.nombre}} {{datos_paciente.primer_apellido}} {{datos_paciente.segundo_apellido}}</p>
     <p>Número de Historia Clínica: {{datos_paciente.num_historia_clinica}}</p>
 </div>
 
 <div class="section">
     <div class="title">Datos del Especialista:</div>
-    <p>
-        Nombre: {{datos_especialista.nombre}} {{datos_especialista.primer_apellido}} {{datos_especialista.segundo_apellido}}</p>
+    <p>Nombre: {{datos_especialista.nombre}} {{datos_especialista.primer_apellido}} {{datos_especialista.segundo_apellido}}</p>
     <p>Número de Colegiado: {{datos_especialista.num_colegiado}}</p>
     <p>Especialidad: {{datos_especialista.especialidad}}</p>
 </div>
@@ -79,7 +77,7 @@
 <div class="section">
     <div class="title">Datos del Informe:</div>
     <p>Motivo: {{datos_informe.motivo}}</p>
-    <p>Contenido: {{datos_informe.contenido}}</p>
+    <p>Contenido: {{{datos_informe.contenido}}}</p>
 </div>
 
 <div class="section patologias">
@@ -95,7 +93,7 @@
         {{#each datos_informe.patologias}}
             <tr>
                 <td>{{this.nombre}}</td>
-                <td>{{this.descripcion}}</td>
+                <td>{{{this.descripcion}}}</td>
             </tr>
         {{/each}}
         </tbody>

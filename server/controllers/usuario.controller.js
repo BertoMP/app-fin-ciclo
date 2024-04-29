@@ -173,9 +173,12 @@ exports.postRegistroEspecialista = async (req, res) => {
     const encryptedPassword = await createEncryptedPassword(req.body.password);
     const user = createUserObject(req, encryptedPassword, 3);
 
+    let descripcion = req.body.descripcion;
+    descripcion = descripcion.replace(/\n/g, '<br>');
+
     const specialist = {
       num_colegiado: req.body.num_colegiado,
-      descripcion: req.body.descripcion,
+      descripcion: descripcion,
       imagen: req.body.imagen,
       turno: req.body.turno,
       especialidad_id: req.body.especialidad_id,

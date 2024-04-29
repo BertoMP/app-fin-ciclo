@@ -22,6 +22,12 @@ class PacienteTomaMedicamentoService {
         }
 
         for (const toma of tomas) {
+          let observaciones = toma.observaciones;
+
+          if (observaciones) {
+            observaciones = observaciones.replace(/\n/g, '<br>');
+          }
+
           const prescripcion = {
             id: toma.toma_id,
             dosis: toma.dosis,

@@ -80,9 +80,12 @@ exports.getMedicamentoById = async (req, res) => {
 }
 
 exports.createMedicamento = async (req, res) => {
+  let descripcion = req.body.descripcion;
+  descripcion = descripcion.replace(/\n/g, '<br>');
+
   const medicamento = {
     nombre: req.body.nombre,
-    descripcion: req.body.descripcion
+    descripcion: descripcion
   }
 
   try {
@@ -107,7 +110,14 @@ exports.createMedicamento = async (req, res) => {
 
 exports.updateMedicamento = async (req, res) => {
   const id = parseInt(req.params.medicamento_id);
-  const medicamento = req.body;
+
+  let descripcion = req.body.descripcion;
+  descripcion = descripcion.replace(/\n/g, '<br>');
+
+  const medicamento = {
+    nombre: req.body.nombre,
+    descripcion: descripcion
+  }
 
   try {
     const currentMedicamento =

@@ -85,10 +85,13 @@ exports.getEspecialidadesEspecialistas = async (req, res) => {
 }
 
 exports.createEspecialidad = async (req, res) => {
+  let descripcion = req.body.descripcion;
+  descripcion = descripcion.replace(/\n/g, '<br>');
+
   try {
     const especialidad = {
       nombre: req.body.nombre,
-      descripcion: req.body.descripcion,
+      descripcion: descripcion,
       imagen: req.body.imagen
     }
 
@@ -113,6 +116,8 @@ exports.createEspecialidad = async (req, res) => {
 
 exports.updateEspecialidad = async (req, res) => {
   const id = parseInt(req.params.especialidad_id);
+  let descripcion = req.body.descripcion;
+  descripcion = descripcion.replace(/\n/g, '<br>');
 
   try {
     const currentEspecialidad =
@@ -126,7 +131,7 @@ exports.updateEspecialidad = async (req, res) => {
 
     const especialidad = {
       nombre: req.body.nombre,
-      descripcion: req.body.descripcion,
+      descripcion: descripcion,
       imagen: req.body.imagen
     }
 
