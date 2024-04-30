@@ -1,5 +1,5 @@
 class ConsultaModel {
-  static async findAll(dbConn, page, limit) {
+  static async findAll(page, limit, dbConn) {
     const offset = ((page - 1) * limit);
 
     const query =
@@ -61,7 +61,7 @@ class ConsultaModel {
     }
   }
 
-  static async findById(dbConn, id) {
+  static async findById(id, dbConn) {
     const query =
       'SELECT ' +
       '   consulta.id, ' +
@@ -111,7 +111,7 @@ class ConsultaModel {
     }
   }
 
-  static async findByName(dbConn, nombre) {
+  static async findByName(nombre, dbConn) {
     const query =
       'SELECT ' +
       '   id ' +
@@ -128,7 +128,7 @@ class ConsultaModel {
     }
   }
 
-  static async create(dbConn, consulta) {
+  static async create(consulta, dbConn) {
     const nombre = consulta.nombre;
 
     const query =
@@ -136,13 +136,13 @@ class ConsultaModel {
       '   VALUES (?)';
 
     try {
-      await dbConn.execute(query, [nombre]);
+      return await dbConn.execute(query, [nombre]);
     } catch (err) {
       throw new Error('Error al crear la consulta.');
     }
   }
 
-  static async update(dbConn, id, consulta) {
+  static async update(id, consulta, dbConn) {
     const nombre = consulta.nombre;
 
     const query =
@@ -154,13 +154,13 @@ class ConsultaModel {
       '   id = ?';
 
     try {
-      await dbConn.execute(query, [nombre, id]);
+      return await dbConn.execute(query, [nombre, id]);
     } catch (err) {
       throw new Error('Error al actualizar la consulta.');
     }
   }
 
-  static async delete(dbConn, id) {
+  static async delete(id, dbConn) {
     const query =
       'DELETE ' +
       'FROM ' +
@@ -169,7 +169,7 @@ class ConsultaModel {
       '   id = ?';
 
     try {
-      await dbConn.execute(query, [id]);
+      return await dbConn.execute(query, [id]);
     } catch (err) {
       throw new Error('Error al eliminar la consulta.');
     }

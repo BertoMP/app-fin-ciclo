@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const municipioController = require('../../controllers/municipio.controller');
+const MunicipioController = require('../../controllers/municipio.controller');
 const {validateProvinciaIdParam} = require('../../helpers/validators/params/provinciaIdParam.validator');
 
 // Ruta GET
@@ -45,6 +45,6 @@ const {validateProvinciaIdParam} = require('../../helpers/validators/params/prov
  */
 router.get('/municipio/:provincia_id',
   validateProvinciaIdParam,
-  municipioController.getMunicipio);
+  MunicipioController.getMunicipio);
 
 module.exports = router;

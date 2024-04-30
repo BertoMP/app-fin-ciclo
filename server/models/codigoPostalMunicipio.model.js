@@ -1,5 +1,5 @@
 class CodigoPostalMunicipioModel {
-  static async findByMunicipioId(dbConn, cod_municipio) {
+  static async findByMunicipioId(cod_municipio, dbConn) {
     const query =
       'SELECT ' +
       '   codigo_postal_id ' +

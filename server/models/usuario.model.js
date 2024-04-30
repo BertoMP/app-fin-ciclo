@@ -1,5 +1,5 @@
 class UsuarioModel {
-  static async fetchAll(dbConn, searchValues, limit) {
+  static async fetchAll(searchValues, limit, dbConn) {
     const page = searchValues.page;
     const role_id = searchValues.role;
 
@@ -54,7 +54,7 @@ class UsuarioModel {
     }
   }
 
-  static async findPacienteById(dbConn, id) {
+  static async findPacienteById(id, dbConn) {
     const query =
       'SELECT ' +
       '   usuario.id,' +
@@ -98,7 +98,7 @@ class UsuarioModel {
     }
   }
 
-  static async findEspecialistaById(dbConn, id) {
+  static async findEspecialistaById(id, dbConn) {
     const query =
       'SELECT ' +
       '   usuario.id,' +
@@ -131,7 +131,7 @@ class UsuarioModel {
     }
   }
 
-  static async findRoleById(dbConn, id) {
+  static async findRoleById(id, dbConn) {
     const query =
       'SELECT ' +
       '   rol_id ' +
@@ -148,7 +148,7 @@ class UsuarioModel {
     }
   }
 
-  static async findByEmail(dbConn, email) {
+  static async findByEmail(email, dbConn) {
     const query =
       'SELECT ' +
       '   id, ' +
@@ -172,7 +172,7 @@ class UsuarioModel {
     }
   }
 
-  static async findByDNI(dbConn, dni) {
+  static async findByDNI(dni, dbConn) {
     const query =
       'SELECT ' +
       '   id, ' +
@@ -195,7 +195,7 @@ class UsuarioModel {
     }
   }
 
-  static async create(dbConn, usuario) {
+  static async create(usuario, dbConn) {
     const email = usuario.email;
     const password = usuario.password;
     const nombre = usuario.nombre;
@@ -222,7 +222,7 @@ class UsuarioModel {
     }
   }
 
-  static async updatePassword(dbConn, email, password) {
+  static async updatePassword(email, password, dbConn) {
     const query =
       'UPDATE ' +
       '   usuario ' +
@@ -232,13 +232,13 @@ class UsuarioModel {
       '   email = ?';
 
     try {
-      await dbConn.execute(query, [password, email]);
+      return await dbConn.execute(query, [password, email]);
     } catch (err) {
       throw new Error('Error al actualizar la contraseña.');
     }
   }
 
-  static async getEmailById(dbConn, id) {
+  static async getEmailById(id, dbConn) {
     const query =
       'SELECT ' +
       '   email ' +
@@ -255,7 +255,7 @@ class UsuarioModel {
     }
   }
 
-  static async delete(dbConn, id) {
+  static async delete(id, dbConn) {
     const query =
       'DELETE ' +
       'FROM ' +
@@ -264,13 +264,13 @@ class UsuarioModel {
       '   id = ?';
 
     try {
-      await dbConn.execute(query, [id]);
+      return await dbConn.execute(query, [id]);
     } catch (err) {
       throw new Error('Error al eliminar el usuario.');
     }
   }
 
-  static async updateRefreshToken(dbConn, userId, refreshToken) {
+  static async updateRefreshToken(userId, refreshToken, dbConn) {
     const query =
       'UPDATE ' +
       '   usuario ' +
@@ -280,13 +280,13 @@ class UsuarioModel {
       '   id = ?';
 
     try {
-      await dbConn.execute(query, [refreshToken, userId]);
+      return await dbConn.execute(query, [refreshToken, userId]);
     } catch (err) {
       throw new Error('Error al actualizar el token de refresco.');
     }
   }
 
-  static async findById(dbConn, id) {
+  static async findById(id, dbConn) {
     const query =
       'SELECT ' +
       '   id, ' +
@@ -309,7 +309,7 @@ class UsuarioModel {
     }
   }
 
-  static async update(dbConn, usuario) {
+  static async update(usuario, dbConn) {
     const query =
       'UPDATE ' +
       '   usuario ' +
@@ -323,7 +323,7 @@ class UsuarioModel {
       '   id = ?';
 
     try {
-      await dbConn.execute(
+      return await dbConn.execute(
         query,
         [usuario.email, usuario.nombre, usuario.primer_apellido,
           usuario.segundo_apellido, usuario.dni, usuario.id]);

@@ -1,12 +1,7 @@
 const CitaService = require('../services/cita.service');
-const UsuarioService = require('../services/usuario.service');
 const EspecialistaService = require('../services/especialista.service');
-const PdfService = require("../services/pdf.service");
-const EmailService = require("../services/email.service");
 
 const getSearchValues = require('../util/functions/getSearchValuesByDate');
-const destroyFile = require("../util/functions/destroyFile");
-const qrcode = require("../util/functions/createQr");
 
 exports.getCitas = async (req, res) => {
   const limit = 10;
@@ -122,9 +117,6 @@ exports.createCita = async (req, res) => {
     hora: req.body.hora,
   }
 
-  let pdf;
-  let idCita;
-
   try {
     const citaExists = await CitaService.readCitaByData(cita);
 
@@ -163,32 +155,13 @@ exports.createCita = async (req, res) => {
       });
     }
 
-    idCita = await CitaService.createCita(cita);
-
-    const newCita = await CitaService.readCitaById(idCita);
-
-    const qr = await qrcode.generateQRCode(newCita);
-
-    pdf = await PdfService.generateCitaPDF(newCita, qr);
-
-    const emailPaciente = await UsuarioService.getEmailById(cita.paciente_id);
-
-    await EmailService.sendPdfCita(newCita, emailPaciente, pdf);
-
-    destroyFile(pdf, true);
+    await CitaService.createCita(cita);
 
     return res.status(200).json({
       message: 'Cita creada correctamente.'
     });
 
   } catch (err) {
-    if (pdf) {
-      destroyFile(pdf, true);
-    }
-
-    if (idCita) {
-      await CitaService.deleteCita(idCita);
-    }
 
     return res.status(500).json({
       errors: [err.message]

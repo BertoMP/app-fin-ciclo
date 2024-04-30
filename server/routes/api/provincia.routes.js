@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const provinciaController = require('../../controllers/provincia.controller');
+const ProvinciaController = require('../../controllers/provincia.controller');
 
 // Ruta GET
 /**
@@ -29,6 +29,6 @@ const provinciaController = require('../../controllers/provincia.controller');
  *               $ref: '#/components/schemas/ServerError'
  */
 router.get('/provincia',
-  provinciaController.getProvincias);
+  ProvinciaController.getProvincias);
 
 module.exports = router;

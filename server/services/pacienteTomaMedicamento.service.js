@@ -3,11 +3,17 @@ const TomaService = require('./toma.service');
 const dbConn = require("../util/database/database");
 
 class PacienteTomaMedicamentoService {
-  static async createPrescripcion(pacienteId, prescripciones) {
-    const conn = await dbConn.getConnection();
+  static async createPrescripcion(pacienteId, prescripciones, conn = null) {
+    const isConnProvided = !!conn;
+
+    if (!isConnProvided) {
+      conn = await dbConn.getConnection();
+    }
 
     try {
-      await conn.beginTransaction();
+      if (!isConnProvided) {
+        await conn.beginTransaction();
+      }
 
       for (const prescripcion of prescripciones) {
         const medicamentoId = prescripcion.medicamento_id;
@@ -38,79 +44,121 @@ class PacienteTomaMedicamentoService {
           }
 
           if (prescripcion.id) {
-            await PacienteTomaMedicamentoModel.updateToma(conn, prescripcion.id, prescripcion);
+            await PacienteTomaMedicamentoModel.updateToma(prescripcion.id, prescripcion, conn);
           } else {
-            const existingToma = await PacienteTomaMedicamentoModel.findTomaByHora(conn, pacienteId, medicamentoId, prescripcion.hora);
+            const existingToma = await PacienteTomaMedicamentoModel.findTomaByHora(pacienteId, medicamentoId, prescripcion.hora, conn);
 
             if (existingToma) {
               throw new Error('Ya existe una toma para este medicamento a esta hora. Por favor, realice una actualización en lugar de una inserción.');
             }
 
-            const idToma = await TomaService.createToma(conn, prescripcion);
-            await PacienteTomaMedicamentoModel.createPacienteTomaMedicamento(conn, pacienteId, medicamentoId, idToma);
+            const idToma = await TomaService.createToma(prescripcion, conn);
+            await PacienteTomaMedicamentoModel.createPacienteTomaMedicamento(pacienteId, medicamentoId, idToma, conn);
           }
         }
       }
 
-      await conn.commit();
+      if (!isConnProvided) {
+        await conn.commit();
+      }
     } catch (err) {
-      await conn.rollback();
+      if (!isConnProvided) {
+        await conn.rollback();
+      }
       throw new Error(err);
     } finally {
-      conn.release();
+      if (!isConnProvided) {
+        conn.release();
+      }
     }
   }
 
-  static async findMedicamento(pacienteId, medicamentoId) {
+  static async readTomasByUserId(userId, conn = dbConn) {
     try {
-      return await PacienteTomaMedicamentoModel.findPrescripcion(dbConn, pacienteId, medicamentoId);
+      return await PacienteTomaMedicamentoModel.findTomasByUserId(userId, conn);
     } catch (err) {
       throw new Error(err);
     }
   }
 
-  static async findPrescripciones(pacienteId) {
+  static async findMedicamento(pacienteId, medicamentoId, conn = dbConn) {
     try {
-      return await PacienteTomaMedicamentoModel.findPrescripciones(dbConn, pacienteId);
+      return await PacienteTomaMedicamentoModel.findPrescripcion(pacienteId, medicamentoId, conn);
     } catch (err) {
       throw new Error(err);
     }
   }
 
-  static async deleteToma(tomaId) {
-    const conn = await dbConn.getConnection();
-
+  static async findPrescripciones(pacienteId, conn = dbConn) {
     try {
-      await conn.beginTransaction();
-
-      await PacienteTomaMedicamentoModel.deleteToma(conn, tomaId);
-
-      await TomaService.deleteToma(conn, tomaId);
-
-      await conn.commit();
+      return await PacienteTomaMedicamentoModel.findPrescripciones(pacienteId, conn);
     } catch (err) {
-      await conn.rollback();
       throw new Error(err);
     }
   }
 
-  static async deleteMedicamento(pacienteId, medicamentoId) {
-    const conn = await dbConn.getConnection();
+  static async deleteToma(tomaId, conn = null) {
+    const isConnProvided = !!conn;
+
+    if (!isConnProvided) {
+      conn = await dbConn.getConnection();
+    }
 
     try {
-      await conn.beginTransaction();
-
-      const tomas = await PacienteTomaMedicamentoModel.findPrescripcion(conn, pacienteId, medicamentoId);
-
-      for (const toma of tomas) {
-        await PacienteTomaMedicamentoModel.deleteToma(conn, toma);
-        await TomaService.deleteToma(conn, toma);
+      if (!isConnProvided) {
+        await conn.beginTransaction();
       }
 
-      await conn.commit();
+      await PacienteTomaMedicamentoModel.deleteToma(tomaId, conn);
+
+      await TomaService.deleteToma(tomaId, conn);
+
+      if (!isConnProvided) {
+        await conn.commit();
+      }
     } catch (err) {
-      await conn.rollback();
+      if (!isConnProvided) {
+        await conn.rollback();
+      }
       throw new Error(err);
+    } finally {
+      if (!isConnProvided) {
+        conn.release();
+      }
+    }
+  }
+
+  static async deleteMedicamento(pacienteId, medicamentoId, conn = null) {
+    const isConnProvided = !!conn;
+
+    if (!isConnProvided) {
+      conn = await dbConn.getConnection();
+    }
+
+    try {
+      if (!isConnProvided) {
+        await conn.beginTransaction();
+      }
+
+      const tomas = await PacienteTomaMedicamentoModel.findPrescripcion(pacienteId, medicamentoId, conn);
+
+      for (const toma of tomas) {
+        await PacienteTomaMedicamentoModel.deleteToma(toma, conn);
+        await TomaService.deleteToma(toma, conn);
+      }
+
+      if (!isConnProvided) {
+        await conn.commit();
+      }
+    } catch (err) {
+      if (!isConnProvided) {
+        await conn.rollback();
+      }
+      throw new Error(err);
+    } finally {
+      if (!isConnProvided) {
+        conn.release();
+      }
     }
   }
 }

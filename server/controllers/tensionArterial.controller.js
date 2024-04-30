@@ -1,4 +1,4 @@
-const tensionArterialService = require('../services/tensionArterial.service');
+const TensionArterialService = require('../services/tensionArterial.service');
 const momentTz = require('moment-timezone');
 const getSearchValues = require('../util/functions/getSearchValuesByDate');
 
@@ -19,7 +19,7 @@ exports.getTensionArterial = async (req, res) => {
       actualPage: pagina_actual,
       totalPages: paginas_totales
     } =
-      await tensionArterialService.readTensionArterial(searchValues, limit);
+      await TensionArterialService.readTensionArterial(searchValues, limit);
 
     if (page > 1 && page > paginas_totales) {
       return res.status(404).json({
@@ -38,11 +38,6 @@ exports.getTensionArterial = async (req, res) => {
     const fecha_inicio = fechaInicio;
     const fecha_fin = fechaFin;
     const items_pagina = limit;
-
-    resultados.forEach(tensionArterial => {
-      tensionArterial.fecha = momentTz.tz(tensionArterial.fecha, 'Europe/Madrid')
-        .format('YYYY-MM-DD');
-    });
 
     return res.status(200).json({
       prev,
@@ -84,7 +79,7 @@ exports.postTensionArterial = async (req, res) => {
   };
 
   try {
-    await tensionArterialService.createTensionArterial(tensionArterial);
+    await TensionArterialService.createTensionArterial(tensionArterial);
 
     return res.status(200).json({message: 'Tensión arterial registrada correctamente.'});
   } catch (err) {

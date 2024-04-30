@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const glucometriaController = require('../../controllers/glucometria.controller');
+const GlucometriaController = require('../../controllers/glucometria.controller');
 
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
@@ -70,7 +70,7 @@ router.get('/glucometria/:usuario_id',
   validateUsuarioIdParam,
   validatePaginationQueryParams,
   validateDateQueryParams,
-  glucometriaController.getGlucometria);
+  GlucometriaController.getGlucometria);
 
 /**
  * @swagger
@@ -124,7 +124,7 @@ router.get('/glucometria',
   tokenUserId,
   validatePaginationQueryParams,
   validateDateQueryParams,
-  glucometriaController.getGlucometria);
+  GlucometriaController.getGlucometria);
 
 // Rutas POST
 /**
@@ -178,6 +178,6 @@ router.post('/glucometria',
   tokenRole([2]),
   tokenUserId,
   validateGlucometria,
-  glucometriaController.postGlucometria);
+  GlucometriaController.postGlucometria);
 
 module.exports = router;

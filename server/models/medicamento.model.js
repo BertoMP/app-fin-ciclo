@@ -17,7 +17,7 @@ class MedicamentoModel {
     }
   }
 
-  static async fetchAll(dbConn, page, limit) {
+  static async fetchAll(page, limit, dbConn) {
     const offset = ((page - 1) * limit);
 
     const query =
@@ -51,7 +51,7 @@ class MedicamentoModel {
     }
   }
 
-  static async findById(dbConn, id) {
+  static async findById(id, dbConn) {
     const query =
       'SELECT ' +
       '   id, ' +
@@ -70,7 +70,7 @@ class MedicamentoModel {
     }
   }
 
-  static async findByNombre(dbConn, nombre) {
+  static async findByNombre(nombre, dbConn) {
     const query =
       'SELECT ' +
       '   id, ' +
@@ -89,7 +89,7 @@ class MedicamentoModel {
     }
   }
 
-  static async save(dbConn, medicamento) {
+  static async save(medicamento, dbConn) {
     const nombre = medicamento.nombre;
     const descripcion = medicamento.descripcion;
 
@@ -98,13 +98,13 @@ class MedicamentoModel {
       'VALUES (?, ?)';
 
     try {
-      await dbConn.execute(query, [nombre, descripcion]);
+      return await dbConn.execute(query, [nombre, descripcion]);
     } catch (err) {
       throw new Error('Error al crear el medicamento.');
     }
   }
 
-  static async updateById(dbConn, id, medicamento) {
+  static async updateById(id, medicamento, dbConn) {
     const nombre = medicamento.nombre;
     const descripcion = medicamento.descripcion;
 
@@ -124,7 +124,7 @@ class MedicamentoModel {
         'WHERE ' +
         '   id = ?';
 
-      await dbConn.execute(query, [nombre, descripcion, id]);
+      return await dbConn.execute(query, [nombre, descripcion, id]);
     } catch (err) {
       throw new Error('Error al actualizar el medicamento.');
     }

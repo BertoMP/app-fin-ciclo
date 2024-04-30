@@ -1,170 +1,231 @@
 const dbConn = require('../util/database/database');
 const UsuarioModel = require('../models/usuario.model');
-const PacienteModel = require('../models/paciente.model');
-const EspecialistaModel = require('../models/especialista.model');
-const TokenModel = require('../models/token.model');
-const TensionArterialModel = require('../models/tensionArterial.model');
-const GlucometriaModel = require('../models/glucometria.model');
-const InformeModel = require('../models/informe.model');
-const CitaModel = require('../models/cita.model');
-const PacienteTomaMedicamentoModel = require('../models/pacienteTomaMedicamento.model');
-const TomaModel = require('../models/toma.model');
+
+const PacienteService = require('./paciente.service');
+const EspecialistaService = require('./especialista.service');
+const TokenService = require('./token.service');
+const TensionArterialService = require('./tensionArterial.service');
+const InformeService = require('./informe.service');
+const PacienteTomaMedicamentoService = require('./pacienteTomaMedicamento.service');
+const GlucometriaService = require('./glucometria.service');
+const InformePatologiaService = require('./informePatologia.service');
 
 class UsuarioService {
-  static async readAllUsuarios(searchValues, limit) {
-    return await UsuarioModel.fetchAll(dbConn, searchValues, limit);
+  static async readAllUsuarios(searchValues, limit, conn = dbConn) {
+    return await UsuarioModel.fetchAll(searchValues, limit, conn);
   }
 
-  static async readUsuarioPaciente(id) {
-    return await UsuarioModel.findPacienteById(dbConn, id);
+  static async readUsuarioPaciente(id, conn = dbConn) {
+    return await UsuarioModel.findPacienteById(id, conn);
   }
 
-  static async readUsuarioEspecialista(id) {
-    return await UsuarioModel.findEspecialistaById(dbConn, id);
+  static async readUsuarioEspecialista(id, conn = dbConn) {
+    return await UsuarioModel.findEspecialistaById(id, conn);
   }
 
-  static async readUsuarioRoleById(id) {
-    return await UsuarioModel.findRoleById(dbConn, id);
+  static async readUsuarioRoleById(id, conn = dbConn) {
+    return await UsuarioModel.findRoleById(id, conn);
   }
 
-  static async createUsuarioPaciente(usuario, paciente) {
-    const conn = await dbConn.getConnection();
+  static async createUsuarioPaciente(usuario, paciente, conn = null) {
+    const isConnProvided = !!conn;
+
+    if (!isConnProvided) {
+      conn = await dbConn.getConnection();
+    }
 
     try {
-      await conn.beginTransaction();
+      if (!isConnProvided) {
+        await conn.beginTransaction();
+      }
 
       paciente.usuario_id = await UsuarioModel.create(conn, usuario);
 
-      await PacienteModel.create(conn, paciente);
+      await PacienteService.createPaciente(paciente, conn);
 
-      await conn.commit();
+      if (!isConnProvided) {
+        await conn.commit();
+      }
     } catch (err) {
-      await conn.rollback();
+      if (!isConnProvided) {
+        await conn.rollback();
+      }
       throw new Error(err);
     } finally {
-      conn.release();
+      if (!isConnProvided) {
+        conn.release();
+      }
     }
   }
 
-  static async createUsuarioEspecialista(usuario, especialista) {
-    const conn = await dbConn.getConnection();
+  static async createUsuarioEspecialista(usuario, especialista, conn = null) {
+    const isConnProvided = !!conn;
+
+    if (!isConnProvided) {
+      conn = await dbConn.getConnection();
+    }
 
     try {
-      await conn.beginTransaction();
+      if (!isConnProvided) {
+        await conn.beginTransaction();
+      }
 
       especialista.usuario_id = await UsuarioModel.create(conn, usuario);
 
-      await EspecialistaModel.create(conn, especialista);
+      await EspecialistaService.create(conn, especialista);
 
-      await conn.commit();
+      if (!isConnProvided) {
+        await conn.commit();
+      }
     } catch (err) {
-      await conn.rollback();
+      if (!isConnProvided) {
+        await conn.rollback();
+      }
       throw new Error(err);
     } finally {
-      conn.release();
+      if (!isConnProvided) {
+        conn.release();
+      }
     }
   }
 
-  static async updateUsuarioPaciente(usuario, paciente) {
-    const conn = await dbConn.getConnection();
+  static async updateUsuarioPaciente(usuario, paciente, conn = null) {
+    const isConnProvided = !!conn;
+
+    if (!isConnProvided) {
+      conn = await dbConn.getConnection();
+    }
 
     try {
-      await conn.beginTransaction();
+      if (!isConnProvided) {
+        await conn.beginTransaction();
+      }
 
       await UsuarioModel.update(conn, usuario);
 
-      await PacienteModel.update(conn, paciente);
+      await PacienteService.update(paciente, conn);
 
-      await conn.commit();
+      if (!isConnProvided) {
+        await conn.commit();
+      }
     } catch (err) {
-      await conn.rollback();
+      if (!isConnProvided) {
+        await conn.rollback();
+      }
       throw new Error(err);
     } finally {
-      conn.release();
+      if (!isConnProvided) {
+        conn.release();
+      }
     }
   }
 
-  static async updateUsuarioEspecialista(usuario, especialista) {
-    const conn = await dbConn.getConnection();
+  static async updateUsuarioEspecialista(usuario, especialista, conn = null) {
+    const isConnProvided = !!conn;
+
+    if (!isConnProvided) {
+      conn = await dbConn.getConnection();
+    }
 
     try {
-      await conn.beginTransaction();
+      if (!isConnProvided) {
+        await conn.beginTransaction();
+      }
 
       await UsuarioModel.update(conn, usuario);
 
-      await EspecialistaModel.update(conn, especialista);
+      await EspecialistaService.update(especialista, conn);
 
-      await conn.commit();
+      if (!isConnProvided) {
+        await conn.commit();
+      }
     } catch (err) {
-      await conn.rollback();
+      if (!isConnProvided) {
+        await conn.rollback();
+      }
       throw new Error(err);
     } finally {
-      conn.release();
+      if (!isConnProvided) {
+        conn.release();
+      }
     }
   }
 
-  static async getEmailById(id) {
-    return await UsuarioModel.getEmailById(dbConn, id);
+  static async readEmailByUserId(id, conn = dbConn) {
+    return await UsuarioModel.getEmailById(id, conn);
   }
 
-  static async readUsuarioByEmail(email) {
-    return await UsuarioModel.findByEmail(dbConn, email);
+  static async readUsuarioByEmail(email, conn = dbConn) {
+    return await UsuarioModel.findByEmail(email, conn);
   }
 
-  static async readUsuarioByDNI(dni) {
-    return await UsuarioModel.findByDNI(dbConn, dni);
+  static async readUsuarioByDNI(dni, conn = dbConn) {
+    return await UsuarioModel.findByDNI(dni, conn);
   }
 
-  static async updatePassword(email, password) {
-    return await UsuarioModel.updatePassword(dbConn, email, password);
+  static async updatePassword(email, password, conn = dbConn) {
+    return await UsuarioModel.updatePassword(email, password, conn);
   }
 
-  static async deleteUsuario(id) {
-    const conn = await dbConn.getConnection();
+  static async deleteUsuario(id, conn = null) {
+    const CitaService = require('./cita.service'); // Se importa aquí para evitar un ciclo de dependencias
+    const isConnProvided = !!conn;
+
+    if (!isConnProvided) {
+      conn = await dbConn.getConnection();
+    }
 
     try {
-      await conn.beginTransaction();
+      if (!isConnProvided) {
+        await conn.beginTransaction();
+      }
 
-      await TokenModel.deleteTokensByUserId(conn, id);
+      await TokenService.deteleToken(id, conn);
 
-      const idsTomas = await PacienteTomaMedicamentoModel.findTomasByUserId(conn, id);
+      const idsTomas = await PacienteTomaMedicamentoService.readTomasByUserId(id, conn);
 
       for (const idToma of idsTomas) {
-        await PacienteTomaMedicamentoModel.deleteToma(conn, idToma);
-        await TomaModel.deleteToma(conn, idToma);
+        await PacienteTomaMedicamentoService.deleteToma(idToma, conn);
       }
 
-      await TensionArterialModel.deleteTensionesArterialesByUserId(conn, id);
+      await TensionArterialService.deleteTensionArterialByUserId(id, conn);
 
-      await GlucometriaModel.deleteGlucometriasByUserId(conn, id);
+      await GlucometriaService.deleteGlucometriaByUserId(id, conn);
 
-      const idInformes = await CitaModel.getInformesByUserId(conn, id);
+      const idInformes = await CitaService.readInformesByUserId(id, conn);
 
-      await CitaModel.deleteCitasByUserId(conn, id);
+      await CitaService.deleteCitasByUserId(id, conn);
 
       for (const idInforme of idInformes) {
-        await InformeModel.deleteInforme(conn, idInforme);
+        await InformePatologiaService.deletePatologiaByInformeId(idInforme, conn);
+        await InformeService.deleteInforme(idInforme, conn);
       }
 
-      await PacienteModel.deletePacienteByUserId(conn, id);
+      await PacienteService.deletePacienteByUserId(id, conn);
 
       await UsuarioModel.delete(conn, id);
 
-      await conn.commit();
+      if (!isConnProvided) {
+        await conn.commit();
+      }
     } catch (err) {
-      await conn.rollback();
+      if (!isConnProvided) {
+        await conn.rollback();
+      }
       throw new Error(err);
     } finally {
-      conn.release();
+      if (!isConnProvided) {
+        conn.release();
+      }
     }
   }
 
-  static async updateRefreshToken(userId, refreshToken) {
-    return await UsuarioModel.updateRefreshToken(dbConn, userId, refreshToken);
+  static async updateRefreshToken(userId, refreshToken, conn = dbConn) {
+    return await UsuarioModel.updateRefreshToken(userId, refreshToken, conn);
   }
 
-  static async readUsuarioById(id) {
-    return await UsuarioModel.findById(dbConn, id);
+  static async readUsuarioById(id, conn = dbConn) {
+    return await UsuarioModel.findById(id, conn);
   }
 }
 

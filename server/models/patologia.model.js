@@ -15,7 +15,7 @@ class PatologiaModel {
     }
   }
 
-  static async fetchAll(dbConn, page, limit) {
+  static async fetchAll(page, limit, dbConn) {
     const offset = ((page - 1) * limit);
 
     const query =
@@ -47,7 +47,7 @@ class PatologiaModel {
     }
   }
 
-  static async findById(dbConn, id) {
+  static async findById(id, dbConn) {
     const query =
       'SELECT ' +
       '   id, ' +
@@ -66,7 +66,7 @@ class PatologiaModel {
     }
   }
 
-  static async findByNombre(dbConn, nombre) {
+  static async findByNombre(nombre, dbConn) {
     const query =
       'SELECT ' +
       '   id, ' +
@@ -85,7 +85,7 @@ class PatologiaModel {
     }
   }
 
-  static async save(dbConn, patologia) {
+  static async save(patologia, dbConn) {
     const nombre = patologia.nombre;
     const descripcion = patologia.descripcion;
 
@@ -100,7 +100,7 @@ class PatologiaModel {
     }
   }
 
-  static async updateById(dbConn, id, patologia) {
+  static async updateById(id, patologia, dbConn) {
     const nombre = patologia.nombre;
     const descripcion = patologia.descripcion;
 

@@ -1,5 +1,5 @@
 class MunicipioModel {
-  static async fetchByProvinciaId(dbConn, id) {
+  static async fetchByProvinciaId(id, dbConn) {
     const query =
       'SELECT ' +
       '   id, ' +

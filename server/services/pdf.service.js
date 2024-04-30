@@ -85,6 +85,18 @@ class PdfService {
 
     await browser.close();
   }
+
+  static async destroyPDF(file) {
+    if (fs.existsSync(file)) {
+      fs.unlink(file, unlinkError => {
+        if (unlinkError) {
+          console.log(`Error al eliminar el archivo subido: ${unlinkError}`);
+        }
+      });
+    } else {
+      console.log(`El archivo no existe en: ${file}`);
+    }
+  }
 }
 
 module.exports = PdfService;

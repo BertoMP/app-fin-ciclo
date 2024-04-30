@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const pacienteTomaMedicamentoController = require('../../controllers/pacienteTomaMedicamento.controller');
+const PacienteTomaMedicamentoController = require('../../controllers/pacienteTomaMedicamento.controller');
 
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
@@ -69,7 +69,7 @@ router.get('/prescripcion/pdf/:usuario_id',
   tokenVerify,
   tokenRole([3]),
   validateUsuarioIdParam,
-  pacienteTomaMedicamentoController.getRecetaPDF);
+  PacienteTomaMedicamentoController.getRecetaPDF);
 
 /**
  * @swagger
@@ -123,7 +123,7 @@ router.get('/prescripcion/pdf',
   tokenVerify,
   tokenRole([2]),
   tokenUserId,
-  pacienteTomaMedicamentoController.getRecetaPDF);
+  PacienteTomaMedicamentoController.getRecetaPDF);
 
 /**
  * @swagger
@@ -189,7 +189,7 @@ router.get('/prescripcion/:usuario_id',
   tokenVerify,
   tokenRole([3]),
   validateUsuarioIdParam,
-  pacienteTomaMedicamentoController.getRecetas);
+  PacienteTomaMedicamentoController.getRecetas);
 
 /**
  * @swagger
@@ -235,7 +235,7 @@ router.get('/prescripcion',
   tokenVerify,
   tokenRole([2]),
   tokenUserId,
-  pacienteTomaMedicamentoController.getRecetas);
+  PacienteTomaMedicamentoController.getRecetas);
 
 // Rutas POST
 /**
@@ -323,7 +323,7 @@ router.post('/prescripcion',
   tokenVerify,
   tokenRole([3]),
   validatePacienteTomaMedicamento,
-  pacienteTomaMedicamentoController.postReceta);
+  PacienteTomaMedicamentoController.postReceta);
 
 // Rutas DELETE
 /**
@@ -387,7 +387,7 @@ router.delete('/prescripcion/borrar-toma/:toma_id',
   tokenVerify,
   tokenRole([3]),
   validateTomaIdParam,
-  pacienteTomaMedicamentoController.deleteToma);
+  PacienteTomaMedicamentoController.deleteToma);
 
 /**
  * @swagger
@@ -457,6 +457,6 @@ router.delete('/prescripcion/borrar-medicamento/:usuario_id/:medicamento_id',
   tokenRole([3]),
   validateUsuarioIdParam,
   validateMedicamentoIdParam,
-  pacienteTomaMedicamentoController.deleteMedicamento);
+  PacienteTomaMedicamentoController.deleteMedicamento);
 
 module.exports = router;

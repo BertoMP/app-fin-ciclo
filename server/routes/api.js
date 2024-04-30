@@ -15,6 +15,7 @@ const citaRoutes = require('./api/cita.routes');
 const codigoPostalMunicipioRoutes = require('./api/codigoPostalMunicipio.routes');
 const pacienteMedicamentoTomaRoutes = require('./api/pacienteTomaMedicamento.routes');
 const especialistaRoutes = require('./api/especialista.routes');
+const pacienteRoutes = require('./api/paciente.routes');
 
 router.use(usuarioRoutes);
 router.use(medicamentoRoutes);
@@ -31,5 +32,6 @@ router.use(citaRoutes);
 router.use(codigoPostalMunicipioRoutes);
 router.use(pacienteMedicamentoTomaRoutes);
 router.use(especialistaRoutes);
+router.use(pacienteRoutes);
 
 module.exports = router;

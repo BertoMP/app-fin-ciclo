@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const tensionArterialController = require('../../controllers/tensionArterial.controller');
+const TensionArterialController = require('../../controllers/tensionArterial.controller');
 
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
@@ -87,7 +87,7 @@ router.get('/tension-arterial/:usuario_id',
   validateUsuarioIdParam,
   validatePaginationQueryParams,
   validateDateQueryParams,
-  tensionArterialController.getTensionArterial);
+  TensionArterialController.getTensionArterial);
 
 /**
  * @swagger
@@ -165,7 +165,7 @@ router.get('/tension-arterial',
   tokenId,
   validatePaginationQueryParams,
   validateDateQueryParams,
-  tensionArterialController.getTensionArterial);
+  TensionArterialController.getTensionArterial);
 
 // Rutas POST
 /**
@@ -219,6 +219,6 @@ router.post('/tension-arterial',
   tokenRole([2]),
   tokenId,
   validateTensionArterial,
-  tensionArterialController.postTensionArterial);
+  TensionArterialController.postTensionArterial);
 
 module.exports = router;

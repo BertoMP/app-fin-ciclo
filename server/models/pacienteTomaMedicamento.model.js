@@ -1,7 +1,7 @@
 const {format} = require('date-fns');
 
 class PacienteTomaMedicamentoModel {
-  static async findPrescripciones(dbConn, pacienteId) {
+  static async findPrescripciones(pacienteId, dbConn) {
     const query =
       'SELECT ' +
       '   usuario.id as paciente_id, ' +
@@ -81,19 +81,19 @@ class PacienteTomaMedicamentoModel {
     }
   }
 
-  static async createPacienteTomaMedicamento(dbConn, pacienteId, medicamentoId, tomaId) {
+  static async createPacienteTomaMedicamento(pacienteId, medicamentoId, tomaId, dbConn) {
     const query =
       'INSERT INTO paciente_toma_medicamento (paciente_id, medicamento_id, toma_id) ' +
       '   VALUES (?, ?, ?)';
 
     try {
-      await dbConn.execute(query, [pacienteId, medicamentoId, tomaId]);
+      return await dbConn.execute(query, [pacienteId, medicamentoId, tomaId]);
     } catch (error) {
       throw new Error('Error al guardar la receta.');
     }
   }
 
-  static async findPrescripcion(dbConn, pacienteId, medicamentoId) {
+  static async findPrescripcion(pacienteId, medicamentoId, dbConn) {
     const query =
       'SELECT ' +
       '   toma_id ' +
@@ -112,7 +112,7 @@ class PacienteTomaMedicamentoModel {
     }
   }
 
-  static async updateToma(conn, idToma, prescripcion) {
+  static async updateToma(idToma, prescripcion, dbConn) {
     const dosis = prescripcion.dosis;
     const hora = prescripcion.hora;
     const fecha_inicio = prescripcion.fecha_inicio;
@@ -130,26 +130,26 @@ class PacienteTomaMedicamentoModel {
       'WHERE id = ?';
 
     try {
-      await conn.execute(query, [dosis, hora, fecha_inicio, fecha_fin, observaciones, idToma]);
+      return await dbConn.execute(query, [dosis, hora, fecha_inicio, fecha_fin, observaciones, idToma]);
     } catch (error) {
       throw new Error('Error al actualizar la toma.');
     }
   }
 
-  static async deleteToma(conn, idToma) {
+  static async deleteToma(idToma, dbConn) {
     const query =
       'DELETE ' +
       'FROM paciente_toma_medicamento ' +
       'WHERE toma_id = ?';
 
     try {
-      await conn.execute(query, [idToma]);
+      return await dbConn.execute(query, [idToma]);
     } catch (error) {
       throw new Error('Error al eliminar la toma.');
     }
   }
 
-  static async findTomasByUserId(dbConn, pacienteId) {
+  static async findTomasByUserId(pacienteId, dbConn) {
     const query =
       'SELECT ' +
       '   toma_id ' +
@@ -167,7 +167,7 @@ class PacienteTomaMedicamentoModel {
     }
   }
 
-  static async findTomaByHora(dbConn, pacienteId, medicamentoId, hora) {
+  static async findTomaByHora(pacienteId, medicamentoId, hora, dbConn) {
     const query =
       'SELECT ' +
       '   toma_id ' +
@@ -182,6 +182,24 @@ class PacienteTomaMedicamentoModel {
 
     try {
       const [rows] = await dbConn.execute(query, [pacienteId, medicamentoId, hora]);
+
+      return rows[0];
+    } catch (error) {
+      throw new Error('Error al buscar la toma.');
+    }
+  }
+
+  static async findToma(tomaId, dbConn) {
+    const query =
+      'SELECT ' +
+      '   toma_id ' +
+      'FROM ' +
+      '   paciente_toma_medicamento ' +
+      'WHERE ' +
+      '   toma_id = ?';
+
+    try {
+      const [rows] = await dbConn.execute(query, [tomaId]);
 
       return rows[0];
     } catch (error) {

@@ -1,6 +1,5 @@
 const router = require('express').Router();
-const MedicamentoController =
-  require('../../controllers/medicamento.controller');
+const MedicamentoController = require('../../controllers/medicamento.controller');
 const tokenVerify = require('../../helpers/jwt/tokenVerify');
 const tokenRole = require('../../helpers/jwt/tokenRole');
 

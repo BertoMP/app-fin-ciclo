@@ -1,5 +1,28 @@
 class PacienteModel {
-  static async create(dbConn, paciente) {
+  static async findAll(dbConn) {
+    const query =
+      'SELECT ' +
+      '   paciente.usuario_id AS paciente_id,' +
+      '   usuario.nombre AS nombre,' +
+      '   usuario.primer_apellido AS primer_apellido,' +
+      '   usuario.segundo_apellido AS segundo_apellido,' +
+      '   paciente.num_historia_clinica ' +
+      'FROM ' +
+      '   paciente ' +
+      'INNER JOIN ' +
+      '   usuario ON paciente.usuario_id = usuario.id';
+
+    try {
+      const [rows] = await dbConn.execute(query);
+
+      return rows;
+    } catch (err) {
+      console.log(err)
+      throw new Error('Error al obtener los pacientes.');
+    }
+  }
+
+  static async create(paciente, dbConn) {
     const usuario_id = paciente.usuario_id;
     const num_hist_clinica = paciente.num_hist_clinica;
     const fecha_nacimiento = paciente.fecha_nacimiento;
@@ -21,7 +44,7 @@ class PacienteModel {
       '   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
     try {
-      await dbConn.execute(
+      return await dbConn.execute(
         query,
         [usuario_id, num_hist_clinica, fecha_nacimiento, tipo_via,
           nombre_via, numero, piso, puerta, municipio,
@@ -31,7 +54,7 @@ class PacienteModel {
     }
   }
 
-  static async findByNumHistClinica(dbConn, num_hist_clinica) {
+  static async findByNumHistClinica(num_hist_clinica, dbConn) {
     const query =
       'SELECT * ' +
       'FROM ' +
@@ -47,10 +70,10 @@ class PacienteModel {
     }
   }
 
-  static async findByUserId(dbConn, usuario_id) {
+  static async findByUserId(usuario_id, dbConn) {
     const query =
       'SELECT * ' +
-      'FROM p' +
+      'FROM ' +
       '   paciente ' +
       'WHERE ' +
       '   usuario_id = ?';
@@ -59,22 +82,23 @@ class PacienteModel {
       const [rows] = await dbConn.execute(query, [usuario_id]);
       return rows[0];
     } catch (err) {
+      console.log(err);
       throw new Error('Error al obtener el paciente.');
     }
   }
 
-  static async deletePacienteByUserId(dbConn, usuario_id) {
+  static async deletePacienteByUserId(usuario_id, dbConn) {
     const query =
       'DELETE FROM paciente WHERE usuario_id = ?';
 
     try {
-      await dbConn.execute(query, [usuario_id]);
+      return await dbConn.execute(query, [usuario_id]);
     } catch (err) {
       throw new Error('Error al eliminar el paciente.');
     }
   }
 
-  static async update(dbConn, paciente) {
+  static async update(paciente, dbConn) {
     const query =
       'UPDATE ' +
       '   paciente ' +
@@ -93,7 +117,7 @@ class PacienteModel {
       '   usuario_id = ?';
 
     try {
-      await dbConn.execute(
+      return await dbConn.execute(
         query,
         [paciente.fecha_nacimiento, paciente.tipo_via, paciente.nombre_via,
           paciente.numero, paciente.piso, paciente.puerta, paciente.municipio,

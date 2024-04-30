@@ -1,7 +1,6 @@
 const InformeService = require('../services/informe.service');
 const CitaService = require('../services/cita.service');
 const PdfService = require("../services/pdf.service");
-const destroyFile = require("../util/functions/destroyFile");
 
 exports.getInforme = async (req, res) => {
   const user_role = req.user_role;
@@ -39,19 +38,13 @@ exports.generaInformePDF = async (req, res) => {
 
     const file = await PdfService.generateInforme(informe);
 
-    res.download(file, (err) => {
+    res.status(200).download(file, async (err) => {
+      await PdfService.destroyPDF(file);
       if (err) {
-        destroyFile(file, true);
-        return res.status(500).json({
-          errors: [err.message]
-        });
-      } else {
-        destroyFile(file, true);
+        console.error('Error al descargar el archivo:', err);
       }
     });
-
   } catch (err) {
-    console.log()
     return res.status(500).json({
       errors: [err.message]
     });

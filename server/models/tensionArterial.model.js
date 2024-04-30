@@ -1,5 +1,7 @@
+const momentTz = require("moment-timezone");
+
 class TensionArterialModel {
-  static async fetchAll(dbConn, searchValues, limit) {
+  static async fetchAll(searchValues, limit, dbConn) {
     const page = searchValues.page;
     const fechaInicio = searchValues.fechaInicio;
     const fechaFin = searchValues.fechaFin;
@@ -43,13 +45,18 @@ class TensionArterialModel {
       const actualPage = page;
       const totalPages = Math.ceil(total / limit);
 
+      rows.forEach(tensionArterial => {
+        tensionArterial.fecha = momentTz.tz(tensionArterial.fecha, 'Europe/Madrid')
+          .format('DD-MM-YYYY');
+      });
+
       return {rows, total, actualPage, totalPages};
     } catch (err) {
       throw new Error('No se pudieron obtener las mediciones de tensión arterial.');
     }
   }
 
-  static async create(dbConn, tensionArterial) {
+  static async create(tensionArterial, dbConn) {
     const paciente_id = tensionArterial.paciente_id;
     const fecha = tensionArterial.fecha;
     const hora = tensionArterial.hora;
@@ -62,13 +69,13 @@ class TensionArterialModel {
       '   VALUES (?, ?, ?, ?, ?, ?)';
 
     try {
-      await dbConn.execute(query, [paciente_id, fecha, hora, sistolica, diastolica, pulsaciones_minuto]);
+      return await dbConn.execute(query, [paciente_id, fecha, hora, sistolica, diastolica, pulsaciones_minuto]);
     } catch (err) {
       throw new Error('No se pudo crear la medición de tensión arterial.');
     }
   }
 
-  static async deleteTensionesArterialesByUserId(dbConn, paciente_id) {
+  static async deleteTensionesArterialesByUserId(paciente_id, dbConn) {
     const query =
       'DELETE ' +
       'FROM ' +
@@ -76,7 +83,7 @@ class TensionArterialModel {
       'WHERE ' +
       '   paciente_id = ?';
     try {
-      await dbConn.execute(query, [paciente_id]);
+      return await dbConn.execute(query, [paciente_id]);
     } catch (err) {
       throw new Error('No se pudo eliminar las mediciones de tensión arterial.');
     }

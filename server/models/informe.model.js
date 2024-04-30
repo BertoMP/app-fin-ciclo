@@ -1,7 +1,7 @@
 const {format} = require("date-fns");
 
 class InformeModel {
-  static async fetchById(dbConn, id) {
+  static async fetchById(id, dbConn) {
     const query =
       'SELECT' +
       '    informe.id AS informe_id,' +
@@ -93,7 +93,7 @@ class InformeModel {
     }
   }
 
-  static async create(dbConn, informe) {
+  static async create(informe, dbConn) {
     const motivo = informe.motivo;
     const contenido = informe.contenido;
 
@@ -110,12 +110,12 @@ class InformeModel {
     }
   }
 
-  static async deleteInforme(dbConn, informeId) {
+  static async deleteInforme(informeId, dbConn) {
     const query =
       'DELETE FROM informe WHERE id = ?';
 
     try {
-      await dbConn.execute(query, [informeId]);
+      return await dbConn.execute(query, [informeId]);
     } catch (err) {
       throw new Error('Error al eliminar el informe.');
     }

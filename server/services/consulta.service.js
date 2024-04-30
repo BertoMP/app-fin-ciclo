@@ -2,28 +2,28 @@ const dbConn = require('../util/database/database');
 const ConsultaModel = require('../models/consulta.model');
 
 class ConsultaService {
-  static async readConsultas(page, limit) {
-    return await ConsultaModel.findAll(dbConn, page, limit);
+  static async readConsultas(page, limit, conn = dbConn) {
+    return await ConsultaModel.findAll(page, limit, conn);
   }
 
-  static async readConsultaById(id) {
-    return await ConsultaModel.findById(dbConn, id);
+  static async readConsultaById(id, conn = dbConn) {
+    return await ConsultaModel.findById(id, conn);
   }
 
-  static async createConsulta(consulta) {
-    return await ConsultaModel.create(dbConn, consulta);
+  static async createConsulta(consulta, conn = dbConn) {
+    return await ConsultaModel.create(consulta, conn);
   }
 
-  static async updateConsulta(id, consulta) {
-    return await ConsultaModel.update(dbConn, id, consulta);
+  static async updateConsulta(id, consulta, conn = dbConn) {
+    return await ConsultaModel.update(id, consulta, conn);
   }
 
-  static async deleteConsulta(id) {
-    return await ConsultaModel.delete(dbConn, id);
+  static async deleteConsulta(id, conn = dbConn) {
+    return await ConsultaModel.delete(id, conn);
   }
 
-  static async readConsultaByName(nombre) {
-    return await ConsultaModel.findByName(dbConn, nombre);
+  static async readConsultaByName(nombre, conn = dbConn) {
+    return await ConsultaModel.findByName(nombre, conn);
   }
 }
 

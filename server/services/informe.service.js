@@ -1,42 +1,58 @@
 const dbConn = require('../util/database/database');
+const PatologiaService = require('./patologia.service');
+const InformePatologiaService = require('./informePatologia.service');
+const CitaService = require('./cita.service');
 const InformeModel = require('../models/informe.model');
-const CitaModel = require('../models/cita.model');
-const PatologiaModel = require('../models/patologia.model');
-const InformePatologiaModel = require('../models/informePatologia.model');
 
 class InformeService {
-  static async readInforme(id) {
-    return await InformeModel.fetchById(dbConn, id);
+  static async readInforme(id, conn = dbConn) {
+    return await InformeModel.fetchById(id, dbConn);
   }
 
-  static async createInforme(informe) {
-    const conn = await dbConn.getConnection();
+  static async createInforme(informe, conn = null) {
+    const isConnProvided = !!conn;
+
+    if (!isConnProvided) {
+      conn = await dbConn.getConnection();
+    }
 
     try {
-      await conn.beginTransaction();
+      if (!isConnProvided) {
+        await conn.beginTransaction();
+      }
 
-      const informeId = await InformeModel.create(conn, informe);
+      const informeId = await InformeModel.create(informe, conn);
 
-      for (const patologia of informe.patologias) {
-        const patologiaExists = await PatologiaModel.findById(conn, patologia);
+      for (const patologiaId of informe.patologias) {
+        const patologiaExists = await PatologiaService.readPatologiaById(patologiaId, conn);
 
         if (!patologiaExists) {
           throw new Error('La patología no existe.');
         }
 
-        await InformePatologiaModel.addPatologia(conn, informeId, patologia);
+        await InformePatologiaService.addInformePatologia(informeId, patologiaId, conn);
       }
 
-      await CitaModel.updateInformeId(conn, informe.cita_id, informeId);
+      await CitaService.updateInformeId(informe.cita_id, informeId, conn);
 
-      await conn.commit();
+      if (!isConnProvided) {
+        await conn.commit();
+      }
     } catch (err) {
-      await conn.rollback();
+      if (!isConnProvided) {
+        await conn.rollback();
+      }
 
       throw new Error(err);
     } finally {
-      conn.release();
+      if (!isConnProvided) {
+        conn.release();
+      }
     }
+  }
+
+  static async deleteInforme(id, conn = dbConn) {
+    return await InformeModel.deleteInforme(id, conn);
   }
 }
 

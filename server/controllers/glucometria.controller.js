@@ -48,11 +48,6 @@ exports.getGlucometria = async (req, res) => {
     const fecha_fin = fechaFin;
     const items_pagina = limit;
 
-    resultados.forEach(glucometria => {
-      glucometria.fecha = momentTz.tz(glucometria.fecha, 'Europe/Madrid')
-        .format('YYYY-MM-DD');
-    });
-
     return res.status(200).json({
       prev,
       next,

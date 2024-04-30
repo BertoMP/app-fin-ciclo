@@ -2,12 +2,16 @@ const dbConn = require('../util/database/database');
 const GlucometriaModel = require('../models/glucometria.model');
 
 class GlucometriaService {
-  static async readGlucometria(searchValues, limit) {
-    return await GlucometriaModel.fetchAll(dbConn, searchValues, limit);
+  static async readGlucometria(searchValues, limit, conn = dbConn){
+    return await GlucometriaModel.fetchAll(searchValues, limit, conn);
   }
 
-  static async createGlucometria(glucometria) {
-    return await GlucometriaModel.create(dbConn, glucometria);
+  static async createGlucometria(glucometria, conn = dbConn) {
+    return await GlucometriaModel.create(glucometria, conn);
+  }
+
+  static async deleteGlucometriaByUserId(userId, conn = dbConn) {
+    return await GlucometriaModel.deleteGlucometriasByUserId(userId, conn);
   }
 }
 

@@ -1,5 +1,5 @@
 class TomaModel {
-  static async createToma(dbConn, prescripcion) {
+  static async createToma(prescripcion, dbConn) {
     const dosis = prescripcion.dosis;
     const hora = prescripcion.hora;
     const fecha_inicio = prescripcion.fecha_inicio;
@@ -19,7 +19,7 @@ class TomaModel {
     }
   }
 
-  static async deleteToma(dbConn, id) {
+  static async deleteToma(id, dbConn) {
     const query =
       'DELETE ' +
       'FROM ' +

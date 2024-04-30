@@ -1,5 +1,5 @@
 class EspecialistaModel {
-  static async create(dbConn, especialista) {
+  static async create(especialista, dbConn) {
     const usuario_id = especialista.usuario_id;
     const especialidad_id = especialista.especialidad_id;
     const consulta_id = especialista.consulta_id;
@@ -15,7 +15,7 @@ class EspecialistaModel {
       '   VALUES (?, ?, ?, ?, ?, ?, ?)';
 
     try {
-      await dbConn.execute(
+      return await dbConn.execute(
         query,
         [usuario_id, especialidad_id, consulta_id, num_colegiado,
           descripcion, imagen, turno]);
@@ -24,7 +24,7 @@ class EspecialistaModel {
     }
   }
 
-  static async findById(dbConn, usuario_id) {
+  static async findById(usuario_id, dbConn) {
     const query =
       'SELECT' +
       '    especialista.usuario_id,' +
@@ -79,7 +79,7 @@ class EspecialistaModel {
     }
   }
 
-  static async findByNumColegiado(dbConn, num_colegiado) {
+  static async findByNumColegiado(num_colegiado, dbConn) {
     const query =
       'SELECT ' +
       '    usuario_id, ' +
@@ -102,7 +102,7 @@ class EspecialistaModel {
     }
   }
 
-  static async findByConsultaId(dbConn, consulta_id) {
+  static async findByConsultaId(consulta_id, dbConn) {
     const query =
       'SELECT ' +
       '    usuario_id, ' +
@@ -125,7 +125,7 @@ class EspecialistaModel {
     }
   }
 
-  static async findEspecialistaById(dbConn, especialista_id) {
+  static async findEspecialistaById(especialista_id, dbConn) {
     const query =
       'SELECT ' +
       '    usuario_id, ' +
@@ -148,7 +148,7 @@ class EspecialistaModel {
     }
   }
 
-  static async update(dbConn, especialista) {
+  static async update(especialista, dbConn) {
     const usuario_id = especialista.usuario_id;
     const especialidad_id = especialista.especialidad_id;
     const consulta_id = especialista.consulta_id;
@@ -171,7 +171,7 @@ class EspecialistaModel {
       '   usuario_id = ?';
 
     try {
-      await dbConn.execute(
+      return await dbConn.execute(
         query,
         [especialidad_id, consulta_id, num_colegiado, descripcion,
           imagen, turno, usuario_id]);

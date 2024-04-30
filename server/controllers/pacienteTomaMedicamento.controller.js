@@ -1,6 +1,5 @@
 const PacienteTomaMedicamentoService = require('../services/pacienteTomaMedicamento.service');
 const PdfService = require('../services/pdf.service');
-const destroyFile = require("../util/functions/destroyFile");
 
 exports.getRecetas = async (req, res) => {
   let paciente_id = req.params.usuario_id;
@@ -107,7 +106,7 @@ exports.getRecetaPDF = async (req, res) => {
   try {
     const prescripciones = await PacienteTomaMedicamentoService.findPrescripciones(paciente_id);
 
-    if (!prescripciones || prescripciones.length === 0) {
+    if (!prescripciones || prescripciones.prescripciones.length === 0) {
       return res.status(404).json({
         errors: ['No hay recetas para este paciente.']
       });
@@ -115,14 +114,10 @@ exports.getRecetaPDF = async (req, res) => {
 
     const file = await PdfService.generateReceta(prescripciones);
 
-    res.download(file, (err) => {
+    res.status(200).download(file, async (err) => {
+      await PdfService.destroyPDF(file)
       if (err) {
-        destroyFile(file, true);
-        return res.status(500).json({
-          errors: [err.message]
-        });
-      } else {
-        destroyFile(file, true);
+        console.error('Error al descargar el archivo:', err);
       }
     });
   } catch (error) {

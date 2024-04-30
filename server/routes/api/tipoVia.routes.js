@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const tipoViaController = require('../../controllers/tipoVia.controller');
+const TipoViaController = require('../../controllers/tipoVia.controller');
 
 // Ruta GET
 /**
@@ -29,6 +29,6 @@ const tipoViaController = require('../../controllers/tipoVia.controller');
  *               $ref: '#/components/schemas/ServerError'
  */
 router.get('/tipo-via',
-  tipoViaController.getTipoVia);
+  TipoViaController.getTipoVia);
 
 module.exports = router;

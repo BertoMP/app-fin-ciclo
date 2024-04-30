@@ -1,5 +1,5 @@
 class EspecialidadModel {
-  static async fetchAll(dbConn, page, limit) {
+  static async fetchAll(page, limit, dbConn) {
     const offset = ((page - 1) * limit);
 
     const query =
@@ -86,7 +86,7 @@ class EspecialidadModel {
     }
   }
 
-  static async findById(dbConn, id) {
+  static async findById(id, dbConn) {
     const query =
       'SELECT ' +
       '    id, ' +
@@ -106,7 +106,7 @@ class EspecialidadModel {
     }
   }
 
-  static async findByNombre(dbConn, nombre) {
+  static async findByNombre(nombre, dbConn) {
     const query =
       'SELECT ' +
       '    id, ' +
@@ -126,7 +126,7 @@ class EspecialidadModel {
     }
   }
 
-  static async save(dbConn, especialidad) {
+  static async save(especialidad, dbConn) {
     const nombre = especialidad.nombre;
     const descripcion = especialidad.descripcion;
     const imagen = especialidad.imagen;
@@ -136,13 +136,13 @@ class EspecialidadModel {
       'VALUES (?, ?, ?)';
 
     try {
-      await dbConn.execute(query, [nombre, descripcion, imagen]);
+      return await dbConn.execute(query, [nombre, descripcion, imagen]);
     } catch (err) {
       throw new Error('Error al crear la especialidad.');
     }
   }
 
-  static async deleteById(dbConn, id) {
+  static async deleteById(id, dbConn) {
     const query =
       'DELETE ' +
       'FROM ' +
@@ -151,13 +151,13 @@ class EspecialidadModel {
       '   id = ?';
 
     try {
-      await dbConn.execute(query, [id]);
+      return await dbConn.execute(query, [id]);
     } catch (err) {
       throw new Error('Error al eliminar la especialidad.');
     }
   }
 
-  static async updateById(dbConn, id, especialidad) {
+  static async updateById(id, especialidad, dbConn) {
     const nombre = especialidad.nombre;
     const descripcion = especialidad.descripcion;
     const imagen = especialidad.imagen;
@@ -179,7 +179,7 @@ class EspecialidadModel {
         'WHERE ' +
         '   id = ?';
 
-      await dbConn.execute(query, [nombre, descripcion, imagen, id]);
+      return await dbConn.execute(query, [nombre, descripcion, imagen, id]);
     } catch (err) {
       throw new Error('Error al actualizar la especialidad.');
     }

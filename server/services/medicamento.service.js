@@ -2,28 +2,28 @@ const dbConn = require('../util/database/database');
 const MedicamentoModel = require('../models/medicamento.model');
 
 class MedicamentoService {
-  static async readMedicamentosPrescripcion() {
-    return await MedicamentoModel.fetchAllPrescripcion(dbConn);
+  static async readMedicamentosPrescripcion(conn = dbConn) {
+    return await MedicamentoModel.fetchAllPrescripcion(conn);
   }
 
-  static async readMedicamentos(page, limit) {
-    return await MedicamentoModel.fetchAll(dbConn, page, limit);
+  static async readMedicamentos(page, limit, conn = dbConn) {
+    return await MedicamentoModel.fetchAll(page, limit, conn);
   }
 
-  static async readMedicamentoById(id) {
-    return await MedicamentoModel.findById(dbConn, id);
+  static async readMedicamentoById(id, conn = dbConn) {
+    return await MedicamentoModel.findById(id, conn);
   }
 
-  static async readMedicamentoByNombre(nombre) {
-    return await MedicamentoModel.findByNombre(dbConn, nombre);
+  static async readMedicamentoByNombre(nombre, conn = dbConn) {
+    return await MedicamentoModel.findByNombre(nombre, conn);
   }
 
-  static async createMedicamento(medicamento) {
-    await MedicamentoModel.save(dbConn, medicamento);
+  static async createMedicamento(medicamento, conn = dbConn) {
+    await MedicamentoModel.save(medicamento, conn);
   }
 
-  static async updateMedicamento(id, medicamento) {
-    await MedicamentoModel.updateById(dbConn, id, medicamento);
+  static async updateMedicamento(id, medicamento, conn = dbConn) {
+    await MedicamentoModel.updateById(id, medicamento, conn);
   }
 }
 

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const codigoPostalController = require('../../controllers/codigoPostalMunicipio.controller');
+const CodigoPostalController = require('../../controllers/codigoPostalMunicipio.controller');
 
 // Ruta GET
 /**
@@ -45,6 +45,6 @@ const codigoPostalController = require('../../controllers/codigoPostalMunicipio.
  *
  */
 router.get('/codigo-postal/:municipio_id',
-  codigoPostalController.getCodigoPostal);
+  CodigoPostalController.getCodigoPostal);
 
 module.exports = router;

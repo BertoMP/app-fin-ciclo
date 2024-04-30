@@ -1,7 +1,7 @@
 const {format} = require('date-fns');
 
 class CitaModel {
-  static async fetchAll(dbConn, searchValues, limit) {
+  static async fetchAll(searchValues, limit, dbConn) {
     const page = searchValues.page;
     const paciente_id = searchValues.paciente_id;
     const fechaInicio = searchValues.fechaInicio;
@@ -107,7 +107,7 @@ class CitaModel {
     }
   }
 
-  static async fetchById(dbConn, id) {
+  static async fetchById(id, dbConn) {
     const query =
       'SELECT ' +
       '   cita.id, ' +
@@ -186,7 +186,7 @@ class CitaModel {
     }
   }
 
-  static async fetchByData(dbConn, data) {
+  static async fetchByData(data, dbConn) {
     const query =
       'SELECT * ' +
       'FROM cita ' +
@@ -203,7 +203,7 @@ class CitaModel {
     }
   }
 
-  static async fetchAgenda(dbConn, especialista_id) {
+  static async fetchAgenda(especialista_id, dbConn) {
     const query =
       'SELECT ' +
       '   cita.id, ' +
@@ -232,7 +232,7 @@ class CitaModel {
     }
   }
 
-  static async createCita(dbConn, cita) {
+  static async createCita(cita, dbConn) {
     const fecha = cita.fecha;
     const hora = cita.hora;
     const paciente_id = cita.paciente_id;
@@ -251,7 +251,7 @@ class CitaModel {
     }
   }
 
-  static async deleteCita(dbConn, id) {
+  static async deleteCita(id, dbConn) {
     const query =
       'DELETE ' +
       'FROM ' +
@@ -260,13 +260,13 @@ class CitaModel {
       '   id = ?';
 
     try {
-      await dbConn.execute(query, [id]);
+      return await dbConn.execute(query, [id]);
     } catch (err) {
       throw new Error('Error al eliminar la cita.');
     }
   }
 
-  static async getInformesByUserId(dbConn, paciente_id) {
+  static async getInformesByUserId(paciente_id, dbConn) {
     const query =
       'SELECT ' +
       '   informe_id ' +
@@ -283,7 +283,7 @@ class CitaModel {
     }
   }
 
-  static async deleteCitasByUserId(dbConn, paciente_id) {
+  static async deleteCitasByUserId(paciente_id, dbConn) {
     const query =
       'DELETE ' +
       'FROM ' +
@@ -292,13 +292,13 @@ class CitaModel {
       '   paciente_id = ?';
 
     try {
-      await dbConn.execute(query, [paciente_id]);
+      return await dbConn.execute(query, [paciente_id]);
     } catch (err) {
       throw new Error('Error al eliminar las citas.');
     }
   }
 
-  static async fetchPacienteIdByInformeId(dbConn, informe_id) {
+  static async fetchPacienteIdByInformeId(informe_id, dbConn) {
     const query =
       'SELECT ' +
       '   paciente_id ' +
@@ -309,13 +309,19 @@ class CitaModel {
 
     try {
       const [rows] = await dbConn.execute(query, [informe_id]);
+
+      if (rows.length === 0) {
+        return null;
+      }
+
       return rows[0].paciente_id;
     } catch (err) {
+      console.log(err);
       throw new Error('Error al obtener el ID del paciente.');
     }
   }
 
-  static async updateInformeId(dbConn, cita_id, informe_id) {
+  static async updateInformeId(cita_id, informe_id, dbConn) {
     const query =
       'UPDATE ' +
       '   cita ' +
@@ -325,7 +331,7 @@ class CitaModel {
       '   id = ?';
 
     try {
-      await dbConn.execute(query, [informe_id, cita_id]);
+      return await dbConn.execute(query, [informe_id, cita_id]);
     } catch (err) {
       throw new Error('Error al actualizar el ID del informe.');
     }

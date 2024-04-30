@@ -1,5 +1,7 @@
+const momentTz = require("moment-timezone");
+
 class GlucometriaModel {
-  static async fetchAll(dbConn, searchValues, limit) {
+  static async fetchAll(searchValues, limit, dbConn) {
     const page = searchValues.page;
     const fechaInicio = searchValues.fechaInicio;
     const fechaFin = searchValues.fechaFin;
@@ -42,13 +44,18 @@ class GlucometriaModel {
       const actualPage = page;
       const totalPages = Math.ceil(total / limit);
 
+      rows.forEach(glucometria => {
+        glucometria.fecha = momentTz.tz(glucometria.fecha, 'Europe/Madrid')
+          .format('DD-MM-YYYY');
+      });
+
       return {rows, total, actualPage, totalPages};
     } catch (err) {
       throw new Error('No se pudieron obtener las mediciones de glucosa.');
     }
   }
 
-  static async create(dbConn, glucometria) {
+  static async create(glucometria, dbConn) {
     const paciente_id = glucometria.paciente_id;
     const fecha = glucometria.fecha;
     const hora = glucometria.hora;
@@ -59,13 +66,13 @@ class GlucometriaModel {
       'VALUES (?, ?, ?, ?)';
 
     try {
-      await dbConn.execute(query, [paciente_id, fecha, hora, medicion]);
+      return await dbConn.execute(query, [paciente_id, fecha, hora, medicion]);
     } catch (err) {
       throw new Error('No se pudo crear la medición de glucosa.');
     }
   }
 
-  static async deleteGlucometriasByUserId(dbConn, paciente_id) {
+  static async deleteGlucometriasByUserId(paciente_id, dbConn) {
     const query =
       'DELETE ' +
       'FROM ' +
@@ -73,7 +80,7 @@ class GlucometriaModel {
       'WHERE ' +
       '   paciente_id = ?';
     try {
-      await dbConn.execute(query, [paciente_id]);
+      return await dbConn.execute(query, [paciente_id]);
     } catch (err) {
       throw new Error('No se pudieron eliminar las mediciones de glucosa.');
     }

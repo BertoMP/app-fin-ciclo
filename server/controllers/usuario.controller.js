@@ -6,7 +6,6 @@ const EmailService = require('../services/email.service');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const fileDestroy = require('../util/functions/destroyFile');
 const createToken = require('../helpers/jwt/createToken');
 const createResetToken = require('../helpers/jwt/createResetToken');
 const createRefreshToken = require('../helpers/jwt/createRefreshToken');
@@ -189,10 +188,6 @@ exports.postRegistroEspecialista = async (req, res) => {
 
     return res.status(200).json({message: 'Usuario creado exitosamente.'});
   } catch (err) {
-    if (req.file) {
-      fileDestroy(req.file.path);
-    }
-
     return res.status(500).json({errors: [err.message]});
   }
 }
@@ -474,10 +469,6 @@ exports.putUsuarioEspecialista = async (req, res) => {
 
     return res.status(200).json({message: 'Usuario actualizado exitosamente.'});
   } catch (err) {
-    if (req.file) {
-      fileDestroy(req.file.path);
-    }
-
     return res.status(500).json({errors: [err.message]});
   }
 }

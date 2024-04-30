@@ -2,8 +2,8 @@ const dbConn = require('../util/database/database');
 const ProvinciaModel = require('../models/provincia.model');
 
 class ProvinciaService {
-  static async readProvincias() {
-    return await ProvinciaModel.fetchAll(dbConn);
+  static async readProvincias(conn = dbConn) {
+    return await ProvinciaModel.fetchAll(conn);
   }
 }
 
