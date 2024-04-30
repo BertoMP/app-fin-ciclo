@@ -28,7 +28,7 @@ class EmailService {
     const transporter = this.createTransporter();
     const compiledTemplate = this.compileTemplate('reset-password.handlebars', {
       user,
-      resetLink: `${process.env.ANGULAR_HOST}/auth/reset-password/${resetToken}`
+      resetLink: `${process.env.ANGULAR_HOST}:${process.env.ANGULAR_PORT}/auth/reset-password/${resetToken}`
     });
 
     const mailDetails = this.createMailDetails(
