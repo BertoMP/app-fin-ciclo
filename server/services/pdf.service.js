@@ -15,7 +15,7 @@ class PdfService {
     medicamentos.fecha = `${date.getDate()} de ${monthNames[date.getMonth()]} de ${date.getFullYear()}`;
 
     const bodyHtml = compiledTemplate(medicamentos);
-    const filename = `receta_${medicamentos.datos_paciente.primer_apellido}_${medicamentos.datos_paciente.segundo_apellido}.pdf`;
+    const filename = `receta_${medicamentos.datos_paciente.nombre}_${medicamentos.datos_paciente.primer_apellido}_${medicamentos.datos_paciente.segundo_apellido}.pdf`;
 
     return await this.generatePDFWithTemplate(bodyHtml, filename);
   }
@@ -24,7 +24,7 @@ class PdfService {
     const template = fs.readFileSync(path.join(templatesSource, 'informe.handlebars'), 'utf8');
     const compiledTemplate = handlebars.compile(template);
     const bodyHtml = compiledTemplate(informe);
-    const filename = `informe_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}.pdf`;
+    const filename = `informe_${informe.datos_paciente.nombre}_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}.pdf`;
 
     return await this.generatePDFWithTemplate(bodyHtml, filename);
   }
@@ -32,18 +32,16 @@ class PdfService {
   static async generateCitaPDF(cita, qr) {
     const template = fs.readFileSync(path.join(templatesSource, 'cita.handlebars'), 'utf8');
     const compiledTemplate = handlebars.compile(template);
-
     const bodyHtml = compiledTemplate({cita, qr});
-
-    const filename = `cita_${cita.datos_paciente.nombre}_${cita.datos_paciente.primer_apellido}_${cita.datos_cita.fecha}.pdf`;
+    const filename = `cita_${cita.datos_paciente.nombre}_${cita.datos_paciente.primer_apellido}_${cita.datos_paciente.segundo_apellido}.pdf`;
 
     return await this.generatePDFWithTemplate(bodyHtml, filename);
   }
 
   static async generatePDFWithTemplate(bodyHtml, filename) {
-    const pdfPath = path.join(__dirname, `../tmp/pdfs/${filename}`);
-
+    const pdfPath = path.join(__dirname, '../tmp/pdfs/', filename);
     const dir = path.dirname(pdfPath);
+
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, {recursive: true});
     }
