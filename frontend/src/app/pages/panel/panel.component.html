@@ -1,0 +1,30 @@
+@if (isUserLoggedIn) {
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @switch (userRole) {
+            @case(1) {
+            <app-admin-panel></app-admin-panel>
+            }
+            @case(2) {
+            <app-pacient-panel></app-pacient-panel>
+            }
+            @case(3) {
+            <app-especialist-panel></app-especialist-panel>
+            }}
+            <p>{{userId}}</p>
+            <button type="button" class="btn btn-primary" (click)="onLogout()">Logout</button>
+            <button type="button" class="btn btn-primary" (click)="onLogout()">Editar perfil</button>
+
+        </div>
+    </div>
+</div> } @else {
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Dashboard</h1>
+            <p>Debes estar logado para ver este contenido.</p>
+        </div>
+    </div>
+</div>
+}
