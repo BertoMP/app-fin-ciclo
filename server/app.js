@@ -36,6 +36,13 @@ app.use('/docs', express.static(path.join(__dirname, 'docs', 'jsdocs')));
 app.use('/api', cors(corsOptions), require('./routes/api'));
 
 // Inicialización del servidor
-app.listen(SERV_PORT, SERV_HOST, () => {
+const server = app.listen(SERV_PORT, SERV_HOST, () => {
   console.log(`NodeJS Server listening on http:\\${SERV_HOST}:${SERV_PORT}`);
 });
+
+// Exportación de la aplicación Express
+module.exports = {
+  app,
+  server,
+  closeServer: () => server.close(),
+};

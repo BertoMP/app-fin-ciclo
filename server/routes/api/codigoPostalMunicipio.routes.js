@@ -4,6 +4,8 @@ const router                  = require('express').Router();
 // Importación del controlador de código postal
 const CodigoPostalController  = require('../../controllers/codigoPostalMunicipio.controller');
 
+// Importación de validadores
+const validateMunicipioIdParam = require('../../helpers/validators/params/municipioIdParam.validator');
 // Ruta GET
 /**
  * @swagger
@@ -48,6 +50,7 @@ const CodigoPostalController  = require('../../controllers/codigoPostalMunicipio
  *
  */
 router.get('/codigo-postal/:municipio_id',
+  validateMunicipioIdParam,
   CodigoPostalController.getCodigoPostal);
 
 // Exportación del router

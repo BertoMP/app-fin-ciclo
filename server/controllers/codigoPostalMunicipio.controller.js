@@ -27,7 +27,7 @@ class CodigoPostalMunicipioController {
       const codigoPostal =
         await CodigoPostalMunicipioService.readCodigoPostalByMunicipioId(cod_municipio);
 
-      if (!codigoPostal) {
+      if (!codigoPostal || codigoPostal.length === 0) {
         return res.status(404).json({
           errors: ['No se ha encontrado el código postal.']
         });
