@@ -9,7 +9,7 @@ class CodigoPostalMunicipioModel {
    * @static
    * @async
    * @memberof CodigoPostalMunicipioModel
-   * @param {string} cod_municipio - El código del municipio.
+   * @param {number} cod_municipio - El código del municipio.
    * @param {Object} dbConn - La conexión a la base de datos.
    * @returns {Promise<Array>} Un array de códigos postales del municipio.
    * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
@@ -23,10 +23,10 @@ class CodigoPostalMunicipioModel {
       'WHERE ' +
       '   municipio_id = ?';
 
-    cod_municipio = cod_municipio.toString().padStart(5, '0');
+    const formattedCod = cod_municipio.toString().padStart(5, '0');
 
     try {
-      const [rows] = await dbConn.query(query, [cod_municipio]);
+      const [rows] = await dbConn.query(query, [formattedCod]);
 
       return rows;
     } catch (err) {

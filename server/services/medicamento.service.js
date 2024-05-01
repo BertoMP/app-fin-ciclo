@@ -31,7 +31,7 @@ class MedicamentoService {
    * @param {number} page - La página de resultados a devolver.
    * @param {number} limit - El número de resultados por página.
    * @param {Object} conn - La conexión a la base de datos.
-   * @returns {Promise<Array>} Un array de medicamentos.
+   * @returns {Promise<Object>} Un array de medicamentos.
    */
   static async readMedicamentos(page, limit, conn = dbConn) {
     return await MedicamentoModel.fetchAll(page, limit, conn);

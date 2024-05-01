@@ -131,7 +131,7 @@ class InformeModel {
     try {
       const informe = await dbConn.execute(query, [motivo, contenido]);
 
-      return informe[0].insertId;
+      return informe[0];
     } catch (err) {
       throw new Error('Error al crear el informe.');
     }

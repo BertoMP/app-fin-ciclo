@@ -397,7 +397,7 @@ class UsuarioModel {
    * @async
    * @memberof UsuarioModel
    * @param {number} userId - El ID del usuario.
-   * @param {string} refreshToken - El nuevo token de refresco.
+   * @param {null} refreshToken - El nuevo token de refresco.
    * @param {Object} dbConn - La conexión a la base de datos.
    * @returns {Promise<Object>} El resultado de la operación de actualización.
    * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.

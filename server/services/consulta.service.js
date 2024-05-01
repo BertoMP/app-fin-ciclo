@@ -18,7 +18,7 @@ class ConsultaService {
    * @param {number} page - La página de resultados.
    * @param {number} limit - El límite de resultados.
    * @param {Object} conn - La conexión a la base de datos.
-   * @returns {Promise<Array>} Un array de consultas.
+   * @returns {Promise<Object>} Un array de consultas.
    */
   static async readConsultas(page, limit, conn = dbConn) {
     return await ConsultaModel.findAll(page, limit, conn);

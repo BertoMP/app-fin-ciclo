@@ -18,7 +18,7 @@ class EspecialidadService {
    * @param {number} page - La página de resultados a devolver.
    * @param {number} limit - El número de resultados por página.
    * @param {Object} conn - La conexión a la base de datos.
-   * @returns {Promise<Array>} Un array de especialidades.
+   * @returns {Promise<Object>} Un array de especialidades.
    */
   static async readEspecialidades(page, limit, conn = dbConn) {
     return await EspecialidadModel.fetchAll(page, limit, conn);

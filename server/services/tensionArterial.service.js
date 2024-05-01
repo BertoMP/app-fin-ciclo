@@ -18,7 +18,7 @@ class TensionArterialService {
    * @param {Object} searchValues - Los valores de búsqueda.
    * @param {number} limit - El límite de resultados.
    * @param {Object} conn - La conexión a la base de datos.
-   * @returns {Promise<Array>} Un array de tensiones arteriales.
+   * @returns {Promise<Object>} Un array de tensiones arteriales.
    */
   static async readTensionArterial(searchValues, limit, conn = dbConn) {
     return await TensionArterialModel.fetchAll(searchValues, limit, conn);

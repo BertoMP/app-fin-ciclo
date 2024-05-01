@@ -13,7 +13,7 @@ const { body, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-exports.validateContacto = [
+const validateContacto = [
   body('nombre')
     .trim()
     .notEmpty().withMessage('El nombre no puede estar vacío.')
@@ -63,3 +63,5 @@ exports.validateContacto = [
     next();
   }
 ]
+
+module.exports = validateContacto;

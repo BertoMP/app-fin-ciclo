@@ -24,5 +24,5 @@ const createRefreshToken = (user) => {
   });
 }
 
-// Exportación de la función
+// Exportación del módulo
 module.exports = createRefreshToken;

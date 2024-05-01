@@ -10,10 +10,10 @@ const tokenRole                           = require('../../util/middleware/verif
 const tokenUserId                         = require('../../util/middleware/verifyUserId');
 
 // Importación de middlewares para la validación de datos
-const { validateGlucometria }             = require('../../helpers/validators/glucometria.validator');
-const { validatePaginationQueryParams }   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const { validateDateQueryParams }         = require("../../helpers/validators/queryParams/dateQueryParams.validator");
-const { validateUsuarioIdParam }          = require("../../helpers/validators/params/usuarioIdParam.validator");
+const validateGlucometria            = require('../../helpers/validators/glucometria.validator');
+const validatePaginationQueryParams   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const validateDateQueryParams         = require("../../helpers/validators/queryParams/dateQueryParams.validator");
+const validateUsuarioIdParam          = require("../../helpers/validators/params/usuarioIdParam.validator");
 
 // Rutas GET
 /**

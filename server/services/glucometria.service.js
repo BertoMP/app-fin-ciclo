@@ -18,7 +18,7 @@ class GlucometriaService {
    * @param {Object} searchValues - Los valores de búsqueda para las glucometrias.
    * @param {number} limit - El número de resultados a devolver.
    * @param {Object} conn - La conexión a la base de datos.
-   * @returns {Promise<Array>} Un array de glucometrias.
+   * @returns {Promise<Object>} Un array de glucometrias.
    */
   static async readGlucometria(searchValues, limit, conn = dbConn){
     return await GlucometriaModel.fetchAll(searchValues, limit, conn);

@@ -9,13 +9,13 @@
  * @memberof Util-Middleware
  * @function
  */
-module.exports = () => {
-  return (req, res, next) => {
-    if (!req.user_id) {
-      return res.status(403).json({
-        errors: ['Token inválido.']
-      });
-    }
-    next();
+const verifyUserId = (req, res, next) => {
+  if (!req.user_id) {
+    return res.status(403).json({
+      errors: ['Token inválido.']
+    });
   }
+  next();
 }
+
+module.exports = verifyUserId;

@@ -13,7 +13,7 @@ const { query, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-exports.validateDateQueryParams = [
+const validateDateQueryParams = [
   query('fechaInicio')
     .optional()
     .isDate().withMessage('La fecha de inicio debe ser una fecha válida.')
@@ -24,7 +24,6 @@ exports.validateDateQueryParams = [
 
       return true;
     }),
-
   query('fechaFin')
     .optional()
     .isDate().withMessage('La fecha de fin debe ser una fecha válida.')
@@ -50,3 +49,6 @@ exports.validateDateQueryParams = [
     next();
   }
 ];
+
+// Exportación del módulo
+module.exports = validateDateQueryParams;

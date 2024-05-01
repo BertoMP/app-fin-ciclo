@@ -13,7 +13,7 @@ const { body, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-exports.validateInforme = [
+const validateInforme = [
   body('cita_id')
     .trim()
     .notEmpty().withMessage('La cita es requerida.')
@@ -43,3 +43,6 @@ exports.validateInforme = [
     next();
   }
 ];
+
+// Exportación del módulo
+module.exports = validateInforme;

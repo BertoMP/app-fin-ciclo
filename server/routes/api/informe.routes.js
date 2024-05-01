@@ -10,8 +10,8 @@ const tokenRole                   = require('../../util/middleware/verifyUserRol
 const tokenId                     = require('../../util/middleware/verifyUserId');
 
 // Importación de middlewares para la validación de datos
-const { validateInforme }         = require("../../helpers/validators/informe.validator");
-const { validateInformeIdParam }  = require("../../helpers/validators/params/informeIdParam.validator");
+const validateInforme         = require("../../helpers/validators/informe.validator");
+const validateInformeIdParam  = require("../../helpers/validators/params/informeIdParam.validator");
 
 // Rutas GET
 /**

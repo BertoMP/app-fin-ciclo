@@ -13,7 +13,7 @@ const { body, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-exports.validateCita = [
+const validateCita = [
   body('paciente_id')
     .trim()
     .notEmpty().withMessage('El paciente es requerido')
@@ -64,3 +64,6 @@ exports.validateCita = [
     next();
   }
 ];
+
+// Exportación del módulo
+module.exports = validateCita;

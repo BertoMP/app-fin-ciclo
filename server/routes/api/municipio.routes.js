@@ -5,7 +5,7 @@ const router                        = require('express').Router();
 const MunicipioController           = require('../../controllers/municipio.controller');
 
 // Importación de middlewares para la validación de datos
-const { validateProvinciaIdParam }  = require('../../helpers/validators/params/provinciaIdParam.validator');
+const validateProvinciaIdParam  = require('../../helpers/validators/params/provinciaIdParam.validator');
 
 // Ruta GET
 /**

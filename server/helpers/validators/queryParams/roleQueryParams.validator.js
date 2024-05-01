@@ -12,7 +12,7 @@ const {query, validationResult} = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-exports.validateRoleQueryParams = [
+const validateRoleQueryParams = [
   query('role')
     .optional()
     .isNumeric().withMessage('El rol debe ser un valor numérico.'),
@@ -27,3 +27,6 @@ exports.validateRoleQueryParams = [
     next();
   }
 ];
+
+// Exportación del módulo
+module.exports = validateRoleQueryParams;

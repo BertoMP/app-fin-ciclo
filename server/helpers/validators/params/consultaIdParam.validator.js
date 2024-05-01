@@ -13,7 +13,7 @@ const { param, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-exports.validateConsultaIdParam = [
+const validateConsultaIdParam = [
   param('consulta_id')
     .isNumeric().withMessage('El ID debe ser un valor numérico.')
     .custom(value => {
@@ -34,3 +34,6 @@ exports.validateConsultaIdParam = [
     next();
   }
 ];
+
+// Exportación del módulo
+module.exports = validateConsultaIdParam;

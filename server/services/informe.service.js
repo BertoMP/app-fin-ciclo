@@ -24,7 +24,7 @@ class InformeService {
    * @returns {Promise<Object>} Un objeto que representa el informe.
    */
   static async readInforme(id, conn = dbConn) {
-    return await InformeModel.fetchById(id, dbConn);
+    return await InformeModel.fetchById(id, conn);
   }
 
   /**
@@ -50,7 +50,9 @@ class InformeService {
         await conn.beginTransaction();
       }
 
-      const informeId = await InformeModel.create(informe, conn);
+      const informeCreado = await InformeModel.create(informe, conn);
+
+      const informeId = informeCreado.insertId;
 
       for (const patologiaId of informe.patologias) {
         const patologiaExists = await PatologiaService.readPatologiaById(patologiaId, conn);

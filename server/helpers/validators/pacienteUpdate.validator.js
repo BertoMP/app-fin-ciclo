@@ -13,7 +13,7 @@ const { body, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-exports.validatePacienteUpdate = [
+const validatePacienteUpdate = [
   body('tipo_via')
     .trim()
     .notEmpty().withMessage('El tipo de vía es requerido.')
@@ -127,3 +127,6 @@ exports.validatePacienteUpdate = [
     next();
   }
 ];
+
+// Exportación del módulo
+module.exports = validatePacienteUpdate;

@@ -45,7 +45,7 @@ class EspecialistaModel {
    * @static
    * @async
    * @memberof EspecialistaModel
-   * @param {Object} especialista - El objeto del nuevo especialista.
+   * @param usuario_id - El ID del usuario.
    * @param {Object} dbConn - La conexión a la base de datos.
    * @returns {Promise<Object>} El nuevo especialista creado.
    * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.

@@ -2,7 +2,7 @@
 const { body, validationResult } = require('express-validator');
 
 // Importación de los validadores necesarios
-const { validateUserRegister } = require("./usuarioRegistro.validator");
+const validateUserRegister = require("./usuarioRegistro.validator");
 
 /**
  * @name validatePacienteRegister
@@ -16,7 +16,7 @@ const { validateUserRegister } = require("./usuarioRegistro.validator");
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-exports.validatePacienteRegister = [
+const validatePacienteRegister = [
   validateUserRegister,
   body('tipo_via')
     .trim()
@@ -131,3 +131,5 @@ exports.validatePacienteRegister = [
     next();
   }
 ];
+
+module.exports = validatePacienteRegister;

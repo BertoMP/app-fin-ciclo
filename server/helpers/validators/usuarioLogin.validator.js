@@ -13,7 +13,7 @@ const { body, validationResult } = require("express-validator");
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-exports.validateUserLogin = [
+const validateUserLogin = [
   body('email')
     .trim()
     .notEmpty().withMessage('El correo es requerido.')
@@ -41,3 +41,6 @@ exports.validateUserLogin = [
     next();
   }
 ];
+
+// Exportación del módulo
+module.exports = validateUserLogin;

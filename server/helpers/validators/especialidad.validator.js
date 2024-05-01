@@ -13,7 +13,7 @@ const { body, validationResult } = require("express-validator");
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-exports.validateEspecialidad = [
+const validateEspecialidad = [
   body('nombre')
     .trim()
     .notEmpty().withMessage('El nombre de la especialidad no puede estar vacío.')
@@ -37,3 +37,5 @@ exports.validateEspecialidad = [
     next();
   }
 ];
+
+module.exports = validateEspecialidad;

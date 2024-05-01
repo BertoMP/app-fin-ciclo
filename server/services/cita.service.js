@@ -24,7 +24,7 @@ class CitaService {
    * @param {Object} searchValues - Los valores de búsqueda.
    * @param {number} limit - El límite de resultados.
    * @param {Object} conn - La conexión a la base de datos.
-   * @returns {Promise<Array>} Un array de citas.
+   * @returns {Promise<Object>} Un array de citas.
    */
   static async readCitas(searchValues, limit, conn = dbConn) {
     return await CitaModel.fetchAll(searchValues, limit, conn);
@@ -189,7 +189,7 @@ class CitaService {
    * @param {number} cita_id - El ID de la cita.
    * @param {number} informe_id - El nuevo ID del informe.
    * @param {Object} conn - La conexión a la base de datos.
-   * @returns {Promise<void>} Un objeto que representa el informe actualizado.
+   * @returns {Promise<Object>} Un objeto que representa el informe actualizado.
    */
   static async updateInformeId(cita_id, informe_id, conn = dbConn) {
     return await CitaModel.updateInformeId(cita_id, informe_id, conn);

@@ -21,4 +21,5 @@ const createResetToken = (user) => {
     });
 }
 
+// Exportación del módulo
 module.exports = createResetToken;

@@ -56,12 +56,12 @@ class PacienteService {
    * @static
    * @async
    * @memberof PacienteService
-   * @param {number} paciente_id - El ID del paciente.
+   * @param {Object} paciente - El objeto del paciente.
    * @param {Object} conn - La conexión a la base de datos.
    * @returns {Promise<Object>} El paciente actualizado.
    */
-  static async updatePacienteByUserId(paciente_id, conn = dbConn) {
-    return await PacienteModel.updatePaciente(paciente_id, conn);
+  static async updatePacienteByUserId(paciente, conn = dbConn) {
+    return await PacienteModel.updatePaciente(paciente, conn);
   }
 
   /**

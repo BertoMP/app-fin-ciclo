@@ -9,9 +9,9 @@ const tokenVerify                         = require('../../helpers/jwt/verifyAcc
 const tokenRole                           = require('../../util/middleware/verifyUserRole');
 
 // Importación de middlewares para la validación de datos
-const { validateMedicamento }             = require('../../helpers/validators/medicamento.validator');
-const { validatePaginationQueryParams }   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const { validateMedicamentoIdParam }      = require("../../helpers/validators/params/medicamentoIdParam.validator");
+const validateMedicamento             = require('../../helpers/validators/medicamento.validator');
+const validatePaginationQueryParams   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const validateMedicamentoIdParam      = require("../../helpers/validators/params/medicamentoIdParam.validator");
 
 // Rutas GET
 /**

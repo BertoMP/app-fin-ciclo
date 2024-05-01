@@ -17,7 +17,7 @@ const jwt = require('jsonwebtoken');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-module.exports = (req, res, next) => {
+const verifyAccessToken = (req, res, next) => {
   const accessToken = req.headers['authorization'];
   if (accessToken) {
     const token = accessToken.split('Bearer ')[1];
@@ -45,3 +45,6 @@ module.exports = (req, res, next) => {
     });
   }
 };
+
+// Exportación del middleware
+module.exports = verifyAccessToken;

@@ -22,4 +22,5 @@ const createAccessToken = (user) => {
   });
 }
 
+// Exportación del módulo
 module.exports = createAccessToken;

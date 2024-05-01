@@ -11,7 +11,7 @@
  * @memberof Util-Middleware
  * @function
  */
-module.exports = (roles) => {
+const verifyUserRole = (roles) => {
   return (req, res, next) => {
     if (!req.user_role || !roles.includes(req.user_role)) {
       return res.status(403).json({
@@ -21,3 +21,5 @@ module.exports = (roles) => {
     next();
   }
 }
+
+module.exports = verifyUserRole;

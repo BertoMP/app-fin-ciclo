@@ -28,7 +28,7 @@ class UsuarioService {
    * @param {Object} searchValues - Los valores de búsqueda.
    * @param {number} limit - El límite de resultados.
    * @param {Object} conn - La conexión a la base de datos.
-   * @returns {Promise<Array>} Un array de usuarios.
+   * @returns {Promise<Object>} Un array de usuarios.
    */
   static async readAllUsuarios(searchValues, limit, conn = dbConn) {
     return await UsuarioModel.fetchAll(searchValues, limit, conn);
@@ -376,7 +376,7 @@ class UsuarioService {
    * @async
    * @memberof UsuarioService
    * @param {number} userId - El ID del usuario.
-   * @param {string} refreshToken - El nuevo token de actualización.
+   * @param {null | string} refreshToken - El nuevo token de actualización.
    * @param {Object} conn - La conexión a la base de datos.
    * @returns {Promise<Object>} El resultado de la operación de actualización.
    */

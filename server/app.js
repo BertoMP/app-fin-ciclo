@@ -1,4 +1,4 @@
-// Carga de las variables de entorno
+// Carga de las variables de entorno desde el archivo '.env'
 require('dotenv').config();
 
 // Definición de las variables de entorno

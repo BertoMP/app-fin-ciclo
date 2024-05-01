@@ -5,7 +5,7 @@ const router                      = require('express').Router();
 const EspecialistaController      = require('../../controllers/especialista.controller');
 
 // Importación de middlewares para la validación de datos
-const { validateUsuarioIdParam }  = require("../../helpers/validators/params/usuarioIdParam.validator");
+const validateUsuarioIdParam = require("../../helpers/validators/params/usuarioIdParam.validator");
 
 // Rutas GET
 /**

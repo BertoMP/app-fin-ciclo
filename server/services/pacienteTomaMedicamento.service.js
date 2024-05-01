@@ -142,7 +142,7 @@ class PacienteTomaMedicamentoService {
    * @memberof PacienteTomaMedicamentoService
    * @param {number} pacienteId - El ID del paciente.
    * @param {Object} conn - La conexión a la base de datos.
-   * @returns {Promise<Array>} Un array de prescripciones.
+   * @returns {Promise<Object>} Un array de prescripciones.
    * @throws {Error} Si ocurre un error durante la búsqueda de las prescripciones, se lanza un error.
    */
   static async findPrescripciones(pacienteId, conn = dbConn) {
