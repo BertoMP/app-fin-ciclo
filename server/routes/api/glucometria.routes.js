@@ -5,7 +5,7 @@ const router                            = require('express').Router();
 const GlucometriaController             = require('../../controllers/glucometria.controller');
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                       = require('../../helpers/jwt/verifyToken');
+const tokenVerify                       = require('../../helpers/jwt/verifyAccessToken');
 const tokenRole                         = require('../../util/middleware/verifyUserRole');
 const tokenUserId                       = require('../../util/middleware/verifyUserId');
 

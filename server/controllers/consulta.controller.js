@@ -2,6 +2,21 @@
 const ConsultaService       = require('../services/consulta.service');
 const EspecialistaService   = require('../services/especialista.service');
 
+/**
+ * @name getConsultas
+ * @description Método asíncrono que obtiene consultas de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas anterior y siguiente,
+ *              la página actual, el total de páginas, el total de consultas, el rango de resultados,
+ *              y las consultas.
+ *              Si la página solicitada no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Consulta
+ */
 exports.getConsultas = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 10;
@@ -48,6 +63,19 @@ exports.getConsultas = async (req, res) => {
   }
 }
 
+/**
+ * @name getConsultaById
+ * @description Método asíncrono que obtiene una consulta específica de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de la consulta.
+ *              Si la consulta no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Consulta
+ */
 exports.getConsultaById = async (req, res) => {
   const id = parseInt(req.params.consulta_id);
 
@@ -68,6 +96,19 @@ exports.getConsultaById = async (req, res) => {
   }
 }
 
+/**
+ * @name createConsulta
+ * @description Método asíncrono que crea una nueva consulta en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la consulta ya existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Consulta
+ */
 exports.createConsulta = async (req, res) => {
   try {
     const consulta = {
@@ -95,6 +136,19 @@ exports.createConsulta = async (req, res) => {
   }
 }
 
+/**
+ * @name updateConsulta
+ * @description Método asíncrono que actualiza una consulta existente en la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la consulta no existe o ya existe una consulta con el mismo nombre, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Consulta
+ */
 exports.updateConsulta = async (req, res) => {
   const id = parseInt(req.params.consulta_id);
 
@@ -132,6 +186,19 @@ exports.updateConsulta = async (req, res) => {
   }
 }
 
+/**
+ * @name deleteConsulta
+ * @description Método asíncrono que elimina una consulta específica de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la consulta no existe o está asociada a un médico, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Consulta
+ */
 exports.deleteConsulta = async (req, res) => {
   const id = parseInt(req.params.consulta_id);
 

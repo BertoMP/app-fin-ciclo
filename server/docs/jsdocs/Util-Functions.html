@@ -70,7 +70,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="namespaces.js.html">namespaces.js</a>, <a href="namespaces.js.html#line9">line 9</a>
+        <a href="namespaces.js.html">namespaces.js</a>, <a href="namespaces.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -102,6 +102,510 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".createEncryptedPassword"><span class="type-signature">(async, static) </span>createEncryptedPassword<span class="signature">(password)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método asíncrono que crea una contraseña encriptada utilizando bcrypt.
+             Devuelve una promesa que se resuelve con la contraseña encriptada.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La contraseña que se va a encriptar.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_functions_createEncryptedPassword.js.html">util/functions/createEncryptedPassword.js</a>, <a href="util_functions_createEncryptedPassword.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si ocurre algún error durante el proceso, la promesa se rechaza con un error.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    La contraseña encriptada.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;string></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".createHistClinica"><span class="type-signature">(static) </span>createHistClinica<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método que crea un número de historia clínica único.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_functions_createHistClinica.js.html">util/functions/createHistClinica.js</a>, <a href="util_functions_createHistClinica.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    El número de historia clínica.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".createUserObject"><span class="type-signature">(static) </span>createUserObject<span class="signature">(req, encryptedPassword, rol_id)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Crea un objeto de usuario a partir de los datos de la solicitud, la contraseña encriptada y el ID del rol.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El objeto de solicitud de Express.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>encryptedPassword</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La contraseña encriptada del usuario.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rol_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID del rol del usuario.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_functions_createUserObject.js.html">util/functions/createUserObject.js</a>, <a href="util_functions_createUserObject.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Un objeto que representa al usuario.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
 
         
             
@@ -620,13 +1124,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Controllers-Cita.html">Controllers-Cita</a></li><li><a href="Controllers-CodigoPostalMunicipio.html">Controllers-CodigoPostalMunicipio</a></li><li><a href="Controllers-Consulta.html">Controllers-Consulta</a></li><li><a href="Controllers-Contacto.html">Controllers-Contacto</a></li><li><a href="Controllers-Especialidad.html">Controllers-Especialidad</a></li><li><a href="Controllers-Especialista.html">Controllers-Especialista</a></li><li><a href="Controllers-Glucometria.html">Controllers-Glucometria</a></li><li><a href="Controllers-Informe.html">Controllers-Informe</a></li><li><a href="Controllers-Medicamento.html">Controllers-Medicamento</a></li><li><a href="Controllers-Municipio.html">Controllers-Municipio</a></li><li><a href="Controllers-Paciente.html">Controllers-Paciente</a></li><li><a href="Controllers-PacienteTomaMedicamento.html">Controllers-PacienteTomaMedicamento</a></li><li><a href="Controllers-Patologia.html">Controllers-Patologia</a></li><li><a href="Controllers-Provincia.html">Controllers-Provincia</a></li><li><a href="Controllers-TensionArterial.html">Controllers-TensionArterial</a></li><li><a href="Controllers-TipoVia.html">Controllers-TipoVia</a></li><li><a href="Controllers-Usuario.html">Controllers-Usuario</a></li><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 01 2024 11:33:34 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 01 2024 12:45:18 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

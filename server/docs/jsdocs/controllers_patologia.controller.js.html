@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/patologia.controller.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/patologia.controller.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// Importación de los servicios necesarios
+const PatologiaService = require('../services/patologia.service');
+
+/**
+ * @name getPatologiasInforme
+ * @description Método asíncrono que obtiene patologías de la base de datos para un informe.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de las patologías.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Patologia
+ */
+exports.getPatologiasInforme = async (req, res) => {
+  try {
+    const patologias = await PatologiaService.readPatologiasInforme();
+
+    return res.status(200).json(patologias);
+  } catch (err) {
+    return res.status(500).json({
+      errors: [err.message]
+    });
+  }
+}
+
+/**
+ * @name getPatologias
+ * @description Método asíncrono que obtiene patologías de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas anterior y siguiente,
+ *              la página actual, el total de páginas, el total de patologías, el rango de resultados y las patologías.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Patologia
+ */
+exports.getPatologias = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+
+  try {
+    const {
+      rows: resultados,
+      actualPage: pagina_actual,
+      total: cantidad_patologias,
+      totalPages: paginas_totales
+    } = await PatologiaService.readPatologias(page, limit);
+
+    if (page > 1 &amp;&amp; page > paginas_totales) {
+      return res.status(404).json({
+        errors: ['La página de patologías solicitada no existe.']
+      });
+    }
+
+    const prev = page > 1
+      ? `/patologia?page=${page - 1}`
+      : null;
+    const next = page &lt; paginas_totales
+      ? `/patologia?page=${page + 1}`
+      : null;
+    const result_min = (page - 1) * limit + 1;
+    const result_max = resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
+
+    return res.status(200).json({
+      prev,
+      next,
+      pagina_actual,
+      paginas_totales,
+      cantidad_patologias,
+      result_min,
+      result_max,
+      resultados
+    });
+  } catch (err) {
+    return res.status(500).json({
+      errors: [err.message]
+    });
+  }
+}
+
+/**
+ * @name getPatologiaById
+ * @description Método asíncrono que obtiene una patología específica de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de la patología.
+ *              Si la patología no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Patologia
+ */
+exports.getPatologiaById = async (req, res) => {
+  const id = parseInt(req.params.patologia_id);
+
+  try {
+    const patologia = await PatologiaService.readPatologiaById(id);
+
+    if (!patologia) {
+      return res.status(404).json({
+        errors: ['La patología solicitada no existe.']
+      });
+    }
+
+    return res.status(200).json(patologia);
+  } catch (err) {
+    return res.status(500).json({
+      errors: [err.message]
+    });
+  }
+}
+
+/**
+ * @name createPatologia
+ * @description Método asíncrono que crea una nueva patología en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la patología ya existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Patologia
+ */
+exports.createPatologia = async (req, res) => {
+  let descripcion = req.body.descripcion;
+  descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '&lt;br>');
+
+  const patologia = {
+    nombre: req.body.nombre,
+    descripcion: descripcion
+  }
+
+  try {
+    const patologiaExists = await PatologiaService.readPatologiaByNombre(patologia.nombre);
+
+    if (patologiaExists) {
+      return res.status(409).json({
+        errors: ['La patología ya existe.']
+      });
+    }
+
+    await PatologiaService.createPatologia(patologia);
+
+    return res.status(200).json({
+      message: 'Patología creada correctamente.'
+    });
+  } catch (err) {
+    return res.status(500).json({
+      errors: [err.message]
+    });
+  }
+}
+
+/**
+ * @name updatePatologia
+ * @description Método asíncrono que actualiza una patología específica en la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la patología no existe o ya existe una patología con el mismo nombre, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Patologia
+ */
+exports.updatePatologia = async (req, res) => {
+  const id = parseInt(req.params.patologia_id);
+
+  let descripcion = req.body.descripcion;
+  descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '&lt;br>');
+
+  const patologia = {
+    nombre: req.body.nombre,
+    descripcion: descripcion
+  }
+
+  try {
+    const currentPatologia = await PatologiaService.readPatologiaById(id);
+
+    if (!currentPatologia) {
+      return res.status(404).json({
+        errors: ['La patología solicitada no existe.']
+      });
+    }
+
+    const patologiaExists = await PatologiaService.readPatologiaByNombre(patologia.nombre);
+
+    if (patologiaExists &amp;&amp; patologiaExists.id !== id) {
+      return res.status(409).json({
+        errors: ['La patología ya existe.']
+      });
+    }
+
+    await PatologiaService.updatePatologia(id, patologia);
+
+    return res.status(200).json({
+      message: 'Patología actualizada correctamente.'
+    });
+  } catch (err) {
+    return res.status(500).json({
+      errors: [err.message]
+    });
+  }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Controllers-Cita.html">Controllers-Cita</a></li><li><a href="Controllers-CodigoPostalMunicipio.html">Controllers-CodigoPostalMunicipio</a></li><li><a href="Controllers-Consulta.html">Controllers-Consulta</a></li><li><a href="Controllers-Contacto.html">Controllers-Contacto</a></li><li><a href="Controllers-Especialidad.html">Controllers-Especialidad</a></li><li><a href="Controllers-Especialista.html">Controllers-Especialista</a></li><li><a href="Controllers-Glucometria.html">Controllers-Glucometria</a></li><li><a href="Controllers-Informe.html">Controllers-Informe</a></li><li><a href="Controllers-Medicamento.html">Controllers-Medicamento</a></li><li><a href="Controllers-Municipio.html">Controllers-Municipio</a></li><li><a href="Controllers-Paciente.html">Controllers-Paciente</a></li><li><a href="Controllers-PacienteTomaMedicamento.html">Controllers-PacienteTomaMedicamento</a></li><li><a href="Controllers-Patologia.html">Controllers-Patologia</a></li><li><a href="Controllers-Provincia.html">Controllers-Provincia</a></li><li><a href="Controllers-TensionArterial.html">Controllers-TensionArterial</a></li><li><a href="Controllers-TipoVia.html">Controllers-TipoVia</a></li><li><a href="Controllers-Usuario.html">Controllers-Usuario</a></li><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 01 2024 12:45:18 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

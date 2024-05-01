@@ -1,6 +1,6 @@
 // Importación de los servicios necesarios
 const UsuarioService          = require('../services/usuario.service');
-const PacienteService         = require('../services/paciente.service');
+const EspecialistaService     = require('../services/especialista.service');
 const TokenService            = require('../services/token.service');
 const EmailService            = require('../services/email.service');
 
@@ -12,10 +12,26 @@ const jwt                     = require('jsonwebtoken');
 const createAccessToken       = require('../helpers/jwt/createAccessToken');
 const createResetToken        = require('../helpers/jwt/createResetToken');
 const createRefreshToken      = require('../helpers/jwt/createRefreshToken');
+const createEncryptedPassword = require('../util/functions/createEncryptedPassword');
+const createUserObject        = require('../util/functions/createUserObject');
+const createHistClinica       = require('../util/functions/createHistClinica');
 
 // Importación de las funciones necesarias
 const getSearchValuesByRole   = require("../util/functions/getSearchValuesByRole");
 
+/**
+ * @name getUsuario
+ * @description Método asíncrono que obtiene un usuario de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos del usuario.
+ *              Si el usuario no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.getUsuario = async (req, res) => {
   let id = 0;
   let role_id = 0;
@@ -64,6 +80,19 @@ exports.getUsuario = async (req, res) => {
   }
 }
 
+/**
+ * @name getListado
+ * @description Método asíncrono que obtiene una lista de usuarios de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de los usuarios y la información de paginación.
+ *              Si la página solicitada no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.getListado = async (req, res) => {
   const limit = 10;
 
@@ -119,6 +148,19 @@ exports.getListado = async (req, res) => {
   }
 }
 
+/**
+ * @name postRegistro
+ * @description Método asíncrono que registra un nuevo usuario en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el correo electrónico o el DNI ya están en uso, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.postRegistro = async (req, res) => {
   try {
     const errors = [];
@@ -164,6 +206,19 @@ exports.postRegistro = async (req, res) => {
   }
 }
 
+/**
+ * @name postRegistroEspecialista
+ * @description Método asíncrono que registra un nuevo especialista en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el correo electrónico ya está en uso, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.postRegistroEspecialista = async (req, res) => {
   try {
     const userExists = await UsuarioService.readUsuarioByEmail(req.body.email);
@@ -197,6 +252,19 @@ exports.postRegistroEspecialista = async (req, res) => {
   }
 }
 
+/**
+ * @name postLogin
+ * @description Método asíncrono que maneja el inicio de sesión de un usuario.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito y los tokens de acceso y actualización.
+ *              Si el correo electrónico o la contraseña son incorrectos, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.postLogin = async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -233,6 +301,19 @@ exports.postLogin = async (req, res) => {
   }
 }
 
+/**
+ * @name postForgotPassword
+ * @description Método asíncrono que maneja la solicitud de restablecimiento de contraseña de un usuario.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el correo electrónico no se encuentra en la base de datos, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.postForgotPassword = async (req, res) => {
   const email = req.body.email;
 
@@ -260,11 +341,24 @@ exports.postForgotPassword = async (req, res) => {
   }
 }
 
+/**
+ * @name postResetPassword
+ * @description Método asíncrono que maneja el restablecimiento de la contraseña de un usuario.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el token es inválido o ha expirado, o si el usuario no se encuentra, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.postResetPassword = async (req, res) => {
-  const accessToken = req.body.token;
+  const resetToken = req.body.token;
   const newPassword = req.body.password;
 
-  jwt.verify(accessToken, process.env.JWT_RESET_SECRET_KEY, async (err, decodedToken) => {
+  jwt.verify(resetToken, process.env.JWT_RESET_SECRET_KEY, async (err, decodedToken) => {
     if (err) {
       return res.status(403).json({
         errors: ['Token invalido o expirado.']
@@ -292,6 +386,20 @@ exports.postResetPassword = async (req, res) => {
   });
 }
 
+/**
+ * @name postUpdatePassword
+ * @description Método asíncrono que actualiza la contraseña de un usuario en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el correo electrónico no se encuentra en la base de datos, o si el usuario no tiene permiso para realizar la acción,
+ *              devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.postUpdatePassword = async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -313,8 +421,7 @@ exports.postUpdatePassword = async (req, res) => {
       });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const encryptedPassword = await bcrypt.hash(password, salt);
+    const encryptedPassword = await createEncryptedPassword(password);
 
     await UsuarioService.updatePassword(email, encryptedPassword);
 
@@ -328,6 +435,19 @@ exports.postUpdatePassword = async (req, res) => {
   }
 }
 
+/**
+ * @name deleteUsuario
+ * @description Método asíncrono que elimina un usuario de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el usuario no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.deleteUsuario = async (req, res) => {
   const id = req.user_id;
 
@@ -344,6 +464,19 @@ exports.deleteUsuario = async (req, res) => {
   }
 }
 
+/**
+ * @name postRefreshToken
+ * @description Método asíncrono que maneja la renovación del token de acceso de un usuario.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito y los nuevos tokens de acceso y actualización.
+ *              Si el token de actualización no se proporciona, es inválido, o el usuario no se encuentra, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 403 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.postRefreshToken = async (req, res) => {
   const refreshToken = req.body.refresh_token;
 
@@ -387,6 +520,19 @@ exports.postRefreshToken = async (req, res) => {
   }
 }
 
+/**
+ * @name postLogout
+ * @description Método asíncrono que maneja el cierre de sesión de un usuario.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.postLogout = async (req, res) => {
   const userId = req.user_id;
 
@@ -399,6 +545,20 @@ exports.postLogout = async (req, res) => {
   }
 }
 
+/**
+ * @name putUsuarioPaciente
+ * @description Método asíncrono que actualiza los datos de un usuario paciente en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el DNI ya está en uso por otro usuario, devuelve un error con el mensaje correspondiente.
+ *              Si el usuario no existe o no tiene permiso para realizar la acción, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.putUsuarioPaciente = async (req, res) => {
   let usuario_id = 0;
 
@@ -409,14 +569,27 @@ exports.putUsuarioPaciente = async (req, res) => {
   }
 
   try {
-    const user = await validateUser(req, res, usuario_id);
-    if (!user) return;
+    const user = await UsuarioService.readUsuarioById(usuario_id);
 
-    const patientExists = await UsuarioService.readUsuarioByDNI(req.body.dni);
+    if (!user) {
+      return res.status(404).json(
+        {errors: ['Usuario no encontrado.']
+        });
+    }
 
-    if (patientExists && user.dni !== req.body.dni) {
+    const dniExits = await UsuarioService.readUsuarioByDNI(req.body.dni);
+
+    if (dniExits && user.dni !== req.body.dni) {
       return res.status(409).json({
         errors: ['El DNI ya está en uso.']
+      });
+    }
+
+    const emailExists = await UsuarioService.readUsuarioByEmail(req.body.email);
+
+    if (emailExists && user.email !== req.body.email) {
+      return res.status(409).json({
+        errors: ['El correo ya está en uso.']
       });
     }
 
@@ -449,12 +622,54 @@ exports.putUsuarioPaciente = async (req, res) => {
   }
 }
 
+/**
+ * @name putUsuarioEspecialista
+ * @description Método asíncrono que actualiza los datos de un usuario especialista en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el usuario no existe o no tiene permiso para realizar la acción, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Usuario
+ */
 exports.putUsuarioEspecialista = async (req, res) => {
   const id = req.params.usuario_id;
 
   try {
-    const user = await validateUser(req, res, id);
-    if (!user) return;
+    const user = await UsuarioService.readUsuarioById(id);
+
+    if (!user) {
+      return res.status(404).json(
+        {errors: ['Usuario no encontrado.']
+        });
+    }
+
+    const dniExits = await UsuarioService.readUsuarioByDNI(req.body.dni);
+
+    if (dniExits && user.dni !== req.body.dni) {
+      return res.status(409).json({
+        errors: ['El DNI ya está en uso.']
+      });
+    }
+
+    const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(req.body.num_colegiado);
+
+    if (numColegiadoExists && user.num_colegiado !== req.body.num_colegiado) {
+      return res.status(409).json({
+        errors: ['El número de colegiado ya está en uso.']
+      });
+    }
+
+    const emailExists = await UsuarioService.readUsuarioByEmail(req.body.email);
+
+    if (emailExists && user.email !== req.body.email) {
+      return res.status(409).json({
+        errors: ['El correo ya está en uso.']
+      });
+    }
 
     const specialist = {
       email: req.body.email,
@@ -470,73 +685,10 @@ exports.putUsuarioEspecialista = async (req, res) => {
       imagen: req.body.imagen
     }
 
-    await UsuarioService.updateUsuarioEspecialista(specialist);
+    await UsuarioService.updateUsuarioEspecialista(user, specialist);
 
     return res.status(200).json({message: 'Usuario actualizado exitosamente.'});
   } catch (err) {
     return res.status(500).json({errors: [err.message]});
   }
-}
-
-async function createEncryptedPassword(password) {
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
-}
-
-function createUserObject(req, encryptedPassword, rol_id) {
-  return {
-    email: req.body.email,
-    password: encryptedPassword,
-    nombre: req.body.nombre,
-    primer_apellido: req.body.primer_apellido,
-    segundo_apellido: req.body.segundo_apellido,
-    dni: req.body.dni,
-    rol_id: rol_id
-  };
-}
-
-async function createHistClinica() {
-  let existedPatient;
-  let histClinica;
-
-  do {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
-
-    const random = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-
-    histClinica =
-      `${year}${month}${day}${hours}${minutes}${seconds}${milliseconds}${random}`;
-
-    existedPatient =
-      await PacienteService.readPacienteByNumHistClinica(histClinica);
-  } while (existedPatient);
-
-  return histClinica;
-}
-
-async function validateUser(req, res, id) {
-  const user = await UsuarioService.readUsuarioById(id);
-
-  if (!user) {
-    return res.status(404).json({
-      errors: ['Usuario no encontrado.']
-    });
-  }
-
-  const userExists = await UsuarioService.readUsuarioByEmail(req.body.email);
-
-  if (userExists && user.email !== req.body.email) {
-    return res.status(409).json({
-      errors: ['El correo ya está en uso.']
-    });
-  }
-
-  return user;
 }

@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 
 /**
- * @name verifyToken
+ * @name verifyAccessToken
  * @description Middleware que verifica el token de autorización en el
  *              encabezado de la solicitud.
  *              Si el token es válido, extrae el user_id y user_role del token

@@ -8,6 +8,21 @@ const momentTz            = require('moment-timezone');
 // Importación de funciones
 const getSearchValues     = require('../util/functions/getSearchValuesByDate');
 
+/**
+ * @name getGlucometria
+ * @description Método asíncrono que obtiene glucometrías de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas anterior y siguiente,
+ *              la página actual, el total de páginas, el total de glucometrías, el rango de resultados,
+ *              la fecha de inicio, la fecha de fin, los elementos por página y las glucometrías.
+ *              Si la página solicitada no existe o el paciente no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Glucometria
+ */
 exports.getGlucometria = async (req, res) => {
   const limit = 10;
 
@@ -73,6 +88,19 @@ exports.getGlucometria = async (req, res) => {
   }
 }
 
+/**
+ * @name postGlucometria
+ * @description Método asíncrono que crea una nueva glucometría en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si ocurre algún error durante la creación de la glucometría, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Glucometria
+ */
 exports.postGlucometria = async (req, res) => {
   const fecha = momentTz.tz(new Date(), 'Europe/Madrid')
     .format('YYYY-MM-DD');

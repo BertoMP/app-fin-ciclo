@@ -5,7 +5,7 @@ const router                            = require('express').Router();
 const EspecialidadController            = require('../../controllers/especialidad.controller');
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                       = require('../../helpers/jwt/verifyToken');
+const tokenVerify                       = require('../../helpers/jwt/verifyAccessToken');
 const tokenRole                         = require('../../util/middleware/verifyUserRole');
 
 // Importación de middlewares para la validación de datos

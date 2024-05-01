@@ -1,6 +1,18 @@
 // Importación de los servicios necesarios
 const PatologiaService = require('../services/patologia.service');
 
+/**
+ * @name getPatologiasInforme
+ * @description Método asíncrono que obtiene patologías de la base de datos para un informe.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de las patologías.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Patologia
+ */
 exports.getPatologiasInforme = async (req, res) => {
   try {
     const patologias = await PatologiaService.readPatologiasInforme();
@@ -11,9 +23,21 @@ exports.getPatologiasInforme = async (req, res) => {
       errors: [err.message]
     });
   }
-
 }
 
+/**
+ * @name getPatologias
+ * @description Método asíncrono que obtiene patologías de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas anterior y siguiente,
+ *              la página actual, el total de páginas, el total de patologías, el rango de resultados y las patologías.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Patologia
+ */
 exports.getPatologias = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 10;
@@ -58,6 +82,19 @@ exports.getPatologias = async (req, res) => {
   }
 }
 
+/**
+ * @name getPatologiaById
+ * @description Método asíncrono que obtiene una patología específica de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de la patología.
+ *              Si la patología no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Patologia
+ */
 exports.getPatologiaById = async (req, res) => {
   const id = parseInt(req.params.patologia_id);
 
@@ -78,6 +115,19 @@ exports.getPatologiaById = async (req, res) => {
   }
 }
 
+/**
+ * @name createPatologia
+ * @description Método asíncrono que crea una nueva patología en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la patología ya existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Patologia
+ */
 exports.createPatologia = async (req, res) => {
   let descripcion = req.body.descripcion;
   descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
@@ -108,6 +158,19 @@ exports.createPatologia = async (req, res) => {
   }
 }
 
+/**
+ * @name updatePatologia
+ * @description Método asíncrono que actualiza una patología específica en la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la patología no existe o ya existe una patología con el mismo nombre, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Patologia
+ */
 exports.updatePatologia = async (req, res) => {
   const id = parseInt(req.params.patologia_id);
 

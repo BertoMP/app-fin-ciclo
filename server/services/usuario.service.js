@@ -1,4 +1,3 @@
-const dbConn = require('../util/database/database');
 const UsuarioModel = require('../models/usuario.model');
 
 const PacienteService = require('./paciente.service');
@@ -9,6 +8,8 @@ const InformeService = require('./informe.service');
 const PacienteTomaMedicamentoService = require('./pacienteTomaMedicamento.service');
 const GlucometriaService = require('./glucometria.service');
 const InformePatologiaService = require('./informePatologia.service');
+
+const dbConn = require('../util/database/database');
 
 class UsuarioService {
   static async readAllUsuarios(searchValues, limit, conn = dbConn) {

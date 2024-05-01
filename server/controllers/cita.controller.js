@@ -5,6 +5,20 @@ const EspecialistaService   = require('../services/especialista.service');
 // Importación de las funciones necesarias
 const getSearchValues       = require('../util/functions/getSearchValuesByDate');
 
+/**
+ * @name getCitas
+ * @description Método asíncrono que obtiene citas de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas anterior y siguiente,
+ *              la página actual, el total de páginas, el total de citas, el rango de resultados,
+ *              la fecha de inicio, la fecha de fin, los elementos por página y las citas.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Cita
+ */
 exports.getCitas = async (req, res) => {
   const limit = 10;
 
@@ -64,6 +78,19 @@ exports.getCitas = async (req, res) => {
   }
 }
 
+/**
+ * @name getCitaById
+ * @description Método asíncrono que obtiene una cita específica de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de la cita.
+ *              Si la cita no existe o el usuario no tiene permiso para obtenerla, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Cita
+ */
 exports.getCitaById = async (req, res) => {
   const citaId = req.params.cita_id;
   const userId = req.user_id;
@@ -91,6 +118,19 @@ exports.getCitaById = async (req, res) => {
   }
 }
 
+/**
+ * @name getCitasAgenda
+ * @description Método asíncrono que obtiene las citas de la agenda de un especialista específico de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de las citas.
+ *              Si no hay citas disponibles, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Cita
+ */
 exports.getCitasAgenda = async (req, res) => {
   const especialista_id = req.user_id;
 
@@ -111,6 +151,20 @@ exports.getCitasAgenda = async (req, res) => {
   }
 }
 
+/**
+ * @name createCita
+ * @description Método asíncrono que crea una nueva cita en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la cita ya existe, el especialista seleccionado no existe, o el especialista no trabaja en el horario seleccionado,
+ *              devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Cita
+ */
 exports.createCita = async (req, res) => {
   const cita = {
     paciente_id: req.user_id,
@@ -164,13 +218,25 @@ exports.createCita = async (req, res) => {
     });
 
   } catch (err) {
-
     return res.status(500).json({
       errors: [err.message]
     });
   }
 }
 
+/**
+ * @name deleteCita
+ * @description Método asíncrono que elimina una cita específica de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la cita no existe o el usuario no tiene permiso para eliminarla, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Cita
+ */
 exports.deleteCita = async (req, res) => {
   const citaId = req.params.cita_id;
   const userId = req.user_id;

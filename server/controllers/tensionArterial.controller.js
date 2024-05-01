@@ -7,6 +7,20 @@ const momentTz                = require('moment-timezone');
 // Importación de las funciones necesarias
 const getSearchValues         = require('../util/functions/getSearchValuesByDate');
 
+/**
+ * @name getTensionArterial
+ * @description Método asíncrono que obtiene las tensiones arteriales de un paciente de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas anterior y siguiente,
+ *              la página actual, el total de páginas, el total de tensiones arteriales, el rango de resultados,
+ *              la fecha de inicio, la fecha de fin, los elementos por página y las tensiones arteriales.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-TensionArterial
+ */
 exports.getTensionArterial = async (req, res) => {
   const limit = 10;
 
@@ -64,6 +78,18 @@ exports.getTensionArterial = async (req, res) => {
   }
 }
 
+/**
+ * @name postTensionArterial
+ * @description Método asíncrono que registra una nueva tensión arterial en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-TensionArterial
+ */
 exports.postTensionArterial = async (req, res) => {
   const fecha = momentTz.tz(new Date(), 'Europe/Madrid')
     .format('YYYY-MM-DD');

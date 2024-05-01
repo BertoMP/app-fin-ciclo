@@ -1,6 +1,18 @@
 // Importación de los servicios necesarios
 const MedicamentoService = require('../services/medicamento.service');
 
+/**
+ * @name getMedicamentosPrescripcion
+ * @description Método asíncrono que obtiene medicamentos de prescripción de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de los medicamentos.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Medicamento
+ */
 exports.getMedicamentosPrescripcion = async (req, res) => {
   try {
     const medicamentos = await MedicamentoService.readMedicamentosPrescripcion();
@@ -13,6 +25,21 @@ exports.getMedicamentosPrescripcion = async (req, res) => {
   }
 }
 
+/**
+ * @name getMedicamentos
+ * @description Método asíncrono que obtiene medicamentos de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas anterior y siguiente,
+ *              la página actual, el total de páginas, el total de medicamentos, el rango de resultados,
+ *              los elementos por página y los medicamentos.
+ *              Si la página solicitada no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Medicamento
+ */
 exports.getMedicamentos = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 4;
@@ -60,6 +87,19 @@ exports.getMedicamentos = async (req, res) => {
   }
 }
 
+/**
+ * @name getMedicamentoById
+ * @description Método asíncrono que obtiene un medicamento específico de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos del medicamento.
+ *              Si el medicamento no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Medicamento
+ */
 exports.getMedicamentoById = async (req, res) => {
   const id = parseInt(req.params.medicamento_id);
 
@@ -80,6 +120,19 @@ exports.getMedicamentoById = async (req, res) => {
   }
 }
 
+/**
+ * @name createMedicamento
+ * @description Método asíncrono que crea un nuevo medicamento en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el medicamento ya existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Medicamento
+ */
 exports.createMedicamento = async (req, res) => {
   let descripcion = req.body.descripcion;
   descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
@@ -109,6 +162,19 @@ exports.createMedicamento = async (req, res) => {
   }
 }
 
+/**
+ * @name updateMedicamento
+ * @description Método asíncrono que actualiza un medicamento específico en la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el medicamento no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Medicamento
+ */
 exports.updateMedicamento = async (req, res) => {
   const id = parseInt(req.params.medicamento_id);
 

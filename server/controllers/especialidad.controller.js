@@ -1,6 +1,21 @@
 // Importación de los servicios necesarios
 const EspecialidadService = require('../services/especialidad.service');
 
+/**
+ * @name getEspecialidades
+ * @description Método asíncrono que obtiene especialidades de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas anterior y siguiente,
+ *              la página actual, el total de páginas, el total de especialidades, el rango de resultados,
+ *              y las especialidades.
+ *              Si la página solicitada no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Especialidad
+ */
 exports.getEspecialidades = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 4;
@@ -47,6 +62,19 @@ exports.getEspecialidades = async (req, res) => {
   }
 }
 
+/**
+ * @name getEspecialidadById
+ * @description Método asíncrono que obtiene una especialidad específica de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de la especialidad.
+ *              Si la especialidad no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Especialidad
+ */
 exports.getEspecialidadById = async (req, res) => {
   const id = parseInt(req.params.especialidad_id);
 
@@ -67,6 +95,19 @@ exports.getEspecialidadById = async (req, res) => {
   }
 }
 
+/**
+ * @name getEspecialidadesEspecialistas
+ * @description Método asíncrono que obtiene las especialidades con especialistas de la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de las especialidades.
+ *              Si no hay especialidades con especialistas, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Especialidad
+ */
 exports.getEspecialidadesEspecialistas = async (req, res) => {
   try {
     const especialidades = await EspecialidadService.readEspecialidesEspecialistas();
@@ -85,6 +126,19 @@ exports.getEspecialidadesEspecialistas = async (req, res) => {
   }
 }
 
+/**
+ * @name createEspecialidad
+ * @description Método asíncrono que crea una nueva especialidad en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la especialidad ya existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Especialidad
+ */
 exports.createEspecialidad = async (req, res) => {
   let descripcion = req.body.descripcion;
   descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
@@ -115,6 +169,19 @@ exports.createEspecialidad = async (req, res) => {
   }
 }
 
+/**
+ * @name updateEspecialidad
+ * @description Método asíncrono que actualiza una especialidad existente en la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la especialidad no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Especialidad
+ */
 exports.updateEspecialidad = async (req, res) => {
   const id = parseInt(req.params.especialidad_id);
   let descripcion = req.body.descripcion;
@@ -148,6 +215,19 @@ exports.updateEspecialidad = async (req, res) => {
   }
 }
 
+/**
+ * @name deleteEspecialidad
+ * @description Método asíncrono que elimina una especialidad específica de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la especialidad no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-Especialidad
+ */
 exports.deleteEspecialidad = async (req, res) => {
   const id = parseInt(req.params.especialidad_id);
 

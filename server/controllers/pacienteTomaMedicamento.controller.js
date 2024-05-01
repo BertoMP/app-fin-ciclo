@@ -2,6 +2,19 @@
 const PacienteTomaMedicamentoService  = require('../services/pacienteTomaMedicamento.service');
 const PdfService                      = require('../services/pdf.service');
 
+/**
+ * @name getRecetas
+ * @description Método asíncrono que obtiene las recetas de un paciente específico de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de las recetas.
+ *              Si no hay recetas para el paciente, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-PacienteTomaMedicamento
+ */
 exports.getRecetas = async (req, res) => {
   let paciente_id = req.params.usuario_id;
 
@@ -26,9 +39,21 @@ exports.getRecetas = async (req, res) => {
       errors: [error.message]
     });
   }
-
 }
 
+/**
+ * @name postReceta
+ * @description Método asíncrono que crea una nueva receta en la base de datos.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-PacienteTomaMedicamento
+ */
 exports.postReceta = async (req, res) => {
   const paciente_id = req.body.paciente_id;
   const prescripcion = req.body.prescripcion;
@@ -46,6 +71,19 @@ exports.postReceta = async (req, res) => {
   }
 }
 
+/**
+ * @name deleteToma
+ * @description Método asíncrono que elimina una toma específica de la base de datos utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si la toma no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-PacienteTomaMedicamento
+ */
 exports.deleteToma = async (req, res) => {
   const toma_id = req.params.toma_id;
 
@@ -70,6 +108,19 @@ exports.deleteToma = async (req, res) => {
   }
 }
 
+/**
+ * @name deleteMedicamento
+ * @description Método asíncrono que elimina un medicamento específico de la prescrión del paciente utilizando su ID.
+ *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+ *              Si el medicamento no existe, devuelve un error con el mensaje correspondiente.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-PacienteTomaMedicamento
+ */
 exports.deleteMedicamento = async (req, res) => {
   const paciente_id = req.params.usuario_id;
   const medicamento_id = req.params.medicamento_id;
@@ -95,6 +146,20 @@ exports.deleteMedicamento = async (req, res) => {
   }
 }
 
+/**
+ * @name getRecetaPDF
+ * @description Método asíncrono que genera un PDF con las recetas de un paciente específico de la base de datos utilizando su ID.
+ *              Devuelve el archivo PDF para su descarga.
+ *              Si no hay recetas para el paciente, devuelve un error con el mensaje correspondiente.
+ *              Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @async
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @returns {Object} res - El objeto de respuesta de Express.
+ * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+ * @memberof Controllers-PacienteTomaMedicamento
+ */
 exports.getRecetaPDF = async (req, res) => {
   let paciente_id = 0;
 
