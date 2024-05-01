@@ -1,12 +1,27 @@
+/**
+ * @class EspecialistaModel
+ * @description Clase que contiene los métodos para interactuar con la tabla de especialistas.
+ */
 class EspecialistaModel {
+  /**
+   * @method create
+   * @description Método para crear un nuevo especialista.
+   * @static
+   * @async
+   * @memberof EspecialistaModel
+   * @param {Object} especialista - El objeto del nuevo especialista.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El nuevo especialista creado.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async create(especialista, dbConn) {
-    const usuario_id = especialista.usuario_id;
+    const usuario_id      = especialista.usuario_id;
     const especialidad_id = especialista.especialidad_id;
-    const consulta_id = especialista.consulta_id;
-    const num_colegiado = especialista.num_colegiado;
-    const descripcion = especialista.descripcion;
-    const imagen = especialista.imagen;
-    const turno = especialista.turno;
+    const consulta_id     = especialista.consulta_id;
+    const num_colegiado   = especialista.num_colegiado;
+    const descripcion     = especialista.descripcion;
+    const imagen          = especialista.imagen;
+    const turno           = especialista.turno;
 
     const query =
       'INSERT INTO especialista ' +
@@ -24,6 +39,17 @@ class EspecialistaModel {
     }
   }
 
+  /**
+   * @method create
+   * @description Método para crear un nuevo especialista.
+   * @static
+   * @async
+   * @memberof EspecialistaModel
+   * @param {Object} especialista - El objeto del nuevo especialista.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El nuevo especialista creado.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findById(usuario_id, dbConn) {
     const query =
       'SELECT' +
@@ -79,6 +105,17 @@ class EspecialistaModel {
     }
   }
 
+  /**
+   * @method findByNumColegiado
+   * @description Método para obtener un especialista por su número de colegiado.
+   * @static
+   * @async
+   * @memberof EspecialistaModel
+   * @param {number} num_colegiado - El número de colegiado del especialista.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El especialista.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findByNumColegiado(num_colegiado, dbConn) {
     const query =
       'SELECT ' +
@@ -102,6 +139,17 @@ class EspecialistaModel {
     }
   }
 
+  /**
+   * @method findByConsultaId
+   * @description Método para obtener un especialista por su ID de consulta.
+   * @static
+   * @async
+   * @memberof EspecialistaModel
+   * @param {number} consulta_id - El ID de consulta del especialista.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El especialista.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findByConsultaId(consulta_id, dbConn) {
     const query =
       'SELECT ' +
@@ -125,6 +173,17 @@ class EspecialistaModel {
     }
   }
 
+  /**
+   * @method findEspecialistaById
+   * @description Método para obtener un especialista por su ID.
+   * @static
+   * @async
+   * @memberof EspecialistaModel
+   * @param {number} especialista_id - El ID del especialista.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El especialista.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findEspecialistaById(especialista_id, dbConn) {
     const query =
       'SELECT ' +
@@ -148,14 +207,25 @@ class EspecialistaModel {
     }
   }
 
-  static async update(especialista, dbConn) {
-    const usuario_id = especialista.usuario_id;
-    const especialidad_id = especialista.especialidad_id;
-    const consulta_id = especialista.consulta_id;
-    const num_colegiado = especialista.num_colegiado;
-    const descripcion = especialista.descripcion;
-    const imagen = especialista.imagen;
-    const turno = especialista.turno;
+  /**
+   * @method updateEspecialista
+   * @description Método para actualizar un especialista por su ID de usuario.
+   * @static
+   * @async
+   * @memberof EspecialistaModel
+   * @param {Object} especialista - El objeto del especialista con los datos actualizados.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El especialista actualizado.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
+  static async updateEspecialista(especialista, dbConn) {
+    const usuario_id        = especialista.usuario_id;
+    const especialidad_id   = especialista.especialidad_id;
+    const consulta_id       = especialista.consulta_id;
+    const num_colegiado     = especialista.num_colegiado;
+    const descripcion       = especialista.descripcion;
+    const imagen            = especialista.imagen;
+    const turno             = especialista.turno;
 
     const query =
       'UPDATE ' +
@@ -181,4 +251,5 @@ class EspecialistaModel {
   }
 }
 
+// Exportación del modelo
 module.exports = EspecialistaModel;

@@ -1,19 +1,19 @@
 // Inicialización del router de express
-const router                            = require('express').Router();
+const router                              = require('express').Router();
 
 // Importación del controlador de glucometría
-const GlucometriaController             = require('../../controllers/glucometria.controller');
+const GlucometriaController               = require('../../controllers/glucometria.controller');
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                       = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                         = require('../../util/middleware/verifyUserRole');
-const tokenUserId                       = require('../../util/middleware/verifyUserId');
+const tokenVerify                         = require('../../helpers/jwt/verifyAccessToken');
+const tokenRole                           = require('../../util/middleware/verifyUserRole');
+const tokenUserId                         = require('../../util/middleware/verifyUserId');
 
 // Importación de middlewares para la validación de datos
-const {validateGlucometria}             = require('../../helpers/validators/glucometria.validator');
-const {validatePaginationQueryParams}   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const {validateDateQueryParams}         = require("../../helpers/validators/queryParams/dateQueryParams.validator");
-const {validateUsuarioIdParam}          = require("../../helpers/validators/params/usuarioIdParam.validator");
+const { validateGlucometria }             = require('../../helpers/validators/glucometria.validator');
+const { validatePaginationQueryParams }   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const { validateDateQueryParams }         = require("../../helpers/validators/queryParams/dateQueryParams.validator");
+const { validateUsuarioIdParam }          = require("../../helpers/validators/params/usuarioIdParam.validator");
 
 // Rutas GET
 /**

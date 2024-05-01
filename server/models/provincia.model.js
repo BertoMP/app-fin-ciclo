@@ -1,4 +1,18 @@
+/**
+ * @class ProvinciaModel
+ * @description Clase que contiene los métodos para interactuar con la tabla de provincias.
+ */
 class ProvinciaModel {
+  /**
+   * @method fetchAll
+   * @description Método para obtener todas las provincias.
+   * @static
+   * @async
+   * @memberof ProvinciaModel
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Array>} Un array de provincias.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async fetchAll(dbConn) {
     const query =
       'SELECT ' +
@@ -18,4 +32,5 @@ class ProvinciaModel {
   }
 }
 
+// Exportación del modelo
 module.exports = ProvinciaModel;

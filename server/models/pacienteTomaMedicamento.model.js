@@ -1,6 +1,22 @@
-const {format} = require('date-fns');
+// Importación de las librerías necesarias.
+const { format } = require('date-fns');
 
+/**
+ * @class PacienteTomaMedicamentoModel
+ * @description Clase que contiene los métodos para interactuar con la tabla de paciente_toma_medicamento.
+ */
 class PacienteTomaMedicamentoModel {
+  /**
+   * @method findPrescripciones
+   * @description Método para obtener las prescripciones de un paciente.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoModel
+   * @param {number} pacienteId - El ID del paciente.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} Un objeto con los datos del paciente y sus prescripciones.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findPrescripciones(pacienteId, dbConn) {
     const query =
       'SELECT ' +
@@ -81,6 +97,19 @@ class PacienteTomaMedicamentoModel {
     }
   }
 
+  /**
+   * @method createPacienteTomaMedicamento
+   * @description Método para crear una nueva entrada en la tabla paciente_toma_medicamento.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoModel
+   * @param {number} pacienteId - El ID del paciente.
+   * @param {number} medicamentoId - El ID del medicamento.
+   * @param {number} tomaId - El ID de la toma.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El resultado de la operación de inserción.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async createPacienteTomaMedicamento(pacienteId, medicamentoId, tomaId, dbConn) {
     const query =
       'INSERT INTO paciente_toma_medicamento (paciente_id, medicamento_id, toma_id) ' +
@@ -93,6 +122,18 @@ class PacienteTomaMedicamentoModel {
     }
   }
 
+  /**
+   * @method findPrescripcion
+   * @description Método para obtener las tomas de un paciente para un medicamento específico.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoModel
+   * @param {number} pacienteId - El ID del paciente.
+   * @param {number} medicamentoId - El ID del medicamento.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Array>} Un array de IDs de tomas.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findPrescripcion(pacienteId, medicamentoId, dbConn) {
     const query =
       'SELECT ' +
@@ -112,6 +153,18 @@ class PacienteTomaMedicamentoModel {
     }
   }
 
+  /**
+   * @method updateToma
+   * @description Método para actualizar una toma.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoModel
+   * @param {number} idToma - El ID de la toma.
+   * @param {Object} prescripcion - El objeto de la prescripción con los datos actualizados.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El resultado de la operación de actualización.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async updateToma(idToma, prescripcion, dbConn) {
     const dosis = prescripcion.dosis;
     const hora = prescripcion.hora;
@@ -136,6 +189,17 @@ class PacienteTomaMedicamentoModel {
     }
   }
 
+  /**
+   * @method deleteToma
+   * @description Método para eliminar una toma.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoModel
+   * @param {number} idToma - El ID de la toma.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El resultado de la operación de eliminación.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async deleteToma(idToma, dbConn) {
     const query =
       'DELETE ' +
@@ -149,6 +213,17 @@ class PacienteTomaMedicamentoModel {
     }
   }
 
+  /**
+   * @method findTomasByUserId
+   * @description Método para obtener las tomas de un paciente.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoModel
+   * @param {number} pacienteId - El ID del paciente.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Array>} Un array de IDs de tomas.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findTomasByUserId(pacienteId, dbConn) {
     const query =
       'SELECT ' +
@@ -167,6 +242,19 @@ class PacienteTomaMedicamentoModel {
     }
   }
 
+  /**
+   * @method findTomaByHora
+   * @description Método para obtener una toma de un paciente para un medicamento específico a una hora específica.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoModel
+   * @param {number} pacienteId - El ID del paciente.
+   * @param {number} medicamentoId - El ID del medicamento.
+   * @param {string} hora - La hora de la toma.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} La toma.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findTomaByHora(pacienteId, medicamentoId, hora, dbConn) {
     const query =
       'SELECT ' +
@@ -188,24 +276,7 @@ class PacienteTomaMedicamentoModel {
       throw new Error('Error al buscar la toma.');
     }
   }
-
-  static async findToma(tomaId, dbConn) {
-    const query =
-      'SELECT ' +
-      '   toma_id ' +
-      'FROM ' +
-      '   paciente_toma_medicamento ' +
-      'WHERE ' +
-      '   toma_id = ?';
-
-    try {
-      const [rows] = await dbConn.execute(query, [tomaId]);
-
-      return rows[0];
-    } catch (error) {
-      throw new Error('Error al buscar la toma.');
-    }
-  }
 }
 
+// Exportación del modelo
 module.exports = PacienteTomaMedicamentoModel;

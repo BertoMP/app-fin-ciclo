@@ -1,13 +1,29 @@
-const {format} = require('date-fns');
+// Importación de librerías necesarias
+const { format } = require('date-fns');
 
+/**
+ * @class CitaModel
+ * Clase que contiene los métodos para interactuar con la tabla de citas.
+ */
 class CitaModel {
+  /**
+   * @method fetchAll
+   * @description Método para obtener todas las citas de un paciente en un rango de fechas.
+   * @static
+   * @async
+   * @memberof CitaModel
+   * @param {Object} searchValues - Los valores de búsqueda. Contiene el ID del paciente, la fecha de inicio y fin del rango de fechas, y la página de resultados.
+   * @param {number} limit - El límite de resultados por página.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} Un objeto que contiene los datos del paciente, un array de citas, el total de citas, la página actual y el total de páginas.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async fetchAll(searchValues, limit, dbConn) {
-    const page = searchValues.page;
-    const paciente_id = searchValues.paciente_id;
-    const fechaInicio = searchValues.fechaInicio;
-    const fechaFin = searchValues.fechaFin;
-
-    const offset = ((page - 1) * limit);
+    const page          = searchValues.page;
+    const paciente_id   = searchValues.paciente_id;
+    const fechaInicio   = searchValues.fechaInicio;
+    const fechaFin      = searchValues.fechaFin;
+    const offset        = ((page - 1) * limit);
 
     const query =
       'SELECT ' +
@@ -54,9 +70,13 @@ class CitaModel {
         await dbConn.execute(query, [paciente_id, fechaInicio, fechaFin, `${limit}`, `${offset}`]);
       const [count] =
         await dbConn.execute(
-          'SELECT COUNT(*) AS count FROM cita ' +
-          'WHERE paciente_id = ? ' +
-          'AND fecha BETWEEN ? AND ?',
+          'SELECT ' +
+          '   COUNT(*) AS count ' +
+          'FROM ' +
+          '   cita ' +
+          'WHERE ' +
+          '   paciente_id = ? AND ' +
+          '   fecha BETWEEN ? AND ?',
           [paciente_id, fechaInicio, fechaFin]
         );
       const total = count[0].count;
@@ -107,6 +127,17 @@ class CitaModel {
     }
   }
 
+  /**
+   * @method fetchById
+   * @description Método para obtener una cita por su ID.
+   * @static
+   * @async
+   * @memberof CitaModel
+   * @param {number} id - El ID de la cita.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} Un objeto que contiene los datos del paciente, los datos de la cita, los datos del especialista, los datos de la especialidad, los datos de la consulta y el ID del informe.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async fetchById(id, dbConn) {
     const query =
       'SELECT ' +
@@ -186,6 +217,17 @@ class CitaModel {
     }
   }
 
+  /**
+   * @method fetchByData
+   * @description Método para obtener una cita por su fecha, hora y ID del especialista.
+   * @static
+   * @async
+   * @memberof CitaModel
+   * @param {Object} data - Los datos de búsqueda. Contiene la fecha, la hora y el ID del especialista.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} La cita que coincide con los datos de búsqueda.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async fetchByData(data, dbConn) {
     const query =
       'SELECT * ' +
@@ -203,6 +245,17 @@ class CitaModel {
     }
   }
 
+  /**
+   * @method fetchAgenda
+   * @description Método para obtener la agenda de un especialista.
+   * @static
+   * @async
+   * @memberof CitaModel
+   * @param {number} especialista_id - El ID del especialista.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Array>} Un array de citas del especialista para el día actual.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async fetchAgenda(especialista_id, dbConn) {
     const query =
       'SELECT ' +
@@ -232,10 +285,21 @@ class CitaModel {
     }
   }
 
+  /**
+   * @method createCita
+   * @description Método para crear una nueva cita.
+   * @static
+   * @async
+   * @memberof CitaModel
+   * @param {Object} cita - El objeto de la nueva cita.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<number>} El ID de la nueva cita creada.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async createCita(cita, dbConn) {
-    const fecha = cita.fecha;
-    const hora = cita.hora;
-    const paciente_id = cita.paciente_id;
+    const fecha           = cita.fecha;
+    const hora            = cita.hora;
+    const paciente_id     = cita.paciente_id;
     const especialista_id = cita.especialista_id;
 
     const query =
@@ -251,6 +315,17 @@ class CitaModel {
     }
   }
 
+  /**
+   * @method deleteCita
+   * @description Método para eliminar una cita por su ID.
+   * @static
+   * @async
+   * @memberof CitaModel
+   * @param {number} id - El ID de la cita.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<void>} No retorna nada si la operación es exitosa.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async deleteCita(id, dbConn) {
     const query =
       'DELETE ' +
@@ -266,6 +341,17 @@ class CitaModel {
     }
   }
 
+  /**
+   * @method getInformesByUserId
+   * @description Método para obtener los IDs de los informes de un paciente por su ID de usuario.
+   * @static
+   * @async
+   * @memberof CitaModel
+   * @param {number} paciente_id - El ID de usuario del paciente.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Array>} Un array de IDs de los informes del paciente.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async getInformesByUserId(paciente_id, dbConn) {
     const query =
       'SELECT ' +
@@ -283,6 +369,17 @@ class CitaModel {
     }
   }
 
+  /**
+   * @method deleteCitasByUserId
+   * @description Método para eliminar todas las citas de un paciente por su ID de usuario.
+   * @static
+   * @async
+   * @memberof CitaModel
+   * @param {number} paciente_id - El ID de usuario del paciente.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} Devuelve un objeto con la información de la operación.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async deleteCitasByUserId(paciente_id, dbConn) {
     const query =
       'DELETE ' +
@@ -298,6 +395,17 @@ class CitaModel {
     }
   }
 
+  /**
+   * @method fetchPacienteIdByInformeId
+   * @description Método para obtener el ID de un paciente por el ID de su informe.
+   * @static
+   * @async
+   * @memberof CitaModel
+   * @param {number} informe_id - El ID del informe.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<number|null>} El ID del paciente o null si no se encuentra.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async fetchPacienteIdByInformeId(informe_id, dbConn) {
     const query =
       'SELECT ' +
@@ -321,6 +429,18 @@ class CitaModel {
     }
   }
 
+  /**
+   * @method updateInformeId
+   * @description Método para actualizar el ID del informe de una cita.
+   * @static
+   * @async
+   * @memberof CitaModel
+   * @param {number} cita_id - El ID de la cita.
+   * @param {number} informe_id - El nuevo ID del informe.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} Devuelve un objeto con la información de la operación.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async updateInformeId(cita_id, informe_id, dbConn) {
     const query =
       'UPDATE ' +
@@ -338,4 +458,5 @@ class CitaModel {
   }
 }
 
+// Exportación del modelo
 module.exports = CitaModel;

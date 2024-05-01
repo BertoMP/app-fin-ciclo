@@ -1,4 +1,20 @@
+/**
+ * @class ConsultaModel
+ * @description Clase que contiene los métodos para interactuar con la tabla de consultas.
+ */
 class ConsultaModel {
+  /**
+   * @method findAll
+   * @description Método para obtener todas las consultas con paginación.
+   * @static
+   * @async
+   * @memberof ConsultaModel
+   * @param {number} page - La página actual.
+   * @param {number} limit - El número de consultas por página.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} Un objeto que contiene las consultas, el total de consultas, la página actual y el total de páginas.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findAll(page, limit, dbConn) {
     const offset = ((page - 1) * limit);
 
@@ -26,7 +42,12 @@ class ConsultaModel {
 
     try {
       const [rows] = await dbConn.execute(query, [`${limit}`, `${offset}`]);
-      const [count] = await dbConn.execute('SELECT COUNT(*) AS count FROM consulta');
+      const [count] = await dbConn.execute(
+        'SELECT ' +
+        '   COUNT(*) AS count ' +
+        'FROM ' +
+        '   consulta'
+      );
       const total = count[0].count;
       const actualPage = page;
       const totalPages = Math.ceil(total / limit);
@@ -61,6 +82,17 @@ class ConsultaModel {
     }
   }
 
+  /**
+   * @method findById
+   * @description Método para obtener una consulta por su ID.
+   * @static
+   * @async
+   * @memberof ConsultaModel
+   * @param {number} id - El ID de la consulta.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} La consulta.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findById(id, dbConn) {
     const query =
       'SELECT ' +
@@ -111,6 +143,17 @@ class ConsultaModel {
     }
   }
 
+  /**
+   * @method findByName
+   * @description Método para obtener una consulta por su nombre.
+   * @static
+   * @async
+   * @memberof ConsultaModel
+   * @param {string} nombre - El nombre de la consulta.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} La consulta.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findByName(nombre, dbConn) {
     const query =
       'SELECT ' +
@@ -128,7 +171,18 @@ class ConsultaModel {
     }
   }
 
-  static async create(consulta, dbConn) {
+  /**
+   * @method createConsulta
+   * @description Método para crear una nueva consulta.
+   * @static
+   * @async
+   * @memberof ConsultaModel
+   * @param {Object} consulta - El objeto de la nueva consulta.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} La nueva consulta creada.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
+  static async createConsulta(consulta, dbConn) {
     const nombre = consulta.nombre;
 
     const query =
@@ -142,7 +196,19 @@ class ConsultaModel {
     }
   }
 
-  static async update(id, consulta, dbConn) {
+  /**
+   * @method updateConsulta
+   * @description Método para actualizar una consulta por su ID.
+   * @static
+   * @async
+   * @memberof ConsultaModel
+   * @param {number} id - El ID de la consulta.
+   * @param {Object} consulta - El objeto de la consulta con los datos actualizados.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} La consulta actualizada.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
+  static async updateConsulta(id, consulta, dbConn) {
     const nombre = consulta.nombre;
 
     const query =
@@ -160,7 +226,18 @@ class ConsultaModel {
     }
   }
 
-  static async delete(id, dbConn) {
+  /**
+   * @method deleteConsulta
+   * @description Método para eliminar una consulta por su ID.
+   * @static
+   * @async
+   * @memberof ConsultaModel
+   * @param {number} id - El ID de la consulta.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<void>} No retorna nada si la operación es exitosa.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
+  static async deleteConsulta(id, dbConn) {
     const query =
       'DELETE ' +
       'FROM ' +
@@ -176,4 +253,5 @@ class ConsultaModel {
   }
 }
 
+// Exportación del modelo
 module.exports = ConsultaModel;

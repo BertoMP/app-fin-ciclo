@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/cita.service.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/cita.service.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// Importación del modelo asociado al servicio
+const CitaModel       = require('../models/cita.model');
+
+// Importación de servicios auxiliares
+const UsuarioService  = require('./usuario.service');
+const PdfService      = require('./pdf.service');
+const EmailService    = require('./email.service');
+
+// Importación de utilidades necesarias
+const dbConn          = require('../util/database/database');
+const qrcode          = require('../util/functions/createQr');
+
+/**
+ * @class CitaService
+ * @description Clase que contiene los métodos para interactuar con el modelo de Cita.
+ */
+class CitaService {
+  /**
+   * @method readCitas
+   * @description Método para leer citas.
+   * @static
+   * @async
+   * @memberOf CitaService
+   * @param {Object} searchValues - Los valores de búsqueda.
+   * @param {number} limit - El límite de resultados.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise&lt;Array>} Un array de citas.
+   */
+  static async readCitas(searchValues, limit, conn = dbConn) {
+    return await CitaModel.fetchAll(searchValues, limit, conn);
+  }
+
+  /**
+   * @method readInformesByUserId
+   * @description Método para leer informes por el ID del paciente.
+   * @static
+   * @async
+   * @memberOf CitaService
+   * @param {number} paciente_id - El ID del paciente.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise&lt;Array>} Un array de informes.
+   */
+  static async readInformesByUserId(paciente_id, conn = dbConn) {
+    return await CitaModel.getInformesByUserId(paciente_id, conn);
+  }
+
+  /**
+   * @method readCitaById
+   * @description Método para leer una cita por su ID.
+   * @static
+   * @async
+   * @memberOf CitaService
+   * @param {number} id - El ID de la cita.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise&lt;Object>} Un objeto que representa la cita.
+   */
+  static async readCitaById(id, conn = dbConn) {
+    return await CitaModel.fetchById(id, conn);
+  }
+
+  /**
+   * @method readCitaByData
+   * @description Método para leer una cita por sus datos.
+   * @static
+   * @async
+   * @memberOf CitaService
+   * @param {Object} cita - Los datos de la cita.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise&lt;Object>} Un objeto que representa la cita.
+   */
+  static async readCitaByData(cita, conn = dbConn) {
+    return await CitaModel.fetchByData(cita, conn);
+  }
+
+  /**
+   * @method readCitasAgenda
+   * @description Método para leer las citas de la agenda de un especialista.
+   * @static
+   * @async
+   * @memberOf CitaService
+   * @param {number} especialista_id - El ID del especialista.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise&lt;Array>} Un array de citas.
+   */
+  static async readCitasAgenda(especialista_id, conn = dbConn) {
+    return await CitaModel.fetchAgenda(especialista_id, conn);
+  }
+
+  /**
+   * @method readPacienteIdByInformeId
+   * @description Método para leer el ID del paciente por el ID del informe.
+   * @static
+   * @async
+   * @memberOf CitaService
+   * @param {number} informe_id - El ID del informe.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise&lt;number>} El ID del paciente.
+   */
+  static async readPacienteIdByInformeId(informe_id, conn = dbConn) {
+    return await CitaModel.fetchPacienteIdByInformeId(informe_id, conn);
+  }
+
+  /**
+   * @method createCita
+   * @description Método para crear una cita.
+   * @static
+   * @async
+   * @memberOf CitaService
+   * @param {Object} cita - Los datos de la cita.
+   * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
+   * @returns {Promise&lt;Object>} Un objeto que representa la consulta creada.
+   * @throws {Error} Si ocurre algún error durante el proceso, lanza un error.
+   */
+  static async createCita(cita, conn = null) {
+    const isConnProvided = !!conn;
+
+    if (!isConnProvided) {
+      conn = await dbConn.getConnection();
+    }
+
+    let pdf;
+
+    try {
+      if (!isConnProvided) {
+        await conn.beginTransaction();
+      }
+
+      const idCita = await CitaModel.createCita(cita, conn);
+      const newCita = await CitaModel.fetchById(idCita, conn);
+      const qr = await qrcode.generateQRCode(newCita);
+      const emailPaciente = await UsuarioService.readEmailByUserId(cita.paciente_id, conn);
+      pdf = await PdfService.generateCitaPDF(newCita, qr);
+      await EmailService.sendPdfCita(newCita, emailPaciente, pdf);
+
+      if (!isConnProvided) {
+        await conn.commit();
+      }
+    } catch (err) {
+      if (!isConnProvided) {
+        await conn.rollback();
+      }
+
+      throw err;
+    } finally {
+      if (pdf) {
+        await PdfService.destroyPDF(pdf);
+      }
+
+      if (!isConnProvided) {
+        conn.release();
+      }
+    }
+  }
+
+  /**
+   * @method deleteCitasByUserId
+   * @description Método para eliminar citas por el ID del usuario.
+   * @static
+   * @async
+   * @memberOf CitaService
+   * @param {number} userId - El ID del usuario.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise&lt;Object>} Un objeto que representa las citas eliminadas.
+   */
+  static async deleteCitasByUserId(userId, conn = dbConn) {
+    return await CitaModel.deleteCitasByUserId(userId, conn);
+  }
+
+  /**
+   * @method deleteCita
+   * @description Método para eliminar una cita por su ID.
+   * @static
+   * @async
+   * @memberOf CitaService
+   * @param {number} id - El ID de la cita.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise&lt;Object>} Un objeto que representa la cita eliminada.
+   */
+  static async deleteCita(id, conn = dbConn) {
+    return await CitaModel.deleteCita(id, conn);
+  }
+
+  /**
+   * @method updateInformeId
+   * @description Método para actualizar el ID del informe de una cita.
+   * @static
+   * @async
+   * @memberOf CitaService
+   * @param {number} cita_id - El ID de la cita.
+   * @param {number} informe_id - El nuevo ID del informe.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise&lt;void>} Un objeto que representa el informe actualizado.
+   */
+  static async updateInformeId(cita_id, informe_id, conn = dbConn) {
+    return await CitaModel.updateInformeId(cita_id, informe_id, conn);
+  }
+}
+
+// Exportación del servicio
+module.exports = CitaService;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Controllers-Cita.html">Controllers-Cita</a></li><li><a href="Controllers-CodigoPostalMunicipio.html">Controllers-CodigoPostalMunicipio</a></li><li><a href="Controllers-Consulta.html">Controllers-Consulta</a></li><li><a href="Controllers-Contacto.html">Controllers-Contacto</a></li><li><a href="Controllers-Especialidad.html">Controllers-Especialidad</a></li><li><a href="Controllers-Especialista.html">Controllers-Especialista</a></li><li><a href="Controllers-Glucometria.html">Controllers-Glucometria</a></li><li><a href="Controllers-Informe.html">Controllers-Informe</a></li><li><a href="Controllers-Medicamento.html">Controllers-Medicamento</a></li><li><a href="Controllers-Municipio.html">Controllers-Municipio</a></li><li><a href="Controllers-Paciente.html">Controllers-Paciente</a></li><li><a href="Controllers-PacienteTomaMedicamento.html">Controllers-PacienteTomaMedicamento</a></li><li><a href="Controllers-Patologia.html">Controllers-Patologia</a></li><li><a href="Controllers-Provincia.html">Controllers-Provincia</a></li><li><a href="Controllers-TensionArterial.html">Controllers-TensionArterial</a></li><li><a href="Controllers-TipoVia.html">Controllers-TipoVia</a></li><li><a href="Controllers-Usuario.html">Controllers-Usuario</a></li><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul><h3>Classes</h3><ul><li><a href="CitaModel.html">CitaModel</a></li><li><a href="CitaService.html">CitaService</a></li><li><a href="CodigoPostalMunicipioModel.html">CodigoPostalMunicipioModel</a></li><li><a href="CodigoPostalMunicipioService.html">CodigoPostalMunicipioService</a></li><li><a href="ConsultaModel.html">ConsultaModel</a></li><li><a href="ConsultaService.html">ConsultaService</a></li><li><a href="EmailService.html">EmailService</a></li><li><a href="EspecialidadModel.html">EspecialidadModel</a></li><li><a href="EspecialidadService.html">EspecialidadService</a></li><li><a href="EspecialistaModel.html">EspecialistaModel</a></li><li><a href="EspecialistaService.html">EspecialistaService</a></li><li><a href="GlucometriaModel.html">GlucometriaModel</a></li><li><a href="GlucometriaService.html">GlucometriaService</a></li><li><a href="InformeModel.html">InformeModel</a></li><li><a href="InformePatologiaModel.html">InformePatologiaModel</a></li><li><a href="InformePatologiaService.html">InformePatologiaService</a></li><li><a href="InformeService.html">InformeService</a></li><li><a href="MedicamentoModel.html">MedicamentoModel</a></li><li><a href="MedicamentoService.html">MedicamentoService</a></li><li><a href="MunicipioModel.html">MunicipioModel</a></li><li><a href="MunicipioService.html">MunicipioService</a></li><li><a href="PacienteModel.html">PacienteModel</a></li><li><a href="PacienteService.html">PacienteService</a></li><li><a href="PacienteTomaMedicamentoModel.html">PacienteTomaMedicamentoModel</a></li><li><a href="PacienteTomaMedicamentoService.html">PacienteTomaMedicamentoService</a></li><li><a href="PatologiaModel.html">PatologiaModel</a></li><li><a href="PatologiaService.html">PatologiaService</a></li><li><a href="PdfService.html">PdfService</a></li><li><a href="ProvinciaModel.html">ProvinciaModel</a></li><li><a href="ProvinciaService.html">ProvinciaService</a></li><li><a href="TensionArterialModel.html">TensionArterialModel</a></li><li><a href="TensionArterialService.html">TensionArterialService</a></li><li><a href="TipoViaModel.html">TipoViaModel</a></li><li><a href="TipoViaService.html">TipoViaService</a></li><li><a href="TokenModel.html">TokenModel</a></li><li><a href="TokenService.html">TokenService</a></li><li><a href="TomaModel.html">TomaModel</a></li><li><a href="TomaService.html">TomaService</a></li><li><a href="UsuarioModel.html">UsuarioModel</a></li><li><a href="UsuarioService.html">UsuarioService</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 01 2024 15:23:06 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,6 +1,22 @@
-const {format} = require("date-fns");
+// Importación de las librerías necesarias.
+const { format } = require("date-fns");
 
+/**
+ * @class InformeModel
+ * @description Clase que contiene los métodos para interactuar con la tabla de informes.
+ */
 class InformeModel {
+  /**
+   * @method fetchById
+   * @description Método para obtener un informe por su ID.
+   * @static
+   * @async
+   * @memberof InformeModel
+   * @param {number} id - El ID del informe.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El informe.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async fetchById(id, dbConn) {
     const query =
       'SELECT' +
@@ -93,8 +109,19 @@ class InformeModel {
     }
   }
 
+  /**
+   * @method create
+   * @description Método para crear un nuevo informe.
+   * @static
+   * @async
+   * @memberof InformeModel
+   * @param {Object} informe - El objeto del nuevo informe.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El nuevo informe creado.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async create(informe, dbConn) {
-    const motivo = informe.motivo;
+    const motivo    = informe.motivo;
     const contenido = informe.contenido;
 
     const query =
@@ -110,9 +137,24 @@ class InformeModel {
     }
   }
 
+  /**
+   * @method deleteInforme
+   * @description Método para eliminar un informe por su ID.
+   * @static
+   * @async
+   * @memberof InformeModel
+   * @param {number} informeId - El ID del informe.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El resultado de la operación de eliminación.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async deleteInforme(informeId, dbConn) {
     const query =
-      'DELETE FROM informe WHERE id = ?';
+      'DELETE ' +
+      'FROM ' +
+      '   informe ' +
+      'WHERE ' +
+      '   id = ?';
 
     try {
       return await dbConn.execute(query, [informeId]);
@@ -122,4 +164,5 @@ class InformeModel {
   }
 }
 
+// Exportación del modelo.
 module.exports = InformeModel;

@@ -1,19 +1,19 @@
 // Inicialización del router de express
-const router                              = require('express').Router();
+const router                                = require('express').Router();
 
 // Importación del controlador de pacienteTomaMedicamento
-const PacienteTomaMedicamentoController   = require('../../controllers/pacienteTomaMedicamento.controller');
+const PacienteTomaMedicamentoController     = require('../../controllers/pacienteTomaMedicamento.controller');
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                         = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                           = require('../../util/middleware/verifyUserRole');
-const tokenUserId                         = require('../../util/middleware/verifyUserId');
+const tokenVerify                           = require('../../helpers/jwt/verifyAccessToken');
+const tokenRole                             = require('../../util/middleware/verifyUserRole');
+const tokenUserId                           = require('../../util/middleware/verifyUserId');
 
 // Importación de middlewares para la validación de datos
-const {validatePacienteTomaMedicamento}   = require('../../helpers/validators/pacienteTomaMedicamento.validator');
-const {validateUsuarioIdParam}            = require("../../helpers/validators/params/usuarioIdParam.validator");
-const {validateTomaIdParam}               = require("../../helpers/validators/params/tomaIdParam");
-const {validateMedicamentoIdParam}        = require("../../helpers/validators/params/medicamentoIdParam.validator");
+const { validatePacienteTomaMedicamento }   = require('../../helpers/validators/pacienteTomaMedicamento.validator');
+const { validateUsuarioIdParam }            = require("../../helpers/validators/params/usuarioIdParam.validator");
+const { validateTomaIdParam }               = require("../../helpers/validators/params/tomaIdParam");
+const { validateMedicamentoIdParam }        = require("../../helpers/validators/params/medicamentoIdParam.validator");
 
 // Rutas GET
 /**

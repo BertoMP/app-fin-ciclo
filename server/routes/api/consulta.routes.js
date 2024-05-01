@@ -9,8 +9,8 @@ const tokenVerify                 = require('../../helpers/jwt/verifyAccessToken
 const tokenRole                   = require('../../util/middleware/verifyUserRole');
 
 // Importación de middlewares para la validación de datos
-const {validateConsulta}          = require("../../helpers/validators/consulta.validator");
-const {validateConsultaIdParam}   = require("../../helpers/validators/params/consultaIdParam.validator");
+const { validateConsulta }         = require("../../helpers/validators/consulta.validator");
+const { validateConsultaIdParam }  = require("../../helpers/validators/params/consultaIdParam.validator");
 
 // Rutas GET
 /**

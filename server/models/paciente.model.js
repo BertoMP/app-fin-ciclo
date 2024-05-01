@@ -1,4 +1,18 @@
+/**
+ * @class PacienteModel
+ * @description Clase que contiene los métodos para interactuar con la tabla de pacientes.
+ */
 class PacienteModel {
+  /**
+   * @method findAll
+   * @description Método para obtener todos los pacientes.
+   * @static
+   * @async
+   * @memberof PacienteModel
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Array>} Un array de pacientes.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findAll(dbConn) {
     const query =
       'SELECT ' +
@@ -22,19 +36,30 @@ class PacienteModel {
     }
   }
 
+  /**
+   * @method create
+   * @description Método para crear un nuevo paciente.
+   * @static
+   * @async
+   * @memberof PacienteModel
+   * @param {Object} paciente - El objeto del nuevo paciente.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El nuevo paciente creado.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async create(paciente, dbConn) {
-    const usuario_id = paciente.usuario_id;
-    const num_hist_clinica = paciente.num_hist_clinica;
-    const fecha_nacimiento = paciente.fecha_nacimiento;
-    const tipo_via = paciente.tipo_via;
-    const nombre_via = paciente.nombre_via;
-    const numero = paciente.numero;
-    const piso = paciente.piso;
-    const puerta = paciente.puerta;
-    const municipio = paciente.municipio;
-    const codigo_postal = paciente.codigo_postal;
-    const tel_fijo = paciente.tel_fijo;
-    const tel_movil = paciente.tel_movil;
+    const usuario_id          = paciente.usuario_id;
+    const num_hist_clinica    = paciente.num_hist_clinica;
+    const fecha_nacimiento    = paciente.fecha_nacimiento;
+    const tipo_via            = paciente.tipo_via;
+    const nombre_via          = paciente.nombre_via;
+    const numero              = paciente.numero;
+    const piso                = paciente.piso;
+    const puerta              = paciente.puerta;
+    const municipio           = paciente.municipio;
+    const codigo_postal       = paciente.codigo_postal;
+    const tel_fijo            = paciente.tel_fijo;
+    const tel_movil           = paciente.tel_movil;
 
     const query =
       'INSERT INTO paciente ' +
@@ -54,22 +79,17 @@ class PacienteModel {
     }
   }
 
-  static async findByNumHistClinica(num_hist_clinica, dbConn) {
-    const query =
-      'SELECT * ' +
-      'FROM ' +
-      '   paciente ' +
-      'WHERE ' +
-      '   num_historia_clinica = ?';
-
-    try {
-      const [rows] = await dbConn.execute(query, [num_hist_clinica]);
-      return rows[0];
-    } catch (err) {
-      throw new Error('Error al obtener el paciente.');
-    }
-  }
-
+  /**
+   * @method findByUserId
+   * @description Método para obtener un paciente por su ID de usuario.
+   * @static
+   * @async
+   * @memberof PacienteModel
+   * @param {number} usuario_id - El ID de usuario del paciente.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El paciente.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findByUserId(usuario_id, dbConn) {
     const query =
       'SELECT * ' +
@@ -87,6 +107,17 @@ class PacienteModel {
     }
   }
 
+  /**
+   * @method deletePacienteByUserId
+   * @description Método para eliminar un paciente por su ID de usuario.
+   * @static
+   * @async
+   * @memberof PacienteModel
+   * @param {number} usuario_id - El ID de usuario del paciente.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El resultado de la operación de eliminación.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async deletePacienteByUserId(usuario_id, dbConn) {
     const query =
       'DELETE FROM paciente WHERE usuario_id = ?';
@@ -98,7 +129,30 @@ class PacienteModel {
     }
   }
 
-  static async update(paciente, dbConn) {
+  /**
+   * @method update
+   * @description Método para actualizar un paciente.
+   * @static
+   * @async
+   * @memberof PacienteModel
+   * @param {Object} paciente - El objeto del paciente con los datos actualizados.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El paciente actualizado.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
+  static async updatePaciente(paciente, dbConn) {
+    const fecha_nacimiento    = paciente.fecha_nacimiento;
+    const tipo_via            = paciente.tipo_via;
+    const nombre_via          = paciente.nombre_via;
+    const numero              = paciente.numero;
+    const piso                = paciente.piso;
+    const puerta              = paciente.puerta;
+    const municipio           = paciente.municipio;
+    const codigo_postal       = paciente.codigo_postal;
+    const tel_fijo            = paciente.tel_fijo;
+    const tel_movil           = paciente.tel_movil;
+    const usuario_id          = paciente.usuario_id;
+
     const query =
       'UPDATE ' +
       '   paciente ' +
@@ -119,14 +173,13 @@ class PacienteModel {
     try {
       return await dbConn.execute(
         query,
-        [paciente.fecha_nacimiento, paciente.tipo_via, paciente.nombre_via,
-          paciente.numero, paciente.piso, paciente.puerta, paciente.municipio,
-          paciente.codigo_postal, paciente.tel_fijo, paciente.tel_movil,
-          paciente.usuario_id]);
+        [fecha_nacimiento, tipo_via, nombre_via, numero, piso, puerta,
+          municipio, codigo_postal, tel_fijo, tel_movil, usuario_id]);
     } catch (err) {
       throw new Error('Error al actualizar el paciente.');
     }
   }
 }
 
+// Exportación del modelo
 module.exports = PacienteModel;

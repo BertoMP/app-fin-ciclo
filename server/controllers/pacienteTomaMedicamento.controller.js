@@ -96,7 +96,7 @@ exports.deleteToma = async (req, res) => {
       });
     }
 
-    await PacienteTomaMedicamentoService.deleteToma(toma_id);
+    await PacienteTomaMedicamentoService.deleteTomaFromPrescription(toma_id);
 
     return res.status(200).json({
       message: 'Toma eliminada correctamente.'
@@ -110,7 +110,7 @@ exports.deleteToma = async (req, res) => {
 
 /**
  * @name deleteMedicamento
- * @description Método asíncrono que elimina un medicamento específico de la prescrión del paciente utilizando su ID.
+ * @description Método asíncrono que elimina un medicamento específico de la prescripción del paciente utilizando su ID.
  *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
  *              Si el medicamento no existe, devuelve un error con el mensaje correspondiente.
  * @async
@@ -134,7 +134,7 @@ exports.deleteMedicamento = async (req, res) => {
       });
     }
 
-    await PacienteTomaMedicamentoService.deleteMedicamento(paciente_id, medicamento_id);
+    await PacienteTomaMedicamentoService.deleteMedicamentoFromPrescription(paciente_id, medicamento_id);
 
     return res.status(200).json({
       message: 'Medicamento eliminado correctamente.'

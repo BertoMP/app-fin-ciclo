@@ -1,8 +1,29 @@
-const PacienteTomaMedicamentoModel = require('../models/pacienteTomaMedicamento.model');
-const TomaService = require('./toma.service');
-const dbConn = require("../util/database/database");
+// Importación del modelo del servicio
+const PacienteTomaMedicamentoModel  = require('../models/pacienteTomaMedicamento.model');
 
+// Importación de servicios auxiliares
+const TomaService                   = require('./toma.service');
+
+// Importación de las utilidades necesarias
+const dbConn                        = require("../util/database/database");
+
+/**
+ * @class PacienteTomaMedicamentoService
+ * @description Clase que contiene los métodos para interactuar con el modelo de PacienteTomaMedicamento.
+ */
 class PacienteTomaMedicamentoService {
+  /**
+   * @method createPrescripcion
+   * @description Método para crear una prescripción para un paciente.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoService
+   * @param {number} pacienteId - El ID del paciente.
+   * @param {Array} prescripciones - Un array de objetos de prescripción.
+   * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
+   * @returns {Promise<Object>} Un objeto que representa la prescripción creada.
+   * @throws {Error} Si ocurre un error durante la creación de la prescripción, se lanza un error.
+   */
   static async createPrescripcion(pacienteId, prescripciones, conn = null) {
     const isConnProvided = !!conn;
 
@@ -52,7 +73,8 @@ class PacienteTomaMedicamentoService {
               throw new Error('Ya existe una toma para este medicamento a esta hora. Por favor, realice una actualización en lugar de una inserción.');
             }
 
-            const idToma = await TomaService.createToma(prescripcion, conn);
+            const toma = await TomaService.createToma(prescripcion, conn);
+            const idToma = toma.insertId;
             await PacienteTomaMedicamentoModel.createPacienteTomaMedicamento(pacienteId, medicamentoId, idToma, conn);
           }
         }
@@ -73,6 +95,17 @@ class PacienteTomaMedicamentoService {
     }
   }
 
+  /**
+   * @method readTomasByUserId
+   * @description Método para leer las tomas de un usuario por su ID.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoService
+   * @param {number} userId - El ID del usuario.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise<Array>} Un array de tomas.
+   * @throws {Error} Si ocurre un error durante la lectura de las tomas, se lanza un error.
+   */
   static async readTomasByUserId(userId, conn = dbConn) {
     try {
       return await PacienteTomaMedicamentoModel.findTomasByUserId(userId, conn);
@@ -81,6 +114,18 @@ class PacienteTomaMedicamentoService {
     }
   }
 
+  /**
+   * @method findMedicamento
+   * @description Método para encontrar un medicamento por su ID de paciente y su ID de medicamento.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoService
+   * @param {number} pacienteId - El ID del paciente.
+   * @param {number} medicamentoId - El ID del medicamento.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise<Object>} Un objeto que representa el medicamento.
+   * @throws {Error} Si ocurre un error durante la búsqueda del medicamento, se lanza un error.
+   */
   static async findMedicamento(pacienteId, medicamentoId, conn = dbConn) {
     try {
       return await PacienteTomaMedicamentoModel.findPrescripcion(pacienteId, medicamentoId, conn);
@@ -89,6 +134,17 @@ class PacienteTomaMedicamentoService {
     }
   }
 
+  /**
+   * @method findPrescripciones
+   * @description Método para encontrar las prescripciones de un paciente por su ID.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoService
+   * @param {number} pacienteId - El ID del paciente.
+   * @param {Object} conn - La conexión a la base de datos.
+   * @returns {Promise<Array>} Un array de prescripciones.
+   * @throws {Error} Si ocurre un error durante la búsqueda de las prescripciones, se lanza un error.
+   */
   static async findPrescripciones(pacienteId, conn = dbConn) {
     try {
       return await PacienteTomaMedicamentoModel.findPrescripciones(pacienteId, conn);
@@ -97,7 +153,18 @@ class PacienteTomaMedicamentoService {
     }
   }
 
-  static async deleteToma(tomaId, conn = null) {
+  /**
+   * @method deleteTomaFromPrescription
+   * @description Método para eliminar una toma de una prescripción por su ID.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoService
+   * @param {number} tomaId - El ID de la toma.
+   * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
+   * @returns {Promise<void>} No devuelve nada.
+   * @throws {Error} Si ocurre un error durante la eliminación de la toma, se lanza un error.
+   */
+  static async deleteTomaFromPrescription(tomaId, conn = null) {
     const isConnProvided = !!conn;
 
     if (!isConnProvided) {
@@ -128,7 +195,19 @@ class PacienteTomaMedicamentoService {
     }
   }
 
-  static async deleteMedicamento(pacienteId, medicamentoId, conn = null) {
+  /**
+   * @method deleteMedicamentoFromPrescription
+   * @description Método para eliminar un medicamento de una prescripción por su ID de paciente y su ID de medicamento.
+   * @static
+   * @async
+   * @memberof PacienteTomaMedicamentoService
+   * @param {number} pacienteId - El ID del paciente.
+   * @param {number} medicamentoId - El ID del medicamento.
+   * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
+   * @returns {Promise<void>} No devuelve nada.
+   * @throws {Error} Si ocurre un error durante la eliminación del medicamento, se lanza un error.
+   */
+  static async deleteMedicamentoFromPrescription(pacienteId, medicamentoId, conn = null) {
     const isConnProvided = !!conn;
 
     if (!isConnProvided) {
@@ -163,4 +242,5 @@ class PacienteTomaMedicamentoService {
   }
 }
 
+// Exportación del servicio
 module.exports = PacienteTomaMedicamentoService;

@@ -1,9 +1,25 @@
+/**
+ * @class UsuarioModel
+ * @description Clase que contiene los métodos para interactuar con la tabla de usuario.
+ */
 class UsuarioModel {
+  /**
+   * @method fetchAll
+   * @description Método para obtener todos los usuarios.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {Object} searchValues - Los valores de búsqueda.
+   * @param {number} limit - El número de usuarios por página.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} Un objeto con los usuarios y la información de la paginación.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async fetchAll(searchValues, limit, dbConn) {
-    const page = searchValues.page;
-    const role_id = searchValues.role;
+    const page      = searchValues.page;
+    const role_id   = searchValues.role;
 
-    const offset = ((page - 1) * limit);
+    const offset    = ((page - 1) * limit);
 
     let query =
       'SELECT ' +
@@ -20,7 +36,11 @@ class UsuarioModel {
       'INNER JOIN ' +
       '   rol ON usuario.rol_id = rol.id ';
 
-    let countQuery = 'SELECT COUNT(*) AS count FROM usuario';
+    let countQuery =
+      'SELECT ' +
+      '   COUNT(*) AS count ' +
+      'FROM ' +
+      '   usuario';
 
     let queryParams = [`${limit}`, `${offset}`];
     let countParams = [];
@@ -54,6 +74,17 @@ class UsuarioModel {
     }
   }
 
+  /**
+   * @method findPacienteById
+   * @description Método para obtener un paciente por su ID de usuario.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {number} id - El ID del usuario.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El paciente.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findPacienteById(id, dbConn) {
     const query =
       'SELECT ' +
@@ -98,6 +129,17 @@ class UsuarioModel {
     }
   }
 
+  /**
+   * @method findEspecialistaById
+   * @description Método para obtener un especialista por su ID de usuario.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {number} id - El ID del usuario.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El especialista.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findEspecialistaById(id, dbConn) {
     const query =
       'SELECT ' +
@@ -131,6 +173,17 @@ class UsuarioModel {
     }
   }
 
+  /**
+   * @method findRoleById
+   * @description Método para obtener el rol de un usuario por su ID.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {number} id - El ID del usuario.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<number>} El ID del rol.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findRoleById(id, dbConn) {
     const query =
       'SELECT ' +
@@ -148,6 +201,17 @@ class UsuarioModel {
     }
   }
 
+  /**
+   * @method findByEmail
+   * @description Método para obtener un usuario por su email.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {string} email - El email del usuario.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El usuario.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findByEmail(email, dbConn) {
     const query =
       'SELECT ' +
@@ -172,6 +236,17 @@ class UsuarioModel {
     }
   }
 
+  /**
+   * @method findByDNI
+   * @description Método para obtener un usuario por su DNI.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {string} dni - El DNI del usuario.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El usuario.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findByDNI(dni, dbConn) {
     const query =
       'SELECT ' +
@@ -195,14 +270,25 @@ class UsuarioModel {
     }
   }
 
+  /**
+   * @method create
+   * @description Método para crear un nuevo usuario.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {Object} usuario - El objeto del nuevo usuario.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<number>} El ID del nuevo usuario creado.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async create(usuario, dbConn) {
-    const email = usuario.email;
-    const password = usuario.password;
-    const nombre = usuario.nombre;
-    const primer_apellido = usuario.primer_apellido;
-    const segundo_apellido = usuario.segundo_apellido;
-    const dni = usuario.dni;
-    const rol_id = usuario.rol_id;
+    const email             = usuario.email;
+    const password          = usuario.password;
+    const nombre            = usuario.nombre;
+    const primer_apellido   = usuario.primer_apellido;
+    const segundo_apellido  = usuario.segundo_apellido;
+    const dni               = usuario.dni;
+    const rol_id            = usuario.rol_id;
 
     const query =
       'INSERT INTO usuario ' +
@@ -222,6 +308,18 @@ class UsuarioModel {
     }
   }
 
+  /**
+   * @method updatePassword
+   * @description Método para actualizar la contraseña de un usuario.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {string} email - El email del usuario.
+   * @param {string} password - La nueva contraseña.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El resultado de la operación de actualización.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async updatePassword(email, password, dbConn) {
     const query =
       'UPDATE ' +
@@ -238,6 +336,17 @@ class UsuarioModel {
     }
   }
 
+  /**
+   * @method getEmailById
+   * @description Método para obtener el email de un usuario por su ID.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {number} id - El ID del usuario.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<string>} El email del usuario.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async getEmailById(id, dbConn) {
     const query =
       'SELECT ' +
@@ -255,7 +364,18 @@ class UsuarioModel {
     }
   }
 
-  static async delete(id, dbConn) {
+  /**
+   * @method deleteUsuario
+   * @description Método para eliminar un usuario por su ID.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {number} id - El ID del usuario.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El resultado de la operación de eliminación.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
+  static async deleteUsuario(id, dbConn) {
     const query =
       'DELETE ' +
       'FROM ' +
@@ -270,6 +390,18 @@ class UsuarioModel {
     }
   }
 
+  /**
+   * @method updateRefreshToken
+   * @description Método para actualizar el token de refresco de un usuario.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {number} userId - El ID del usuario.
+   * @param {string} refreshToken - El nuevo token de refresco.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El resultado de la operación de actualización.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async updateRefreshToken(userId, refreshToken, dbConn) {
     const query =
       'UPDATE ' +
@@ -286,6 +418,17 @@ class UsuarioModel {
     }
   }
 
+  /**
+   * @method findById
+   * @description Método para obtener un usuario por su ID.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {number} id - El ID del usuario.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El usuario.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findById(id, dbConn) {
     const query =
       'SELECT ' +
@@ -309,7 +452,18 @@ class UsuarioModel {
     }
   }
 
-  static async update(usuario, dbConn) {
+  /**
+   * @method updateUsuario
+   * @description Método para actualizar un usuario.
+   * @static
+   * @async
+   * @memberof UsuarioModel
+   * @param {Object} usuario - El objeto del usuario con los datos actualizados.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El resultado de la operación de actualización.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
+  static async updateUsuario(usuario, dbConn) {
     const query =
       'UPDATE ' +
       '   usuario ' +
@@ -333,4 +487,5 @@ class UsuarioModel {
   }
 }
 
+// Exportación del modelo
 module.exports = UsuarioModel;

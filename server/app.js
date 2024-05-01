@@ -1,44 +1,44 @@
-// Cargamos las variables de entorno
+// Carga de las variables de entorno
 require('dotenv').config();
 
-// Definimos las variables de entorno para el host y el puerto del servidor
+// Definición de las variables de entorno
 const SERV_HOST           = process.env.SERV_HOST;
 const SERV_PORT           = process.env.SERV_PORT;
 
-// Importamos las dependencias necesarias
+// Importación las dependencias necesarias
 const swaggerUi           = require('swagger-ui-express');
 const swaggerDocument     = require('./docs/swagger.js');
 const express             = require('express');
 const cors                = require('cors');
 const path                = require('path');
 
-// Configuramos las opciones de CORS
+// Configuración de las opciones de CORS
 const corsOptions = {
   origin: process.env.CORS_ORIGIN,
   methods: process.env.CORS_METHODS,
   allowedHeaders: process.env.CORS_ALLOWED_HEADERS
 };
 
-// Creamos la aplicación Express
+// Creación la aplicación Express
 const app = express();
 
-// Configuramos el middleware de Express para analizar el cuerpo de las solicitudes
+// Configuración del middleware de Express para analizar el cuerpo de las solicitudes
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 
-// Aplicamos las opciones de CORS a nuestra aplicación Express
+// Aplicación de las opciones de CORS
 app.use(cors(corsOptions));
 
-// Configuramos Swagger UI para servir la documentación de la API
+// Configuración de Swagger UI para servir la documentación de la API
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Sirve los archivos estáticos desde el directorio 'jsdocs'
+// Configuración para servir los archivos estáticos desde el directorio 'jsdocs'
 app.use('/docs', express.static(path.join(__dirname, 'docs', 'jsdocs')));
 
-// Importamos y usamos nuestras rutas de API
+// Importación de las rutas de la API
 app.use('/api', require('./routes/api'));
 
-// Iniciamos el servidor
+// Inicialización del servidor
 app.listen(SERV_PORT, SERV_HOST, () => {
   console.log(`NodeJS Server listening on http:\\${SERV_HOST}:${SERV_PORT}`);
 });

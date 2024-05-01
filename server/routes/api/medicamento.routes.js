@@ -1,17 +1,17 @@
 // Inicialización del router de express
-const router                            = require('express').Router();
+const router                              = require('express').Router();
 
 // Importación del controlador de medicamento
-const MedicamentoController             = require('../../controllers/medicamento.controller');
+const MedicamentoController               = require('../../controllers/medicamento.controller');
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                       = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                         = require('../../util/middleware/verifyUserRole');
+const tokenVerify                         = require('../../helpers/jwt/verifyAccessToken');
+const tokenRole                           = require('../../util/middleware/verifyUserRole');
 
 // Importación de middlewares para la validación de datos
-const {validateMedicamento}             = require('../../helpers/validators/medicamento.validator');
-const {validatePaginationQueryParams}   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const {validateMedicamentoIdParam}      = require("../../helpers/validators/params/medicamentoIdParam.validator");
+const { validateMedicamento }             = require('../../helpers/validators/medicamento.validator');
+const { validatePaginationQueryParams }   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const { validateMedicamentoIdParam }      = require("../../helpers/validators/params/medicamentoIdParam.validator");
 
 // Rutas GET
 /**

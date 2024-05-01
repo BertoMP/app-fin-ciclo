@@ -1,4 +1,18 @@
+/**
+ * @class MedicamentoModel
+ * @description Clase que contiene los métodos para interactuar con la tabla de medicamentos.
+ */
 class MedicamentoModel {
+  /**
+   * @method fetchAllPrescripcion
+   * @description Método para obtener todos los medicamentos ordenados por nombre.
+   * @static
+   * @async
+   * @memberof MedicamentoModel
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Array>} Un array de medicamentos.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async fetchAllPrescripcion(dbConn) {
     const query =
       'SELECT ' +
@@ -17,6 +31,18 @@ class MedicamentoModel {
     }
   }
 
+  /**
+   * @method fetchAll
+   * @description Método para obtener todos los medicamentos con paginación.
+   * @static
+   * @async
+   * @memberof MedicamentoModel
+   * @param {number} page - La página actual.
+   * @param {number} limit - El número de medicamentos por página.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} Un objeto con los medicamentos, el total de medicamentos, la página actual y el total de páginas.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async fetchAll(page, limit, dbConn) {
     const offset = ((page - 1) * limit);
 
@@ -51,6 +77,17 @@ class MedicamentoModel {
     }
   }
 
+  /**
+   * @method findById
+   * @description Método para obtener un medicamento por su ID.
+   * @static
+   * @async
+   * @memberof MedicamentoModel
+   * @param {number} id - El ID del medicamento.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El medicamento.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findById(id, dbConn) {
     const query =
       'SELECT ' +
@@ -70,6 +107,17 @@ class MedicamentoModel {
     }
   }
 
+  /**
+   * @method findByNombre
+   * @description Método para obtener un medicamento por su nombre.
+   * @static
+   * @async
+   * @memberof MedicamentoModel
+   * @param {string} nombre - El nombre del medicamento.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El medicamento.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async findByNombre(nombre, dbConn) {
     const query =
       'SELECT ' +
@@ -89,6 +137,17 @@ class MedicamentoModel {
     }
   }
 
+  /**
+   * @method save
+   * @description Método para crear un nuevo medicamento.
+   * @static
+   * @async
+   * @memberof MedicamentoModel
+   * @param {Object} medicamento - El objeto del nuevo medicamento.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El nuevo medicamento creado.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async save(medicamento, dbConn) {
     const nombre = medicamento.nombre;
     const descripcion = medicamento.descripcion;
@@ -104,6 +163,18 @@ class MedicamentoModel {
     }
   }
 
+  /**
+   * @method updateById
+   * @description Método para actualizar un medicamento por su ID.
+   * @static
+   * @async
+   * @memberof MedicamentoModel
+   * @param {number} id - El ID del medicamento.
+   * @param {Object} medicamento - El objeto del medicamento con los datos actualizados.
+   * @param {Object} dbConn - La conexión a la base de datos.
+   * @returns {Promise<Object>} El medicamento actualizado.
+   * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+   */
   static async updateById(id, medicamento, dbConn) {
     const nombre = medicamento.nombre;
     const descripcion = medicamento.descripcion;
@@ -131,4 +202,5 @@ class MedicamentoModel {
   }
 }
 
+// Exportación del modelo
 module.exports = MedicamentoModel;
