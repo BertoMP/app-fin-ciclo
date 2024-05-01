@@ -26,9 +26,6 @@ const app = express();
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 
-// Aplicación de las opciones de CORS
-app.use(cors(corsOptions));
-
 // Configuración de Swagger UI para servir la documentación de la API
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -36,7 +33,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/docs', express.static(path.join(__dirname, 'docs', 'jsdocs')));
 
 // Importación de las rutas de la API
-app.use('/api', require('./routes/api'));
+app.use('/api', cors(corsOptions), require('./routes/api'));
 
 // Inicialización del servidor
 app.listen(SERV_PORT, SERV_HOST, () => {
