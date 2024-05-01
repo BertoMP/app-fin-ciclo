@@ -44,4 +44,5 @@ router.post('/contacto',
   validateContacto,
   ContactoController.postContacto);
 
+// Exportación del router
 module.exports = router;

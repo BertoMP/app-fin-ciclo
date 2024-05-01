@@ -50,4 +50,5 @@ const CodigoPostalController  = require('../../controllers/codigoPostalMunicipio
 router.get('/codigo-postal/:municipio_id',
   CodigoPostalController.getCodigoPostal);
 
+// Exportación del router
 module.exports = router;

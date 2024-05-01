@@ -52,4 +52,5 @@ router.get('/especialista/:usuario_id',
   EspecialistaController.getEspecialistaById
 );
 
+// Exportación del router
 module.exports = router;

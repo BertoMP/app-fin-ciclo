@@ -330,4 +330,5 @@ router.delete('/consulta/:consulta_id',
   validateConsultaIdParam,
   ConsultaController.deleteConsulta);
 
+// Exportación del router
 module.exports = router;

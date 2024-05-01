@@ -306,5 +306,5 @@ router.put('/medicamento/:medicamento_id',
   validateMedicamento,
   MedicamentoController.updateMedicamento);
 
-
+// Exportación del router
 module.exports = router;

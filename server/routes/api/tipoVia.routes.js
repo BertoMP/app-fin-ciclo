@@ -34,4 +34,5 @@ const TipoViaController   = require('../../controllers/tipoVia.controller');
 router.get('/tipo-via',
   TipoViaController.getTipoVia);
 
+// Exportación del router
 module.exports = router;

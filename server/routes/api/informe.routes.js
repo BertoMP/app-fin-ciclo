@@ -187,4 +187,5 @@ router.post('/informe',
   validateInforme,
   InformeController.createInforme);
 
+// Exportación del router
 module.exports = router;

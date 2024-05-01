@@ -185,4 +185,5 @@ router.post('/glucometria',
   validateGlucometria,
   GlucometriaController.postGlucometria);
 
+// Exportación del router
 module.exports = router;

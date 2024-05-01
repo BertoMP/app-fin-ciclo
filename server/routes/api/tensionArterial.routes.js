@@ -226,4 +226,5 @@ router.post('/tension-arterial',
   validateTensionArterial,
   TensionArterialController.postTensionArterial);
 
+// Exportación del router
 module.exports = router;

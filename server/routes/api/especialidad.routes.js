@@ -392,4 +392,5 @@ router.delete('/especialidad/:especialidad_id',
   validateEspecialidadIdParam,
   EspecialidadController.deleteEspecialidad);
 
+// Exportación del router
 module.exports = router;

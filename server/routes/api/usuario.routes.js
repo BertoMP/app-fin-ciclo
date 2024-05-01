@@ -851,4 +851,5 @@ router.delete('/usuario/borrar-usuario',
   tokenId,
   UsuarioController.deleteUsuario);
 
+// Exportación del router
 module.exports = router;

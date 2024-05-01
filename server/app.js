@@ -1,11 +1,15 @@
 // Cargamos las variables de entorno
 require('dotenv').config();
 
+// Definimos las variables de entorno para el host y el puerto del servidor
+const SERV_HOST           = process.env.SERV_HOST;
+const SERV_PORT           = process.env.SERV_PORT;
+
 // Importamos las dependencias necesarias
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./docs/swagger.js');
-const express = require('express');
-const cors = require('cors');
+const swaggerUi           = require('swagger-ui-express');
+const swaggerDocument     = require('./docs/swagger.js');
+const express             = require('express');
+const cors                = require('cors');
 
 // Configuramos las opciones de CORS
 const corsOptions = {
@@ -13,10 +17,6 @@ const corsOptions = {
   methods: process.env.CORS_METHODS,
   allowedHeaders: process.env.CORS_ALLOWED_HEADERS
 };
-
-// Definimos las variables de entorno para el host y el puerto del servidor
-const SERV_HOST = process.env.SERV_HOST;
-const SERV_PORT = process.env.SERV_PORT;
 
 // Creamos la aplicación Express
 const app = express();

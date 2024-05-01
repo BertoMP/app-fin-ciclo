@@ -464,4 +464,5 @@ router.delete('/prescripcion/borrar-medicamento/:usuario_id/:medicamento_id',
   validateMedicamentoIdParam,
   PacienteTomaMedicamentoController.deleteMedicamento);
 
+// Exportación del router
 module.exports = router;

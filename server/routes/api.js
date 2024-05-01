@@ -1,5 +1,7 @@
-const router = require('express').Router();
+// Inicialización del router de express
+const router                          = require('express').Router();
 
+// Importación de rutas de la API
 const citaRoutes                      = require('./api/cita.routes');
 const codigoPostalMunicipioRoutes     = require('./api/codigoPostalMunicipio.routes');
 const consultaRoutes                  = require('./api/consulta.routes');
@@ -18,6 +20,7 @@ const tensionArterialRoutes           = require('./api/tensionArterial.routes');
 const tipoViaRoutes                   = require('./api/tipoVia.routes');
 const usuarioRoutes                   = require('./api/usuario.routes');
 
+// Uso de las rutas de la API
 router.use(citaRoutes);
 router.use(codigoPostalMunicipioRoutes);
 router.use(consultaRoutes);
@@ -36,4 +39,5 @@ router.use(tensionArterialRoutes);
 router.use(tipoViaRoutes);
 router.use(usuarioRoutes);
 
+// Exportación del router
 module.exports = router;

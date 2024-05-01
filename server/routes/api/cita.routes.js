@@ -336,4 +336,5 @@ router.delete('/cita/:cita_id',
   validateCitaIdParam,
   CitaController.deleteCita);
 
+// Exportación del router
 module.exports = router;

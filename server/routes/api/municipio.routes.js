@@ -52,4 +52,5 @@ router.get('/municipio/:provincia_id',
   validateProvinciaIdParam,
   MunicipioController.getMunicipio);
 
+// Exportación del router
 module.exports = router;

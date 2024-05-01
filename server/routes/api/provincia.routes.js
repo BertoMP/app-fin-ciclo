@@ -34,4 +34,5 @@ const ProvinciaController   = require('../../controllers/provincia.controller');
 router.get('/provincia',
   ProvinciaController.getProvincias);
 
+// Exportación del router
 module.exports = router;

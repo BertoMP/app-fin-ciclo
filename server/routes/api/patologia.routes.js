@@ -324,4 +324,5 @@ router.put('/patologia/:patologia_id',
   validatePatologia,
   PatologiaController.updatePatologia);
 
+// Exportación del router
 module.exports = router;

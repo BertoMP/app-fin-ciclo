@@ -56,4 +56,5 @@ router.get('/paciente',
   tokenRole([3]),
   PacienteController.getPacientes);
 
+// Exportación del router
 module.exports = router;
