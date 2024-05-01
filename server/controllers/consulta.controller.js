@@ -1,5 +1,6 @@
-const ConsultaService = require('../services/consulta.service');
-const EspecialistaService = require('../services/especialista.service');
+// Importación de los servicios necesarios
+const ConsultaService       = require('../services/consulta.service');
+const EspecialistaService   = require('../services/especialista.service');
 
 exports.getConsultas = async (req, res) => {
   const page = parseInt(req.query.page) || 1;

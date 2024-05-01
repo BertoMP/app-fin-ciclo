@@ -1,15 +1,20 @@
-const UsuarioService = require('../services/usuario.service');
-const PacienteService = require('../services/paciente.service');
-const TokenService = require('../services/token.service');
-const EmailService = require('../services/email.service');
+// Importación de los servicios necesarios
+const UsuarioService          = require('../services/usuario.service');
+const PacienteService         = require('../services/paciente.service');
+const TokenService            = require('../services/token.service');
+const EmailService            = require('../services/email.service');
 
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// Importación de las librerías necesarias
+const bcrypt                  = require('bcryptjs');
+const jwt                     = require('jsonwebtoken');
 
-const createToken = require('../helpers/jwt/createToken');
-const createResetToken = require('../helpers/jwt/createResetToken');
-const createRefreshToken = require('../helpers/jwt/createRefreshToken');
-const getSearchValuesByRole = require("../util/functions/getSearchValuesByRole");
+// Importación de los helpers necesarios
+const createToken             = require('../helpers/jwt/createToken');
+const createResetToken        = require('../helpers/jwt/createResetToken');
+const createRefreshToken      = require('../helpers/jwt/createRefreshToken');
+
+// Importación de las funciones necesarias
+const getSearchValuesByRole   = require("../util/functions/getSearchValuesByRole");
 
 exports.getUsuario = async (req, res) => {
   let id = 0;

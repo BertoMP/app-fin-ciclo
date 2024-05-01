@@ -1,7 +1,9 @@
-const CitaService = require('../services/cita.service');
-const EspecialistaService = require('../services/especialista.service');
+// Importaciones de los servicios necesarios
+const CitaService           = require('../services/cita.service');
+const EspecialistaService   = require('../services/especialista.service');
 
-const getSearchValues = require('../util/functions/getSearchValuesByDate');
+// Importación de las funciones necesarias
+const getSearchValues       = require('../util/functions/getSearchValuesByDate');
 
 exports.getCitas = async (req, res) => {
   const limit = 10;

@@ -1,3 +1,4 @@
+// Importación de los servicios necesarios
 const MunicipioService = require('../services/municipio.service');
 
 exports.getMunicipio = async (req, res) => {

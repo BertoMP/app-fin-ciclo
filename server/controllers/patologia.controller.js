@@ -1,3 +1,4 @@
+// Importación de los servicios necesarios
 const PatologiaService = require('../services/patologia.service');
 
 exports.getPatologiasInforme = async (req, res) => {

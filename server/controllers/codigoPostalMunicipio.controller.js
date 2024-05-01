@@ -1,4 +1,5 @@
-const CodigoPostalMunicipioService = require('../services/codigoPostalMunicipio.service');
+// Importación de los servicios necesarios
+const CodigoPostalMunicipioService  = require('../services/codigoPostalMunicipio.service');
 
 exports.getCodigoPostal = async (req, res) => {
   try {

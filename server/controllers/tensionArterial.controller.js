@@ -1,6 +1,11 @@
-const TensionArterialService = require('../services/tensionArterial.service');
-const momentTz = require('moment-timezone');
-const getSearchValues = require('../util/functions/getSearchValuesByDate');
+// Importación de los servicios necesarios
+const TensionArterialService  = require('../services/tensionArterial.service');
+
+// Importación de las librerías necesarias
+const momentTz                = require('moment-timezone');
+
+// Importación de las funciones necesarias
+const getSearchValues         = require('../util/functions/getSearchValuesByDate');
 
 exports.getTensionArterial = async (req, res) => {
   const limit = 10;

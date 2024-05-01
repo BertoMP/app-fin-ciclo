@@ -1,3 +1,4 @@
+// Importación de los servicios necesarios
 const EspecialidadService = require('../services/especialidad.service');
 
 exports.getEspecialidades = async (req, res) => {

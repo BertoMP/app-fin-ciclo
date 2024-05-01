@@ -1,3 +1,4 @@
+// Importación de los servicios necesarios
 const MedicamentoService = require('../services/medicamento.service');
 
 exports.getMedicamentosPrescripcion = async (req, res) => {

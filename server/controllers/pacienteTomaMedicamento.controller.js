@@ -1,5 +1,6 @@
-const PacienteTomaMedicamentoService = require('../services/pacienteTomaMedicamento.service');
-const PdfService = require('../services/pdf.service');
+// Importación de los servicios necesarios
+const PacienteTomaMedicamentoService  = require('../services/pacienteTomaMedicamento.service');
+const PdfService                      = require('../services/pdf.service');
 
 exports.getRecetas = async (req, res) => {
   let paciente_id = req.params.usuario_id;

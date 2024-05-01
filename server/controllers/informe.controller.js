@@ -1,6 +1,7 @@
-const InformeService = require('../services/informe.service');
-const CitaService = require('../services/cita.service');
-const PdfService = require("../services/pdf.service");
+// Importación de los servicios necesarios
+const InformeService  = require('../services/informe.service');
+const CitaService     = require('../services/cita.service');
+const PdfService      = require("../services/pdf.service");
 
 exports.getInforme = async (req, res) => {
   const user_role = req.user_role;

@@ -1,7 +1,12 @@
-const GlucometriaService = require('../services/glucometria.service');
-const PacienteService = require('../services/paciente.service');
-const momentTz = require('moment-timezone');
-const getSearchValues = require('../util/functions/getSearchValuesByDate');
+// Importación de los servicios necesarios
+const GlucometriaService  = require('../services/glucometria.service');
+const PacienteService     = require('../services/paciente.service');
+
+// Importación de librerías
+const momentTz            = require('moment-timezone');
+
+// Importación de funciones
+const getSearchValues     = require('../util/functions/getSearchValuesByDate');
 
 exports.getGlucometria = async (req, res) => {
   const limit = 10;
