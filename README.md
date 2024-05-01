@@ -60,6 +60,7 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 ![JWT](https://img.shields.io/badge/-JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 * ___Documentación___:  
 ![Swagger](https://img.shields.io/badge/-Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
+![JSDoc](https://img.shields.io/badge/-JSDoc-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
   
 ### Paquetes y librerías utilizadas
 
@@ -88,6 +89,7 @@ archivo `.env`.
 - _express-validator_: Middleware de Express.js que permite validar y limpiar
 datos de entrada.
 - _handlebars_: Motor de plantillas que permite la generación de HTML dinámico.
+- _jsdoc_: Herramienta que permite la generación de documentación JSDoc.
 - _jsonwebtoken_: Librería que permite la generación y verificación de tokens 
 JWT.
 - _moment-timezone_: Librería que permite trabajar con fechas y horas en diferentes
