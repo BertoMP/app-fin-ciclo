@@ -3,11 +3,14 @@ import { AuthService } from '../../core/services/auth.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PacientPanelComponent } from '../user-panels/pacient-panel/pacient-panel.component';
+import { EspecialistPanelComponent } from '../user-panels/especialist-panel/especialist-panel.component';
+import { AdminPanelComponent } from '../user-panels/admin-panel/admin-panel.component';
 
 @Component({
   selector: 'app-panel',
   standalone: true,
-  imports: [],
+  imports: [PacientPanelComponent, EspecialistPanelComponent, AdminPanelComponent],
   templateUrl: './panel.component.html',
   styleUrl: './panel.component.scss'
 })
@@ -18,7 +21,6 @@ export class PanelComponent implements OnInit, OnDestroy {
   userId: number = 0;
 
   constructor(private authService: AuthService, private router: Router) { }
-  
 
   ngOnInit(): void {
     this.loggedInSubscription = this.authService.isLoggedInUser.subscribe(
@@ -40,13 +42,11 @@ export class PanelComponent implements OnInit, OnDestroy {
     this.authService.logout()
       .subscribe({
         next: (response) => {
-          this.router.navigate(['/auth/login']).then(r => {});
+          this.router.navigate(['/auth/login']).then(r => { });
         },
         error: (error: HttpErrorResponse) => {
           console.error(error.error);
         }
-
       });
   }
-
 }

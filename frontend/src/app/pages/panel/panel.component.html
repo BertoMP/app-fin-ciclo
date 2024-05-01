@@ -4,16 +4,17 @@
         <div class="col-md-12">
             @switch (userRole) {
             @case(1) {
-            <h1>Panel de administrador.</h1>
+            <app-admin-panel></app-admin-panel>
             }
             @case(2) {
-            <h1>Panel de paciente.</h1>
+            <app-pacient-panel></app-pacient-panel>
             }
             @case(3) {
-            <h1>Panel de doctor.</h1>
+            <app-especialist-panel></app-especialist-panel>
             }}
             <p>{{userId}}</p>
             <button type="button" class="btn btn-primary" (click)="onLogout()">Logout</button>
+            <button type="button" class="btn btn-primary" (click)="onLogout()">Editar perfil</button>
 
         </div>
     </div>
