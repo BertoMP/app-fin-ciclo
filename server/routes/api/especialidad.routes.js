@@ -1,12 +1,12 @@
 // Inicialización del router de express
-const router                            = require('express').Router();
+const router                        = require('express').Router();
 
 // Importación del controlador de especialidad
-const EspecialidadController            = require('../../controllers/especialidad.controller');
+const EspecialidadController        = require('../../controllers/especialidad.controller');
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                       = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                         = require('../../util/middleware/verifyUserRole');
+const tokenVerify                   = require('../../helpers/jwt/verifyAccessToken');
+const tokenRole                     = require('../../util/middleware/verifyUserRole');
 
 // Importación de middlewares para la validación de datos
 const validateEspecialidad          = require("../../helpers/validators/especialidad.validator");

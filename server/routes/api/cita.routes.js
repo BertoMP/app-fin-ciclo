@@ -1,13 +1,13 @@
 // Inicialización del router de express
-const router                            = require('express').Router();
+const router                        = require('express').Router();
 
 // Importación del controlador de citas
-const CitaController                    = require('../../controllers/cita.controller');
+const CitaController                = require('../../controllers/cita.controller');
 
 // Importación de middlewares para la validación de tokens y roles
-const tokenVerify                       = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                         = require('../../util/middleware/verifyUserRole');
-const tokenUserId                       = require('../../util/middleware/verifyUserId');
+const tokenVerify                   = require('../../helpers/jwt/verifyAccessToken');
+const tokenRole                     = require('../../util/middleware/verifyUserRole');
+const tokenUserId                   = require('../../util/middleware/verifyUserId');
 
 // Importación de middlewares para la validación de datos
 const validateCita                  = require("../../helpers/validators/cita.validator");

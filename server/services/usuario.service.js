@@ -100,7 +100,7 @@ class UsuarioService {
         await conn.beginTransaction();
       }
 
-      paciente.usuario_id = await UsuarioModel.create(conn, usuario);
+      paciente.usuario_id = await UsuarioModel.create(usuario, conn);
 
       await PacienteService.createPaciente(paciente, conn);
 
@@ -143,9 +143,9 @@ class UsuarioService {
         await conn.beginTransaction();
       }
 
-      especialista.usuario_id = await UsuarioModel.create(conn, usuario);
+      especialista.usuario_id = await UsuarioModel.create(usuario, conn);
 
-      await EspecialistaService.create(conn, especialista);
+      await EspecialistaService.create(especialista, conn);
 
       if (!isConnProvided) {
         await conn.commit();
@@ -186,7 +186,7 @@ class UsuarioService {
         await conn.beginTransaction();
       }
 
-      await UsuarioModel.updateUsuario(conn, usuario);
+      await UsuarioModel.updateUsuario(usuario, conn);
 
       await PacienteService.updatePacienteByUserId(paciente, conn);
 
@@ -229,9 +229,9 @@ class UsuarioService {
         await conn.beginTransaction();
       }
 
-      await UsuarioModel.updateUsuario(conn, usuario);
+      await UsuarioModel.updateUsuario(usuario, conn);
 
-      await EspecialistaService.update(especialista, conn);
+      await EspecialistaService.updateEspecialista(especialista, conn);
 
       if (!isConnProvided) {
         await conn.commit();
@@ -352,7 +352,7 @@ class UsuarioService {
 
       await PacienteService.deletePacienteByUserId(id, conn);
 
-      await UsuarioModel.deleteUsuario(conn, id);
+      await UsuarioModel.deleteUsuario(id, conn);
 
       if (!isConnProvided) {
         await conn.commit();

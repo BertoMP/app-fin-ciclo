@@ -193,7 +193,7 @@ class UsuarioController {
       const user = createUserObject(req, encryptedPassword, 2);
 
       const patient = {
-        num_hist_clinica: await createHistClinica(),
+        num_hist_clinica: createHistClinica(),
         fecha_nacimiento: req.body.fecha_nacimiento,
         tipo_via: req.body.tipo_via,
         nombre_via: req.body.nombre_via,

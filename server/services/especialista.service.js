@@ -80,17 +80,17 @@ class EspecialistaService {
   }
 
   /**
-   * @method update
+   * @method updateEspecialista
    * @description Método para actualizar un especialista por su ID.
    * @static
    * @async
    * @memberof EspecialistaService
-   * @param {number} especialista_id - El ID del especialista.
+   * @param {Object} especialista - El especialista a actualizar.
    * @param {Object} conn - La conexión a la base de datos.
    * @returns {Promise<Object>} El especialista actualizado.
    */
-  static async update(especialista_id, conn = dbConn) {
-    return await EspecialistaModel.updateEspecialista(especialista_id, conn);
+  static async updateEspecialista(especialista, conn = dbConn) {
+    return await EspecialistaModel.updateEspecialista(especialista, conn);
   }
 }
 
