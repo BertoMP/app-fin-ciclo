@@ -1,7 +1,19 @@
+// Importación de las librerías necesarias
 const momentTz = require('moment-timezone');
 
+/**
+ * @name getSearchValuesByDate
+ * @description Obtiene los valores de búsqueda por fecha para las consultas
+ *              de la base de datos.
+ * @memberof Util-Functions
+ * @function
+ * @param {Object} req - Objeto de solicitud de la petición
+ * @param {boolean} possibleFutureDates - Indica si se permiten fechas futuras
+ * @returns {Object} - Objeto con los valores de búsqueda por fecha
+ */
 const getSearchValuesByDate = (req, possibleFutureDates = false) => {
   const page = parseInt(req.query.page) || 1;
+
   const fechaInicio =
     req.query.fechaInicio
       ? momentTz.tz(req.query.fechaInicio, 'Europe/Madrid')

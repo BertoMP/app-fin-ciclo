@@ -1,18 +1,31 @@
-const {body, validationResult} = require('express-validator');
-const {validateUserRegister} = require("./usuarioRegistro.validator");
+// Importación de las librerías necesarias
+const { body, validationResult } = require('express-validator');
 
+// Importación de los validadores necesarios
+const { validateUserRegister } = require("./usuarioRegistro.validator");
+
+/**
+ * @name validatePacienteRegister
+ * @description Middleware que valida el cuerpo de la solicitud para el registro de un paciente.
+ *              Valida 'tipo_via', 'nombre_via', 'numero', 'piso', 'puerta', 'codigo_postal', 'municipio', 'tel_fijo', 'tel_movil', y 'fecha_nacimiento'.
+ *              Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
+ *              Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+ * @memberof Helpers-Validators-Body
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
+ */
 exports.validatePacienteRegister = [
   validateUserRegister,
   body('tipo_via')
     .trim()
     .notEmpty().withMessage('El tipo de vía es requerido.')
     .isNumeric().withMessage('El tipo de vía ha de ser un valor numérico'),
-
   body('nombre_via')
     .trim()
     .notEmpty().withMessage('El nombre de la vía es requerido.')
     .isString().withMessage('El nombre de la vía debe ser una cadena de texto.'),
-
   body('numero')
     .trim()
     .notEmpty().withMessage('El número es requerido.')
@@ -23,7 +36,6 @@ exports.validatePacienteRegister = [
       }
       return true;
     }),
-
   body('piso')
     .trim()
     .notEmpty().withMessage('El piso es requerido.')
@@ -34,7 +46,6 @@ exports.validatePacienteRegister = [
       }
       return true;
     }),
-
   body('puerta')
     .trim()
     .isString().withMessage('La puerta debe ser una cadena de texto.')
@@ -47,7 +58,6 @@ exports.validatePacienteRegister = [
       }
       return true;
     }),
-
   body('codigo_postal')
     .trim()
     .notEmpty().withMessage('El código postal es requerido.')
@@ -60,12 +70,10 @@ exports.validatePacienteRegister = [
       }
       return true;
     }),
-
   body('municipio')
     .trim()
     .notEmpty().withMessage('El municipio es requerido.')
     .isNumeric().withMessage('El municipio debe ser un valor numérico.'),
-
   body('tel_fijo')
     .trim()
     .notEmpty().withMessage('El teléfono fijo es requerido.')
@@ -78,7 +86,6 @@ exports.validatePacienteRegister = [
       }
       return true;
     }),
-
   body('tel_movil')
     .trim()
     .notEmpty().withMessage('El teléfono móvil es requerido.')
@@ -91,7 +98,6 @@ exports.validatePacienteRegister = [
       }
       return true;
     }),
-
   body('fecha_nacimiento')
     .trim()
     .notEmpty().withMessage('La fecha de nacimiento es requerida.')

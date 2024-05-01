@@ -5,8 +5,8 @@ const router              = require('express').Router();
 const PacienteController  = require('../../controllers/paciente.controller');
 
 // Importación de middlewares para la validación de datos
-const tokenVerify         = require('../../helpers/jwt/tokenVerify');
-const tokenRole           = require('../../helpers/jwt/tokenRole');
+const tokenVerify         = require('../../helpers/jwt/verifyToken');
+const tokenRole           = require('../../util/middleware/verifyUserRole');
 
 // Rutas GET
 /**

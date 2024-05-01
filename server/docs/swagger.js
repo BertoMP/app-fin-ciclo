@@ -1,5 +1,7 @@
+// Importación de las librerías necesarias
 const swaggerJsdoc = require('swagger-jsdoc');
 
+// Definición de las opciones de configuración de Swagger
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -1406,5 +1408,8 @@ const options = {
   apis: ['./routes/api/*.js'],
 };
 
+// Inicialización de swagger-jsdoc: Devuelve un objeto swaggerSpec que contiene la especificación Swagger
 const specs = swaggerJsdoc(options);
+
+// Exportación de la especificación Swagger
 module.exports = specs;

@@ -9,7 +9,7 @@ const bcrypt                  = require('bcryptjs');
 const jwt                     = require('jsonwebtoken');
 
 // Importación de los helpers necesarios
-const createToken             = require('../helpers/jwt/createToken');
+const createAccessToken       = require('../helpers/jwt/createAccessToken');
 const createResetToken        = require('../helpers/jwt/createResetToken');
 const createRefreshToken      = require('../helpers/jwt/createRefreshToken');
 
@@ -218,7 +218,7 @@ exports.postLogin = async (req, res) => {
       });
     }
 
-    const accessToken = createToken(user);
+    const accessToken = createAccessToken(user);
     const refreshToken = createRefreshToken(user);
 
     await UsuarioService.updateRefreshToken(user.id, refreshToken);
@@ -370,7 +370,7 @@ exports.postRefreshToken = async (req, res) => {
       });
     }
 
-    const newAccessToken = createToken(user);
+    const newAccessToken = createAccessToken(user);
     const newRefreshToken = createRefreshToken(user);
 
     await UsuarioService.updateRefreshToken(user.id, newRefreshToken);

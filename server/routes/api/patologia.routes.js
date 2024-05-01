@@ -5,8 +5,8 @@ const router                            = require('express').Router();
 const PatologiaController               = require('../../controllers/patologia.controller');
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                       = require("../../helpers/jwt/tokenVerify");
-const tokenRole                         = require("../../helpers/jwt/tokenRole");
+const tokenVerify                       = require("../../helpers/jwt/verifyToken");
+const tokenRole                         = require("../../util/middleware/verifyUserRole");
 
 // Importación de middlewares para la validación de datos
 const {validatePaginationQueryParams}   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");

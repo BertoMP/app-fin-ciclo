@@ -1,5 +1,18 @@
-const {param, validationResult} = require('express-validator');
+// Importación de las librerías necesarias
+const { param, validationResult } = require('express-validator');
 
+/**
+ * @name validateEspecialidadIdParam
+ * @description Middleware que valida el parámetro 'especialidad_id' en la ruta.
+ *              Si 'especialidad_id' no es numérico o es menor que 1, se envía una respuesta
+ *              con el estado 400 y un mensaje de error.
+ *              Si 'especialidad_id' es válido, se llama a la función next() para pasar al siguiente middleware o ruta.
+ * @memberof Helpers-Validators-Params
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
+ */
 exports.validateEspecialidadIdParam = [
   param('especialidad_id')
     .isNumeric().withMessage('El ID de la especialidad debe ser un valor numérico.')

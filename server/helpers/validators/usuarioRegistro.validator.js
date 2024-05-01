@@ -1,5 +1,17 @@
-const {body} = require('express-validator');
+// Importación de los módulos necesarios
+const { body } = require('express-validator');
 
+/**
+ * @name validateUserRegister
+ * @description Middleware que valida el cuerpo de la solicitud para el registro de un usuario.
+ *              Valida 'email', 'password', 'nombre', 'primer_apellido', 'segundo_apellido' y 'dni'.
+ *              Si alguno de estos campos no es válido, se lanza un error con el mensaje correspondiente.
+ * @memberof Helpers-Validators-Body
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
+ */
 exports.validateUserRegister = [
   body('email')
     .trim()
@@ -13,7 +25,6 @@ exports.validateUserRegister = [
 
       return true;
     }),
-
   body('password')
     .trim()
     .notEmpty().withMessage('La contraseña es requerida.')
@@ -27,22 +38,18 @@ exports.validateUserRegister = [
 
       return true;
     }),
-
   body('nombre')
     .trim()
     .notEmpty().withMessage('El nombre es requerido.')
     .isString().withMessage('El nombre debe ser una cadena de texto.'),
-
   body('primer_apellido')
     .trim()
     .notEmpty().withMessage('El primer apellido es requerido.')
     .isString().withMessage('El primer apellido debe ser una cadena de texto.'),
-
   body('segundo_apellido')
     .trim()
     .notEmpty().withMessage('El segundo apellido es requerido.')
     .isString().withMessage('El segundo apellido debe ser una cadena de texto.'),
-
   body('dni')
     .trim()
     .notEmpty().withMessage('El DNI es requerido.')

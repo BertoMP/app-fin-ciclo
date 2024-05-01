@@ -1,6 +1,21 @@
-const {body, validationResult} = require('express-validator');
-const {validateUserRegister} = require("./usuarioRegistro.validator");
+// Importación de las librerías necesarias
+const { body, validationResult } = require('express-validator');
 
+// Importación de los validadores necesarios
+const { validateUserRegister } = require("./usuarioRegistro.validator");
+
+/**
+ * @name validateEspecialistaRegister
+ * @description Middleware que valida el cuerpo de la solicitud para el registro de un especialista.
+ *              Valida 'num_colegiado', 'descripcion', 'turno', 'especialidad_id', 'consulta_id' e 'imagen'.
+ *              Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
+ *              Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+ * @memberof Helpers-Validators-Body
+ * @function
+ * @param {Object} req - El objeto de solicitud de Express.
+ * @param {Object} res - El objeto de respuesta de Express.
+ * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
+ */
 exports.validateEspecialistaRegister = [
   validateUserRegister,
   body('num_colegiado')

@@ -10,6 +10,7 @@ const swaggerUi           = require('swagger-ui-express');
 const swaggerDocument     = require('./docs/swagger.js');
 const express             = require('express');
 const cors                = require('cors');
+const path                = require('path');
 
 // Configuramos las opciones de CORS
 const corsOptions = {
@@ -30,6 +31,9 @@ app.use(cors(corsOptions));
 
 // Configuramos Swagger UI para servir la documentación de la API
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Sirve los archivos estáticos desde el directorio 'jsdocs'
+app.use('/docs', express.static(path.join(__dirname, 'docs', 'jsdocs')));
 
 // Importamos y usamos nuestras rutas de API
 app.use('/api', require('./routes/api'));

@@ -1,0 +1,10 @@
+{
+  "source": {
+    "include": ["."],
+    "excludePattern": ".*(node_modules|docs|tmp|public).*"
+  },
+  "opts": {
+    "recurse": true,
+    "destination": "./docs/jsdocs"
+  }
+}
