@@ -1,11 +1,16 @@
-const router = require('express').Router();
-const ConsultaController = require('../../controllers/consulta.controller');
+// Inicialización del router de express
+const router                      = require('express').Router();
 
-const tokenVerify = require('../../helpers/jwt/tokenVerify');
-const tokenRole = require('../../helpers/jwt/tokenRole');
+// Importación del controlador de consulta
+const ConsultaController          = require('../../controllers/consulta.controller');
 
-const {validateConsulta} = require("../../helpers/validators/consulta.validator");
-const {validateConsultaIdParam} = require("../../helpers/validators/params/consultaIdParam.validator");
+// Importación de middlewares para la validación de token y roles
+const tokenVerify                 = require('../../helpers/jwt/tokenVerify');
+const tokenRole                   = require('../../helpers/jwt/tokenRole');
+
+// Importación de middlewares para la validación de datos
+const {validateConsulta}          = require("../../helpers/validators/consulta.validator");
+const {validateConsultaIdParam}   = require("../../helpers/validators/params/consultaIdParam.validator");
 
 // Rutas GET
 /**

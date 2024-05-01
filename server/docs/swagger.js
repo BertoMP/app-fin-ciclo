@@ -881,6 +881,31 @@ const options = {
             },
           },
         },
+        PacienteHistoria: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'integer',
+              description: 'El ID del paciente',
+            },
+            nombre: {
+              type: 'string',
+              description: 'El nombre del paciente',
+            },
+            primer_apellido: {
+              type: 'string',
+              description: 'El primer apellido del paciente',
+            },
+            segundo_apellido: {
+              type: 'string',
+              description: 'El segundo apellido del paciente',
+            },
+            num_historia_clinica: {
+              type: 'integer',
+              description: 'El número de historia clínica del paciente',
+            },
+          },
+        },
         PatologiaPaginada: {
           type: 'object',
           properties: {

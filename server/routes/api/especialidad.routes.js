@@ -1,12 +1,17 @@
-const router = require('express').Router();
-const EspecialidadController = require('../../controllers/especialidad.controller');
+// Inicialización del router de express
+const router                            = require('express').Router();
 
-const tokenVerify = require('../../helpers/jwt/tokenVerify');
-const tokenRole = require('../../helpers/jwt/tokenRole');
+// Importación del controlador de especialidad
+const EspecialidadController            = require('../../controllers/especialidad.controller');
 
-const {validateEspecialidad} = require("../../helpers/validators/especialidad.validator");
-const {validateEspecialidadIdParam} = require("../../helpers/validators/params/especialidadIdParam.validator");
-const {validatePaginationQueryParams} = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+// Importación de middlewares para la validación de token y roles
+const tokenVerify                       = require('../../helpers/jwt/tokenVerify');
+const tokenRole                         = require('../../helpers/jwt/tokenRole');
+
+// Importación de middlewares para la validación de datos
+const {validateEspecialidad}            = require("../../helpers/validators/especialidad.validator");
+const {validateEspecialidadIdParam}     = require("../../helpers/validators/params/especialidadIdParam.validator");
+const {validatePaginationQueryParams}   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
 
 // Rutas GET
 /**

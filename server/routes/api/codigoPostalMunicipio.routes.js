@@ -1,5 +1,8 @@
-const router = require('express').Router();
-const CodigoPostalController = require('../../controllers/codigoPostalMunicipio.controller');
+// Inicialización del router de express
+const router                  = require('express').Router();
+
+// Importación del controlador de código postal
+const CodigoPostalController  = require('../../controllers/codigoPostalMunicipio.controller');
 
 // Ruta GET
 /**

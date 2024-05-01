@@ -1,5 +1,8 @@
-const router = require('express').Router();
-const ProvinciaController = require('../../controllers/provincia.controller');
+// Inicialización del router de express
+const router                = require('express').Router();
+
+// Importación del controlador de provincia
+const ProvinciaController   = require('../../controllers/provincia.controller');
 
 // Ruta GET
 /**

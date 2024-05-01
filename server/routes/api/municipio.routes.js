@@ -1,6 +1,11 @@
-const router = require('express').Router();
-const MunicipioController = require('../../controllers/municipio.controller');
-const {validateProvinciaIdParam} = require('../../helpers/validators/params/provinciaIdParam.validator');
+// Inicialización del router de express
+const router                      = require('express').Router();
+
+// Importación del controlador de municipio
+const MunicipioController         = require('../../controllers/municipio.controller');
+
+// Importación de middlewares para la validación de datos
+const {validateProvinciaIdParam}  = require('../../helpers/validators/params/provinciaIdParam.validator');
 
 // Ruta GET
 /**

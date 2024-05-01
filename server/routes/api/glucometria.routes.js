@@ -1,14 +1,19 @@
-const router = require('express').Router();
-const GlucometriaController = require('../../controllers/glucometria.controller');
+// Inicialización del router de express
+const router                            = require('express').Router();
 
-const tokenVerify = require('../../helpers/jwt/tokenVerify');
-const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenUserId = require('../../helpers/jwt/tokenUserId');
+// Importación del controlador de glucometría
+const GlucometriaController             = require('../../controllers/glucometria.controller');
 
-const {validateGlucometria} = require('../../helpers/validators/glucometria.validator');
-const {validatePaginationQueryParams} = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const {validateDateQueryParams} = require("../../helpers/validators/queryParams/dateQueryParams.validator");
-const {validateUsuarioIdParam} = require("../../helpers/validators/params/usuarioIdParam.validator");
+// Importación de middlewares para la validación de token y roles
+const tokenVerify                       = require('../../helpers/jwt/tokenVerify');
+const tokenRole                         = require('../../helpers/jwt/tokenRole');
+const tokenUserId                       = require('../../helpers/jwt/tokenUserId');
+
+// Importación de middlewares para la validación de datos
+const {validateGlucometria}             = require('../../helpers/validators/glucometria.validator');
+const {validatePaginationQueryParams}   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const {validateDateQueryParams}         = require("../../helpers/validators/queryParams/dateQueryParams.validator");
+const {validateUsuarioIdParam}          = require("../../helpers/validators/params/usuarioIdParam.validator");
 
 // Rutas GET
 /**

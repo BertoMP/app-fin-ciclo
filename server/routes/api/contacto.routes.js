@@ -1,7 +1,11 @@
-const router = require('express').Router();
-const ContactoController = require('../../controllers/contacto.controller');
+// Inicialización del router de express
+const router              = require('express').Router();
 
-const {validateContacto} = require("../../helpers/validators/contacto.validator");
+// Importación del controlador de contacto
+const ContactoController  = require('../../controllers/contacto.controller');
+
+// Importación de middlewares para la validación de datos
+const {validateContacto}  = require("../../helpers/validators/contacto.validator");
 
 // Rutas POST
 /**

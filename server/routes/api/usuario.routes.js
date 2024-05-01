@@ -1,18 +1,23 @@
-const router = require('express').Router();
-const UsuarioController = require('../../controllers/usuario.controller');
+// Inicialización del router de express
+const router                          = require('express').Router();
 
-const tokenVerify = require('../../helpers/jwt/tokenVerify');
-const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenId = require('../../helpers/jwt/tokenUserId');
+// Importación del controlador de usuario
+const UsuarioController               = require('../../controllers/usuario.controller');
 
-const {validateUserLogin} = require("../../helpers/validators/usuarioLogin.validator");
-const {validatePacienteRegister} = require("../../helpers/validators/pacienteRegistro.validador");
-const {validateEspecialistaRegister} = require("../../helpers/validators/especialistaRegistro.validator");
-const {validateUserPasswordChange} = require("../../helpers/validators/usuarioPasswordChange.validator");
-const {validateRoleQueryParams} = require("../../helpers/validators/queryParams/roleQueryParams.validator");
-const {validateUsuarioIdParam} = require("../../helpers/validators/params/usuarioIdParam.validator");
-const {validatePacienteUpdate} = require("../../helpers/validators/pacienteUpdate.validator");
-const {validateEspecialistaUpdate} = require("../../helpers/validators/especialistaUpdate.validator");
+// Importación de middlewares para la validación de token y roles
+const tokenVerify                     = require('../../helpers/jwt/tokenVerify');
+const tokenRole                       = require('../../helpers/jwt/tokenRole');
+const tokenId                         = require('../../helpers/jwt/tokenUserId');
+
+// Importación de middlewares para la validación de datos
+const {validateUserLogin}             = require("../../helpers/validators/usuarioLogin.validator");
+const {validatePacienteRegister}      = require("../../helpers/validators/pacienteRegistro.validador");
+const {validateEspecialistaRegister}  = require("../../helpers/validators/especialistaRegistro.validator");
+const {validateUserPasswordChange}    = require("../../helpers/validators/usuarioPasswordChange.validator");
+const {validateRoleQueryParams}       = require("../../helpers/validators/queryParams/roleQueryParams.validator");
+const {validateUsuarioIdParam}        = require("../../helpers/validators/params/usuarioIdParam.validator");
+const {validatePacienteUpdate}        = require("../../helpers/validators/pacienteUpdate.validator");
+const {validateEspecialistaUpdate}    = require("../../helpers/validators/especialistaUpdate.validator");
 
 
 // Rutas GET

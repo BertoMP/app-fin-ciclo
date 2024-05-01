@@ -1,14 +1,19 @@
-const router = require('express').Router();
-const PacienteTomaMedicamentoController = require('../../controllers/pacienteTomaMedicamento.controller');
+// Inicialización del router de express
+const router                              = require('express').Router();
 
-const tokenVerify = require('../../helpers/jwt/tokenVerify');
-const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenUserId = require('../../helpers/jwt/tokenUserId');
+// Importación del controlador de pacienteTomaMedicamento
+const PacienteTomaMedicamentoController   = require('../../controllers/pacienteTomaMedicamento.controller');
 
-const {validatePacienteTomaMedicamento} = require('../../helpers/validators/pacienteTomaMedicamento.validator');
-const {validateUsuarioIdParam} = require("../../helpers/validators/params/usuarioIdParam.validator");
-const {validateTomaIdParam} = require("../../helpers/validators/params/tomaIdParam");
-const {validateMedicamentoIdParam} = require("../../helpers/validators/params/medicamentoIdParam.validator");
+// Importación de middlewares para la validación de token y roles
+const tokenVerify                         = require('../../helpers/jwt/tokenVerify');
+const tokenRole                           = require('../../helpers/jwt/tokenRole');
+const tokenUserId                         = require('../../helpers/jwt/tokenUserId');
+
+// Importación de middlewares para la validación de datos
+const {validatePacienteTomaMedicamento}   = require('../../helpers/validators/pacienteTomaMedicamento.validator');
+const {validateUsuarioIdParam}            = require("../../helpers/validators/params/usuarioIdParam.validator");
+const {validateTomaIdParam}               = require("../../helpers/validators/params/tomaIdParam");
+const {validateMedicamentoIdParam}        = require("../../helpers/validators/params/medicamentoIdParam.validator");
 
 // Rutas GET
 /**

@@ -1,5 +1,8 @@
-const router = require('express').Router();
-const TipoViaController = require('../../controllers/tipoVia.controller');
+// Inicialización del router de express
+const router              = require('express').Router();
+
+// Importación del controlador de tipo de vía
+const TipoViaController   = require('../../controllers/tipoVia.controller');
 
 // Ruta GET
 /**

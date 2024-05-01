@@ -1,14 +1,19 @@
-const router = require('express').Router();
-const TensionArterialController = require('../../controllers/tensionArterial.controller');
+// Inicialización del router de express
+const router                            = require('express').Router();
 
-const tokenVerify = require('../../helpers/jwt/tokenVerify');
-const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenId = require('../../helpers/jwt/tokenUserId');
+// Importación del controlador de tensionArterial
+const TensionArterialController         = require('../../controllers/tensionArterial.controller');
 
-const {validateTensionArterial} = require('../../helpers/validators/tensionArterial.validator');
-const {validatePaginationQueryParams} = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const {validateDateQueryParams} = require('../../helpers/validators/queryParams/dateQueryParams.validator');
-const {validateUsuarioIdParam} = require('../../helpers/validators/params/usuarioIdParam.validator');
+// Importación de middlewares para la validación de roles
+const tokenVerify                       = require('../../helpers/jwt/tokenVerify');
+const tokenRole                         = require('../../helpers/jwt/tokenRole');
+const tokenId                           = require('../../helpers/jwt/tokenUserId');
+
+// Importación de middlewares para la validación de datos
+const {validateTensionArterial}         = require('../../helpers/validators/tensionArterial.validator');
+const {validatePaginationQueryParams}   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const {validateDateQueryParams}         = require('../../helpers/validators/queryParams/dateQueryParams.validator');
+const {validateUsuarioIdParam}          = require('../../helpers/validators/params/usuarioIdParam.validator');
 
 // Rutas GET
 /**

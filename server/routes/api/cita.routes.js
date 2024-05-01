@@ -1,14 +1,19 @@
-const router = require('express').Router();
-const CitaController = require('../../controllers/cita.controller');
+// Inicialización del router de express
+const router                            = require('express').Router();
 
-const tokenVerify = require('../../helpers/jwt/tokenVerify');
-const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenUserId = require('../../helpers/jwt/tokenUserId');
+// Importación del controlador de citas
+const CitaController                    = require('../../controllers/cita.controller');
 
-const {validateCita} = require("../../helpers/validators/cita.validator");
-const {validateCitaIdParam} = require("../../helpers/validators/params/citaIdParam.validator");
-const {validatePaginationQueryParams} = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const {validateDateQueryParams} = require("../../helpers/validators/queryParams/dateQueryParams.validator");
+// Importación de middlewares para la validación de tokens y roles
+const tokenVerify                       = require('../../helpers/jwt/tokenVerify');
+const tokenRole                         = require('../../helpers/jwt/tokenRole');
+const tokenUserId                       = require('../../helpers/jwt/tokenUserId');
+
+// Importación de middlewares para la validación de datos
+const {validateCita}                    = require("../../helpers/validators/cita.validator");
+const {validateCitaIdParam}             = require("../../helpers/validators/params/citaIdParam.validator");
+const {validatePaginationQueryParams}   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const {validateDateQueryParams}         = require("../../helpers/validators/queryParams/dateQueryParams.validator");
 
 // Rutas GET
 /**

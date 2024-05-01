@@ -1,12 +1,17 @@
-const router = require('express').Router();
-const InformeController = require('../../controllers/informe.controller');
+// Inicialización del router de express
+const router                    = require('express').Router();
 
-const tokenVerify = require('../../helpers/jwt/tokenVerify');
-const tokenRole = require('../../helpers/jwt/tokenRole');
-const tokenId = require('../../helpers/jwt/tokenUserId');
+// Importación del controlador de informe
+const InformeController         = require('../../controllers/informe.controller');
 
-const {validateInforme} = require("../../helpers/validators/informe.validator");
-const {validateInformeIdParam} = require("../../helpers/validators/params/informeIdParam.validator");
+// Importación de middlewares para la validación de token y roles
+const tokenVerify               = require('../../helpers/jwt/tokenVerify');
+const tokenRole                 = require('../../helpers/jwt/tokenRole');
+const tokenId                   = require('../../helpers/jwt/tokenUserId');
+
+// Importación de middlewares para la validación de datos
+const {validateInforme}         = require("../../helpers/validators/informe.validator");
+const {validateInformeIdParam}  = require("../../helpers/validators/params/informeIdParam.validator");
 
 // Rutas GET
 /**

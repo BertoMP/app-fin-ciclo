@@ -1,11 +1,16 @@
-const router = require('express').Router();
-const PatologiaController = require('../../controllers/patologia.controller');
+// Inicialización del router de express
+const router                            = require('express').Router();
 
-const tokenVerify = require("../../helpers/jwt/tokenVerify");
-const tokenRole = require("../../helpers/jwt/tokenRole");
+// Importación del controlador de patología
+const PatologiaController               = require('../../controllers/patologia.controller');
 
-const {validatePaginationQueryParams} = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const {validatePatologia} = require("../../helpers/validators/patologia.validator");
+// Importación de middlewares para la validación de token y roles
+const tokenVerify                       = require("../../helpers/jwt/tokenVerify");
+const tokenRole                         = require("../../helpers/jwt/tokenRole");
+
+// Importación de middlewares para la validación de datos
+const {validatePaginationQueryParams}   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+const {validatePatologia}               = require("../../helpers/validators/patologia.validator");
 
 // Ruta GET
 /**
