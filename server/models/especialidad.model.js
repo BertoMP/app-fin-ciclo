@@ -245,7 +245,7 @@ class EspecialidadModel {
     const imagen = especialidad.imagen;
 
     try {
-      const currentEspecialidad = await this.findById(dbConn, id);
+      const currentEspecialidad = await EspecialidadModel.findById(id, dbConn);
 
       if (!currentEspecialidad) {
         throw new Error('Especialidad no encontrada.');

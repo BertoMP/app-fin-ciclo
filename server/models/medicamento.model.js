@@ -180,7 +180,7 @@ class MedicamentoModel {
     const descripcion = medicamento.descripcion;
 
     try {
-      const currentMedicamento = await this.findById(dbConn, id);
+      const currentMedicamento = await MedicamentoModel.findById(id, dbConn);
 
       if (!currentMedicamento) {
         throw new Error('Medicamento no encontrado.');

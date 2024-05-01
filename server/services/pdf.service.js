@@ -54,7 +54,7 @@ class PdfService {
     const bodyHtml = compiledTemplate(medicamentos);
     const filename = `receta_${medicamentos.datos_paciente.nombre}_${medicamentos.datos_paciente.primer_apellido}_${medicamentos.datos_paciente.segundo_apellido}.pdf`;
 
-    return await this.#generatePDFWithTemplate(bodyHtml, filename);
+    return await PdfService.#generatePDFWithTemplate(bodyHtml, filename);
   }
 
   /**
@@ -72,7 +72,7 @@ class PdfService {
     const bodyHtml = compiledTemplate(informe);
     const filename = `informe_${informe.datos_paciente.nombre}_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}.pdf`;
 
-    return await this.#generatePDFWithTemplate(bodyHtml, filename);
+    return await PdfService.#generatePDFWithTemplate(bodyHtml, filename);
   }
 
   /**
@@ -91,7 +91,7 @@ class PdfService {
     const bodyHtml = compiledTemplate({cita, qr});
     const filename = `cita_${cita.datos_paciente.nombre}_${cita.datos_paciente.primer_apellido}_${cita.datos_paciente.segundo_apellido}.pdf`;
 
-    return await this.#generatePDFWithTemplate(bodyHtml, filename);
+    return await PdfService.#generatePDFWithTemplate(bodyHtml, filename);
   }
 
   /**
@@ -112,7 +112,7 @@ class PdfService {
       fs.mkdirSync(dir, {recursive: true});
     }
 
-    await this.#generatePDF(bodyHtml, pdfPath);
+    await PdfService.#generatePDF(bodyHtml, pdfPath);
 
     return pdfPath;
   }
