@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { PacientPanelComponent } from '../user-panels/pacient-panel/pacient-panel.component';
-import { EspecialistPanelComponent } from '../user-panels/especialist-panel/especialist-panel.component';
-import { AdminPanelComponent } from '../user-panels/admin-panel/admin-panel.component';
+import { PacientPanelComponent } from '../../user-panels/pacient-panel/pacient-panel.component';
+import { EspecialistPanelComponent } from '../../user-panels/especialist-panel/especialist-panel.component';
+import { AdminPanelComponent } from '../../user-panels/admin-panel/admin-panel.component';
 
 @Component({
   selector: 'app-panel',

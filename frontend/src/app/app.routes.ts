@@ -18,7 +18,8 @@ import {
 import { ForgottenPasswordComponent } from './pages/auth/forgotten-password/forgotten-password.component';
 import { RefreshPasswordComponent } from './pages/auth/refresh-password/refresh-password.component';
 import { EspecialistDataComponent } from './pages/especialist-data/especialist-data.component';
-import { PanelComponent } from './pages/panel/panel.component';
+import { PanelComponent } from './pages/panel-functions/panel/panel.component';
+import { loginGuard } from './shared/guards/login.guard';
 
 export const routes: Routes = [
   {
@@ -30,7 +31,8 @@ export const routes: Routes = [
   {
     path: 'testeo',
     // component: TesteoBackendComponent
-    component:PanelComponent
+    component:PanelComponent,
+    canActivate:[loginGuard]
   },
 
   {
