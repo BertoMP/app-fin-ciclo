@@ -6,9 +6,10 @@ const jwt = require("jsonwebtoken");
  * @description Genera un token de refresco para el usuario que inicia sesión
  *              en la aplicación y que le permitirá mantener la sesión activa
  *              por un tiempo determinado.
+ * @function
+ * @memberof Helpers-JWT
  * @param {Object} user - Objeto con los datos del usuario
  * @returns {string} - Token de refresco
- * @memberof Helpers-JWT
  */
 const createRefreshToken = (user) => {
   // Creación del payload con los datos del usuario

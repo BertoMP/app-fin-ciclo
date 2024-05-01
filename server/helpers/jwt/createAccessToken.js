@@ -6,9 +6,10 @@ const jwt = require("jsonwebtoken");
  * @description Genera un token de acceso para el usuario que inicia sesión
  *              en la aplicación y que le permitirá acceder a las rutas protegidas
  *              por un tiempo determinado.
+ * @function
+ * @memberof Helpers-JWT
  * @param {Object} user - Objeto con los datos del usuario
  * @returns {string} - Token de acceso
- * @memberof Helpers-JWT
  */
 const createAccessToken = (user) => {
   const payload = {
