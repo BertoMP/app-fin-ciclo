@@ -470,7 +470,7 @@ class UsuarioController {
 		let id = 0;
 
 		if (req.user_role === 1) {
-			id = req.param.usuario_id;
+			id = req.params.usuario_id;
 		} else if (req.user_role === 2) {
 			id = req.user_id;
 		}
@@ -484,9 +484,9 @@ class UsuarioController {
 				});
 			}
 
-			if (userExists.rol_id === 1) {
+			if (userExists.rol_id !== 2) {
 				return res.status(409).json({
-					errors: ['No se puede eliminar a un admin.'],
+					errors: ['No se puede eliminar a un admin o a un especialista.'],
 				});
 			}
 

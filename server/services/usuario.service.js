@@ -10,6 +10,7 @@ import InformeService from './informe.service.js';
 import PacienteTomaMedicamentoService from './pacienteTomaMedicamento.service.js';
 import GlucometriaService from './glucometria.service.js';
 import InformePatologiaService from './informePatologia.service.js';
+import CitaService from './cita.service.js';
 
 // Importación de las utilidades necesarias
 import { dbConn } from '../util/database/database.js';
@@ -319,7 +320,6 @@ class UsuarioService {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteUsuario(id, conn = null) {
-		const CitaService = require('./cita.service'); // Se importa aquí para evitar un ciclo de dependencias
 		const isConnProvided = !!conn;
 
 		if (!isConnProvided) {
