@@ -169,9 +169,9 @@ class PdfService {
 			footerTemplate: footerHtml,
 			margin: {
 				top: '2cm',
-				right: '3cm',
+				right: '2cm',
 				bottom: '2cm',
-				left: '3cm',
+				left: '2cm',
 			},
 		};
 

@@ -125,8 +125,9 @@ class CitaService {
 				await conn.beginTransaction();
 			}
 
-			const idCita = await CitaModel.createCita(cita, conn);
-			const newCita = await CitaModel.fetchById(idCita, conn);
+			const newCitaId = await CitaModel.createCita(cita, conn);
+			const newCita = await CitaModel.fetchById(newCitaId, conn);
+
 			const qr = await generateQRCode(newCita);
 			const emailPaciente = await UsuarioService.readEmailByUserId(cita.paciente_id, conn);
 			pdf = await PdfService.generateCitaPDF(newCita, qr);

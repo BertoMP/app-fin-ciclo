@@ -198,23 +198,23 @@ class CitaModel {
 					datos_cita: {
 						id: cita.id,
 						fecha: fecha,
-						hora: cita.hora,
-						datos_especialista: {
-							especialista_id: cita.especialista_id,
-							nombre: cita.especialista_nombre,
-							primer_apellido: cita.especialista_primer_apellido,
-							segundo_apellido: cita.especialista_segundo_apellido,
-							datos_especialidad: {
-								especialidad_id: cita.especialidad_id,
-								especialidad_nombre: cita.especialidad_nombre,
-							},
+						hora: cita.hora
+					},
+					datos_especialista: {
+						especialista_id: cita.especialista_id,
+						nombre: cita.especialista_nombre,
+						primer_apellido: cita.especialista_primer_apellido,
+						segundo_apellido: cita.especialista_segundo_apellido,
+						datos_especialidad: {
+							especialidad_id: cita.especialidad_id,
+							especialidad_nombre: cita.especialidad_nombre,
 						},
 						datos_consulta: {
 							consulta_id: cita.consulta_id,
 							consulta_nombre: cita.consulta_nombre,
 						},
-						informe_id: cita.informe_id,
 					},
+					informe_id: cita.informe_id,
 				};
 			}
 

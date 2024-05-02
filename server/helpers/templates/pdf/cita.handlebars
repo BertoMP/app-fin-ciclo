@@ -3,53 +3,109 @@
 <head>
     <title>Cita Médica</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-content: space-evenly;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 50px;
+            padding: 1.2rem;
+            background-color: #007BFF;
+            color: #fff;
         }
 
-        .section {
-            margin-bottom: 30px;
+        .header h1 {
+            font-size: 2em;
+            text-transform: uppercase;
         }
 
-        .section .title {
-            font-weight: bold;
-            margin-bottom: 10px;
+        figure {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .patient-data, .specialist-data, .date-data, .qr-code {
+            margin-bottom: .5rem;
+            padding: 1rem;
+        }
+
+        h3 {
+            margin-bottom: 1rem;
+            text-decoration: underline;
+            color: #007BFF;
+        }
+
+        p {
+            margin-bottom: .5rem;
+            font-size: 1.2rem;
+        }
+
+        .qr-code {
+            page-break-inside: avoid;
+        }
+
+        .qr-code img {
+            width: 50%;
         }
     </style>
 </head>
 <body>
-<div class="header">
-    <h1>Cita Médica</h1>
-</div>
+<main>
+    <section class="header">
+        <h1>Comprobante de cita médica</h1>
+    </section>
 
-<div class="section">
-    <div class="title">Datos del Paciente:</div>
-    <p>
-        Nombre: {{cita.datos_paciente.nombre}} {{cita.datos_paciente.primer_apellido}} {{cita.datos_paciente.segundo_apellido}}</p>
-</div>
+    <section class="patient-data">
+        <h3>Datos del paciente</h3>
+        <p>
+            <strong>Nombre:</strong>
+            {{cita.datos_paciente.nombre}}
+            {{cita.datos_paciente.primer_apellido}}
+            {{cita.datos_paciente.segundo_apellido}}
+        </p>
+    </section>
 
-<div class="section">
-    <div class="title">Datos del Especialista:</div>
-    <p>
-        Nombre: {{cita.datos_especialista.nombre}} {{cita.datos_especialista.primer_apellido}} {{cita.datos_especialista.segundo_apellido}}</p>
-    <p>Especialidad: {{cita.datos_especialista.especialidad_nombre}}</p>
-</div>
+    <section class="specialist-data">
+        <h3>Datos del especialista</h3>
+        <p>
+            <strong>Nombre:</strong>
+            {{cita.datos_especialista.nombre}}
+            {{cita.datos_especialista.primer_apellido}}
+            {{cita.datos_especialista.segundo_apellido}}
+        </p>
+        <p>
+            <strong>Especialidad:</strong>
+            {{cita.datos_especialista.datos_especialidad.especialidad_nombre}}
+        </p>
+    </section>
 
-<div class="section">
-    <div class="title">Datos de la Cita:</div>
-    <p>Fecha: {{cita.datos_cita.fecha}}</p>
-    <p>Hora: {{cita.datos_cita.hora}}</p>
-    <p>Consulta: {{cita.datos_cita.consulta_nombre}}</p>
-</div>
+    <section class="date-data">
+        <h3>Datos de la cita</h3>
+        <p><strong>Fecha:</strong> {{cita.datos_cita.fecha}}</p>
+        <p><strong>Hora:</strong> {{cita.datos_cita.hora}}</p>
+        <p><strong>Consulta:</strong> {{cita.datos_especialista.datos_consulta.consulta_nombre}}</p>
+    </section>
 
-<div class="section">
-    <div class="title">Código QR:</div>
-    <img src="{{qr}}" alt="Código QR">
-</div>
+    <section class="qr-code">
+        <h3>Código QR</h3>
+        <figure>
+            <img src="{{qr}}" alt="Código QR">
+            <figcaption>
+                <small>Código QR necesario para acceder a la consulta.</small>
+            </figcaption>
+        </figure>
+    </section>
+</main>
 </body>
 </html>
