@@ -70,7 +70,10 @@ import { validatePaginationQueryParams } from '../../helpers/validators/queryPar
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/especialidad/especialista', EspecialidadController.getEspecialidadesEspecialistas);
+router.get(
+	'/especialidad/especialista',
+	EspecialidadController.getEspecialidadesEspecialistas
+);
 
 /**
  * @swagger

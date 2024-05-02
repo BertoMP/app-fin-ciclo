@@ -7,6 +7,7 @@ import CodigoPostalMunicipioController from '../../controllers/codigoPostalMunic
 
 // Importación de validadores
 import { validateMunicipioIdParam } from '../../helpers/validators/params/municipioIdParam.validator.js';
+
 // Ruta GET
 /**
  * @swagger

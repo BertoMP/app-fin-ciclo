@@ -35,10 +35,10 @@ class EmailService {
 	 * @throws {Error} Si ocurre un error durante el envío del correo, se lanza un error.
 	 */
 	static async sendWelcomeEmail(to, name) {
-		const transporter = this.#createTransporter();
-		const compiledTemplate = this.#compileTemplate('welcome.handlebars', { name });
+		const transporter = EmailService.#createTransporter();
+		const compiledTemplate = EmailService.#compileTemplate('welcome.handlebars', { name });
 
-		const mailDetails = this.#createMailDetails(
+		const mailDetails = EmailService.#createMailDetails(
 			process.env.EMAIL_ACCOUNT,
 			to,
 			'Bienvenido a Clínica Médica Coslada',
@@ -65,13 +65,13 @@ class EmailService {
 	 * @throws {Error} Si ocurre un error durante el envío del correo, se lanza un error.
 	 */
 	static async sendPasswordResetEmail(to, user, resetToken) {
-		const transporter = this.#createTransporter();
-		const compiledTemplate = this.#compileTemplate('reset-password.handlebars', {
+		const transporter = EmailService.#createTransporter();
+		const compiledTemplate = EmailService.#compileTemplate('reset-password.handlebars', {
 			user,
 			resetLink: `${process.env.ANGULAR_HOST}:${process.env.ANGULAR_PORT}/auth/reset-password/${resetToken}`,
 		});
 
-		const mailDetails = this.#createMailDetails(
+		const mailDetails = EmailService.#createMailDetails(
 			'clinicamedicacoslada@gmail.com',
 			to,
 			'Recuperar contraseña - Clínica Médica Coslada',
@@ -96,11 +96,11 @@ class EmailService {
 	 * @throws {Error} Si ocurre un error durante el envío del correo, se lanza un error.
 	 */
 	static async sendContactEmail(contacto) {
-		const transporter = this.#createTransporter();
+		const transporter = EmailService.#createTransporter();
 
-		const compiledTemplate = this.#compileTemplate('contact.handlebars', { contacto });
+		const compiledTemplate = EmailService.#compileTemplate('contact.handlebars', { contacto });
 
-		const mailDetails = this.#createMailDetails(
+		const mailDetails = EmailService.#createMailDetails(
 			process.env.EMAIL_ACCOUNT,
 			process.env.EMAIL_ACCOUNT,
 			`${contacto.descripcion}`,
@@ -127,11 +127,11 @@ class EmailService {
 	 * @throws {Error} Si ocurre un error durante el envío del correo, se lanza un error.
 	 */
 	static async sendPdfCita(newCita, emailPaciente, pdf) {
-		const transporter = this.#createTransporter();
+		const transporter = EmailService.#createTransporter();
 
-		const compiledTemplate = this.#compileTemplate('cita.handlebars', { newCita });
+		const compiledTemplate = EmailService.#compileTemplate('cita.handlebars', { newCita });
 
-		const mailDetails = this.#createMailDetails(
+		const mailDetails = EmailService.#createMailDetails(
 			process.env.EMAIL_ACCOUNT,
 			emailPaciente,
 			'Confirmación de cita',

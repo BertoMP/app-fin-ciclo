@@ -152,7 +152,7 @@ class PatologiaController {
 				});
 			}
 
-			await _createPatologia(patologia);
+			await PatologiaService.createPatologia(patologia);
 
 			return res.status(200).json({
 				message: 'Patología creada correctamente.',

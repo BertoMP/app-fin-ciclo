@@ -258,7 +258,7 @@ class UsuarioService {
 	 * @memberof UsuarioService
 	 * @param {number} id - El ID del usuario.
 	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise<Object>} El correo electrónico del usuario.
+	 * @returns {Promise<string>} El correo electrónico del usuario.
 	 */
 	static async readEmailByUserId(id, conn = dbConn) {
 		return await UsuarioModel.getEmailById(id, conn);
@@ -304,7 +304,7 @@ class UsuarioService {
 	 * @returns {Promise<Object>} El resultado de la operación de actualización.
 	 */
 	static async updatePassword(email, password, conn = dbConn) {
-		return await _updatePassword(email, password, conn);
+		return await UsuarioModel.updatePassword(email, password, conn);
 	}
 
 	/**
@@ -354,7 +354,7 @@ class UsuarioService {
 
 			await PacienteService.deletePacienteByUserId(id, conn);
 
-			await _deleteUsuario(id, conn);
+			await UsuarioModel.deleteUsuario(id, conn);
 
 			if (!isConnProvided) {
 				await conn.commit();

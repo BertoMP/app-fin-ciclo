@@ -31,7 +31,7 @@ class PatologiaService {
 	 * @param {number} page - La página de resultados a devolver.
 	 * @param {number} limit - El número de resultados por página.
 	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise<Array>} Un array de patologías.
+	 * @returns {Promise<Object>} Un objeto con patologías.
 	 */
 	static async readPatologias(page, limit, conn = dbConn) {
 		return await PatologiaModel.fetchAll(page, limit, conn);

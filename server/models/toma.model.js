@@ -60,6 +60,29 @@ class TomaModel {
 			throw new Error('Error al eliminar la toma.');
 		}
 	}
+
+	/**
+	 * @method findToma
+	 * @description Método para buscar una toma por su ID.
+	 * @static
+	 * @async
+	 * @memberof TomaModel
+	 * @param {number} id - El ID de la toma.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} La toma encontrada.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async findToma(id, dbConn) {
+		const query = 'SELECT * FROM toma WHERE id = ?';
+
+		try {
+			const result = await dbConn.execute(query, [id]);
+
+			return result[0];
+		} catch (err) {
+			throw new Error('Error al buscar la toma.');
+		}
+	}
 }
 
 export default TomaModel;

@@ -32,7 +32,10 @@ import TipoViaController from '../../controllers/tipoVia.controller.js';
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/tipo-via', TipoViaController.getTipoVia);
+router.get(
+  '/tipo-via',
+  TipoViaController.getTipoVia
+);
 
 // Exportación del router
 export default router;

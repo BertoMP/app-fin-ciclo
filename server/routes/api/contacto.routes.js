@@ -41,7 +41,11 @@ import { validateContacto } from '../../helpers/validators/contacto.validator.js
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/contacto', validateContacto, ContactoController.postContacto);
+router.post(
+  '/contacto',
+  validateContacto,
+  ContactoController.postContacto
+);
 
 // Exportación del router
 export default router;

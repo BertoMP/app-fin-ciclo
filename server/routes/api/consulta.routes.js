@@ -122,7 +122,12 @@ router.get(
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/consulta', verifyAccessToken, verifyUserRole([1]), ConsultaController.getConsultas);
+router.get(
+	'/consulta',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	ConsultaController.getConsultas
+);
 
 // Rutas POST
 /**

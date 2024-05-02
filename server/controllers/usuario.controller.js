@@ -341,7 +341,7 @@ class UsuarioController {
 		const email = req.body.email;
 
 		try {
-			const user = await readUsuarioByEmail(email);
+			const user = await UsuarioService.readUsuarioByEmail(email);
 			if (!user) {
 				return res.status(404).json({
 					errors: ['Correo no encontrado en la base de datos.'],
@@ -383,7 +383,7 @@ class UsuarioController {
 		const userEmail = await verifyResetToken(req, res);
 
 		try {
-			const user = await readUsuarioByEmail(userEmail);
+			const user = await UsuarioService.readUsuarioByEmail(userEmail);
 
 			if (!user) {
 				return res.status(404).json({

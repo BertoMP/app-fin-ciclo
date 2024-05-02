@@ -24,7 +24,7 @@ class InformeService {
 	 * @returns {Promise<Object>} Un objeto que representa el informe.
 	 */
 	static async readInforme(id, conn = dbConn) {
-		return await fetchById(id, conn);
+		return await InformeModel.fetchById(id, conn);
 	}
 
 	/**

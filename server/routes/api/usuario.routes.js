@@ -399,7 +399,10 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/contrasena-olvidada', UsuarioController.postForgotPassword);
+router.post(
+	'/usuario/contrasena-olvidada',
+	UsuarioController.postForgotPassword
+);
 
 /**
  * @swagger

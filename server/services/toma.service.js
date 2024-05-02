@@ -36,6 +36,20 @@ class TomaService {
 	static async deleteToma(id, conn = dbConn) {
 		return await TomaModel.deleteToma(id, conn);
 	}
+
+	/**
+	 * @method findToma
+	 * @description Método para buscar una toma por su ID.
+	 * @static
+	 * @async
+	 * @memberof TomaService
+	 * @param {number} id - El ID de la toma.
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} La toma encontrada.
+	 */
+	static async findToma(id, conn = dbConn) {
+		return await TomaModel.findToma(id, conn);
+	}
 }
 
 // Exportación del servicio

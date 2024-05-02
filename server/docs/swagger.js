@@ -351,7 +351,10 @@ const options = {
 					type: 'object',
 					properties: {
 						errors: {
-							type: 'string',
+							type: 'array',
+							items: {
+								type: 'string',
+							},
 						},
 					},
 				},
@@ -758,7 +761,10 @@ const options = {
 					type: 'object',
 					properties: {
 						errors: {
-							type: 'string',
+							type: 'array',
+							items: {
+								type: 'string',
+							},
 						},
 					},
 				},
@@ -883,7 +889,10 @@ const options = {
 					type: 'object',
 					properties: {
 						errors: {
-							type: 'string',
+							type: 'array',
+							items: {
+								type: 'string',
+							},
 						},
 					},
 				},
@@ -1067,7 +1076,10 @@ const options = {
 					type: 'object',
 					properties: {
 						errors: {
-							type: 'string',
+							type: 'array',
+							items: {
+								type: 'string',
+							},
 						},
 					},
 				},
@@ -1157,7 +1169,10 @@ const options = {
 					type: 'object',
 					properties: {
 						errors: {
-							type: 'string',
+							type: 'array',
+							items: {
+								type: 'string',
+							},
 						},
 					},
 				},
@@ -1165,7 +1180,10 @@ const options = {
 					type: 'object',
 					properties: {
 						errors: {
-							type: 'string',
+							type: 'array',
+							items: {
+								type: 'string',
+							},
 						},
 					},
 				},

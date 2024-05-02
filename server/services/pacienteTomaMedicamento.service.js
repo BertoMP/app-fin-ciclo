@@ -65,9 +65,9 @@ class PacienteTomaMedicamentoService {
 					};
 
 					if (prescripcion.id) {
-						await updateToma(prescripcion.id, prescripcion, conn);
+						await PacienteTomaMedicamentoModel.updateToma(prescripcion.id, prescripcion, conn);
 					} else {
-						const existingToma = await findTomaByHora(
+						const existingToma = await PacienteTomaMedicamentoModel.findTomaByHora(
 							pacienteId,
 							medicamentoId,
 							prescripcion.hora,
@@ -80,9 +80,9 @@ class PacienteTomaMedicamentoService {
 							);
 						}
 
-						const toma = await createToma(prescripcion, conn);
+						const toma = await TomaService.createToma(prescripcion, conn);
 						const idToma = toma.insertId;
-						await createPacienteTomaMedicamento(pacienteId, medicamentoId, idToma, conn);
+						await PacienteTomaMedicamentoModel.createPacienteTomaMedicamento(pacienteId, medicamentoId, idToma, conn);
 					}
 				}
 			}

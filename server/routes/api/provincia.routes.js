@@ -32,7 +32,10 @@ import ProvinciaController from '../../controllers/provincia.controller.js';
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/provincia', ProvinciaController.getProvincias);
+router.get(
+  '/provincia',
+  ProvinciaController.getProvincias
+);
 
 // Exportación del router
 export default router;

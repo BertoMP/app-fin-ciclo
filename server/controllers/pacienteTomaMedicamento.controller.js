@@ -1,6 +1,7 @@
 // Importación de los servicios necesarios
 import PacienteTomaMedicamentoService from '../services/pacienteTomaMedicamento.service.js';
 import PdfService from '../services/pdf.service.js';
+import TomaService from "../services/toma.service.js";
 
 /**
  * @class PacienteTomaMedicamentoController
@@ -96,7 +97,7 @@ class PacienteTomaMedicamentoController {
 		const toma_id = req.params.toma_id;
 
 		try {
-			const tomaExists = await PacienteTomaMedicamentoService.findToma(toma_id);
+			const tomaExists = await TomaService.findToma(toma_id);
 
 			if (!tomaExists || tomaExists.length === 0) {
 				return res.status(404).json({

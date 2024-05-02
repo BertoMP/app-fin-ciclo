@@ -143,7 +143,7 @@ class CitaService {
 			throw err;
 		} finally {
 			if (pdf) {
-				await destroyPDF(pdf);
+				await PdfService.destroyPDF(pdf);
 			}
 
 			if (!isConnProvided) {
