@@ -147,7 +147,8 @@ class UsuarioModel {
 			'   consulta_id, ' +
 			'   turno, ' +
 			'   imagen, ' +
-			'   descripcion ' +
+			'   rol_id, ' +
+			'   rol.nombre AS nombre_rol ' +
 			'FROM ' +
 			'   usuario ' +
 			'INNER JOIN ' +
