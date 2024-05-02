@@ -20,11 +20,14 @@ import { RefreshPasswordComponent } from './pages/auth/refresh-password/refresh-
 import { EspecialistDataComponent } from './pages/especialist-data/especialist-data.component';
 import { PanelComponent } from './pages/panel-functions/panel/panel.component';
 import { loginGuard } from './core/guards/login.guard';
+import {
+  PageNotFoundComponent
+} from "./pages/page-not-found/page-not-found.component";
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/login',
+    redirectTo: '/sobre-nosotros',
     pathMatch: 'full'
   },
 
@@ -77,6 +80,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'auth/login'
+    component: PageNotFoundComponent
   }
 ];
