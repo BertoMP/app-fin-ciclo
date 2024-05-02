@@ -4,7 +4,7 @@
         <div class="col-md-12">
             @switch (userRole) {
             @case(UserRole.ADMIN) {
-            <app-admin-panel></app-admin-panel>
+            <app-admin-panel [userRole]="userRole"></app-admin-panel>
             }
             @case(UserRole.PACIENT) {
             <app-pacient-panel></app-pacient-panel>

@@ -264,6 +264,7 @@ export class RegisterComponent implements OnInit {
 
     this.isLoading = true;
     const newUser: UserModel = this.generateUser();
+    console.log(newUser);
     this.authService.register(newUser)
       .subscribe({
         next: (response) => {

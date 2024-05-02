@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { UserModel } from '../interfaces/user.model';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
+import { UserListResponseModel } from '../interfaces/user-list-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,20 @@ export class AdminPanelService {
 
   constructor(private http: HttpClient) { }
 
-  getUserList(){
-    return this.http.get(`${this.baseUrl}/usuario/listado`);
+  getUserList(page:number):Observable<UserListResponseModel>{
+    return this.http.get<UserListResponseModel>(`${this.baseUrl}/usuario/listado?page=${page}`);
+  }
+  getSpecificPage(url:string):Observable<UserListResponseModel>{
+    return this.http.get<UserListResponseModel>(`${this.baseUrl}${url}`);
+  }
+
+  eliminateUser(id:number):Observable<any>{
+    return this.http.delete<UserListResponseModel>(`${this.baseUrl}/usuario/borrar-usuario/${id}`).pipe(catchError(this.handleError));
+  }
+  
+  private handleError(errorRes: HttpErrorResponse) {
+    let errorMessage: string[] = errorRes.error.errors??['Ha ocurrido un error durante el proceso'];
+
+    return throwError(() => errorMessage);
   }
 }

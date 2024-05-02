@@ -16,4 +16,9 @@ export interface UserModel {
   tel_fijo: string,
   tel_movil: string,
   codigo_postal:string,
+  // id?:number,
+  // rol_id?:number,
+  // nombre_rol?:string,
+  // num_historia_clinica?:string,
+  // provincia_id?:number
 }
