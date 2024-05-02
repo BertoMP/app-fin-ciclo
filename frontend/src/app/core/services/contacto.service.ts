@@ -19,8 +19,8 @@ export class ContactoService {
   }
 
   private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage: string = errorRes.error.errors??'Ha ocurrido un error durante el proceso';
-    return throwError(() => new Error(errorMessage));
+    let errorMessage: string[] = errorRes.error.errors??['Ha ocurrido un error durante el proceso'];
+    return throwError(() => errorMessage);
   }
 }
 

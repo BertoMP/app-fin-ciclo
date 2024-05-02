@@ -49,7 +49,11 @@ import { validateProvinciaIdParam } from '../../helpers/validators/params/provin
  *               $ref: '#/components/schemas/ServerError'
  *
  */
-router.get('/municipio/:provincia_id', validateProvinciaIdParam, MunicipioController.getMunicipio);
+router.get(
+  '/municipio/:provincia_id',
+  validateProvinciaIdParam,
+  MunicipioController.getMunicipio
+);
 
 // Exportación del router
 export default router;

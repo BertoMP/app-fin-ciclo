@@ -126,7 +126,7 @@ export class AuthService {
   }
 
   private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage: string = errorRes.error.errors??'Ha ocurrido un error durante el proceso';
+    let errorMessage: string[] = errorRes.error.errors??['Ha ocurrido un error durante el proceso'];
 
     return throwError(() => errorMessage);
   }

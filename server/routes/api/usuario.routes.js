@@ -23,6 +23,73 @@ import { validateEspecialistaUpdate } from '../../helpers/validators/especialist
 // Rutas GET
 /**
  * @swagger
+ * /usuarios:
+ *   get:
+ *     summary: Obtiene una lista de todos los usuarios
+ *     tags: [Usuario]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *         - in: query
+ *           name: page
+ *           schema:
+ *             type: integer
+ *           description: La página a devolver
+ *         - in: query
+ *           name: role
+ *           schema:
+ *             type: integer
+ *           description: El rol por el que filtrar
+ *     responses:
+ *       200:
+ *         description: Lista de usuarios
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/UsuarioPaginado'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
+ *       401:
+ *         description: No autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenExpiredError'
+ *       403:
+ *         description: Token inválido o no proporcionado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenInvalidError'
+ *       404:
+ *         description: Pagina de usuario no encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NotFoundError'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ */
+router.get(
+	'/usuario/listado',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateRoleQueryParams,
+	UsuarioController.getListado,
+);
+
+/**
+ * @swagger
  * /usuario/{usuario_id}:
  *   get:
  *     summary: Obtiene la información de un usuario específico
@@ -136,73 +203,6 @@ router.get(
 	UsuarioController.getUsuario,
 );
 
-/**
- * @swagger
- * /usuarios:
- *   get:
- *     summary: Obtiene una lista de todos los usuarios
- *     tags: [Usuario]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *         - in: query
- *           name: page
- *           schema:
- *             type: integer
- *           description: La página a devolver
- *         - in: query
- *           name: role
- *           schema:
- *             type: integer
- *           description: El rol por el que filtrar
- *     responses:
- *       200:
- *         description: Lista de usuarios
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/UsuarioPaginado'
- *       400:
- *         description: Error de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ValidationError'
- *       401:
- *         description: No autorizado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/TokenExpiredError'
- *       403:
- *         description: Token inválido o no proporcionado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/TokenInvalidError'
- *       404:
- *         description: Pagina de usuario no encontrada
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/NotFoundError'
- *       500:
- *         description: Error del servidor
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ServerError'
- */
-router.get(
-	'/usuario/listado',
-	verifyAccessToken,
-	verifyUserRole([1]),
-	validateRoleQueryParams,
-	UsuarioController.getListado,
-);
-
 // Rutas POST
 /**
  * @swagger
@@ -242,7 +242,11 @@ router.get(
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/registro', validatePacienteRegister, UsuarioController.postRegistro);
+router.post(
+	'/usuario/registro',
+	validatePacienteRegister,
+	UsuarioController.postRegistro
+);
 
 /**
  * @swagger
@@ -352,7 +356,11 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/login', validateUserLogin, UsuarioController.postLogin);
+router.post(
+	'/usuario/login',
+	validateUserLogin,
+	UsuarioController.postLogin
+);
 
 /**
  * @swagger

@@ -106,8 +106,8 @@ export class ContactUsComponent implements OnInit {
             .catch(() => {
               console.log('Se produjo un error.') });
         },
-        error: (error: HttpErrorResponse): void => {
-          this.errores=error.message.split(',');
+        error: (error: string[]): void => {
+          this.errores = error;
           this.isSendingEmail = false;
         }
       });

@@ -52,7 +52,12 @@ import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/paciente', verifyAccessToken, verifyUserRole([3]), PacienteController.getPacientes);
+router.get(
+  '/paciente',
+  verifyAccessToken,
+  verifyUserRole([3]),
+  PacienteController.getPacientes
+);
 
 // Exportación del router
 export default router;

@@ -73,7 +73,7 @@ class InformeController {
 			const file = await PdfService.generateInforme(informe);
 
 			res.status(200).download(file, async (err) => {
-				await destroyPDF(file);
+				await PdfService.destroyPDF(file);
 				if (err) {
 					console.error('Error al descargar el archivo:', err);
 				}

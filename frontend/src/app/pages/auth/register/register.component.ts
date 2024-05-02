@@ -283,10 +283,10 @@ export class RegisterComponent implements OnInit {
               console.log('Se produjo un error.')
             });
         },
-        error: (error: HttpErrorResponse): void => {
+        error: (error: string[]): void => {
           this.isLoading = false;
-          this.errores=error.message.split(',');
-           }
+          this.errores = error;
+        }
       });
 
   }

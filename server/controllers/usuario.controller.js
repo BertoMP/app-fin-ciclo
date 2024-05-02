@@ -122,7 +122,7 @@ class UsuarioController {
 				actualPage: pagina_actual,
 				total: cantidad_usuarios,
 				totalPages: paginas_totales,
-			} = await readAllUsuarios(searchValues, limit);
+			} = await UsuarioService.readAllUsuarios(searchValues, limit);
 
 			if (page > 1 && page > paginas_totales) {
 				return res.status(404).json({
