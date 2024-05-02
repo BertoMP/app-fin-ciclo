@@ -33,9 +33,13 @@ export const routes: Routes = [
 
   {
     path: 'testeo',
-    // component: TesteoBackendComponent
     component:PanelComponent,
     canActivate:[loginGuard]
+  },
+
+  {
+    path: 'testeo-backend',
+    component:TesteoBackendComponent
   },
 
   {

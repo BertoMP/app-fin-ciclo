@@ -94,7 +94,9 @@ class UsuarioModel {
 			'   municipio, ' +
 			'   codigo_postal, ' +
 			'   tel_fijo, ' +
-			'   tel_movil ' +
+			'   tel_movil, ' +
+			'   usuario.rol_id AS rol_id, ' +
+			'   rol.nombre AS nombre_rol ' +
 			'FROM ' +
 			'   usuario ' +
 			'INNER JOIN ' +
@@ -114,6 +116,7 @@ class UsuarioModel {
 			paciente.fecha_nacimiento = new Date(paciente.fecha_nacimiento).toISOString().split('T')[0];
 			return paciente;
 		} catch (err) {
+			console.log(err);
 			throw new Error('Error al obtener el paciente.');
 		}
 	}
