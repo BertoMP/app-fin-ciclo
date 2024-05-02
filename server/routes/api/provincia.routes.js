@@ -1,8 +1,9 @@
 // Inicialización del router de express
-const router                = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de provincia
-const ProvinciaController   = require('../../controllers/provincia.controller');
+import ProvinciaController from '../../controllers/provincia.controller.js';
 
 // Ruta GET
 /**
@@ -31,8 +32,7 @@ const ProvinciaController   = require('../../controllers/provincia.controller');
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/provincia',
-  ProvinciaController.getProvincias);
+router.get('/provincia', ProvinciaController.getProvincias);
 
 // Exportación del router
-module.exports = router;
+export default router;

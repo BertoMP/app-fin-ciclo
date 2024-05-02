@@ -8,16 +8,14 @@
  * @returns {Object} Un objeto que representa al usuario.
  * @memberof Util-Functions
  */
-const createUserObject = (req, encryptedPassword, rol_id) => {
-  return {
-    email: req.body.email,
-    password: encryptedPassword,
-    nombre: req.body.nombre,
-    primer_apellido: req.body.primer_apellido,
-    segundo_apellido: req.body.segundo_apellido,
-    dni: req.body.dni,
-    rol_id: rol_id
-  };
-}
-
-module.exports = createUserObject;
+export const createUserObject = (req, encryptedPassword, rol_id) => {
+	return {
+		email: req.body.email,
+		password: encryptedPassword,
+		nombre: req.body.nombre,
+		primer_apellido: req.body.primer_apellido,
+		segundo_apellido: req.body.segundo_apellido,
+		dni: req.body.dni,
+		rol_id: rol_id,
+	};
+};

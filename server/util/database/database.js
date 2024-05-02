@@ -1,5 +1,9 @@
 // Importación de las librerías necesarias
-const mysql2 = require('mysql2');
+import { createPool } from 'mysql2';
+
+// Carga de las variables de entorno desde el archivo '.env'
+import dotenv from 'dotenv';
+dotenv.config();
 
 /**
  * @typedef {Object} DatabaseConfig
@@ -17,21 +21,19 @@ const mysql2 = require('mysql2');
  * @memberof Util-Database
  */
 const dbConfig = {
-  host:       process.env.DB_HOST,
-  port:       process.env.DB_PORT,
-  user:       process.env.DB_USER,
-  password:   process.env.DB_PASS,
-  database:   process.env.DB_NAME,
-  timezone:   process.env.DB_TIMEZONE,
+	host: process.env.DB_HOST,
+	port: process.env.DB_PORT,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASS,
+	database: process.env.DB_NAME,
+	timezone: process.env.DB_TIMEZONE,
 };
 
 /**
  * Crea un pool de conexiones a la base de datos y lo exporta.
- * @name databasePool
+ * @name dbConn
  * @function
  * @memberof Util-Database
  * @returns {Promise} El pool de conexiones a la base de datos.
  */
-const databasePool = mysql2.createPool(dbConfig).promise();
-
-module.exports = databasePool;
+export const dbConn = createPool(dbConfig).promise();

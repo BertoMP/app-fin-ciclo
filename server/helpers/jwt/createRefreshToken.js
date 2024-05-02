@@ -1,5 +1,10 @@
 // Importación de las librerías necesarias
-const jwt = require("jsonwebtoken");
+import pkg from 'jsonwebtoken';
+const { sign } = pkg;
+
+// Carga de las variables de entorno desde el archivo '.env'
+import dotenv from 'dotenv';
+dotenv.config();
 
 /**
  * @name createRefreshToken
@@ -11,18 +16,15 @@ const jwt = require("jsonwebtoken");
  * @param {Object} user - Objeto con los datos del usuario
  * @returns {string} - Token de refresco
  */
-const createRefreshToken = (user) => {
-  // Creación del payload con los datos del usuario
-  const payload = {
-    user_id: user.id,
-    user_role: user.rol_id
-  }
+export const createRefreshToken = (user) => {
+	// Creación del payload con los datos del usuario
+	const payload = {
+		user_id: user.id,
+		user_role: user.rol_id,
+	};
 
-  // Retorno del token de refresco
-  return jwt.sign(payload, process.env.JWT_REFRESH_SECRET_KEY, {
-    expiresIn: '7d'
-  });
-}
-
-// Exportación del módulo
-module.exports = createRefreshToken;
+	// Retorno del token de refresco
+	return sign(payload, process.env.JWT_REFRESH_SECRET_KEY, {
+		expiresIn: '7d',
+	});
+};

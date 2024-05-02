@@ -1,11 +1,12 @@
 // Inicialización del router de express
-const router              = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de contacto
-const ContactoController  = require('../../controllers/contacto.controller');
+import ContactoController from '../../controllers/contacto.controller.js';
 
 // Importación de middlewares para la validación de datos
-const validateContacto    = require("../../helpers/validators/contacto.validator");
+import { validateContacto } from '../../helpers/validators/contacto.validator.js';
 
 // Rutas POST
 /**
@@ -40,9 +41,7 @@ const validateContacto    = require("../../helpers/validators/contacto.validator
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/contacto',
-  validateContacto,
-  ContactoController.postContacto);
+router.post('/contacto', validateContacto, ContactoController.postContacto);
 
 // Exportación del router
-module.exports = router;
+export default router;

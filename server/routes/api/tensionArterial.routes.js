@@ -1,19 +1,20 @@
 // Inicialización del router de express
-const router                              = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de tensionArterial
-const TensionArterialController           = require('../../controllers/tensionArterial.controller');
+import TensionArterialController from '../../controllers/tensionArterial.controller.js';
 
 // Importación de middlewares para la validación de roles
-const tokenVerify                         = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                           = require('../../util/middleware/verifyUserRole');
-const tokenId                             = require('../../util/middleware/verifyUserId');
+import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
+import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
+import { verifyUserId } from '../../util/middleware/verifyUserId.js';
 
 // Importación de middlewares para la validación de datos
-const validateTensionArterial             = require('../../helpers/validators/tensionArterial.validator');
-const validatePaginationQueryParams       = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const validateDateQueryParams             = require('../../helpers/validators/queryParams/dateQueryParams.validator');
-const validateUsuarioIdParam              = require('../../helpers/validators/params/usuarioIdParam.validator');
+import { validateTensionArterial } from '../../helpers/validators/tensionArterial.validator.js';
+import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
+import { validateDateQueryParams } from '../../helpers/validators/queryParams/dateQueryParams.validator.js';
+import { validateUsuarioIdParam } from '../../helpers/validators/params/usuarioIdParam.validator.js';
 
 // Rutas GET
 /**
@@ -86,13 +87,15 @@ const validateUsuarioIdParam              = require('../../helpers/validators/pa
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/tension-arterial/:usuario_id',
-  tokenVerify,
-  tokenRole([3]),
-  validateUsuarioIdParam,
-  validatePaginationQueryParams,
-  validateDateQueryParams,
-  TensionArterialController.getTensionArterial);
+router.get(
+	'/tension-arterial/:usuario_id',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	validateUsuarioIdParam,
+	validatePaginationQueryParams,
+	validateDateQueryParams,
+	TensionArterialController.getTensionArterial,
+);
 
 /**
  * @swagger
@@ -164,13 +167,15 @@ router.get('/tension-arterial/:usuario_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/tension-arterial',
-  tokenVerify,
-  tokenRole([2]),
-  tokenId,
-  validatePaginationQueryParams,
-  validateDateQueryParams,
-  TensionArterialController.getTensionArterial);
+router.get(
+	'/tension-arterial',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validatePaginationQueryParams,
+	validateDateQueryParams,
+	TensionArterialController.getTensionArterial,
+);
 
 // Rutas POST
 /**
@@ -219,12 +224,14 @@ router.get('/tension-arterial',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/tension-arterial',
-  tokenVerify,
-  tokenRole([2]),
-  tokenId,
-  validateTensionArterial,
-  TensionArterialController.postTensionArterial);
+router.post(
+	'/tension-arterial',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validateTensionArterial,
+	TensionArterialController.postTensionArterial,
+);
 
 // Exportación del router
-module.exports = router;
+export default router;

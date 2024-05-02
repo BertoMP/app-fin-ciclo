@@ -1,19 +1,20 @@
 // Inicialización del router de express
-const router                          = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de glucometría
-const GlucometriaController           = require('../../controllers/glucometria.controller');
+import GlucometriaController from '../../controllers/glucometria.controller.js';
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                     = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                       = require('../../util/middleware/verifyUserRole');
-const tokenUserId                     = require('../../util/middleware/verifyUserId');
+import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
+import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
+import { verifyUserId } from '../../util/middleware/verifyUserId.js';
 
 // Importación de middlewares para la validación de datos
-const validateGlucometria             = require('../../helpers/validators/glucometria.validator');
-const validatePaginationQueryParams   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const validateDateQueryParams         = require("../../helpers/validators/queryParams/dateQueryParams.validator");
-const validateUsuarioIdParam          = require("../../helpers/validators/params/usuarioIdParam.validator");
+import { validateGlucometria } from '../../helpers/validators/glucometria.validator.js';
+import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
+import { validateDateQueryParams } from '../../helpers/validators/queryParams/dateQueryParams.validator.js';
+import { validateUsuarioIdParam } from '../../helpers/validators/params/usuarioIdParam.validator.js';
 
 // Rutas GET
 /**
@@ -69,13 +70,15 @@ const validateUsuarioIdParam          = require("../../helpers/validators/params
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/glucometria/:usuario_id',
-  tokenVerify,
-  tokenRole([3]),
-  validateUsuarioIdParam,
-  validatePaginationQueryParams,
-  validateDateQueryParams,
-  GlucometriaController.getGlucometria);
+router.get(
+	'/glucometria/:usuario_id',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	validateUsuarioIdParam,
+	validatePaginationQueryParams,
+	validateDateQueryParams,
+	GlucometriaController.getGlucometria,
+);
 
 /**
  * @swagger
@@ -123,13 +126,15 @@ router.get('/glucometria/:usuario_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/glucometria',
-  tokenVerify,
-  tokenRole([2]),
-  tokenUserId,
-  validatePaginationQueryParams,
-  validateDateQueryParams,
-  GlucometriaController.getGlucometria);
+router.get(
+	'/glucometria',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validatePaginationQueryParams,
+	validateDateQueryParams,
+	GlucometriaController.getGlucometria,
+);
 
 // Rutas POST
 /**
@@ -178,12 +183,14 @@ router.get('/glucometria',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/glucometria',
-  tokenVerify,
-  tokenRole([2]),
-  tokenUserId,
-  validateGlucometria,
-  GlucometriaController.postGlucometria);
+router.post(
+	'/glucometria',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validateGlucometria,
+	GlucometriaController.postGlucometria,
+);
 
 // Exportación del router
-module.exports = router;
+export default router;

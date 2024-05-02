@@ -1,5 +1,10 @@
 // Importación de las librerías necesarias
-const jwt = require('jsonwebtoken');
+import pkg from 'jsonwebtoken';
+const { sign } = pkg;
+
+// Carga de las variables de entorno desde el archivo '.env'
+import dotenv from 'dotenv';
+dotenv.config();
 
 /**
  * @name createResetToken
@@ -10,16 +15,12 @@ const jwt = require('jsonwebtoken');
  * @param {Object} user - Objeto con los datos del usuario
  * @returns {string} - Token de restablecimiento de contraseña
  */
-const createResetToken = (user) => {
-  const payload = {
-    email: user.email
-  };
+export const createResetToken = (user) => {
+	const payload = {
+		email: user.email,
+	};
 
-  return jwt.sign(payload, process.env.JWT_RESET_SECRET_KEY,
-    {
-      expiresIn: '5h'
-    });
-}
-
-// Exportación del módulo
-module.exports = createResetToken;
+	return sign(payload, process.env.JWT_RESET_SECRET_KEY, {
+		expiresIn: '5h',
+	});
+};

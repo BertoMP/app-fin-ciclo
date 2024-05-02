@@ -1,5 +1,5 @@
 // Importación de las librerías necesarias
-const { body, validationResult } = require('express-validator');
+import { body, validationResult } from 'express-validator';
 
 /**
  * @name validateGlucometria
@@ -13,34 +13,33 @@ const { body, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-const validateGlucometria = [
-  body('medicion')
-    .trim()
-    .notEmpty().withMessage('La medición es requerida.')
-    .isNumeric().withMessage('La medición debe ser un valor numérico.')
-    .custom(value => {
-      if (value < 0) {
-        throw new Error('La medición no puede ser un valor negativo.');
-      }
+export const validateGlucometria = [
+	body('medicion')
+		.trim()
+		.notEmpty()
+		.withMessage('La medición es requerida.')
+		.isNumeric()
+		.withMessage('La medición debe ser un valor numérico.')
+		.custom((value) => {
+			if (value < 0) {
+				throw new Error('La medición no puede ser un valor negativo.');
+			}
 
-      const regex = /^\d{2,3}$/;
-      if (!regex.test(value)) {
-        throw new Error('La medición debe tener entre 2 y 3 dígitos.');
-      }
+			const regex = /^\d{2,3}$/;
+			if (!regex.test(value)) {
+				throw new Error('La medición debe tener entre 2 y 3 dígitos.');
+			}
 
-      return true;
-    }),
+			return true;
+		}),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMessages = errors.array().map(error => error.msg);
+	(req, res, next) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			const errorMessages = errors.array().map((error) => error.msg);
 
-      return res.status(400).json({errors: errorMessages});
-    }
-    next();
-  }
+			return res.status(400).json({ errors: errorMessages });
+		}
+		next();
+	},
 ];
-
-// Exportación del módulo
-module.exports = validateGlucometria;

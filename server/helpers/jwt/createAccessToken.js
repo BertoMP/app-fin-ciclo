@@ -1,5 +1,10 @@
 // Importación de las librerías necesarias
-const jwt = require("jsonwebtoken");
+import pkg from 'jsonwebtoken';
+const { sign } = pkg;
+
+// Carga de las variables de entorno desde el archivo '.env'
+import dotenv from 'dotenv';
+dotenv.config();
 
 /**
  * @name createAccessToken
@@ -11,16 +16,13 @@ const jwt = require("jsonwebtoken");
  * @param {Object} user - Objeto con los datos del usuario
  * @returns {string} - Token de acceso
  */
-const createAccessToken = (user) => {
-  const payload = {
-    user_id: user.id,
-    user_role: user.rol_id
-  }
+export const createAccessToken = (user) => {
+	const payload = {
+		user_id: user.id,
+		user_role: user.rol_id,
+	};
 
-  return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-    expiresIn: '1d'
-  });
-}
-
-// Exportación del módulo
-module.exports = createAccessToken;
+	return sign(payload, process.env.JWT_SECRET_KEY, {
+		expiresIn: '1d',
+	});
+};

@@ -61,6 +61,10 @@ mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 * ___Documentación___:  
 ![Swagger](https://img.shields.io/badge/-Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
 ![JSDoc](https://img.shields.io/badge/-JSDoc-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+* ___Pruebas___:  
+![Supertest](https://img.shields.io/badge/-Supertest-009688?style=for-the-badge&logo=node.js&logoColor=white)
+![Chai](https://img.shields.io/badge/-Chai-A30701?style=for-the-badge&logo=chai&logoColor=white)
+![Mocha](https://img.shields.io/badge/-Mocha-8D6748?style=for-the-badge&logo=mocha&logoColor=white)
   
 ### Paquetes y librerías utilizadas
 
@@ -80,6 +84,7 @@ la librería Select2 para la creación de elementos select con barra de búsqued
 
 __Backend__:
 - _bcryptjs_: Librería cuya finalidad es el cifrado de contraseñas.
+- _chai_: Framework de aserciones que permite realizar pruebas unitarias.
 - _cors_: Middleware de Express.js que permite habilitar CORS 
 (_Cross-Origin Resource Sharing_) con varias opciones.
 - _date-fns_: Librería que permite trabajar con fechas en JavaScript.
@@ -92,12 +97,14 @@ datos de entrada.
 - _jsdoc_: Herramienta que permite la generación de documentación JSDoc.
 - _jsonwebtoken_: Librería que permite la generación y verificación de tokens 
 JWT.
+- _mocha_: Framework de pruebas para Node.js.
 - _moment-timezone_: Librería que permite trabajar con fechas y horas en diferentes
 zonas horarias.
 - _mysql2_: Librería que permite la conexión a bases de datos MySQL.
 - _nodemailer_: Librería que permite enviar correos electrónicos desde Node.js.
 - _puppeteer_: Librería que permite la generación de PDFs a partir de páginas web.
 - _qrcode_: Librería que permite la generación de códigos QR.
+- _supertest_: Librería que permite realizar pruebas de integración en Node.js.
 - _swagger-jsdoc_: Librería que permite la generación de documentación Swagger.
 - _swagger-ui-express_: Middleware de Express.js que permite la visualización de 
 documentación Swagger en una interfaz de usuario.

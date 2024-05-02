@@ -1,12 +1,13 @@
 // Inicialización del router de express
-const router              = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de paciente
-const PacienteController  = require('../../controllers/paciente.controller');
+import PacienteController from '../../controllers/paciente.controller.js';
 
 // Importación de middlewares para la validación de datos
-const tokenVerify         = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole           = require('../../util/middleware/verifyUserRole');
+import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
+import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
 
 // Rutas GET
 /**
@@ -51,10 +52,7 @@ const tokenRole           = require('../../util/middleware/verifyUserRole');
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/paciente',
-  tokenVerify,
-  tokenRole([3]),
-  PacienteController.getPacientes);
+router.get('/paciente', verifyAccessToken, verifyUserRole([3]), PacienteController.getPacientes);
 
 // Exportación del router
-module.exports = router;
+export default router;
