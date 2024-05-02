@@ -4,13 +4,6 @@ import UsuarioModel from '../models/usuario.model.js';
 // Importación de los servicios auxiliares
 import PacienteService from './paciente.service.js';
 import EspecialistaService from './especialista.service.js';
-import TokenService from './token.service.js';
-import TensionArterialService from './tensionArterial.service.js';
-import InformeService from './informe.service.js';
-import PacienteTomaMedicamentoService from './pacienteTomaMedicamento.service.js';
-import GlucometriaService from './glucometria.service.js';
-import InformePatologiaService from './informePatologia.service.js';
-import CitaService from './cita.service.js';
 
 // Importación de las utilidades necesarias
 import { dbConn } from '../util/database/database.js';
@@ -309,69 +302,6 @@ class UsuarioService {
 	}
 
 	/**
-	 * @method deleteUsuario
-	 * @description Método para eliminar un usuario y todas sus asociaciones.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {number} id - El ID del usuario.
-	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
-	 * @returns {Promise<void>} No devuelve nada. Si la operación es exitosa, se habrá eliminado el usuario y todas sus asociaciones en la base de datos.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async deleteUsuario(id, conn = null) {
-		const isConnProvided = !!conn;
-
-		if (!isConnProvided) {
-			conn = await dbConn.getConnection();
-		}
-
-		try {
-			if (!isConnProvided) {
-				await conn.beginTransaction();
-			}
-
-			await TokenService.deleteToken(id, conn);
-
-			const idsTomas = await PacienteTomaMedicamentoService.readTomasByUserId(id, conn);
-
-			for (const idToma of idsTomas) {
-				await PacienteTomaMedicamentoService.deleteTomaFromPrescription(idToma, conn);
-			}
-
-			await TensionArterialService.deleteTensionArterialByUserId(id, conn);
-
-			await GlucometriaService.deleteGlucometriaByUserId(id, conn);
-
-			const idInformes = await CitaService.readInformesByUserId(id, conn);
-
-			await CitaService.deleteCitasByUserId(id, conn);
-
-			for (const idInforme of idInformes) {
-				await InformePatologiaService.deletePatologiaByInformeId(idInforme, conn);
-				await InformeService.deleteInforme(idInforme, conn);
-			}
-
-			await PacienteService.deletePacienteByUserId(id, conn);
-
-			await UsuarioModel.deleteUsuario(id, conn);
-
-			if (!isConnProvided) {
-				await conn.commit();
-			}
-		} catch (err) {
-			if (!isConnProvided) {
-				await conn.rollback();
-			}
-			throw new Error(err);
-		} finally {
-			if (!isConnProvided) {
-				conn.release();
-			}
-		}
-	}
-
-	/**
 	 * @method updateRefreshToken
 	 * @description Método para actualizar el token de actualización de un usuario.
 	 * @static
@@ -398,6 +328,21 @@ class UsuarioService {
 	 */
 	static async readUsuarioById(id, conn = dbConn) {
 		return await UsuarioModel.findById(id, conn);
+	}
+
+	/**
+	 * @method deleteUsuario
+	 * @description Método para eliminar un usuario.
+	 * @static
+	 * @async
+	 * @memberof UsuarioService
+	 * @param {number} id - El ID del usuario.
+	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
+	 * @returns {Promise<Object>} El resultado de la operación de eliminación.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async deleteUsuario(id, conn = dbConn) {
+		return await UsuarioModel.deleteUsuario(id, conn);
 	}
 }
 

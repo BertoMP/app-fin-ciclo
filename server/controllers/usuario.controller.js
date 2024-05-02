@@ -26,6 +26,8 @@ import { verifyResetToken } from '../helpers/jwt/verifyResetToken.js';
 
 // Importación de las funciones necesarias
 import { getSearchValuesByRole } from '../util/functions/getSearchValuesByRole.js';
+import PacienteService from "../services/paciente.service.js";
+import CitaService from "../services/cita.service.js";
 
 /**
  * @class UsuarioController
@@ -484,17 +486,35 @@ class UsuarioController {
 				});
 			}
 
-			if (userExists.rol_id !== 2) {
+			if (userExists.rol_id === 1) {
 				return res.status(409).json({
-					errors: ['No se puede eliminar a un admin o a un especialista.'],
+					errors: ['No se puede eliminar a un admin'],
 				});
 			}
 
-			await UsuarioService.deleteUsuario(id);
+			if (userExists.rol_id === 2) {
+				await PacienteService.deletePaciente(id);
 
-			return res.status(200).json({
-				message: 'Usuario eliminado exitosamente.',
-			});
+				return res.status(200).json({
+					message: 'Paciente eliminado exitosamente.',
+				});
+			} else if (userExists.rol_id === 3) {
+				const especialistaCita = await CitaService.readCitasByEspecialistaId(id);
+
+				if (especialistaCita.length > 0) {
+					await EspecialistaService.setNoTrabajando(id);
+
+					return res.status(200).json({
+						message: 'El especialista no se pudo eliminar. Se cambió su turno.'
+					});
+				}
+
+				await EspecialistaService.deleteEspecialista(id);
+
+				return res.status(200).json({
+					message: 'Especialista eliminado exitosamente.',
+				});
+			}
 		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],

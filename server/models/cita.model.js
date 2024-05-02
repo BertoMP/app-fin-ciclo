@@ -224,6 +224,22 @@ class CitaModel {
 		}
 	}
 
+	static async fetchByEspecialistaId(especialista_id, dbConn) {
+		const query =
+			'SELECT * ' +
+			'FROM ' +
+			'   cita ' +
+			'WHERE ' +
+			'   especialista_id = ? ';
+
+		try {
+			const [rows] = await dbConn.execute(query, [especialista_id]);
+			return rows;
+		} catch (err) {
+			throw new Error('Error al obtener las citas.');
+		}
+	}
+
 	/**
 	 * @method fetchByData
 	 * @description Método para obtener una cita por su fecha, hora y ID del especialista.

@@ -30,6 +30,10 @@ class CitaService {
 		return await CitaModel.fetchAll(searchValues, limit, conn);
 	}
 
+	static async readCitasByEspecialistaId(userId, conn = dbConn) {
+		return await CitaModel.fetchByEspecialistaId(userId, conn);
+	}
+
 	/**
 	 * @method readInformesByUserId
 	 * @description Método para leer informes por el ID del paciente.

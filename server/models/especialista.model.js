@@ -259,6 +259,59 @@ class EspecialistaModel {
 			throw new Error('Error al actualizar el especialista.');
 		}
 	}
+
+	/**
+	 * @method setTrabajandoById
+	 * @description Método para establecer que un especialista no está trabajando por su ID.
+	 * @static
+	 * @async
+	 * @memberof EspecialistaModel
+	 * @param {number} id - El ID del especialista.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @return {Promise<Object>} - El resultado de la operación.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async setNoTrabajandoById(id, dbConn) {
+		const query =
+			'UPDATE ' +
+			'   especialista ' +
+			'SET ' +
+			'   turno = "no-trabajando" ' +
+			'WHERE ' +
+			'   usuario_id = ?';
+
+		try {
+			return await dbConn.execute(query, [id]);
+		} catch (err) {
+			console.log(err);
+			throw new Error('Error al actualizar el especialista.');
+		}
+	}
+
+	/**
+	 * @method deleteEspecialistaById
+	 * @description Método para eliminar un especialista por su ID de usuario.
+	 * @static
+	 * @async
+	 * @memberof EspecialistaModel
+	 * @param {number} usuario_id - El ID de usuario del especialista.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} El resultado de la operación.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async deleteEspecialistaById(usuario_id, dbConn) {
+		const query =
+			'DELETE FROM ' +
+			'   especialista ' +
+			'WHERE ' +
+			'   usuario_id = ?';
+
+		try {
+			return await dbConn.execute(query, [usuario_id]);
+		} catch (err) {
+			throw new Error('Error al eliminar el especialista.');
+		}
+	}
 }
 
 // Exportación del modelo
