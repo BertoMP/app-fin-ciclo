@@ -42,10 +42,14 @@ class UsuarioModel {
 		let countParams = [];
 
 		if (role_id) {
-			query += 'WHERE rol_id = ? ';
-			countQuery += ' WHERE rol_id = ?';
+			query += ' WHERE rol_id = ? ';
+			countQuery += ' WHERE rol_id = ? ';
 			queryParams.unshift(`${role_id}`);
 			countParams.push(`${role_id}`);
+		} else {
+			query += ' WHERE rol_id <> 1 ';
+			countQuery += ' WHERE rol_id <> 1 ';
+
 		}
 
 		query += 'ORDER BY usuario.id ASC LIMIT ? OFFSET ?';
@@ -59,6 +63,7 @@ class UsuarioModel {
 
 			return { rows, total, actualPage, totalPages };
 		} catch (err) {
+			console.log(err);
 			throw new Error('Error al obtener los usuarios.');
 		}
 	}

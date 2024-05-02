@@ -467,9 +467,29 @@ class UsuarioController {
 	 * @memberof UsuarioController
 	 */
 	static async deleteUsuario(req, res) {
-		const id = req.user_id;
+		let id = 0;
+
+		if (req.user_role === 1) {
+			id = req.param.usuario_id;
+		} else if (req.user_role === 2) {
+			id = req.user_id;
+		}
 
 		try {
+			const userExists = await UsuarioService.readUsuarioById(id);
+
+			if (!userExists) {
+				return res.status(404).json({
+					errors: ['Usuario no encontrado.'],
+				});
+			}
+
+			if (userExists.rol_id === 1) {
+				return res.status(409).json({
+					errors: ['No se puede eliminar a un admin.'],
+				});
+			}
+
 			await UsuarioService.deleteUsuario(id);
 
 			return res.status(200).json({

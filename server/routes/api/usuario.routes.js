@@ -497,7 +497,10 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/refresh-token', UsuarioController.postRefreshToken);
+router.post(
+	'/usuario/refresh-token',
+	UsuarioController.postRefreshToken
+);
 
 /**
  * @swagger
@@ -533,7 +536,12 @@ router.post('/usuario/refresh-token', UsuarioController.postRefreshToken);
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/logout', verifyAccessToken, verifyUserId, UsuarioController.postLogout);
+router.post(
+	'/usuario/logout',
+	verifyAccessToken,
+	verifyUserId,
+	UsuarioController.postLogout
+);
 
 // Rutas PUT
 /**
@@ -870,6 +878,67 @@ router.delete(
 	verifyAccessToken,
 	verifyUserRole([2]),
 	verifyUserId,
+	UsuarioController.deleteUsuario,
+);
+
+/**
+ * @swagger
+ * /usuario/borrar-usuario/{usuario_id}:
+ *   delete:
+ *     summary: Elimina un usuario
+ *     tags: [Usuario]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: user_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: El ID del usuario a eliminar
+ *     responses:
+ *       200:
+ *         description: Usuario eliminado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SuccessMessage'
+ *       401:
+ *         description: No autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenExpiredError'
+ *       403:
+ *         description: Token inválido o no proporcionado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenInvalidError'
+ *       409:
+ *         description: El usuario no se puede eliminar
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ConflictError'
+ *       404:
+ *         description: Usuario no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NotFoundError'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ */
+router.delete(
+	'/usuario/borrar-usuario/:usuario_id',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateUsuarioIdParam,
 	UsuarioController.deleteUsuario,
 );
 
