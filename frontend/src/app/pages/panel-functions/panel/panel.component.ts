@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { PacientPanelComponent } from '../../user-panels/pacient-panel/pacient-panel.component';
 import { EspecialistPanelComponent } from '../../user-panels/especialist-panel/especialist-panel.component';
 import { AdminPanelComponent } from '../../user-panels/admin-panel/admin-panel.component';
+import {UserRole} from "../../../core/enum/user-role.enum";
 
 @Component({
   selector: 'app-panel',
@@ -15,7 +16,7 @@ import { AdminPanelComponent } from '../../user-panels/admin-panel/admin-panel.c
   styleUrl: './panel.component.scss'
 })
 export class PanelComponent implements OnInit, OnDestroy {
-  userRole: number = 0;
+  userRole: UserRole;
   loggedInSubscription: Subscription;
   isUserLoggedIn: boolean = false;
   userId: number = 0;
@@ -49,4 +50,6 @@ export class PanelComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  protected readonly UserRole = UserRole;
 }

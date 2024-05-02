@@ -3,13 +3,13 @@
     <div class="row">
         <div class="col-md-12">
             @switch (userRole) {
-            @case(1) {
+            @case(UserRole.ADMIN) {
             <app-admin-panel></app-admin-panel>
             }
-            @case(2) {
+            @case(UserRole.PACIENT) {
             <app-pacient-panel></app-pacient-panel>
             }
-            @case(3) {
+            @case(UserRole.ESPECIALIST) {
             <app-especialist-panel></app-especialist-panel>
             }}
             <p>{{userId}}</p>

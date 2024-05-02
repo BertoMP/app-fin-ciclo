@@ -19,7 +19,7 @@ import { ForgottenPasswordComponent } from './pages/auth/forgotten-password/forg
 import { RefreshPasswordComponent } from './pages/auth/refresh-password/refresh-password.component';
 import { EspecialistDataComponent } from './pages/especialist-data/especialist-data.component';
 import { PanelComponent } from './pages/panel-functions/panel/panel.component';
-import { loginGuard } from './shared/guards/login.guard';
+import { loginGuard } from './core/guards/login.guard';
 
 export const routes: Routes = [
   {

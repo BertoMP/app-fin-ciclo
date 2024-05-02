@@ -3,9 +3,8 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
 import {environment} from "../../environments/environment";
 import {UserModel} from "../interfaces/user.model";
-import {JwtHelperService} from "@auth0/angular-jwt";
-import {error} from "@angular/compiler-cli/src/transformers/util";
-
+import {JwtHelperService} from "@auth0/angular-jwt"
+import {UserRole} from "../enum/user-role.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -48,15 +47,35 @@ export class AuthService {
     return localStorage.getItem('refresh_token')??'';
   }
 
-  getUserRole(): number {
+  getUserRole(): number | null {
     const accessToken: string = this.getAccessToken();
-    const decodedToken = this.jwtHelper.decodeToken(accessToken);
 
-    return decodedToken.user_role;
+    if (!accessToken) {
+      return null;
+    }
+
+    const decodedToken = this.jwtHelper.decodeToken(accessToken);
+    const userRoleId = decodedToken.user_role;
+
+    switch (userRoleId) {
+      case 1:
+        return UserRole.ADMIN;
+      case 2:
+        return UserRole.PACIENT;
+      case 3:
+        return UserRole.ESPECIALIST;
+      default:
+        return null;
+    }
   }
 
-  getUserId(): number {
+  getUserId(): number | null {
     const accessToken: string = this.getAccessToken();
+
+    if (!accessToken) {
+      return null;
+    }
+
     const decodedToken = this.jwtHelper.decodeToken(accessToken);
 
     return decodedToken.user_id;
