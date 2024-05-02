@@ -1,4 +1,5 @@
-const bcrypt = require('bcryptjs');
+import pkg from 'bcryptjs';
+const { genSalt, hash } = pkg;
 
 /**
  * @name createEncryptedPassword
@@ -11,9 +12,7 @@ const bcrypt = require('bcryptjs');
  * @throws {Error} Si ocurre algún error durante el proceso, la promesa se rechaza con un error.
  * @memberof Util-Functions
  */
-const createEncryptedPassword = async (password) => {
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
-}
-
-module.exports = createEncryptedPassword;
+export const createEncryptedPassword = async (password) => {
+	const salt = await genSalt(10);
+	return await hash(password, salt);
+};

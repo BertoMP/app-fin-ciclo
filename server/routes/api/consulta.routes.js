@@ -1,16 +1,17 @@
 // Inicialización del router de express
-const router                      = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de consulta
-const ConsultaController          = require('../../controllers/consulta.controller');
+import ConsultaController from '../../controllers/consulta.controller.js';
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                 = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                   = require('../../util/middleware/verifyUserRole');
+import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
+import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
 
 // Importación de middlewares para la validación de datos
-const validateConsulta         = require("../../helpers/validators/consulta.validator");
-const validateConsultaIdParam  = require("../../helpers/validators/params/consultaIdParam.validator");
+import { validateConsulta } from '../../helpers/validators/consulta.validator.js';
+import { validateConsultaIdParam } from '../../helpers/validators/params/consultaIdParam.validator.js';
 
 // Rutas GET
 /**
@@ -66,11 +67,13 @@ const validateConsultaIdParam  = require("../../helpers/validators/params/consul
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/consulta/:consulta_id',
-  tokenVerify,
-  tokenRole([1]),
-  validateConsultaIdParam,
-  ConsultaController.getConsultaById);
+router.get(
+	'/consulta/:consulta_id',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateConsultaIdParam,
+	ConsultaController.getConsultaById,
+);
 
 /**
  * @swagger
@@ -119,10 +122,7 @@ router.get('/consulta/:consulta_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/consulta',
-  tokenVerify,
-  tokenRole([1]),
-  ConsultaController.getConsultas);
+router.get('/consulta', verifyAccessToken, verifyUserRole([1]), ConsultaController.getConsultas);
 
 // Rutas POST
 /**
@@ -181,11 +181,13 @@ router.get('/consulta',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/consulta',
-  tokenVerify,
-  tokenRole([1]),
-  validateConsulta,
-  ConsultaController.createConsulta);
+router.post(
+	'/consulta',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateConsulta,
+	ConsultaController.createConsulta,
+);
 
 // Rutas PUT
 /**
@@ -257,12 +259,14 @@ router.post('/consulta',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.put('/consulta/:consulta_id',
-  tokenVerify,
-  tokenRole([1]),
-  validateConsultaIdParam,
-  validateConsulta,
-  ConsultaController.updateConsulta);
+router.put(
+	'/consulta/:consulta_id',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateConsultaIdParam,
+	validateConsulta,
+	ConsultaController.updateConsulta,
+);
 
 // Rutas DELETE
 /**
@@ -324,11 +328,13 @@ router.put('/consulta/:consulta_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.delete('/consulta/:consulta_id',
-  tokenVerify,
-  tokenRole([1]),
-  validateConsultaIdParam,
-  ConsultaController.deleteConsulta);
+router.delete(
+	'/consulta/:consulta_id',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateConsultaIdParam,
+	ConsultaController.deleteConsulta,
+);
 
 // Exportación del router
-module.exports = router;
+export default router;

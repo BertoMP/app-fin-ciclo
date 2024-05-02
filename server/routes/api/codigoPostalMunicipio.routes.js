@@ -1,11 +1,12 @@
 // Inicialización del router de express
-const router                  = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de código postal
-const CodigoPostalController  = require('../../controllers/codigoPostalMunicipio.controller');
+import CodigoPostalMunicipioController from '../../controllers/codigoPostalMunicipio.controller.js';
 
 // Importación de validadores
-const validateMunicipioIdParam = require('../../helpers/validators/params/municipioIdParam.validator');
+import { validateMunicipioIdParam } from '../../helpers/validators/params/municipioIdParam.validator.js';
 // Ruta GET
 /**
  * @swagger
@@ -49,9 +50,11 @@ const validateMunicipioIdParam = require('../../helpers/validators/params/munici
  *               $ref: '#/components/schemas/ServerError'
  *
  */
-router.get('/codigo-postal/:municipio_id',
-  validateMunicipioIdParam,
-  CodigoPostalController.getCodigoPostal);
+router.get(
+	'/codigo-postal/:municipio_id',
+	validateMunicipioIdParam,
+	CodigoPostalMunicipioController.getCodigoPostal,
+);
 
 // Exportación del router
-module.exports = router;
+export default router;

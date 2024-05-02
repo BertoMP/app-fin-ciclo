@@ -1,19 +1,20 @@
 // Inicialización del router de express
-const router                        = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de citas
-const CitaController                = require('../../controllers/cita.controller');
+import CitaController from '../../controllers/cita.controller.js';
 
 // Importación de middlewares para la validación de tokens y roles
-const tokenVerify                   = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                     = require('../../util/middleware/verifyUserRole');
-const tokenUserId                   = require('../../util/middleware/verifyUserId');
+import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
+import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
+import { verifyUserId } from '../../util/middleware/verifyUserId.js';
 
 // Importación de middlewares para la validación de datos
-const validateCita                  = require("../../helpers/validators/cita.validator");
-const validateCitaIdParam           = require("../../helpers/validators/params/citaIdParam.validator");
-const validatePaginationQueryParams = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const validateDateQueryParams       = require("../../helpers/validators/queryParams/dateQueryParams.validator");
+import { validateCita } from '../../helpers/validators/cita.validator.js';
+import { validateCitaIdParam } from '../../helpers/validators/params/citaIdParam.validator.js';
+import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
+import { validateDateQueryParams } from '../../helpers/validators/queryParams/dateQueryParams.validator.js';
 
 // Rutas GET
 /**
@@ -58,11 +59,13 @@ const validateDateQueryParams       = require("../../helpers/validators/queryPar
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/cita/agenda',
-  tokenVerify,
-  tokenRole([3]),
-  tokenUserId,
-  CitaController.getCitasAgenda);
+router.get(
+	'/cita/agenda',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	verifyUserId,
+	CitaController.getCitasAgenda,
+);
 
 /**
  * @swagger
@@ -117,12 +120,14 @@ router.get('/cita/agenda',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/cita/:cita_id',
-  tokenVerify,
-  tokenRole([2]),
-  tokenUserId,
-  validateCitaIdParam,
-  CitaController.getCitaById);
+router.get(
+	'/cita/:cita_id',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validateCitaIdParam,
+	CitaController.getCitaById,
+);
 
 /**
  * @swagger
@@ -189,13 +194,15 @@ router.get('/cita/:cita_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/cita',
-  tokenVerify,
-  tokenRole([2]),
-  tokenUserId,
-  validatePaginationQueryParams,
-  validateDateQueryParams,
-  CitaController.getCitas);
+router.get(
+	'/cita',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validatePaginationQueryParams,
+	validateDateQueryParams,
+	CitaController.getCitas,
+);
 
 // Rutas POST
 /**
@@ -268,12 +275,14 @@ router.get('/cita',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/cita',
-  tokenVerify,
-  tokenRole([2]),
-  tokenUserId,
-  validateCita,
-  CitaController.createCita);
+router.post(
+	'/cita',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validateCita,
+	CitaController.createCita,
+);
 
 // Rutas DELETE
 /**
@@ -329,12 +338,14 @@ router.post('/cita',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.delete('/cita/:cita_id',
-  tokenVerify,
-  tokenRole([2]),
-  tokenUserId,
-  validateCitaIdParam,
-  CitaController.deleteCita);
+router.delete(
+	'/cita/:cita_id',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validateCitaIdParam,
+	CitaController.deleteCita,
+);
 
 // Exportación del router
-module.exports = router;
+export default router;

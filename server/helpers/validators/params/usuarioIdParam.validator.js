@@ -1,5 +1,5 @@
 // Importación las librerías necesarias
-const { param, validationResult } = require('express-validator');
+import { param, validationResult } from 'express-validator';
 
 /**
  * @name validateUsuarioIdParam
@@ -13,25 +13,24 @@ const { param, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-const validateUsuarioIdParam = [
-  param('usuario_id')
-    .isNumeric().withMessage('El ID del usuario debe ser un valor numérico.')
-    .custom(value => {
-      if (value < 1) {
-        throw new Error('El ID del usuario debe ser un valor positivo.');
-      }
+export const validateUsuarioIdParam = [
+	param('usuario_id')
+		.isNumeric()
+		.withMessage('El ID del usuario debe ser un valor numérico.')
+		.custom((value) => {
+			if (value < 1) {
+				throw new Error('El ID del usuario debe ser un valor positivo.');
+			}
 
-      return true;
-    }),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMessages = errors.array().map(error => error.msg);
+			return true;
+		}),
+	(req, res, next) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			const errorMessages = errors.array().map((error) => error.msg);
 
-      return res.status(400).json({errors: errorMessages});
-    }
-    next();
-  }
+			return res.status(400).json({ errors: errorMessages });
+		}
+		next();
+	},
 ];
-
-module.exports = validateUsuarioIdParam;

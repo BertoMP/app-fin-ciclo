@@ -1,5 +1,10 @@
 // Importación de las librerías necesarias
-const jwt = require('jsonwebtoken');
+import pkg from 'jsonwebtoken';
+const { verify } = pkg;
+
+// Carga de las variables de entorno desde el archivo '.env'
+import dotenv from 'dotenv';
+dotenv.config();
 
 /**
  * @name verifyAccessToken
@@ -17,34 +22,31 @@ const jwt = require('jsonwebtoken');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-const verifyAccessToken = (req, res, next) => {
-  const accessToken = req.headers['authorization'];
-  if (accessToken) {
-    const token = accessToken.split('Bearer ')[1];
-    try {
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+export const verifyAccessToken = (req, res, next) => {
+	const accessToken = req.headers['authorization'];
+	if (accessToken) {
+		const token = accessToken.split('Bearer ')[1];
+		try {
+			const decodedToken = verify(token, process.env.JWT_SECRET_KEY);
 
-      req.user_id = decodedToken.user_id;
-      req.user_role = decodedToken.user_role;
+			req.user_id = decodedToken.user_id;
+			req.user_role = decodedToken.user_role;
 
-      next();
-    } catch (error) {
-      if (error.name === 'TokenExpiredError') {
-        return res.status(401).json({
-          errors: ['El token ha expirado. Inicia sesión de nuevo.']
-        });
-      } else {
-        return res.status(403).json({
-          errors: ['Token inválido.']
-        });
-      }
-    }
-  } else {
-    return res.status(403).json({
-      errors: ['No se proporcionó ningún token.']
-    });
-  }
+			next();
+		} catch (error) {
+			if (error.name === 'TokenExpiredError') {
+				return res.status(401).json({
+					errors: ['El token ha expirado. Inicia sesión de nuevo.'],
+				});
+			} else {
+				return res.status(403).json({
+					errors: ['Token inválido.'],
+				});
+			}
+		}
+	} else {
+		return res.status(403).json({
+			errors: ['No se proporcionó ningún token.'],
+		});
+	}
 };
-
-// Exportación del middleware
-module.exports = verifyAccessToken;

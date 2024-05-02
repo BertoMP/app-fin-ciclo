@@ -1,17 +1,18 @@
 // Inicialización del router de express
-const router                      = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de informe
-const InformeController           = require('../../controllers/informe.controller');
+import InformeController from '../../controllers/informe.controller.js';
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify             = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole               = require('../../util/middleware/verifyUserRole');
-const tokenId                 = require('../../util/middleware/verifyUserId');
+import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
+import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
+import { verifyUserId } from '../../util/middleware/verifyUserId.js';
 
 // Importación de middlewares para la validación de datos
-const validateInforme         = require("../../helpers/validators/informe.validator");
-const validateInformeIdParam  = require("../../helpers/validators/params/informeIdParam.validator");
+import { validateInforme } from '../../helpers/validators/informe.validator.js';
+import { validateInformeIdParam } from '../../helpers/validators/params/informeIdParam.validator.js';
 
 // Rutas GET
 /**
@@ -67,12 +68,14 @@ const validateInformeIdParam  = require("../../helpers/validators/params/informe
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/informe/pdf/:informe_id',
-  tokenVerify,
-  tokenRole([2, 3]),
-  tokenId,
-  validateInformeIdParam,
-  InformeController.generaInformePDF);
+router.get(
+	'/informe/pdf/:informe_id',
+	verifyAccessToken,
+	verifyUserRole([2, 3]),
+	verifyUserId,
+	validateInformeIdParam,
+	InformeController.generaInformePDF,
+);
 
 /**
  * @swagger
@@ -127,12 +130,14 @@ router.get('/informe/pdf/:informe_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/informe/:informe_id',
-  tokenVerify,
-  tokenRole([2, 3]),
-  tokenId,
-  validateInformeIdParam,
-  InformeController.getInforme);
+router.get(
+	'/informe/:informe_id',
+	verifyAccessToken,
+	verifyUserRole([2, 3]),
+	verifyUserId,
+	validateInformeIdParam,
+	InformeController.getInforme,
+);
 
 // Rutas POST
 /**
@@ -181,11 +186,13 @@ router.get('/informe/:informe_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/informe',
-  tokenVerify,
-  tokenRole([3]),
-  validateInforme,
-  InformeController.createInforme);
+router.post(
+	'/informe',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	validateInforme,
+	InformeController.createInforme,
+);
 
 // Exportación del router
-module.exports = router;
+export default router;

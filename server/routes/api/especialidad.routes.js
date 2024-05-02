@@ -1,17 +1,18 @@
 // Inicialización del router de express
-const router                        = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de especialidad
-const EspecialidadController        = require('../../controllers/especialidad.controller');
+import EspecialidadController from '../../controllers/especialidad.controller.js';
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                   = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                     = require('../../util/middleware/verifyUserRole');
+import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
+import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
 
 // Importación de middlewares para la validación de datos
-const validateEspecialidad          = require("../../helpers/validators/especialidad.validator");
-const validateEspecialidadIdParam   = require("../../helpers/validators/params/especialidadIdParam.validator");
-const validatePaginationQueryParams = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
+import { validateEspecialidad } from '../../helpers/validators/especialidad.validator.js';
+import { validateEspecialidadIdParam } from '../../helpers/validators/params/especialidadIdParam.validator.js';
+import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
 
 // Rutas GET
 /**
@@ -69,8 +70,7 @@ const validatePaginationQueryParams = require("../../helpers/validators/queryPar
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/especialidad/especialista',
-  EspecialidadController.getEspecialidadesEspecialistas);
+router.get('/especialidad/especialista', EspecialidadController.getEspecialidadesEspecialistas);
 
 /**
  * @swagger
@@ -125,11 +125,13 @@ router.get('/especialidad/especialista',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/especialidad/:especialidad_id',
-  tokenVerify,
-  tokenRole([1]),
-  validateEspecialidadIdParam,
-  EspecialidadController.getEspecialidadById);
+router.get(
+	'/especialidad/:especialidad_id',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateEspecialidadIdParam,
+	EspecialidadController.getEspecialidadById,
+);
 
 /**
  * @swagger
@@ -176,9 +178,11 @@ router.get('/especialidad/:especialidad_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/especialidad',
-  validatePaginationQueryParams,
-  EspecialidadController.getEspecialidades);
+router.get(
+	'/especialidad',
+	validatePaginationQueryParams,
+	EspecialidadController.getEspecialidades,
+);
 
 // Rutas POST
 /**
@@ -243,11 +247,13 @@ router.get('/especialidad',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/especialidad',
-  tokenVerify,
-  tokenRole([1]),
-  validateEspecialidad,
-  EspecialidadController.createEspecialidad);
+router.post(
+	'/especialidad',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateEspecialidad,
+	EspecialidadController.createEspecialidad,
+);
 
 // Rutas PUT
 /**
@@ -325,12 +331,14 @@ router.post('/especialidad',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.put('/especialidad/:especialidad_id',
-  tokenVerify,
-  tokenRole([1]),
-  validateEspecialidadIdParam,
-  validateEspecialidad,
-  EspecialidadController.updateEspecialidad);
+router.put(
+	'/especialidad/:especialidad_id',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateEspecialidadIdParam,
+	validateEspecialidad,
+	EspecialidadController.updateEspecialidad,
+);
 
 // Rutas DELETE
 /**
@@ -386,11 +394,13 @@ router.put('/especialidad/:especialidad_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.delete('/especialidad/:especialidad_id',
-  tokenVerify,
-  tokenRole([1]),
-  validateEspecialidadIdParam,
-  EspecialidadController.deleteEspecialidad);
+router.delete(
+	'/especialidad/:especialidad_id',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateEspecialidadIdParam,
+	EspecialidadController.deleteEspecialidad,
+);
 
 // Exportación del router
-module.exports = router;
+export default router;

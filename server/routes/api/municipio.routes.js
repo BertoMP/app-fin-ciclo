@@ -1,11 +1,12 @@
 // Inicialización del router de express
-const router                    = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de municipio
-const MunicipioController       = require('../../controllers/municipio.controller');
+import MunicipioController from '../../controllers/municipio.controller.js';
 
 // Importación de middlewares para la validación de datos
-const validateProvinciaIdParam  = require('../../helpers/validators/params/provinciaIdParam.validator');
+import { validateProvinciaIdParam } from '../../helpers/validators/params/provinciaIdParam.validator.js';
 
 // Ruta GET
 /**
@@ -48,9 +49,7 @@ const validateProvinciaIdParam  = require('../../helpers/validators/params/provi
  *               $ref: '#/components/schemas/ServerError'
  *
  */
-router.get('/municipio/:provincia_id',
-  validateProvinciaIdParam,
-  MunicipioController.getMunicipio);
+router.get('/municipio/:provincia_id', validateProvinciaIdParam, MunicipioController.getMunicipio);
 
 // Exportación del router
-module.exports = router;
+export default router;

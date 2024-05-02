@@ -1,17 +1,18 @@
 // Inicialización del router de express
-const router                          = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de medicamento
-const MedicamentoController           = require('../../controllers/medicamento.controller');
+import MedicamentoController from '../../controllers/medicamento.controller.js';
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                     = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                       = require('../../util/middleware/verifyUserRole');
+import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
+import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
 
 // Importación de middlewares para la validación de datos
-const validateMedicamento             = require('../../helpers/validators/medicamento.validator');
-const validatePaginationQueryParams   = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const validateMedicamentoIdParam      = require("../../helpers/validators/params/medicamentoIdParam.validator");
+import { validateMedicamento } from '../../helpers/validators/medicamento.validator.js';
+import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
+import { validateMedicamentoIdParam } from '../../helpers/validators/params/medicamentoIdParam.validator.js';
 
 // Rutas GET
 /**
@@ -48,10 +49,11 @@ const validateMedicamentoIdParam      = require("../../helpers/validators/params
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/medicamento/prescripcion',
-  tokenVerify,
-  tokenRole([3]),
-  MedicamentoController.getMedicamentosPrescripcion
+router.get(
+	'/medicamento/prescripcion',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	MedicamentoController.getMedicamentosPrescripcion,
 );
 
 /**
@@ -107,11 +109,13 @@ router.get('/medicamento/prescripcion',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/medicamento/:medicamento_id',
-  tokenVerify,
-  tokenRole([3]),
-  validateMedicamentoIdParam,
-  MedicamentoController.getMedicamentoById);
+router.get(
+	'/medicamento/:medicamento_id',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	validateMedicamentoIdParam,
+	MedicamentoController.getMedicamentoById,
+);
 
 /**
  * @swagger
@@ -166,11 +170,12 @@ router.get('/medicamento/:medicamento_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/medicamento',
-  tokenVerify,
-  tokenRole([3]),
-  validatePaginationQueryParams,
-  MedicamentoController.getMedicamentos
+router.get(
+	'/medicamento',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	validatePaginationQueryParams,
+	MedicamentoController.getMedicamentos,
 );
 
 // Rutas POST
@@ -226,12 +231,13 @@ router.get('/medicamento',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/medicamento',
-  tokenVerify,
-  tokenRole([3]),
-  validateMedicamento,
-  MedicamentoController.createMedicamento);
-
+router.post(
+	'/medicamento',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	validateMedicamento,
+	MedicamentoController.createMedicamento,
+);
 
 // Rutas PUT
 /**
@@ -299,12 +305,14 @@ router.post('/medicamento',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.put('/medicamento/:medicamento_id',
-  tokenVerify,
-  tokenRole([3]),
-  validateMedicamentoIdParam,
-  validateMedicamento,
-  MedicamentoController.updateMedicamento);
+router.put(
+	'/medicamento/:medicamento_id',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	validateMedicamentoIdParam,
+	validateMedicamento,
+	MedicamentoController.updateMedicamento,
+);
 
 // Exportación del router
-module.exports = router;
+export default router;

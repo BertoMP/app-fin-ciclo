@@ -1,5 +1,5 @@
 // Importación de las librerías necesarias
-const { query, validationResult } = require('express-validator');
+import { query, validationResult } from 'express-validator';
 
 /**
  * @name validatePaginationQueryParams
@@ -12,21 +12,19 @@ const { query, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-const validatePaginationQueryParams = [
-  query('page')
-    .optional()
-    .isNumeric().withMessage('El número de página debe ser un valor numérico.'),
+export const validatePaginationQueryParams = [
+	query('page')
+		.optional()
+		.isNumeric()
+		.withMessage('El número de página debe ser un valor numérico.'),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMessages = errors.array().map(error => error.msg);
+	(req, res, next) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			const errorMessages = errors.array().map((error) => error.msg);
 
-      return res.status(400).json({errors: errorMessages});
-    }
-    next();
-  }
+			return res.status(400).json({ errors: errorMessages });
+		}
+		next();
+	},
 ];
-
-// Exportación del módulo
-module.exports = validatePaginationQueryParams;

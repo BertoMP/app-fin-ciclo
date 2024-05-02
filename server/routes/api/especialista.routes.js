@@ -1,11 +1,12 @@
 // Inicialización del router de express
-const router                  = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de especialista
-const EspecialistaController  = require('../../controllers/especialista.controller');
+import EspecialidadController from '../../controllers/especialista.controller.js';
 
 // Importación de middlewares para la validación de datos
-const validateUsuarioIdParam  = require("../../helpers/validators/params/usuarioIdParam.validator");
+import { validateUsuarioIdParam } from '../../helpers/validators/params/usuarioIdParam.validator.js';
 
 // Rutas GET
 /**
@@ -47,10 +48,11 @@ const validateUsuarioIdParam  = require("../../helpers/validators/params/usuario
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/especialista/:usuario_id',
-  validateUsuarioIdParam,
-  EspecialistaController.getEspecialistaById
+router.get(
+	'/especialista/:usuario_id',
+	validateUsuarioIdParam,
+	EspecialidadController.getEspecialistaById,
 );
 
 // Exportación del router
-module.exports = router;
+export default router;

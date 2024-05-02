@@ -1,5 +1,5 @@
 // Importación de las librerías necesarias
-const { param, validationResult } = require('express-validator');
+import { param, validationResult } from 'express-validator';
 
 /**
  * @name validateCitaIdParam
@@ -13,27 +13,25 @@ const { param, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-const validateCitaIdParam = [
-  param('cita_id')
-    .isNumeric().withMessage('El ID debe ser un valor numérico.')
-    .custom(value => {
-      if (value < 1) {
-        throw new Error('El ID debe ser un valor positivo.');
-      }
+export const validateCitaIdParam = [
+	param('cita_id')
+		.isNumeric()
+		.withMessage('El ID debe ser un valor numérico.')
+		.custom((value) => {
+			if (value < 1) {
+				throw new Error('El ID debe ser un valor positivo.');
+			}
 
-      return true;
-    }),
+			return true;
+		}),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMessages = errors.array().map(error => error.msg);
+	(req, res, next) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			const errorMessages = errors.array().map((error) => error.msg);
 
-      return res.status(400).json({errors: errorMessages});
-    }
-    next();
-  }
+			return res.status(400).json({ errors: errorMessages });
+		}
+		next();
+	},
 ];
-
-// Exportación del módulo
-module.exports = validateCitaIdParam;

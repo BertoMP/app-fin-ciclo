@@ -1,71 +1,71 @@
-const request = require('supertest');
+import request from 'supertest';
 
-const { app } = require('../app');
+import { app } from '../app.js';
 
 let expect;
 
 describe('GET /api/provincia', () => {
-  before(async () => {
-    expect = (await import('chai')).expect;
-  });
+	before(async () => {
+		expect = (await import('chai')).expect;
+	});
 
-  it('responde con un JSON con la lista de provincias', (done) => {
-    request(app)
-      .get('/api/provincia')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', 'application/json; charset=utf-8')
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
+	it('responde con un JSON con la lista de provincias', (done) => {
+		request(app)
+			.get('/api/provincia')
+			.set('Accept', 'application/json')
+			.expect('Content-Type', 'application/json; charset=utf-8')
+			.expect(200)
+			.end((err, res) => {
+				if (err) return done(err);
 
-        // console.log(res.body);
+				// console.log(res.body);
 
-        done();
-      });
-  });
+				done();
+			});
+	});
 
-  it('responde con un array', (done) => {
-    request(app)
-      .get('/api/provincia')
-      .set('Accept', 'application/json')
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
+	it('responde con un array', (done) => {
+		request(app)
+			.get('/api/provincia')
+			.set('Accept', 'application/json')
+			.expect(200)
+			.end((err, res) => {
+				if (err) return done(err);
 
-        expect(res.body).to.be.an('array');
+				expect(res.body).to.be.an('array');
 
-        done();
-      });
-  });
+				done();
+			});
+	});
 
-  it('responde con un array que no está vacío', (done) => {
-    request(app)
-      .get('/api/provincia')
-      .set('Accept', 'application/json')
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
+	it('responde con un array que no está vacío', (done) => {
+		request(app)
+			.get('/api/provincia')
+			.set('Accept', 'application/json')
+			.expect(200)
+			.end((err, res) => {
+				if (err) return done(err);
 
-        expect(res.body.length).to.be.above(0);
+				expect(res.body.length).to.be.above(0);
 
-        done();
-      });
-  });
+				done();
+			});
+	});
 
-  it('cada provincia tiene un id y un nombre', (done) => {
-    request(app)
-      .get('/api/provincia')
-      .set('Accept', 'application/json')
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
+	it('cada provincia tiene un id y un nombre', (done) => {
+		request(app)
+			.get('/api/provincia')
+			.set('Accept', 'application/json')
+			.expect(200)
+			.end((err, res) => {
+				if (err) return done(err);
 
-        res.body.forEach(provincia => {
-          expect(provincia).to.have.property('id');
-          expect(provincia).to.have.property('nombre');
-        });
+				res.body.forEach((provincia) => {
+					expect(provincia).to.have.property('id');
+					expect(provincia).to.have.property('nombre');
+				});
 
-        done();
-      });
-  });
+				done();
+			});
+	});
 });

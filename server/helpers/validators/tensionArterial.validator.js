@@ -1,5 +1,5 @@
 // Importación de las librerías necesarias
-const { body, validationResult } = require('express-validator');
+import { body, validationResult } from 'express-validator';
 
 /**
  * @name validateTensionArterial
@@ -13,66 +13,69 @@ const { body, validationResult } = require('express-validator');
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-const validateTensionArterial = [
-  body('sistolica')
-    .trim()
-    .notEmpty().withMessage('La medición sistólica es requerida.')
-    .isNumeric().withMessage('La medición sistólica debe ser un valor numérico.')
-    .custom(value => {
-      if (value < 0) {
-        throw new Error('La medición sistólica no puede ser un valor negativo.');
-      }
+export const validateTensionArterial = [
+	body('sistolica')
+		.trim()
+		.notEmpty()
+		.withMessage('La medición sistólica es requerida.')
+		.isNumeric()
+		.withMessage('La medición sistólica debe ser un valor numérico.')
+		.custom((value) => {
+			if (value < 0) {
+				throw new Error('La medición sistólica no puede ser un valor negativo.');
+			}
 
-      const regex = /^\d{2,3}$/;
-      if (!regex.test(value)) {
-        throw new Error('La medición sistólica debe tener entre 2 y 3 dígitos.');
-      }
+			const regex = /^\d{2,3}$/;
+			if (!regex.test(value)) {
+				throw new Error('La medición sistólica debe tener entre 2 y 3 dígitos.');
+			}
 
-      return true;
-    }),
-  body('diastolica')
-    .trim()
-    .notEmpty().withMessage('La medición diastólica es requerida.')
-    .isNumeric().withMessage('La medición diastólica debe ser un valor numérico.')
-    .custom(value => {
-      if (value < 0) {
-        throw new Error('La medición diastólica no puede ser un valor negativo.');
-      }
+			return true;
+		}),
+	body('diastolica')
+		.trim()
+		.notEmpty()
+		.withMessage('La medición diastólica es requerida.')
+		.isNumeric()
+		.withMessage('La medición diastólica debe ser un valor numérico.')
+		.custom((value) => {
+			if (value < 0) {
+				throw new Error('La medición diastólica no puede ser un valor negativo.');
+			}
 
-      const regex = /^\d{2,3}$/;
-      if (!regex.test(value)) {
-        throw new Error('La medición diastólica debe tener entre 2 y 3 dígitos.');
-      }
+			const regex = /^\d{2,3}$/;
+			if (!regex.test(value)) {
+				throw new Error('La medición diastólica debe tener entre 2 y 3 dígitos.');
+			}
 
-      return true;
-    }),
-  body('pulsaciones')
-    .trim()
-    .notEmpty().withMessage('Las pulsaciones por minuto son requeridas.')
-    .isNumeric().withMessage('Las pulsaciones por minuto deben ser un valor numérico.')
-    .custom(value => {
-      if (value < 0) {
-        throw new Error('Las pulsaciones por minuto no pueden ser un valor negativo.');
-      }
+			return true;
+		}),
+	body('pulsaciones')
+		.trim()
+		.notEmpty()
+		.withMessage('Las pulsaciones por minuto son requeridas.')
+		.isNumeric()
+		.withMessage('Las pulsaciones por minuto deben ser un valor numérico.')
+		.custom((value) => {
+			if (value < 0) {
+				throw new Error('Las pulsaciones por minuto no pueden ser un valor negativo.');
+			}
 
-      const regex = /^\d{2,3}$/;
-      if (!regex.test(value)) {
-        throw new Error('Las pulsaciones por minuto deben tener entre 2 y 3 dígitos.');
-      }
+			const regex = /^\d{2,3}$/;
+			if (!regex.test(value)) {
+				throw new Error('Las pulsaciones por minuto deben tener entre 2 y 3 dígitos.');
+			}
 
-      return true;
-    }),
+			return true;
+		}),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMessages = errors.array().map(error => error.msg);
+	(req, res, next) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			const errorMessages = errors.array().map((error) => error.msg);
 
-      return res.status(400).json({errors: errorMessages});
-    }
-    next();
-  }
+			return res.status(400).json({ errors: errorMessages });
+		}
+		next();
+	},
 ];
-
-// Exportación del módulo
-module.exports = validateTensionArterial;

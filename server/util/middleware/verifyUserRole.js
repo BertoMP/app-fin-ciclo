@@ -11,15 +11,13 @@
  * @memberof Util-Middleware
  * @function
  */
-const verifyUserRole = (roles) => {
-  return (req, res, next) => {
-    if (!req.user_role || !roles.includes(req.user_role)) {
-      return res.status(403).json({
-        errors: ['No tienes permiso para realizar esta acción.']
-      });
-    }
-    next();
-  }
-}
-
-module.exports = verifyUserRole;
+export const verifyUserRole = (roles) => {
+	return (req, res, next) => {
+		if (!req.user_role || !roles.includes(req.user_role)) {
+			return res.status(403).json({
+				errors: ['No tienes permiso para realizar esta acción.'],
+			});
+		}
+		next();
+	};
+};

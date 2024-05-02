@@ -1,16 +1,17 @@
 // Inicialización del router de express
-const router                              = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de patología
-const PatologiaController                 = require('../../controllers/patologia.controller');
+import PatologiaController from '../../controllers/patologia.controller.js';
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                         = require("../../helpers/jwt/verifyAccessToken");
-const tokenRole                           = require("../../util/middleware/verifyUserRole");
+import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
+import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
 
 // Importación de middlewares para la validación de datos
-const validatePaginationQueryParams       = require("../../helpers/validators/queryParams/paginationQueryParams.validator");
-const validatePatologia                   = require("../../helpers/validators/patologia.validator");
+import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
+import { validatePatologia } from '../../helpers/validators/patologia.validator.js';
 
 // Ruta GET
 /**
@@ -62,10 +63,12 @@ const validatePatologia                   = require("../../helpers/validators/pa
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/patologia/informe',
-  tokenVerify,
-  tokenRole([3]),
-  PatologiaController.getPatologiasInforme);
+router.get(
+	'/patologia/informe',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	PatologiaController.getPatologiasInforme,
+);
 
 /**
  * @swagger
@@ -130,10 +133,12 @@ router.get('/patologia/informe',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/patologia/:patologia_id',
-  tokenVerify,
-  tokenRole([3]),
-  PatologiaController.getPatologiaById);
+router.get(
+	'/patologia/:patologia_id',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	PatologiaController.getPatologiaById,
+);
 
 /**
  * @swagger
@@ -187,11 +192,13 @@ router.get('/patologia/:patologia_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/patologia',
-  tokenVerify,
-  tokenRole([3]),
-  validatePaginationQueryParams,
-  PatologiaController.getPatologias);
+router.get(
+	'/patologia',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	validatePaginationQueryParams,
+	PatologiaController.getPatologias,
+);
 
 // Ruta POST
 /**
@@ -246,11 +253,13 @@ router.get('/patologia',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/patologia',
-  tokenVerify,
-  tokenRole([3]),
-  validatePatologia,
-  PatologiaController.createPatologia);
+router.post(
+	'/patologia',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	validatePatologia,
+	PatologiaController.createPatologia,
+);
 
 // Ruta PUT
 /**
@@ -318,11 +327,13 @@ router.post('/patologia',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.put('/patologia/:patologia_id',
-  tokenVerify,
-  tokenRole([3]),
-  validatePatologia,
-  PatologiaController.updatePatologia);
+router.put(
+	'/patologia/:patologia_id',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	validatePatologia,
+	PatologiaController.updatePatologia,
+);
 
 // Exportación del router
-module.exports = router;
+export default router;

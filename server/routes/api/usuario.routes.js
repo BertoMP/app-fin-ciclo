@@ -1,24 +1,24 @@
 // Inicialización del router de express
-const router                            = require('express').Router();
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de usuario
-const UsuarioController                 = require('../../controllers/usuario.controller');
+import UsuarioController from '../../controllers/usuario.controller.js';
 
 // Importación de middlewares para la validación de token y roles
-const tokenVerify                       = require('../../helpers/jwt/verifyAccessToken');
-const tokenRole                         = require('../../util/middleware/verifyUserRole');
-const tokenId                           = require('../../util/middleware/verifyUserId');
+import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
+import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
+import { verifyUserId } from '../../util/middleware/verifyUserId.js';
 
 // Importación de middlewares para la validación de datos
-const validateUserLogin                 = require("../../helpers/validators/usuarioLogin.validator");
-const validatePacienteRegister          = require("../../helpers/validators/pacienteRegistro.validador");
-const validateEspecialistaRegister      = require("../../helpers/validators/especialistaRegistro.validator");
-const validateUserPasswordChange        = require("../../helpers/validators/usuarioPasswordChange.validator");
-const validateRoleQueryParams           = require("../../helpers/validators/queryParams/roleQueryParams.validator");
-const validateUsuarioIdParam            = require("../../helpers/validators/params/usuarioIdParam.validator");
-const validatePacienteUpdate            = require("../../helpers/validators/pacienteUpdate.validator");
-const validateEspecialistaUpdate        = require("../../helpers/validators/especialistaUpdate.validator");
-
+import { validateUserLogin } from '../../helpers/validators/usuarioLogin.validator.js';
+import { validatePacienteRegister } from '../../helpers/validators/pacienteRegistro.validador.js';
+import { validateEspecialistaRegister } from '../../helpers/validators/especialistaRegistro.validator.js';
+import { validateUserPasswordChange } from '../../helpers/validators/usuarioPasswordChange.validator.js';
+import { validateRoleQueryParams } from '../../helpers/validators/queryParams/roleQueryParams.validator.js';
+import { validateUsuarioIdParam } from '../../helpers/validators/params/usuarioIdParam.validator.js';
+import { validatePacienteUpdate } from '../../helpers/validators/pacienteUpdate.validator.js';
+import { validateEspecialistaUpdate } from '../../helpers/validators/especialistaUpdate.validator.js';
 
 // Rutas GET
 /**
@@ -74,11 +74,13 @@ const validateEspecialistaUpdate        = require("../../helpers/validators/espe
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/usuario/:usuario_id',
-  tokenVerify,
-  tokenRole([1]),
-  validateUsuarioIdParam,
-  UsuarioController.getUsuario);
+router.get(
+	'/usuario/:usuario_id',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateUsuarioIdParam,
+	UsuarioController.getUsuario,
+);
 
 /**
  * @swagger
@@ -126,11 +128,13 @@ router.get('/usuario/:usuario_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/usuario',
-  tokenVerify,
-  tokenRole([2]),
-  tokenId,
-  UsuarioController.getUsuario);
+router.get(
+	'/usuario',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	UsuarioController.getUsuario,
+);
 
 /**
  * @swagger
@@ -191,11 +195,13 @@ router.get('/usuario',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/usuario/listado',
-  tokenVerify,
-  tokenRole([1]),
-  validateRoleQueryParams,
-  UsuarioController.getListado);
+router.get(
+	'/usuario/listado',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateRoleQueryParams,
+	UsuarioController.getListado,
+);
 
 // Rutas POST
 /**
@@ -236,9 +242,7 @@ router.get('/usuario/listado',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/registro',
-  validatePacienteRegister,
-  UsuarioController.postRegistro);
+router.post('/usuario/registro', validatePacienteRegister, UsuarioController.postRegistro);
 
 /**
  * @swagger
@@ -298,11 +302,13 @@ router.post('/usuario/registro',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/registro-especialista',
-  tokenVerify,
-  tokenRole([1]),
-  validateEspecialistaRegister,
-  UsuarioController.postRegistroEspecialista);
+router.post(
+	'/usuario/registro-especialista',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateEspecialistaRegister,
+	UsuarioController.postRegistroEspecialista,
+);
 
 /**
  * @swagger
@@ -346,9 +352,7 @@ router.post('/usuario/registro-especialista',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/login',
-  validateUserLogin,
-  UsuarioController.postLogin);
+router.post('/usuario/login', validateUserLogin, UsuarioController.postLogin);
 
 /**
  * @swagger
@@ -387,8 +391,7 @@ router.post('/usuario/login',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/contrasena-olvidada',
-  UsuarioController.postForgotPassword);
+router.post('/usuario/contrasena-olvidada', UsuarioController.postForgotPassword);
 
 /**
  * @swagger
@@ -429,9 +432,11 @@ router.post('/usuario/contrasena-olvidada',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/contrasena-reset',
-  validateUserPasswordChange,
-  UsuarioController.postResetPassword);
+router.post(
+	'/usuario/contrasena-reset',
+	validateUserPasswordChange,
+	UsuarioController.postResetPassword,
+);
 
 /**
  * @swagger
@@ -481,8 +486,7 @@ router.post('/usuario/contrasena-reset',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/refresh-token',
-  UsuarioController.postRefreshToken);
+router.post('/usuario/refresh-token', UsuarioController.postRefreshToken);
 
 /**
  * @swagger
@@ -518,10 +522,7 @@ router.post('/usuario/refresh-token',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post('/usuario/logout',
-  tokenVerify,
-  tokenId,
-  UsuarioController.postLogout);
+router.post('/usuario/logout', verifyAccessToken, verifyUserId, UsuarioController.postLogout);
 
 // Rutas PUT
 /**
@@ -580,11 +581,13 @@ router.post('/usuario/logout',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.put('/usuario/actualizar-password',
-  tokenVerify,
-  tokenId,
-  validateUserPasswordChange,
-  UsuarioController.postUpdatePassword);
+router.put(
+	'/usuario/actualizar-password',
+	verifyAccessToken,
+	verifyUserId,
+	validateUserPasswordChange,
+	UsuarioController.postUpdatePassword,
+);
 
 /**
  * @swagger
@@ -666,12 +669,14 @@ router.put('/usuario/actualizar-password',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.put('/usuario/actualizar-usuario/:usuario_id',
-  tokenVerify,
-  tokenRole([1]),
-  validateUsuarioIdParam,
-  validatePacienteUpdate,
-  UsuarioController.putUsuarioPaciente);
+router.put(
+	'/usuario/actualizar-usuario/:usuario_id',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateUsuarioIdParam,
+	validatePacienteUpdate,
+	UsuarioController.putUsuarioPaciente,
+);
 
 /**
  * @swagger
@@ -725,12 +730,14 @@ router.put('/usuario/actualizar-usuario/:usuario_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.put('/usuario/actualizar-usuario',
-  tokenVerify,
-  tokenRole([2]),
-  tokenId,
-  validatePacienteUpdate,
-  UsuarioController.putUsuarioPaciente);
+router.put(
+	'/usuario/actualizar-usuario',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validatePacienteUpdate,
+	UsuarioController.putUsuarioPaciente,
+);
 
 /**
  * @swagger
@@ -790,12 +797,14 @@ router.put('/usuario/actualizar-usuario',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.put('/usuario/actualizar-especialista/:usuario_id',
-  tokenVerify,
-  tokenRole([1]),
-  validateUsuarioIdParam,
-  validateEspecialistaUpdate,
-  UsuarioController.putUsuarioEspecialista);
+router.put(
+	'/usuario/actualizar-especialista/:usuario_id',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	validateUsuarioIdParam,
+	validateEspecialistaUpdate,
+	UsuarioController.putUsuarioEspecialista,
+);
 
 // Rutas DELETE
 /**
@@ -845,11 +854,13 @@ router.put('/usuario/actualizar-especialista/:usuario_id',
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.delete('/usuario/borrar-usuario',
-  tokenVerify,
-  tokenRole([2]),
-  tokenId,
-  UsuarioController.deleteUsuario);
+router.delete(
+	'/usuario/borrar-usuario',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	UsuarioController.deleteUsuario,
+);
 
 // Exportación del router
-module.exports = router;
+export default router;

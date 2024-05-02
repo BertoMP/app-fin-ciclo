@@ -1,10 +1,9 @@
-// Inicialización del router de express
-const router              = require('express').Router();
+// Inicialización del router de expressç
+import { Router } from 'express';
+const router = Router();
 
 // Importación del controlador de tipo de vía
-// const TipoViaController   = require('../../controllers/tipoVia.controller');
-
-const TipoViaController = require('../../controllers/tipoVia.controller');
+import TipoViaController from '../../controllers/tipoVia.controller.js';
 
 // Ruta GET
 /**
@@ -33,8 +32,7 @@ const TipoViaController = require('../../controllers/tipoVia.controller');
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.get('/tipo-via',
-  TipoViaController.getTipoVia);
+router.get('/tipo-via', TipoViaController.getTipoVia);
 
 // Exportación del router
-module.exports = router;
+export default router;

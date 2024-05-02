@@ -1,25 +1,29 @@
-const jwt = require('jsonwebtoken');
+// Importación de las librerías necesarias
+import pkg from 'jsonwebtoken';
+const { verify } = pkg;
 
-const verifyResetToken = (req, res) => {
-  const resetToken = req.body.token;
+// Carga de las variables de entorno desde el archivo '.env'
+import dotenv from 'dotenv';
+dotenv.config();
 
-  return new Promise((resolve) => {
-    jwt.verify(resetToken, process.env.JWT_RESET_SECRET_KEY, (err, decodedToken) => {
-      if (err || !decodedToken) {
-        if (err.name === 'TokenExpiredError') {
-          return res.status(401).json({
-            errors: ['El token ha expirado. Solicita un nuevo enlace.']
-          });
-        } else {
-          return res.status(401).json({
-            errors: ['Token inválido o expirado.']
-          });
-        }
-      }
+export const verifyResetToken = (req, res) => {
+	const resetToken = req.body.token;
 
-      resolve(decodedToken.email);
-    });
-  });
-}
+	return new Promise((resolve) => {
+		verify(resetToken, process.env.JWT_RESET_SECRET_KEY, (err, decodedToken) => {
+			if (err || !decodedToken) {
+				if (err.name === 'TokenExpiredError') {
+					return res.status(401).json({
+						errors: ['El token ha expirado. Solicita un nuevo enlace.'],
+					});
+				} else {
+					return res.status(401).json({
+						errors: ['Token inválido o expirado.'],
+					});
+				}
+			}
 
-module.exports = verifyResetToken;
+			resolve(decodedToken.email);
+		});
+	});
+};
