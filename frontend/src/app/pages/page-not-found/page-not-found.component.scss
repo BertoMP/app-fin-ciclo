@@ -1,6 +1,5 @@
 $btn-bg-color: #576bf1;
 $btn-hover-color: #7d95ef;
-$btn-active-color: #152a88;
 $btn-text-color: white;
 $h2-color: #333;
 $p-color: #666;
@@ -17,7 +16,6 @@ $p-color: #666;
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background-color: var(--bgColot-main);
     border-radius: .8rem;
 
     > h2 {
@@ -53,10 +51,6 @@ $p-color: #666;
         &:hover {
           color: $btn-hover-color;
         }
-
-        &:active {
-          color: $btn-active-color;
-        }
       }
     }
 
@@ -73,10 +67,6 @@ $p-color: #666;
 
       &:hover {
         background-color: $btn-hover-color;
-      }
-
-      &:active {
-        background-color: $btn-active-color;
       }
     }
   }
