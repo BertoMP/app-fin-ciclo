@@ -102,6 +102,17 @@ export class CustomValidators {
     return null;
   }
 
+  static validCollegiateNumber(control: FormControl): { [s: string]: boolean } | null {
+    const value = control.value;
+    const regex: RegExp = new RegExp('^[0-9]{9}$');
+
+    if (!regex.test(value)) {
+      return { 'isInvalidCollegiateNumber': true }
+    }
+
+    return null;
+  }
+
   static validDoor(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
     const regex: RegExp = new RegExp('^(([1-9]\\d{0,3})|[A-ZÑ])$');

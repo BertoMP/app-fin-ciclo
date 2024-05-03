@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import {ListedUserModel} from "../../../core/interfaces/listed-user.model";
 import {FormsModule} from "@angular/forms";
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-admin-panel',
@@ -21,7 +22,10 @@ import {FormsModule} from "@angular/forms";
     LoadingSpinnerComponent,
     NgxPaginationModule,
     NgForOf,
-    NgIf, FormsModule],
+    NgIf,
+    FormsModule,
+    RouterLink,
+    RouterOutlet],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.scss'
 })
