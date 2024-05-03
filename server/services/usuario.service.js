@@ -29,48 +29,6 @@ class UsuarioService {
 	}
 
 	/**
-	 * @method readUsuarioPaciente
-	 * @description Método para leer un usuario paciente por su ID.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {number} id - El ID del usuario paciente.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise<Object>} El usuario paciente.
-	 */
-	static async readUsuarioPaciente(id, conn = dbConn) {
-		return await UsuarioModel.findPacienteById(id, conn);
-	}
-
-	/**
-	 * @method readUsuarioEspecialista
-	 * @description Método para leer un usuario especialista por su ID.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {number} id - El ID del usuario especialista.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise<Object>} El usuario especialista.
-	 */
-	static async readUsuarioEspecialista(id, conn = dbConn) {
-		return await UsuarioModel.findEspecialistaById(id, conn);
-	}
-
-	/**
-	 * @method readUsuarioRoleById
-	 * @description Método para leer el rol de un usuario por su ID.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {number} id - El ID del usuario.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise<Object>} El rol del usuario.
-	 */
-	static async readUsuarioRoleById(id, conn = dbConn) {
-		return await UsuarioModel.findRoleById(id, conn);
-	}
-
-	/**
 	 * @method createUsuarioPaciente
 	 * @description Método para crear un nuevo usuario y un nuevo paciente asociado a ese usuario.
 	 * @static
@@ -94,8 +52,8 @@ class UsuarioService {
 				await conn.beginTransaction();
 			}
 
-			paciente.usuario_id = await UsuarioModel.create(usuario, conn);
-
+			const newUser = await UsuarioModel.create(usuario, conn);
+			paciente.usuario_id = newUser.insertId;
 			await PacienteService.createPaciente(paciente, conn);
 
 			if (!isConnProvided) {
@@ -138,9 +96,7 @@ class UsuarioService {
 			}
 
 			const usuarioCreado = await UsuarioModel.create(usuario, conn);
-
 			especialista.usuario_id = usuarioCreado.insertId;
-
 			await EspecialistaService.create(especialista, conn);
 
 			if (!isConnProvided) {
@@ -183,7 +139,6 @@ class UsuarioService {
 			}
 
 			await UsuarioModel.updateUsuario(usuario, conn);
-
 			await PacienteService.updatePacienteByUserId(paciente, conn);
 
 			if (!isConnProvided) {
@@ -226,7 +181,6 @@ class UsuarioService {
 			}
 
 			await UsuarioModel.updateUsuario(usuario, conn);
-
 			await EspecialistaService.updateEspecialista(especialista, conn);
 
 			if (!isConnProvided) {

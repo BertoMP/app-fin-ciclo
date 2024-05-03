@@ -9,6 +9,7 @@ import { RemoveAccentsPipe } from '../../../shared/pipes/remove-accents.pipe';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
+import {ListedUserModel} from "../../../core/interfaces/listed-user.model";
 
 @Component({
   selector: 'app-admin-panel',
@@ -25,7 +26,7 @@ import { Observable } from 'rxjs';
 })
 
 export class AdminPanelComponent implements OnInit {
-  users: UserModel[];
+  users: ListedUserModel[];
   nextPageUrl: string;
   previousPageUrl: string;
   actualPage: number;
@@ -34,7 +35,7 @@ export class AdminPanelComponent implements OnInit {
   itemsPerPage: number;
   errores: string[];
   @Input("userRole") userRole: number;
-  
+
   constructor(private adminPanelService: AdminPanelService) { }
 
   ngOnInit(): void {

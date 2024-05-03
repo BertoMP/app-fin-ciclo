@@ -1,3 +1,7 @@
+// Importación de librerías necesarias
+import pkg from 'moment-timezone';
+const { tz } = pkg;
+
 /**
  * @class PacienteModel
  * @description Clase que contiene los métodos para interactuar con la tabla de pacientes.
@@ -99,13 +103,59 @@ class PacienteModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async findByUserId(usuario_id, dbConn) {
-		const query = 'SELECT * FROM paciente WHERE usuario_id = ?';
+		const query =
+			'SELECT ' +
+			'   num_historia_clinica, ' +
+			'   fecha_nacimiento, ' +
+			'   tipo_via, ' +
+			'   tipo_via.nombre AS tipo_via_nombre, ' +
+			'   nombre_via, ' +
+			'   numero, ' +
+			'   piso, ' +
+			'   puerta, ' +
+			'   municipio AS municipio_id, ' +
+			'   municipio.nombre AS municipio_nombre,' +
+			'   codigo_postal, ' +
+			'   tel_fijo, ' +
+			'   tel_movil ' +
+			'FROM ' +
+			'   paciente ' +
+			'INNER JOIN ' +
+			'   tipo_via ON paciente.tipo_via = tipo_via.id ' +
+			'INNER JOIN ' +
+			'   municipio ON paciente.municipio = municipio.id ' +
+			'WHERE ' +
+			'   usuario_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [usuario_id]);
-			return rows[0];
+
+			return {
+				datos_paciente: {
+					num_historia_clinica: rows[0].num_historia_clinica,
+					fecha_nacimiento: tz(rows[0].fecha_nacimiento, 'Europe/Madrid').format('DD-MM-YYYY'),
+					datos_vivienda: {
+						tipo_via: {
+							id: rows[0].tipo_via,
+							nombre: rows[0].tipo_via_nombre,
+						},
+						nombre_via: rows[0].nombre_via,
+						numero: rows[0].numero,
+						piso: rows[0].piso,
+						puerta: rows[0].puerta,
+						municipio: {
+							id: rows[0].municipio_id,
+							nombre: rows[0].municipio_nombre,
+							codigo_postal: rows[0].codigo_postal
+						},
+					},
+					datos_contacto: {
+						tel_fijo: rows[0].tel_fijo,
+						tel_movil: rows[0].tel_movil,
+					},
+				}
+			};
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al obtener el paciente.');
 		}
 	}

@@ -1,5 +1,4 @@
-import {MedicalSpecialtyModel} from "./medical-specialty.model";
-import { UserModel } from "./user.model";
+import {ListedUserModel} from "./listed-user.model";
 
 export interface UserListResponseModel {
   cantidad_usuarios: number;
@@ -10,5 +9,5 @@ export interface UserListResponseModel {
   prev: string;
   result_min: number;
   result_max: number;
-  resultados: UserModel[];
+  resultados: ListedUserModel[];
 }

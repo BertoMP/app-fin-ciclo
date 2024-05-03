@@ -34,25 +34,41 @@ class UsuarioModel {
 			'FROM ' +
 			'   usuario ' +
 			'INNER JOIN ' +
-			'   rol ON usuario.rol_id = rol.id ';
+			'   rol ON usuario.rol_id = rol.id ' +
+			'LEFT JOIN ' +
+			'   paciente ON usuario.id = paciente.usuario_id ' +
+			'LEFT JOIN ' +
+			'	 especialista ON usuario.id = especialista.usuario_id ' +
+			'WHERE ' +
+			'   rol_id <> 1 AND ' +
+			'   (turno IS NULL OR turno <> "no-trabajando")';
 
-		let countQuery = 'SELECT COUNT(*) AS count FROM usuario';
+		let countQuery =
+			'SELECT ' +
+			'		COUNT(*) AS count ' +
+			'FROM ' +
+			'		usuario ' +
+			'INNER JOIN ' +
+			'		rol ON usuario.rol_id = rol.id ' +
+			'LEFT JOIN ' +
+			'		paciente ON usuario.id = paciente.usuario_id ' +
+			'LEFT JOIN ' +
+			'		especialista ON usuario.id = especialista.usuario_id ' +
+			'WHERE ' +
+			'		rol_id <> 1 AND ' +
+			'		(turno IS NULL OR turno <> "no-trabajando")';
 
 		let queryParams = [`${limit}`, `${offset}`];
 		let countParams = [];
 
 		if (role_id) {
-			query += ' WHERE rol_id = ? ';
-			countQuery += ' WHERE rol_id = ? ';
+			query += 'AND rol_id = ? ';
+			countQuery += 'AND rol_id = ? ';
 			queryParams.unshift(`${role_id}`);
 			countParams.push(`${role_id}`);
-		} else {
-			query += ' WHERE rol_id <> 1 ';
-			countQuery += ' WHERE rol_id <> 1 ';
-
 		}
 
-		query += 'ORDER BY usuario.id ASC LIMIT ? OFFSET ?';
+		query += ' ORDER BY usuario.id ASC LIMIT ? OFFSET ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, queryParams);
@@ -61,135 +77,27 @@ class UsuarioModel {
 			const actualPage = page;
 			const totalPages = Math.ceil(total / limit);
 
-			return { rows, total, actualPage, totalPages };
+			const formattedRows = rows.map((row) => {
+				return {
+					usuario_id: row.id,
+					datos_personales: {
+						email: row.email,
+						nombre: row.nombre,
+						primer_apellido: row.primer_apellido,
+						segundo_apellido: row.segundo_apellido,
+						dni: row.dni,
+					},
+					datos_rol: {
+						rol_id: row.rol_id,
+						nombre_rol: row.nombre_rol,
+					}
+				};
+			});
+
+			return { formattedRows, total, actualPage, totalPages };
 		} catch (err) {
 			console.log(err);
 			throw new Error('Error al obtener los usuarios.');
-		}
-	}
-
-	/**
-	 * @method findPacienteById
-	 * @description Método para obtener un paciente por su ID de usuario.
-	 * @static
-	 * @async
-	 * @memberof UsuarioModel
-	 * @param {number} id - El ID del usuario.
-	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise<Object>} El paciente.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async findPacienteById(id, dbConn) {
-		const query =
-			'SELECT ' +
-			'   usuario.id,' +
-			'   email,' +
-			'   usuario.nombre,' +
-			'   primer_apellido,' +
-			'   segundo_apellido,' +
-			'   dni,' +
-			'   num_historia_clinica, ' +
-			'   fecha_nacimiento, ' +
-			'   tipo_via, ' +
-			'   nombre_via, ' +
-			'   numero, ' +
-			'   piso, ' +
-			'   puerta, ' +
-			'   provincia_id, ' +
-			'   municipio, ' +
-			'   codigo_postal, ' +
-			'   tel_fijo, ' +
-			'   tel_movil, ' +
-			'   usuario.rol_id AS rol_id, ' +
-			'   rol.nombre AS nombre_rol ' +
-			'FROM ' +
-			'   usuario ' +
-			'INNER JOIN ' +
-			'   rol ON usuario.rol_id = rol.id ' +
-			'INNER JOIN ' +
-			'   paciente ON usuario.id = paciente.usuario_id ' +
-			'INNER JOIN ' +
-			'   municipio ON paciente.municipio = municipio.id ' +
-			'INNER JOIN ' +
-			'   provincia ON municipio.provincia_id = provincia.id ' +
-			'WHERE ' +
-			'   usuario.id = ?';
-
-		try {
-			const [rows] = await dbConn.execute(query, [id]);
-			let paciente = rows[0];
-			paciente.fecha_nacimiento = new Date(paciente.fecha_nacimiento).toISOString().split('T')[0];
-			return paciente;
-		} catch (err) {
-			console.log(err);
-			throw new Error('Error al obtener el paciente.');
-		}
-	}
-
-	/**
-	 * @method findEspecialistaById
-	 * @description Método para obtener un especialista por su ID de usuario.
-	 * @static
-	 * @async
-	 * @memberof UsuarioModel
-	 * @param {number} id - El ID del usuario.
-	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise<Object>} El especialista.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async findEspecialistaById(id, dbConn) {
-		const query =
-			'SELECT ' +
-			'   usuario.id,' +
-			'   email,' +
-			'   usuario.nombre,' +
-			'   primer_apellido,' +
-			'   segundo_apellido,' +
-			'   dni,' +
-			'   num_colegiado, ' +
-			'   descripcion, ' +
-			'   especialidad_id, ' +
-			'   consulta_id, ' +
-			'   turno, ' +
-			'   imagen, ' +
-			'   rol_id, ' +
-			'   rol.nombre AS nombre_rol ' +
-			'FROM ' +
-			'   usuario ' +
-			'INNER JOIN ' +
-			'   rol ON usuario.rol_id = rol.id ' +
-			'INNER JOIN ' +
-			'   especialista ON usuario.id = especialista.usuario_id ' +
-			'WHERE ' +
-			'   usuario.id = ?';
-
-		try {
-			const [rows] = await dbConn.execute(query, [id]);
-			return rows[0];
-		} catch (err) {
-			throw new Error('Error al obtener el especialista.');
-		}
-	}
-
-	/**
-	 * @method findRoleById
-	 * @description Método para obtener el rol de un usuario por su ID.
-	 * @static
-	 * @async
-	 * @memberof UsuarioModel
-	 * @param {number} id - El ID del usuario.
-	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise<number>} El ID del rol.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async findRoleById(id, dbConn) {
-		const query = 'SELECT rol_id FROM usuario WHERE id = ?';
-
-		try {
-			const [rows] = await dbConn.execute(query, [id]);
-			return rows[0].rol_id;
-		} catch (err) {
-			throw new Error('Error al obtener el rol del usuario.');
 		}
 	}
 
@@ -406,22 +314,44 @@ class UsuarioModel {
 	static async findById(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   id, ' +
+			'   usuario.id, ' +
 			'   email, ' +
-			'   nombre, ' +
+			'   usuario.nombre AS usuario_nombre, ' +
 			'   primer_apellido, ' +
 			'   segundo_apellido, ' +
 			'   dni, ' +
-			'   rol_id ' +
+			'   rol_id, ' +
+			'   rol.nombre AS nombre_rol ' +
 			'FROM ' +
 			'   usuario ' +
+			'INNER JOIN ' +
+			'   rol ON usuario.rol_id = rol.id ' +
 			'WHERE ' +
-			'   id = ?';
+			'   usuario.id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
-			return rows[0];
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				usuario_id: rows[0].id,
+				datos_personales: {
+					email: rows[0].email,
+					nombre: rows[0].usuario_nombre,
+					primer_apellido: rows[0].primer_apellido,
+					segundo_apellido: rows[0].segundo_apellido,
+					dni: rows[0].dni,
+				},
+				datos_rol: {
+					rol_id: rows[0].rol_id,
+					nombre_rol: rows[0].nombre_rol,
+				}
+			};
 		} catch (err) {
+			console.log(err);
 			throw new Error('Error al obtener el usuario.');
 		}
 	}

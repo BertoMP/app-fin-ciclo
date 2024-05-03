@@ -50,47 +50,43 @@ class UsuarioController {
 	 */
 	static async getUsuario(req, res) {
 		let id = 0;
-		let role_id = 0;
 
 		if (req.user_role === 2) {
 			id = req.user_id;
-			role_id = 2;
 		} else if (req.user_role === 1) {
 			id = req.params.usuario_id;
 		}
 
 		try {
-			if (!role_id) {
-				role_id = await UsuarioService.readUsuarioRoleById(id);
+			let usuario = await UsuarioService.readUsuarioById(id);
 
-				if (!role_id) {
-					return res.status(404).json({
-						errors: ['Usuario no encontrado.'],
-					});
-				}
-			}
-
-			if (role_id === 2) {
-				const user = await UsuarioService.readUsuarioPaciente(id);
-
-				if (!user) {
-					return res.status(404).json({
-						errors: ['Usuario no encontrado.'],
-					});
-				}
-
-				return res.status(200).json(user);
-			}
-
-			const user = await UsuarioService.readUsuarioEspecialista(id);
-
-			if (!user) {
+			if (!usuario) {
 				return res.status(404).json({
 					errors: ['Usuario no encontrado.'],
 				});
 			}
 
-			return res.status(200).json(user);
+			const usuarioRole = usuario.datos_rol.rol_id;
+
+			if (usuarioRole === 1) {
+				return res.status(409).json({
+					errors: ['No se puede obtener a un admin.']
+				});
+			} else if (usuarioRole === 2) {
+				const paciente = await PacienteService.readPacienteByUserId(id);
+
+				console.log(paciente);
+
+				usuario = { ...usuario, ...paciente };
+			} else {
+				const especialista = await EspecialistaService.readEspecialistaByUserId(id);
+
+				console.log(especialista);
+
+				usuario = { ...usuario, ...especialista };
+			}
+
+			return res.status(200).json(usuario);
 		} catch (err) {
 			return res.status(500).json({ errors: [err.message] });
 		}
@@ -115,12 +111,10 @@ class UsuarioController {
 
 		try {
 			const searchValues = getSearchValuesByRole(req);
-
 			const page = searchValues.page;
 			const role_id = searchValues.role;
-
 			const {
-				rows: resultados,
+				formattedRows: resultados,
 				actualPage: pagina_actual,
 				total: cantidad_usuarios,
 				totalPages: paginas_totales,
@@ -184,7 +178,6 @@ class UsuarioController {
 	static async postRegistro(req, res) {
 		try {
 			const errors = [];
-
 			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.email);
 
 			if (emailExists) {
@@ -354,7 +347,6 @@ class UsuarioController {
 			const resetToken = createResetToken(user);
 
 			await TokenService.createToken(idUser, resetToken);
-
 			await EmailService.sendPasswordResetEmail(email, user, resetToken);
 
 			return res.status(200).json({
@@ -381,7 +373,6 @@ class UsuarioController {
 	 */
 	static async postResetPassword(req, res) {
 		const newPassword = req.body.password;
-
 		const userEmail = await verifyResetToken(req, res);
 
 		try {
@@ -422,7 +413,6 @@ class UsuarioController {
 	static async postUpdatePassword(req, res) {
 		const email = req.body.email;
 		const password = req.body.password;
-
 		const id = req.user_id;
 
 		try {
@@ -486,35 +476,31 @@ class UsuarioController {
 				});
 			}
 
-			if (userExists.rol_id === 1) {
-				return res.status(409).json({
-					errors: ['No se puede eliminar a un admin'],
-				});
-			}
+			const userRole = userExists.datos_rol.rol_id;
 
-			if (userExists.rol_id === 2) {
-				await PacienteService.deletePaciente(id);
-
-				return res.status(200).json({
-					message: 'Paciente eliminado exitosamente.',
-				});
-			} else if (userExists.rol_id === 3) {
-				const especialistaCita = await CitaService.readCitasByEspecialistaId(id);
-
-				if (especialistaCita.length > 0) {
-					await EspecialistaService.setNoTrabajando(id);
-
-					return res.status(200).json({
-						message: 'El especialista no se pudo eliminar. Se cambió su turno.'
+			switch (userRole) {
+				case 1:
+					return res.status(409).json({
+						errors: ['No se puede eliminar a un admin'],
 					});
-				}
+				case 2:
+					await PacienteService.deletePaciente(id);
+					break;
+				case 3:
+					const especialistaCita = await CitaService.readCitasByEspecialistaId(id);
 
-				await EspecialistaService.deleteEspecialista(id);
-
-				return res.status(200).json({
-					message: 'Especialista eliminado exitosamente.',
-				});
+					if (especialistaCita.length > 0) {
+						await EspecialistaService.setNoTrabajando(id);
+					} else {
+						await EspecialistaService.deleteEspecialista(id);
+					}
+					break;
 			}
+
+			return res.status(200).json({
+				message: 'Usuario eliminado exitosamente.',
+			});
+
 		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],

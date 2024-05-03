@@ -213,6 +213,63 @@ class EspecialistaModel {
 	}
 
 	/**
+	 * @method findByUserId
+	 * @description Método para obtener un especialista por su ID de usuario.
+	 * @static
+	 * @async
+	 * @memberof EspecialistaModel
+	 * @param {number} usuario_id - El ID de usuario del especialista.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} El especialista.
+	 */
+	static async findByUserId(usuario_id, dbConn) {
+		const query =
+			'SELECT ' +
+			'    especialidad_id, ' +
+			'		 especialidad.nombre AS especialidad_nombre, ' +
+			'    consulta_id, ' +
+			'    consulta.nombre AS consulta_nombre, ' +
+			'    num_colegiado, ' +
+			'    especialista.descripcion, ' +
+			'    especialista.imagen, ' +
+			'    turno ' +
+			'FROM ' +
+			'   especialista ' +
+			'INNER JOIN ' +
+			'   especialidad ON especialista.especialidad_id = especialidad.id ' +
+			'INNER JOIN ' +
+			'   consulta ON especialista.consulta_id = consulta.id ' +
+			'WHERE ' +
+			'   usuario_id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [usuario_id]);
+
+			return {
+				datos_especialista: {
+					datos_especialidad: {
+						especialidad_id: rows[0].especialidad_id,
+						especialidad_nombre: rows[0].especialidad_nombre,
+					},
+					datos_consulta: {
+						consulta_id: rows[0].consulta_id,
+						consulta_nombre: rows[0].consulta_nombre,
+					},
+					turno: rows[0].turno,
+					num_colegiado: rows[0].num_colegiado,
+					descripcion: rows[0].descripcion,
+					imagen: rows[0].imagen,
+				}
+			}
+
+			return rows[0];
+		} catch (err) {
+			console.log(err)
+			throw new Error('Error al obtener el especialista.');
+		}
+	}
+
+	/**
 	 * @method updateEspecialista
 	 * @description Método para actualizar un especialista por su ID de usuario.
 	 * @static

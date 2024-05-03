@@ -24,6 +24,10 @@ class EspecialistaService {
 		return await EspecialistaModel.create(especialista, conn);
 	}
 
+	static async readEspecialistaByUserId(usuario_id, conn = dbConn) {
+		return await EspecialistaModel.findByUserId(usuario_id, conn);
+	}
+
 	/**
 	 * @method readEspecialistaById
 	 * @description Método para leer un especialista por su ID.

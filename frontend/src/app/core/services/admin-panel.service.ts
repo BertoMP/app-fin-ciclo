@@ -23,7 +23,7 @@ export class AdminPanelService {
   eliminateUser(id:number):Observable<any>{
     return this.http.delete<UserListResponseModel>(`${this.baseUrl}/usuario/borrar-usuario/${id}`).pipe(catchError(this.handleError));
   }
-  
+
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage: string[] = errorRes.error.errors??['Ha ocurrido un error durante el proceso'];
 
