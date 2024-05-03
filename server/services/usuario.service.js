@@ -4,9 +4,11 @@ import UsuarioModel from '../models/usuario.model.js';
 // Importación de los servicios auxiliares
 import PacienteService from './paciente.service.js';
 import EspecialistaService from './especialista.service.js';
+import EmailService from "./email.service.js";
 
 // Importación de las utilidades necesarias
 import { dbConn } from '../util/database/database.js';
+import ObjectFactory from "../util/classes/objectFactory.js";
 
 /**
  * @class UsuarioService
@@ -29,18 +31,17 @@ class UsuarioService {
 	}
 
 	/**
-	 * @method createUsuarioPaciente
-	 * @description Método para crear un nuevo usuario y un nuevo paciente asociado a ese usuario.
+	 * @method createUsuario
+	 * @description Método para crear un nuevo usuario.
 	 * @static
 	 * @async
 	 * @memberof UsuarioService
-	 * @param {Object} usuario - El objeto del nuevo usuario.
-	 * @param {Object} paciente - El objeto del nuevo paciente.
+	 * @param data - Los datos del usuario a crear.
 	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
 	 * @returns {Promise<void>} No devuelve nada. Si la operación es exitosa, se habrá creado un nuevo usuario y un nuevo paciente en la base de datos.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async createUsuarioPaciente(usuario, paciente, conn = null) {
+	static async createUsuario(data, conn = null) {
 		const isConnProvided = !!conn;
 
 		if (!isConnProvided) {
@@ -52,9 +53,19 @@ class UsuarioService {
 				await conn.beginTransaction();
 			}
 
-			const newUser = await UsuarioModel.create(usuario, conn);
-			paciente.usuario_id = newUser.insertId;
-			await PacienteService.createPaciente(paciente, conn);
+			const usuario = await ObjectFactory.createUserObject(data);
+			const nuevoUsuario = await UsuarioModel.create(usuario, conn);
+
+			if (usuario.rol_id === 2) {
+				const paciente = ObjectFactory.createPacienteObject(data);
+				paciente.usuario_id = nuevoUsuario.insertId;
+				await PacienteService.createPaciente(paciente, conn);
+				await EmailService.sendWelcomeEmail(usuario.email, usuario.nombre);
+			} else {
+				const especialista = ObjectFactory.createEspecialistaObject(data);
+				especialista.usuario_id = nuevoUsuario.insertId;
+				await EspecialistaService.createEspecialista(especialista, conn);
+			}
 
 			if (!isConnProvided) {
 				await conn.commit();
@@ -71,19 +82,7 @@ class UsuarioService {
 		}
 	}
 
-	/**
-	 * @method createUsuarioEspecialista
-	 * @description Método para crear un nuevo usuario y un nuevo especialista asociado a ese usuario.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {Object} usuario - El objeto del nuevo usuario.
-	 * @param {Object} especialista - El objeto del nuevo especialista.
-	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
-	 * @returns {Promise<void>} No devuelve nada. Si la operación es exitosa, se habrá creado un nuevo usuario y un nuevo especialista en la base de datos.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async createUsuarioEspecialista(usuario, especialista, conn = null) {
+	static async updateUsuario(data, conn = null) {
 		const isConnProvided = !!conn;
 
 		if (!isConnProvided) {
@@ -95,93 +94,16 @@ class UsuarioService {
 				await conn.beginTransaction();
 			}
 
-			const usuarioCreado = await UsuarioModel.create(usuario, conn);
-			especialista.usuario_id = usuarioCreado.insertId;
-			await EspecialistaService.create(especialista, conn);
-
-			if (!isConnProvided) {
-				await conn.commit();
-			}
-		} catch (err) {
-			if (!isConnProvided) {
-				await conn.rollback();
-			}
-			throw new Error(err);
-		} finally {
-			if (!isConnProvided) {
-				conn.release();
-			}
-		}
-	}
-
-	/**
-	 * @method updateUsuarioPaciente
-	 * @description Método para actualizar un usuario y un paciente asociado a ese usuario.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {Object} usuario - El objeto del usuario a actualizar.
-	 * @param {Object} paciente - El objeto del paciente a actualizar.
-	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
-	 * @returns {Promise<void>} No devuelve nada. Si la operación es exitosa, se habrá actualizado el usuario y el paciente en la base de datos.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async updateUsuarioPaciente(usuario, paciente, conn = null) {
-		const isConnProvided = !!conn;
-
-		if (!isConnProvided) {
-			conn = await dbConn.getConnection();
-		}
-
-		try {
-			if (!isConnProvided) {
-				await conn.beginTransaction();
-			}
-
+			const usuario = ObjectFactory.createUpdateUsuarioObject(data);
 			await UsuarioModel.updateUsuario(usuario, conn);
-			await PacienteService.updatePacienteByUserId(paciente, conn);
 
-			if (!isConnProvided) {
-				await conn.commit();
+			if (data.fecha_nacimiento) {
+				const paciente = ObjectFactory.createUpdatePacienteObject(data);
+				await PacienteService.updatePaciente(paciente, conn);
+			} else {
+				const especialista = ObjectFactory.createUpdateEspecialistaObject(data);
+				await EspecialistaService.updateEspecialista(especialista, conn);
 			}
-		} catch (err) {
-			if (!isConnProvided) {
-				await conn.rollback();
-			}
-			throw new Error(err);
-		} finally {
-			if (!isConnProvided) {
-				conn.release();
-			}
-		}
-	}
-
-	/**
-	 * @method updateUsuarioEspecialista
-	 * @description Método para actualizar un usuario y un especialista asociado a ese usuario.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {Object} usuario - El objeto del usuario a actualizar.
-	 * @param {Object} especialista - El objeto del especialista a actualizar.
-	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
-	 * @returns {Promise<void>} No devuelve nada. Si la operación es exitosa, se habrá actualizado el usuario y el especialista en la base de datos.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async updateUsuarioEspecialista(usuario, especialista, conn = null) {
-		const isConnProvided = !!conn;
-
-		if (!isConnProvided) {
-			conn = await dbConn.getConnection();
-		}
-
-		try {
-			if (!isConnProvided) {
-				await conn.beginTransaction();
-			}
-
-			await UsuarioModel.updateUsuario(usuario, conn);
-			await EspecialistaService.updateEspecialista(especialista, conn);
 
 			if (!isConnProvided) {
 				await conn.commit();

@@ -20,8 +20,6 @@ import { createAccessToken } from '../helpers/jwt/createAccessToken.js';
 import { createResetToken } from '../helpers/jwt/createResetToken.js';
 import { createRefreshToken } from '../helpers/jwt/createRefreshToken.js';
 import { createEncryptedPassword } from '../util/functions/createEncryptedPassword.js';
-import { createUserObject } from '../util/functions/createUserObject.js';
-import { createHistClinica } from '../util/functions/createHistClinica.js';
 import { verifyResetToken } from '../helpers/jwt/verifyResetToken.js';
 
 // Importación de las funciones necesarias
@@ -177,90 +175,13 @@ class UsuarioController {
 	 */
 	static async postRegistro(req, res) {
 		try {
-			const errors = [];
-			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.email);
-
-			if (emailExists) {
-				errors.push('El correo ya está en uso.');
-			}
-
-			const dniExists = await UsuarioService.readUsuarioByDNI(req.body.dni);
-
-			if (dniExists) {
-				errors.push('El DNI ya está en uso.');
-			}
+			const errors = await UsuarioController.#verifyUser(req.body.email, req.body.dni, req.body.num_colegiado);
 
 			if (errors.length > 0) {
 				return res.status(409).json({ errors: errors });
 			}
 
-			const encryptedPassword = await createEncryptedPassword(req.body.password);
-			const user = createUserObject(req, encryptedPassword, 2);
-
-			const patient = {
-				num_hist_clinica: createHistClinica(),
-				fecha_nacimiento: req.body.fecha_nacimiento,
-				tipo_via: req.body.tipo_via,
-				nombre_via: req.body.nombre_via,
-				numero: req.body.numero,
-				piso: req.body.piso,
-				puerta: req.body.puerta,
-				municipio: req.body.municipio,
-				codigo_postal: req.body.codigo_postal,
-				tel_fijo: req.body.tel_fijo,
-				tel_movil: req.body.tel_movil,
-			};
-
-			await UsuarioService.createUsuarioPaciente(user, patient);
-
-			await EmailService.sendWelcomeEmail(req.body.email, req.body.nombre);
-
-			return res.status(200).json({ message: 'Usuario creado exitosamente.' });
-		} catch (err) {
-			return res.status(500).json({ errors: [err.message] });
-		}
-	}
-
-	/**
-	 * @name postRegistroEspecialista
-	 * @description Método asíncrono que registra un nuevo especialista en la base de datos.
-	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
-	 *              Si el correo electrónico ya está en uso, devuelve un error con el mensaje correspondiente.
-	 * @static
-	 * @async
-	 * @function
-	 * @param {Object} req - El objeto de solicitud de Express.
-	 * @param {Object} res - El objeto de respuesta de Express.
-	 * @returns {Object} res - El objeto de respuesta de Express.
-	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
-	 * @memberof UsuarioController
-	 */
-	static async postRegistroEspecialista(req, res) {
-		try {
-			const userExists = await UsuarioService.readUsuarioByEmail(req.body.email);
-
-			if (userExists) {
-				return res.status(409).json({
-					errors: ['El correo ya está en uso.'],
-				});
-			}
-
-			const encryptedPassword = await createEncryptedPassword(req.body.password);
-			const user = createUserObject(req, encryptedPassword, 3);
-
-			let descripcion = req.body.descripcion;
-			descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
-
-			const specialist = {
-				num_colegiado: req.body.num_colegiado,
-				descripcion: descripcion,
-				imagen: req.body.imagen,
-				turno: req.body.turno,
-				especialidad_id: req.body.especialidad_id,
-				consulta_id: req.body.consulta_id,
-			};
-
-			await UsuarioService.createUsuarioEspecialista(user, specialist);
+			await UsuarioService.createUsuario(req.body);
 
 			return res.status(200).json({ message: 'Usuario creado exitosamente.' });
 		} catch (err) {
@@ -590,22 +511,7 @@ class UsuarioController {
 		}
 	}
 
-	/**
-	 * @name putUsuarioPaciente
-	 * @description Método asíncrono que actualiza los datos de un usuario paciente en la base de datos.
-	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
-	 *              Si el DNI ya está en uso por otro usuario, devuelve un error con el mensaje correspondiente.
-	 *              Si el usuario no existe o no tiene permiso para realizar la acción, devuelve un error con el mensaje correspondiente.
-	 * @static
-	 * @async
-	 * @function
-	 * @param {Object} req - El objeto de solicitud de Express.
-	 * @param {Object} res - El objeto de respuesta de Express.
-	 * @returns {Object} res - El objeto de respuesta de Express.
-	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
-	 * @memberof UsuarioController
-	 */
-	static async putUsuarioPaciente(req, res) {
+	static async putUsuario(req, res) {
 		let usuario_id = 0;
 
 		if (req.user_role === 2) {
@@ -621,121 +527,46 @@ class UsuarioController {
 				return res.status(404).json({ errors: ['Usuario no encontrado.'] });
 			}
 
-			const dniExits = await UsuarioService.readUsuarioByDNI(req.body.dni);
-
-			if (dniExits && user.dni !== req.body.dni) {
-				return res.status(409).json({
-					errors: ['El DNI ya está en uso.'],
-				});
+			if (user.rol_id === 1) {
+				return res.status(409).json({ errors: ['No se puede modificar a un admin.'] });
 			}
 
-			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.email);
+			const errors = await UsuarioController.#verifyUser(req.body.email, req.body.dni, req.body.num_colegiado);
 
-			if (emailExists && user.email !== req.body.email) {
-				return res.status(409).json({
-					errors: ['El correo ya está en uso.'],
-				});
+			if (errors.length > 0) {
+				return res.status(409).json({ errors: errors });
 			}
 
-			const userUpdate = {
-				email: req.body.email,
-				nombre: req.body.nombre,
-				primer_apellido: req.body.primer_apellido,
-				segundo_apellido: req.body.segundo_apellido,
-				dni: req.body.dni,
-			};
+			await UsuarioService.updateUsuario(req.body, usuario_id);
 
-			const patientUpdate = {
-				fecha_nacimiento: req.body.fecha_nacimiento,
-				tipo_via: req.body.tipo_via,
-				nombre_via: req.body.nombre_via,
-				numero: req.body.numero,
-				piso: req.body.piso,
-				puerta: req.body.puerta,
-				municipio: req.body.municipio,
-				codigo_postal: req.body.codigo_postal,
-				tel_fijo: req.body.tel_fijo,
-				tel_movil: req.body.tel_movil,
-			};
-
-			await UsuarioService.updateUsuarioPaciente(userUpdate, patientUpdate);
-
-			return res.status(200).json({ message: 'Usuario actualizado exitosamente.' });
 		} catch (err) {
 			return res.status(500).json({ errors: [err.message] });
 		}
 	}
 
-	/**
-	 * @name putUsuarioEspecialista
-	 * @description Método asíncrono que actualiza los datos de un usuario especialista en la base de datos.
-	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
-	 *              Si el usuario no existe o no tiene permiso para realizar la acción, devuelve un error con el mensaje correspondiente.
-	 * @static
-	 * @async
-	 * @function
-	 * @param {Object} req - El objeto de solicitud de Express.
-	 * @param {Object} res - El objeto de respuesta de Express.
-	 * @returns {Object} res - El objeto de respuesta de Express.
-	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
-	 * @memberof UsuarioController
-	 */
-	static async putUsuarioEspecialista(req, res) {
-		const id = req.params.usuario_id;
+	static async #verifyUser(email, dni, num_colegiado) {
+		const errors = [];
 
-		try {
-			const user = await UsuarioService.readUsuarioById(id);
+		const emailExists = await UsuarioService.readUsuarioByEmail(email);
+		const dniExists = await UsuarioService.readUsuarioByDNI(dni);
 
-			if (!user) {
-				return res.status(404).json({ errors: ['Usuario no encontrado.'] });
+		if (num_colegiado) {
+			const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(num_colegiado);
+
+			if (numColegiadoExists) {
+				errors.push('El número de colegiado ya está en uso.');
 			}
-
-			const dniExits = await UsuarioService.readUsuarioByDNI(req.body.dni);
-
-			if (dniExits && user.dni !== req.body.dni) {
-				return res.status(409).json({
-					errors: ['El DNI ya está en uso.'],
-				});
-			}
-
-			const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(
-				req.body.num_colegiado,
-			);
-
-			if (numColegiadoExists && user.num_colegiado !== req.body.num_colegiado) {
-				return res.status(409).json({
-					errors: ['El número de colegiado ya está en uso.'],
-				});
-			}
-
-			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.email);
-
-			if (emailExists && user.email !== req.body.email) {
-				return res.status(409).json({
-					errors: ['El correo ya está en uso.'],
-				});
-			}
-
-			const specialist = {
-				email: req.body.email,
-				nombre: req.body.nombre,
-				primer_apellido: req.body.primer_apellido,
-				segundo_apellido: req.body.segundo_apellido,
-				dni: req.body.dni,
-				num_colegiado: req.body.num_colegiado,
-				descripcion: req.body.descripcion,
-				turno: req.body.turno,
-				especialidad_id: req.body.especialidad_id,
-				consulta_id: req.body.consulta_id,
-				imagen: req.body.imagen,
-			};
-
-			await UsuarioService.updateUsuarioEspecialista(user, specialist);
-
-			return res.status(200).json({ message: 'Usuario actualizado exitosamente.' });
-		} catch (err) {
-			return res.status(500).json({ errors: [err.message] });
 		}
+
+		if (emailExists) {
+			errors.push('El correo ya está en uso.');
+		}
+
+		if (dniExists) {
+			errors.push('El DNI ya está en uso.');
+		}
+
+		return errors;
 	}
 }
 

@@ -11,7 +11,7 @@ import UsuarioService from "./usuario.service.js";
  */
 class EspecialistaService {
 	/**
-	 * @method create
+	 * @method createEspecialista
 	 * @description Método para crear un nuevo especialista.
 	 * @static
 	 * @async
@@ -20,7 +20,7 @@ class EspecialistaService {
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} El nuevo especialista creado.
 	 */
-	static async create(especialista, conn = dbConn) {
+	static async createEspecialista(especialista, conn = dbConn) {
 		return await EspecialistaModel.create(especialista, conn);
 	}
 

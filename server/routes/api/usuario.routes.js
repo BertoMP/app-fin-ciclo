@@ -311,7 +311,7 @@ router.post(
 	verifyAccessToken,
 	verifyUserRole([1]),
 	validateEspecialistaRegister,
-	UsuarioController.postRegistroEspecialista,
+	UsuarioController.postRegistro,
 );
 
 /**
@@ -610,6 +610,67 @@ router.put(
 
 /**
  * @swagger
+ * /usuario/actualizar-usuario:
+ *   put:
+ *     summary: Actualiza la información de un paciente
+ *     tags: [Usuario]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Usuario'
+ *     responses:
+ *       200:
+ *         description: La información del usuario se ha actualizado correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Usuario'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
+ *       401:
+ *         description: No autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenExpiredError'
+ *       403:
+ *         description: Token inválido o no proporcionado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenInvalidError'
+ *       404:
+ *         description: Usuario no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NotFoundError'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ */
+router.put(
+	'/usuario/actualizar-usuario',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validatePacienteUpdate,
+	UsuarioController.putUsuario,
+);
+
+/**
+ * @swagger
  * /usuario/actualizar-usuario/{usuario_id}:
  *   put:
  *     summary: Actualiza la información de un paciente por un admin
@@ -694,135 +755,7 @@ router.put(
 	verifyUserRole([1]),
 	validateUsuarioIdParam,
 	validatePacienteUpdate,
-	UsuarioController.putUsuarioPaciente,
-);
-
-/**
- * @swagger
- * /usuario/actualizar-usuario:
- *   put:
- *     summary: Actualiza la información de un paciente
- *     tags: [Usuario]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Usuario'
- *     responses:
- *       200:
- *         description: La información del usuario se ha actualizado correctamente
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Usuario'
- *       400:
- *         description: Error de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ValidationError'
- *       401:
- *         description: No autorizado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/TokenExpiredError'
- *       403:
- *         description: Token inválido o no proporcionado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/TokenInvalidError'
- *       404:
- *         description: Usuario no encontrado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/NotFoundError'
- *       500:
- *         description: Error del servidor
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ServerError'
- */
-router.put(
-	'/usuario/actualizar-usuario',
-	verifyAccessToken,
-	verifyUserRole([2]),
-	verifyUserId,
-	validatePacienteUpdate,
-	UsuarioController.putUsuarioPaciente,
-);
-
-/**
- * @swagger
- * /usuario/actualizar-especialista/{usuario_id}:
- *   put:
- *     summary: Actualiza la información de un especialista
- *     security:
- *       - bearerAuth: []
- *     tags: [Usuario]
- *     parameters:
- *       - in: path
- *         name: usuario_id
- *         schema:
- *           type: integer
- *         required: true
- *         description: ID del especialista
- *       - in: body
- *         name: usuario
- *         description: Información del especialista para actualizar
- *         schema:
- *           $ref: '#/components/schemas/UsuarioEspecialista'
- *     responses:
- *       200:
- *         description: Información del especialista actualizada
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/UsuarioEspecialista'
- *       400:
- *         description: Error de validación
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ValidationError'
- *       401:
- *         description: No autorizado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/TokenExpiredError'
- *       403:
- *         description: Token inválido o no proporcionado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/TokenInvalidError'
- *       404:
- *         description: Usuario no encontrado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/NotFoundError'
- *       500:
- *         description: Error del servidor
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ServerError'
- */
-router.put(
-	'/usuario/actualizar-especialista/:usuario_id',
-	verifyAccessToken,
-	verifyUserRole([1]),
-	validateUsuarioIdParam,
-	validateEspecialistaUpdate,
-	UsuarioController.putUsuarioEspecialista,
+	UsuarioController.putUsuario,
 );
 
 // Rutas DELETE

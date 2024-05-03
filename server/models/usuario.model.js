@@ -368,6 +368,13 @@ class UsuarioModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async updateUsuario(usuario, dbConn) {
+		const email = usuario.email;
+		const nombre = usuario.nombre;
+		const primer_apellido = usuario.primer_apellido;
+		const segundo_apellido = usuario.segundo_apellido;
+		const dni = usuario.dni;
+		const id = usuario.usuario_id;
+
 		const query =
 			'UPDATE ' +
 			'   usuario ' +
@@ -381,14 +388,7 @@ class UsuarioModel {
 			'   id = ?';
 
 		try {
-			return await dbConn.execute(query, [
-				usuario.email,
-				usuario.nombre,
-				usuario.primer_apellido,
-				usuario.segundo_apellido,
-				usuario.dni,
-				usuario.id,
-			]);
+			return await dbConn.execute(query, [email, nombre, primer_apellido, segundo_apellido, dni, id]);
 		} catch (err) {
 			throw new Error('Error al actualizar el usuario.');
 		}
