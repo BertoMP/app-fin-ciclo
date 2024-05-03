@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/codigoPostalMunicipio.service.js</title>
+    <title>JSDoc: Source: util/functions/getSearchValues.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/codigoPostalMunicipio.service.js</h1>
+    <h1 class="page-title">Source: util/functions/getSearchValues.js</h1>
 
     
 
@@ -26,34 +26,55 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// Importación del modelo del servicio
-import CodigoPostalMunicipioModel from '../models/codigoPostalMunicipio.model.js';
-
-// Importación de utilidades necesarias
-import { dbConn } from '../util/database/database.js';
+            <pre class="prettyprint source linenums"><code>// Importación de las librerías necesarias
+import pkg from 'moment-timezone';
+const { tz } = pkg;
 
 /**
- * @class CodigoPostalMunicipioService
- * @description Clase que contiene los métodos para interactuar con el modelo de CodigoPostalMunicipio.
+ * @name getSearchValues
+ * @description Obtiene los valores de búsqueda por fecha para las consultas
+ *              de la base de datos.
+ * @memberof Util-Functions
+ * @function
+ * @param {Object} req - Objeto de solicitud de la petición
+ * @param {string} type - Tipo de búsqueda a realizar
+ * @returns {Object} - Objeto con los valores de búsqueda por fecha
  */
-class CodigoPostalMunicipioService {
-	/**
-	 * @method readCodigoPostalByMunicipioId
-	 * @description Método para leer un código postal por el ID del municipio.
-	 * @static
-	 * @async
-	 * @memberof CodigoPostalMunicipioService
-	 * @param {number} cod_municipio - El ID del municipio.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise&lt;Object>} Un objeto que representa el código postal.
-	 */
-	static async readCodigoPostalByMunicipioId(cod_municipio, conn = dbConn) {
-		return await CodigoPostalMunicipioModel.findByMunicipioId(cod_municipio, conn);
+export const getSearchValues = (req, type) => {
+	const page = parseInt(req.query.page) || 1;
+	const limit = req.query.limit || 10;
+	const search = req.query.search || '';
+
+	switch (type) {
+		case 'search':
+			return {
+				page: page,
+				limit: limit,
+				search: search,
+			};
+		case 'date':
+			const fechaInicio = req.query.fechaInicio
+				? tz(req.query.fechaInicio, 'Europe/Madrid').format('YYYY-MM-DD')
+				: tz().startOf('year').format('YYYY-MM-DD');
+			const fechaFin = req.query.fechaFin
+				? tz(req.query.fechaFin, 'Europe/Madrid').format('YYYY-MM-DD')
+				: tz().add(3, 'year').format('YYYY-MM-DD');
+			return {
+				page: page,
+				limit: limit,
+				fechaInicio: fechaInicio,
+				fechaFin: fechaFin
+			};
+		case 'role':
+			const role_id = req.query.role || 0;
+			return {
+				page: page,
+				limit: limit,
+				role: role_id,
+				search: search,
+			};
 	}
 }
-
-// Exportación del servicio
-export default CodigoPostalMunicipioService;
 </code></pre>
         </article>
     </section>

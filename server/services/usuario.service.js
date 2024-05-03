@@ -23,12 +23,11 @@ class UsuarioService {
 	 * @async
 	 * @memberof UsuarioService
 	 * @param {Object} searchValues - Los valores de búsqueda.
-	 * @param {number} limit - El límite de resultados.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un array de usuarios.
 	 */
-	static async readAllUsuarios(searchValues, limit, conn = dbConn) {
-		return await UsuarioModel.fetchAll(searchValues, limit, conn);
+	static async readAllUsuarios(searchValues, conn = dbConn) {
+		return await UsuarioModel.fetchAll(searchValues, conn);
 	}
 
 	/**

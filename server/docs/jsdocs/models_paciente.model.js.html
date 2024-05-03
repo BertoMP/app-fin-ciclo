@@ -26,7 +26,11 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>// Importación de librerías necesarias
+import pkg from 'moment-timezone';
+const { tz } = pkg;
+
+/**
  * @class PacienteModel
  * @description Clase que contiene los métodos para interactuar con la tabla de pacientes.
  */
@@ -127,13 +131,59 @@ class PacienteModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async findByUserId(usuario_id, dbConn) {
-		const query = 'SELECT * FROM paciente WHERE usuario_id = ?';
+		const query =
+			'SELECT ' +
+			'   num_historia_clinica, ' +
+			'   fecha_nacimiento, ' +
+			'   tipo_via, ' +
+			'   tipo_via.nombre AS tipo_via_nombre, ' +
+			'   nombre_via, ' +
+			'   numero, ' +
+			'   piso, ' +
+			'   puerta, ' +
+			'   municipio AS municipio_id, ' +
+			'   municipio.nombre AS municipio_nombre,' +
+			'   codigo_postal, ' +
+			'   tel_fijo, ' +
+			'   tel_movil ' +
+			'FROM ' +
+			'   paciente ' +
+			'INNER JOIN ' +
+			'   tipo_via ON paciente.tipo_via = tipo_via.id ' +
+			'INNER JOIN ' +
+			'   municipio ON paciente.municipio = municipio.id ' +
+			'WHERE ' +
+			'   usuario_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [usuario_id]);
-			return rows[0];
+
+			return {
+				datos_paciente: {
+					num_historia_clinica: rows[0].num_historia_clinica,
+					fecha_nacimiento: tz(rows[0].fecha_nacimiento, 'Europe/Madrid').format('DD-MM-YYYY'),
+					datos_vivienda: {
+						tipo_via: {
+							id: rows[0].tipo_via,
+							nombre: rows[0].tipo_via_nombre,
+						},
+						nombre_via: rows[0].nombre_via,
+						numero: rows[0].numero,
+						piso: rows[0].piso,
+						puerta: rows[0].puerta,
+						municipio: {
+							id: rows[0].municipio_id,
+							nombre: rows[0].municipio_nombre,
+							codigo_postal: rows[0].codigo_postal
+						},
+					},
+					datos_contacto: {
+						tel_fijo: rows[0].tel_fijo,
+						tel_movil: rows[0].tel_movil,
+					},
+				}
+			};
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al obtener el paciente.');
 		}
 	}
@@ -232,13 +282,13 @@ export default PacienteModel;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul><h3>Classes</h3><ul><li><a href="CitaController.html">CitaController</a></li><li><a href="CitaModel.html">CitaModel</a></li><li><a href="CitaService.html">CitaService</a></li><li><a href="CodigoPostalMunicipioController.html">CodigoPostalMunicipioController</a></li><li><a href="CodigoPostalMunicipioModel.html">CodigoPostalMunicipioModel</a></li><li><a href="CodigoPostalMunicipioService.html">CodigoPostalMunicipioService</a></li><li><a href="ConsultaController.html">ConsultaController</a></li><li><a href="ConsultaModel.html">ConsultaModel</a></li><li><a href="ConsultaService.html">ConsultaService</a></li><li><a href="ContactoController.html">ContactoController</a></li><li><a href="EmailService.html">EmailService</a></li><li><a href="EspecialidadController.html">EspecialidadController</a></li><li><a href="EspecialidadModel.html">EspecialidadModel</a></li><li><a href="EspecialidadService.html">EspecialidadService</a></li><li><a href="EspecialistaController.html">EspecialistaController</a></li><li><a href="EspecialistaModel.html">EspecialistaModel</a></li><li><a href="EspecialistaService.html">EspecialistaService</a></li><li><a href="GlucometriaController.html">GlucometriaController</a></li><li><a href="GlucometriaModel.html">GlucometriaModel</a></li><li><a href="GlucometriaService.html">GlucometriaService</a></li><li><a href="InformeController.html">InformeController</a></li><li><a href="InformeModel.html">InformeModel</a></li><li><a href="InformePatologiaModel.html">InformePatologiaModel</a></li><li><a href="InformePatologiaService.html">InformePatologiaService</a></li><li><a href="InformeService.html">InformeService</a></li><li><a href="MedicamentoController.html">MedicamentoController</a></li><li><a href="MedicamentoModel.html">MedicamentoModel</a></li><li><a href="MedicamentoService.html">MedicamentoService</a></li><li><a href="MunicipioController.html">MunicipioController</a></li><li><a href="MunicipioModel.html">MunicipioModel</a></li><li><a href="MunicipioService.html">MunicipioService</a></li><li><a href="PacienteController.html">PacienteController</a></li><li><a href="PacienteModel.html">PacienteModel</a></li><li><a href="PacienteService.html">PacienteService</a></li><li><a href="PacienteTomaMedicamentoController.html">PacienteTomaMedicamentoController</a></li><li><a href="PacienteTomaMedicamentoModel.html">PacienteTomaMedicamentoModel</a></li><li><a href="PacienteTomaMedicamentoService.html">PacienteTomaMedicamentoService</a></li><li><a href="PatologiaController.html">PatologiaController</a></li><li><a href="PatologiaModel.html">PatologiaModel</a></li><li><a href="PatologiaService.html">PatologiaService</a></li><li><a href="PdfService.html">PdfService</a></li><li><a href="ProvinciaController.html">ProvinciaController</a></li><li><a href="ProvinciaModel.html">ProvinciaModel</a></li><li><a href="ProvinciaService.html">ProvinciaService</a></li><li><a href="TensionArterialController.html">TensionArterialController</a></li><li><a href="TensionArterialModel.html">TensionArterialModel</a></li><li><a href="TensionArterialService.html">TensionArterialService</a></li><li><a href="TipoViaController.html">TipoViaController</a></li><li><a href="TipoViaModel.html">TipoViaModel</a></li><li><a href="TipoViaService.html">TipoViaService</a></li><li><a href="TokenModel.html">TokenModel</a></li><li><a href="TokenService.html">TokenService</a></li><li><a href="TomaModel.html">TomaModel</a></li><li><a href="TomaService.html">TomaService</a></li><li><a href="UsuarioController.html">UsuarioController</a></li><li><a href="UsuarioModel.html">UsuarioModel</a></li><li><a href="UsuarioService.html">UsuarioService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul><h3>Classes</h3><ul><li><a href="CitaController.html">CitaController</a></li><li><a href="CitaModel.html">CitaModel</a></li><li><a href="CitaService.html">CitaService</a></li><li><a href="CodigoPostalMunicipioController.html">CodigoPostalMunicipioController</a></li><li><a href="CodigoPostalMunicipioModel.html">CodigoPostalMunicipioModel</a></li><li><a href="CodigoPostalMunicipioService.html">CodigoPostalMunicipioService</a></li><li><a href="ConsultaController.html">ConsultaController</a></li><li><a href="ConsultaModel.html">ConsultaModel</a></li><li><a href="ConsultaService.html">ConsultaService</a></li><li><a href="ContactoController.html">ContactoController</a></li><li><a href="EmailService.html">EmailService</a></li><li><a href="EspecialidadController.html">EspecialidadController</a></li><li><a href="EspecialidadModel.html">EspecialidadModel</a></li><li><a href="EspecialidadService.html">EspecialidadService</a></li><li><a href="EspecialistaController.html">EspecialistaController</a></li><li><a href="EspecialistaModel.html">EspecialistaModel</a></li><li><a href="EspecialistaService.html">EspecialistaService</a></li><li><a href="GlucometriaController.html">GlucometriaController</a></li><li><a href="GlucometriaModel.html">GlucometriaModel</a></li><li><a href="GlucometriaService.html">GlucometriaService</a></li><li><a href="InformeController.html">InformeController</a></li><li><a href="InformeModel.html">InformeModel</a></li><li><a href="InformePatologiaModel.html">InformePatologiaModel</a></li><li><a href="InformePatologiaService.html">InformePatologiaService</a></li><li><a href="InformeService.html">InformeService</a></li><li><a href="MedicamentoController.html">MedicamentoController</a></li><li><a href="MedicamentoModel.html">MedicamentoModel</a></li><li><a href="MedicamentoService.html">MedicamentoService</a></li><li><a href="MunicipioController.html">MunicipioController</a></li><li><a href="MunicipioModel.html">MunicipioModel</a></li><li><a href="MunicipioService.html">MunicipioService</a></li><li><a href="PacienteController.html">PacienteController</a></li><li><a href="PacienteModel.html">PacienteModel</a></li><li><a href="PacienteService.html">PacienteService</a></li><li><a href="PacienteTomaMedicamentoController.html">PacienteTomaMedicamentoController</a></li><li><a href="PacienteTomaMedicamentoModel.html">PacienteTomaMedicamentoModel</a></li><li><a href="PacienteTomaMedicamentoService.html">PacienteTomaMedicamentoService</a></li><li><a href="PatologiaController.html">PatologiaController</a></li><li><a href="PatologiaModel.html">PatologiaModel</a></li><li><a href="PatologiaService.html">PatologiaService</a></li><li><a href="PdfService.html">PdfService</a></li><li><a href="ProvinciaController.html">ProvinciaController</a></li><li><a href="ProvinciaModel.html">ProvinciaModel</a></li><li><a href="ProvinciaService.html">ProvinciaService</a></li><li><a href="TensionArterialController.html">TensionArterialController</a></li><li><a href="TensionArterialModel.html">TensionArterialModel</a></li><li><a href="TensionArterialService.html">TensionArterialService</a></li><li><a href="TipoViaController.html">TipoViaController</a></li><li><a href="TipoViaModel.html">TipoViaModel</a></li><li><a href="TipoViaService.html">TipoViaService</a></li><li><a href="TokenModel.html">TokenModel</a></li><li><a href="TokenService.html">TokenService</a></li><li><a href="TomaModel.html">TomaModel</a></li><li><a href="TomaService.html">TomaService</a></li><li><a href="UsuarioController.html">UsuarioController</a></li><li><a href="UsuarioModel.html">UsuarioModel</a></li><li><a href="UsuarioService.html">UsuarioService</a></li></ul><h3>Global</h3><ul><li><a href="global.html">getConsultaListado</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu May 02 2024 01:58:17 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

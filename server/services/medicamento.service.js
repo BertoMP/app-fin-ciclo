@@ -28,13 +28,12 @@ class MedicamentoService {
 	 * @static
 	 * @async
 	 * @memberof MedicamentoService
-	 * @param {number} page - La página de resultados a devolver.
-	 * @param {number} limit - El número de resultados por página.
+	 * @param {Object} searchValues - Los valores de búsqueda.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un array de medicamentos.
 	 */
-	static async readMedicamentos(page, limit, conn = dbConn) {
-		return await MedicamentoModel.fetchAll(page, limit, conn);
+	static async readMedicamentos(searchValues, conn = dbConn) {
+		return await MedicamentoModel.fetchAll(searchValues, conn);
 	}
 
 	/**

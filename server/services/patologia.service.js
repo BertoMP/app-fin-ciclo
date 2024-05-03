@@ -28,13 +28,12 @@ class PatologiaService {
 	 * @static
 	 * @async
 	 * @memberof PatologiaService
-	 * @param {number} page - La página de resultados a devolver.
-	 * @param {number} limit - El número de resultados por página.
+	 * @param {Object} searchValues - Los valores de búsqueda.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto con patologías.
 	 */
-	static async readPatologias(page, limit, conn = dbConn) {
-		return await PatologiaModel.fetchAll(page, limit, conn);
+	static async readPatologias(searchValues, conn = dbConn) {
+		return await PatologiaModel.fetchAll(searchValues, conn);
 	}
 
 	/**

@@ -17,9 +17,9 @@ import { createEncryptedPassword } from '../util/functions/createEncryptedPasswo
 import { verifyResetToken } from '../helpers/jwt/verifyResetToken.js';
 
 // Importación de las funciones necesarias
-import { getSearchValuesByRole } from '../util/functions/getSearchValuesByRole.js';
 import PacienteService from "../services/paciente.service.js";
 import CitaService from "../services/cita.service.js";
+import {getSearchValues} from "../util/functions/getSearchValues.js";
 
 /**
  * @class UsuarioController
@@ -93,19 +93,18 @@ class UsuarioController {
 	 * @memberof UsuarioController
 	 */
 	static async getListado(req, res) {
-		const limit = 10;
-
 		try {
-			const searchValues = getSearchValuesByRole(req);
+			const searchValues = getSearchValues(req, 'role');
 			const page = searchValues.page;
 			const role_id = searchValues.role;
 			const search = searchValues.search;
+			const limit = searchValues.limit;
 			const {
 				formattedRows: resultados,
 				actualPage: pagina_actual,
 				total: cantidad_usuarios,
 				totalPages: paginas_totales,
-			} = await UsuarioService.readAllUsuarios(searchValues, limit);
+			} = await UsuarioService.readAllUsuarios(searchValues);
 
 			if (page > 1 && page > paginas_totales) {
 				return res.status(404).json({
@@ -116,26 +115,24 @@ class UsuarioController {
 			let queryParams = '';
 
 			if (role_id) {
-				queryParams += `role=${role_id}&`;
+				queryParams += `&role=${role_id}`;
 			}
 			if (search) {
-				queryParams += `search=${search}&`;
+				queryParams += `&search=${search}`;
 			}
-
-			queryParams = queryParams.slice(0, -1);
 
 			const prev =
 				page > 1
-					? `/usuario/listado?page=${page - 1}&${queryParams}`
+					? `/usuario/listado?page=${page - 1}&limit=${limit}${queryParams}`
 					: null;
 			const next =
 				page < paginas_totales
-					? `/usuario/listado?page=${page + 1}&${queryParams}`
+					? `/usuario/listado?page=${page + 1}&limit=${limit}${queryParams}`
 					: null;
 			const result_min = (page - 1) * limit + 1;
 			const result_max =
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const items_pagina = limit;
+			const items_pagina = parseInt(limit);
 
 			const users = {
 				prev,

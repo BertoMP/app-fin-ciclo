@@ -37,35 +37,59 @@ class MedicamentoModel {
 	 * @static
 	 * @async
 	 * @memberof MedicamentoModel
-	 * @param {number} page - La página actual.
-	 * @param {number} limit - El número de medicamentos por página.
+	 * @param {Object} searchValues - Los valores de búsqueda.
 	 * @param {Object} dbConn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto con los medicamentos, el total de medicamentos, la página actual y el total de páginas.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async fetchAll(page, limit, dbConn) {
+	static async fetchAll(searchValues, dbConn) {
+		const page = searchValues.page;
+		const limit = searchValues.limit;
+		const search = searchValues.search;
+
 		const offset = (page - 1) * limit;
 
-		const query =
+		let query =
 			'SELECT ' +
 			'   id, ' +
 			'   nombre, ' +
 			'   descripcion ' +
 			'FROM ' +
-			'   medicamento ' +
+			'   medicamento ';
+
+		let countQuery =
+			'SELECT ' +
+			'		COUNT(*) AS count ' +
+			'FROM ' +
+			'		medicamento ';
+
+		let queryParams = [];
+		let countParams = [];
+
+		if (search) {
+			query += 'WHERE nombre LIKE ? ';
+			countQuery += 'WHERE nombre LIKE ? ';
+			queryParams.push(`%${search}%`);
+			countParams.push(`%${search}%`);
+		}
+
+		query +=
 			'ORDER BY ' +
-			'   nombre ASC ' +
+			'		nombre ASC ' +
 			'LIMIT ? OFFSET ?';
 
+		queryParams.push(`${limit}`, `${offset}`);
+
 		try {
-			const [rows] = await dbConn.execute(query, [`${limit}`, `${offset}`]);
-			const [count] = await dbConn.execute('SELECT COUNT(*) AS count FROM medicamento');
+			const [rows] = await dbConn.execute(query, queryParams);
+			const [count] = await dbConn.execute(countQuery, countParams);
 			const total = count[0].count;
 			const actualPage = page;
 			const totalPages = Math.ceil(total / limit);
 
 			return { rows, total, actualPage, totalPages };
 		} catch (err) {
+			console.log(err);
 			throw new Error('Error al obtener los medicamentos.');
 		}
 	}

@@ -12,8 +12,7 @@ import { verifyUserId } from '../../util/middleware/verifyUserId.js';
 
 // Importación de middlewares para la validación de datos
 import { validateTensionArterial } from '../../helpers/validators/tensionArterial.validator.js';
-import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
-import { validateDateQueryParams } from '../../helpers/validators/queryParams/dateQueryParams.validator.js';
+import { validateQueryParams } from '../../helpers/validators/queryParams/queryParams.validator.js';
 import { validateUsuarioIdParam } from '../../helpers/validators/params/usuarioIdParam.validator.js';
 
 // Rutas GET
@@ -92,8 +91,7 @@ router.get(
 	verifyAccessToken,
 	verifyUserRole([3]),
 	validateUsuarioIdParam,
-	validatePaginationQueryParams,
-	validateDateQueryParams,
+	validateQueryParams,
 	TensionArterialController.getTensionArterial,
 );
 
@@ -172,8 +170,7 @@ router.get(
 	verifyAccessToken,
 	verifyUserRole([2]),
 	verifyUserId,
-	validatePaginationQueryParams,
-	validateDateQueryParams,
+	validateQueryParams,
 	TensionArterialController.getTensionArterial,
 );
 

@@ -12,7 +12,7 @@ import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
 // Importación de middlewares para la validación de datos
 import { validateEspecialidad } from '../../helpers/validators/especialidad.validator.js';
 import { validateEspecialidadIdParam } from '../../helpers/validators/params/especialidadIdParam.validator.js';
-import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
+import { validateQueryParams } from '../../helpers/validators/queryParams/queryParams.validator.js';
 
 // Rutas GET
 /**
@@ -183,7 +183,7 @@ router.get(
  */
 router.get(
 	'/especialidad',
-	validatePaginationQueryParams,
+	validateQueryParams,
 	EspecialidadController.getEspecialidades,
 );
 

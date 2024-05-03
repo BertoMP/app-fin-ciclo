@@ -2,18 +2,31 @@
 import { query, validationResult } from 'express-validator';
 
 /**
- * @name validateDateQueryParams
- * @description Middleware que valida los parámetros de consulta 'fechaInicio' y 'fechaFin'.
- *              Si 'fechaInicio' o 'fechaFin' no son fechas válidas, o si son mayores que la fecha actual,
- *              o si 'fechaFin' es menor que 'fechaInicio', se envía una respuesta con el estado 400 y un mensaje de error.
- *              Si 'fechaInicio' y 'fechaFin' son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+ * @name validateQueryParams
+ * @description Middleware que valida los parámetros de consulta.
  * @memberof Helpers-Validators-QueryParams
  * @function
  * @param {Object} req - El objeto de solicitud de Express.
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-export const validateDateQueryParams = [
+export const validateQueryParams = [
+	query('role')
+		.optional()
+		.isNumeric()
+		.withMessage('El rol debe ser un valor numérico.'),
+	query('page')
+		.optional()
+		.isNumeric()
+		.withMessage('El número de página debe ser un valor numérico.'),
+	query('limit')
+		.optional()
+		.isNumeric()
+		.withMessage('El límite de elementos por página debe ser un valor numérico.'),
+	query('search')
+		.optional()
+		.isString()
+		.withMessage('El término de búsqueda debe ser una cadena de texto.'),
 	query('fechaInicio')
 		.optional()
 		.isDate()

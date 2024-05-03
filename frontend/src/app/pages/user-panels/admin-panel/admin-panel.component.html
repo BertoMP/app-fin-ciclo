@@ -4,12 +4,12 @@
 <section class="filter">
   <article class="role-filter">
     <label for="role">Rol</label>
-    <select2 id="role" [data]="roles" [value]="1" [(ngModel)]="role" (update)="filterByRole()">
+    <select2 id="role" [data]="roles" [value]="1" [(ngModel)]="role" (update)="filterByRoleAndSearch()">
     </select2>
   </article>
   <article class="search">
     <label for="search">Buscar</label>
-    <input type="text" id="search" [(ngModel)]="search" (keyup)="filterBySearch()">
+    <input type="text" id="search" [(ngModel)]="search" (keyup)="filterByRoleAndSearch()">
   </article>
 </section>
 <section class="card-container">

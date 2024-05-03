@@ -3,7 +3,7 @@ import CitaService from '../services/cita.service.js';
 import EspecialistaService from '../services/especialista.service.js';
 
 // Importación de las funciones necesarias
-import { getSearchValuesByDate } from '../util/functions/getSearchValuesByDate.js';
+import {getSearchValues} from "../util/functions/getSearchValues.js";
 
 /**
  * @class CitaController
@@ -26,15 +26,14 @@ class CitaController {
 	 * @memberof CitaController
 	 */
 	static async getCitas(req, res) {
-		const limit = 10;
-
 		try {
-			const searchValues = getSearchValuesByDate(req, true);
+			const searchValues = getSearchValues(req, 'date');
 
 			const page = searchValues.page;
 			const fechaInicio = searchValues.fechaInicio;
 			const fechaFin = searchValues.fechaFin;
 			const paciente_id = searchValues.paciente_id;
+			const limit = searchValues.limit;
 
 			const {
 				rows: resultados,
@@ -49,13 +48,23 @@ class CitaController {
 				});
 			}
 
+			let query = '';
+
+			if (fechaInicio) {
+				query += `&fechaInicio=${fechaInicio}`;
+			}
+
+			if (fechaFin) {
+				query += `&fechaFin=${fechaFin}`;
+			}
+
 			const prev =
 				page > 1
-					? `/cita/${paciente_id}?page=${page - 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+					? `/cita/${paciente_id}?page=${page - 1}&limit=${limit}${query}`
 					: null;
 			const next =
 				page < paginas_totales
-					? `/cita/${paciente_id}?page=${page + 1}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+					? `/cita/${paciente_id}?page=${page + 1}&limit=${limit}${query}`
 					: null;
 			const result_min = (page - 1) * limit + 1;
 			const result_max =
@@ -64,7 +73,7 @@ class CitaController {
 					: (page - 1) * limit + resultados[0].citas.length;
 			const fecha_inicio = fechaInicio;
 			const fecha_fin = fechaFin;
-			const items_pagina = limit;
+			const items_pagina = parseInt(limit);
 
 			return res.status(200).json({
 				prev,

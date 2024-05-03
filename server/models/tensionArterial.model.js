@@ -14,16 +14,16 @@ class TensionArterialModel {
 	 * @async
 	 * @memberof TensionArterialModel
 	 * @param {Object} searchValues - Los valores de búsqueda.
-	 * @param {number} limit - El número de mediciones por página.
+	 * @param {number} paciente_id - El ID del paciente.
 	 * @param {Object} dbConn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto con las mediciones de tensión arterial y la información de la paginación.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async fetchAll(searchValues, limit, dbConn) {
+	static async fetchAll(searchValues, paciente_id, dbConn) {
 		const page = searchValues.page;
 		const fechaInicio = searchValues.fechaInicio;
 		const fechaFin = searchValues.fechaFin;
-		const paciente_id = searchValues.paciente_id;
+		const limit = searchValues.limit;
 		const offset = (page - 1) * limit;
 
 		const query =

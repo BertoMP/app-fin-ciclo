@@ -13,8 +13,7 @@ import { verifyUserId } from '../../util/middleware/verifyUserId.js';
 // Importación de middlewares para la validación de datos
 import { validateCita } from '../../helpers/validators/cita.validator.js';
 import { validateCitaIdParam } from '../../helpers/validators/params/citaIdParam.validator.js';
-import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
-import { validateDateQueryParams } from '../../helpers/validators/queryParams/dateQueryParams.validator.js';
+import { validateQueryParams } from '../../helpers/validators/queryParams/queryParams.validator.js';
 
 // Rutas GET
 /**
@@ -199,8 +198,7 @@ router.get(
 	verifyAccessToken,
 	verifyUserRole([2]),
 	verifyUserId,
-	validatePaginationQueryParams,
-	validateDateQueryParams,
+	validateQueryParams,
 	CitaController.getCitas,
 );
 

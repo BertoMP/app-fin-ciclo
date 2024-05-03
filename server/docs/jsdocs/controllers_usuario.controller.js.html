@@ -26,7 +26,11 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// Importación de los servicios necesarios
+            <pre class="prettyprint source linenums"><code>// Carga de las variables de entorno desde el archivo '.env'
+import dotenv from 'dotenv';
+dotenv.config();
+
+// Importación de los servicios necesarios
 import UsuarioService from '../services/usuario.service.js';
 import EspecialistaService from '../services/especialista.service.js';
 import TokenService from '../services/token.service.js';
@@ -36,24 +40,14 @@ import EmailService from '../services/email.service.js';
 import pkg from 'bcryptjs';
 const { compare } = pkg;
 
-import pkg2 from 'jsonwebtoken';
-const { verify } = pkg2;
-
-// Carga de las variables de entorno desde el archivo '.env'
-import dotenv from 'dotenv';
-dotenv.config();
-
 // Importación de los helpers necesarios
-import { createAccessToken } from '../helpers/jwt/createAccessToken.js';
-import { createResetToken } from '../helpers/jwt/createResetToken.js';
-import { createRefreshToken } from '../helpers/jwt/createRefreshToken.js';
 import { createEncryptedPassword } from '../util/functions/createEncryptedPassword.js';
-import { createUserObject } from '../util/functions/createUserObject.js';
-import { createHistClinica } from '../util/functions/createHistClinica.js';
 import { verifyResetToken } from '../helpers/jwt/verifyResetToken.js';
 
 // Importación de las funciones necesarias
-import { getSearchValuesByRole } from '../util/functions/getSearchValuesByRole.js';
+import PacienteService from "../services/paciente.service.js";
+import CitaService from "../services/cita.service.js";
+import {getSearchValues} from "../util/functions/getSearchValues.js";
 
 /**
  * @class UsuarioController
@@ -76,47 +70,37 @@ class UsuarioController {
 	 */
 	static async getUsuario(req, res) {
 		let id = 0;
-		let role_id = 0;
 
 		if (req.user_role === 2) {
 			id = req.user_id;
-			role_id = 2;
 		} else if (req.user_role === 1) {
 			id = req.params.usuario_id;
 		}
 
 		try {
-			if (!role_id) {
-				role_id = await UsuarioService.readUsuarioRoleById(id);
+			let usuario = await UsuarioService.readUsuarioById(id);
 
-				if (!role_id) {
-					return res.status(404).json({
-						errors: ['Usuario no encontrado.'],
-					});
-				}
-			}
-
-			if (role_id === 2) {
-				const user = await UsuarioService.readUsuarioPaciente(id);
-
-				if (!user) {
-					return res.status(404).json({
-						errors: ['Usuario no encontrado.'],
-					});
-				}
-
-				return res.status(200).json(user);
-			}
-
-			const user = await UsuarioService.readUsuarioEspecialista(id);
-
-			if (!user) {
+			if (!usuario) {
 				return res.status(404).json({
 					errors: ['Usuario no encontrado.'],
 				});
 			}
 
-			return res.status(200).json(user);
+			const usuarioRole = usuario.datos_rol.rol_id;
+
+			if (usuarioRole === 1) {
+				return res.status(409).json({
+					errors: ['No se puede obtener a un admin.']
+				});
+			} else if (usuarioRole === 2) {
+				const paciente = await PacienteService.readPacienteByUserId(id);
+				usuario = { ...usuario, ...paciente };
+			} else {
+				const especialista = await EspecialistaService.readEspecialistaByUserId(id);
+				usuario = { ...usuario, ...especialista };
+			}
+
+			return res.status(200).json(usuario);
 		} catch (err) {
 			return res.status(500).json({ errors: [err.message] });
 		}
@@ -137,20 +121,18 @@ class UsuarioController {
 	 * @memberof UsuarioController
 	 */
 	static async getListado(req, res) {
-		const limit = 10;
-
 		try {
-			const searchValues = getSearchValuesByRole(req);
-
+			const searchValues = getSearchValues(req, 'role');
 			const page = searchValues.page;
 			const role_id = searchValues.role;
-
+			const search = searchValues.search;
+			const limit = searchValues.limit;
 			const {
-				rows: resultados,
+				formattedRows: resultados,
 				actualPage: pagina_actual,
 				total: cantidad_usuarios,
 				totalPages: paginas_totales,
-			} = await readAllUsuarios(searchValues, limit);
+			} = await UsuarioService.readAllUsuarios(searchValues);
 
 			if (page > 1 &amp;&amp; page > paginas_totales) {
 				return res.status(404).json({
@@ -158,22 +140,27 @@ class UsuarioController {
 				});
 			}
 
+			let queryParams = '';
+
+			if (role_id) {
+				queryParams += `&amp;role=${role_id}`;
+			}
+			if (search) {
+				queryParams += `&amp;search=${search}`;
+			}
+
 			const prev =
 				page > 1
-					? role_id
-						? `/usuario/listado?page=${page - 1}&amp;role=${role_id}`
-						: `/usuario/listado?page=${page - 1}`
+					? `/usuario/listado?page=${page - 1}&amp;limit=${limit}${queryParams}`
 					: null;
 			const next =
 				page &lt; paginas_totales
-					? role_id
-						? `/usuario/listado?page=${page + 1}&amp;role=${role_id}`
-						: `/usuario/listado?page=${page + 1}`
+					? `/usuario/listado?page=${page + 1}&amp;limit=${limit}${queryParams}`
 					: null;
 			const result_min = (page - 1) * limit + 1;
 			const result_max =
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const items_pagina = limit;
+			const items_pagina = parseInt(limit);
 
 			const users = {
 				prev,
@@ -209,91 +196,13 @@ class UsuarioController {
 	 */
 	static async postRegistro(req, res) {
 		try {
-			const errors = [];
-
-			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.email);
-
-			if (emailExists) {
-				errors.push('El correo ya está en uso.');
-			}
-
-			const dniExists = await UsuarioService.readUsuarioByDNI(req.body.dni);
-
-			if (dniExists) {
-				errors.push('El DNI ya está en uso.');
-			}
+			const errors = UsuarioController.#verifyUser(req.body.email, req.body.dni, req.body.num_colegiado);
 
 			if (errors.length > 0) {
 				return res.status(409).json({ errors: errors });
 			}
 
-			const encryptedPassword = await createEncryptedPassword(req.body.password);
-			const user = createUserObject(req, encryptedPassword, 2);
-
-			const patient = {
-				num_hist_clinica: createHistClinica(),
-				fecha_nacimiento: req.body.fecha_nacimiento,
-				tipo_via: req.body.tipo_via,
-				nombre_via: req.body.nombre_via,
-				numero: req.body.numero,
-				piso: req.body.piso,
-				puerta: req.body.puerta,
-				municipio: req.body.municipio,
-				codigo_postal: req.body.codigo_postal,
-				tel_fijo: req.body.tel_fijo,
-				tel_movil: req.body.tel_movil,
-			};
-
-			await UsuarioService.createUsuarioPaciente(user, patient);
-
-			await EmailService.sendWelcomeEmail(req.body.email, req.body.nombre);
-
-			return res.status(200).json({ message: 'Usuario creado exitosamente.' });
-		} catch (err) {
-			return res.status(500).json({ errors: [err.message] });
-		}
-	}
-
-	/**
-	 * @name postRegistroEspecialista
-	 * @description Método asíncrono que registra un nuevo especialista en la base de datos.
-	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
-	 *              Si el correo electrónico ya está en uso, devuelve un error con el mensaje correspondiente.
-	 * @static
-	 * @async
-	 * @function
-	 * @param {Object} req - El objeto de solicitud de Express.
-	 * @param {Object} res - El objeto de respuesta de Express.
-	 * @returns {Object} res - El objeto de respuesta de Express.
-	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
-	 * @memberof UsuarioController
-	 */
-	static async postRegistroEspecialista(req, res) {
-		try {
-			const userExists = await UsuarioService.readUsuarioByEmail(req.body.email);
-
-			if (userExists) {
-				return res.status(409).json({
-					errors: ['El correo ya está en uso.'],
-				});
-			}
-
-			const encryptedPassword = await createEncryptedPassword(req.body.password);
-			const user = createUserObject(req, encryptedPassword, 3);
-
-			let descripcion = req.body.descripcion;
-			descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '&lt;br>');
-
-			const specialist = {
-				num_colegiado: req.body.num_colegiado,
-				descripcion: descripcion,
-				imagen: req.body.imagen,
-				turno: req.body.turno,
-				especialidad_id: req.body.especialidad_id,
-				consulta_id: req.body.consulta_id,
-			};
-
-			await UsuarioService.createUsuarioEspecialista(user, specialist);
+			await UsuarioService.createUsuario(req.body);
 
 			return res.status(200).json({ message: 'Usuario creado exitosamente.' });
 		} catch (err) {
@@ -336,8 +245,8 @@ class UsuarioController {
 				});
 			}
 
-			const accessToken = createAccessToken(user);
-			const refreshToken = createRefreshToken(user);
+			const accessToken = TokenService.createAccessToken(user);
+			const refreshToken = TokenService.createRefreshToken(user);
 
 			await UsuarioService.updateRefreshToken(user.id, refreshToken);
 
@@ -369,7 +278,7 @@ class UsuarioController {
 		const email = req.body.email;
 
 		try {
-			const user = await readUsuarioByEmail(email);
+			const user = await UsuarioService.readUsuarioByEmail(email);
 			if (!user) {
 				return res.status(404).json({
 					errors: ['Correo no encontrado en la base de datos.'],
@@ -377,10 +286,9 @@ class UsuarioController {
 			}
 
 			const idUser = user.id;
-			const resetToken = createResetToken(user);
+			const resetToken = TokenService.createResetToken(user);
 
 			await TokenService.createToken(idUser, resetToken);
-
 			await EmailService.sendPasswordResetEmail(email, user, resetToken);
 
 			return res.status(200).json({
@@ -407,11 +315,10 @@ class UsuarioController {
 	 */
 	static async postResetPassword(req, res) {
 		const newPassword = req.body.password;
-
 		const userEmail = await verifyResetToken(req, res);
 
 		try {
-			const user = await readUsuarioByEmail(userEmail);
+			const user = await UsuarioService.readUsuarioByEmail(userEmail);
 
 			if (!user) {
 				return res.status(404).json({
@@ -448,7 +355,6 @@ class UsuarioController {
 	static async postUpdatePassword(req, res) {
 		const email = req.body.email;
 		const password = req.body.password;
-
 		const id = req.user_id;
 
 		try {
@@ -466,9 +372,7 @@ class UsuarioController {
 				});
 			}
 
-			const encryptedPassword = await createEncryptedPassword(password);
-
-			await UsuarioService.updatePassword(email, encryptedPassword);
+			await UsuarioService.updatePassword(email, password);
 
 			return res.status(200).json({
 				message: 'Contraseña actualizada exitosamente.',
@@ -495,14 +399,48 @@ class UsuarioController {
 	 * @memberof UsuarioController
 	 */
 	static async deleteUsuario(req, res) {
-		const id = req.user_id;
+		let id = 0;
+
+		if (req.user_role === 1) {
+			id = req.params.usuario_id;
+		} else if (req.user_role === 2) {
+			id = req.user_id;
+		}
 
 		try {
-			await UsuarioService.deleteUsuario(id);
+			const userExists = await UsuarioService.readUsuarioById(id);
+
+			if (!userExists) {
+				return res.status(404).json({
+					errors: ['Usuario no encontrado.'],
+				});
+			}
+
+			const userRole = userExists.datos_rol.rol_id;
+
+			switch (userRole) {
+				case 1:
+					return res.status(409).json({
+						errors: ['No se puede eliminar a un admin'],
+					});
+				case 2:
+					await PacienteService.deletePaciente(id);
+					break;
+				case 3:
+					const especialistaCita = await CitaService.readCitasByEspecialistaId(id);
+
+					if (especialistaCita.length > 0) {
+						await EspecialistaService.setNoTrabajando(id);
+					} else {
+						await EspecialistaService.deleteEspecialista(id);
+					}
+					break;
+			}
 
 			return res.status(200).json({
 				message: 'Usuario eliminado exitosamente.',
 			});
+
 		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],
@@ -534,7 +472,7 @@ class UsuarioController {
 		}
 
 		try {
-			const decodedToken = verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY);
+			const decodedToken = TokenService.verifyRefreshToken(refreshToken);
 
 			const user = await UsuarioService.readUsuarioById(decodedToken.user_id);
 			if (!user) {
@@ -549,8 +487,8 @@ class UsuarioController {
 				});
 			}
 
-			const newAccessToken = createAccessToken(user);
-			const newRefreshToken = createRefreshToken(user);
+			const newAccessToken = TokenService.createAccessToken(user);
+			const newRefreshToken = TokenService.createRefreshToken(user);
 
 			await UsuarioService.updateRefreshToken(user.id, newRefreshToken);
 
@@ -593,11 +531,10 @@ class UsuarioController {
 	}
 
 	/**
-	 * @name putUsuarioPaciente
-	 * @description Método asíncrono que actualiza los datos de un usuario paciente en la base de datos.
-	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
-	 *              Si el DNI ya está en uso por otro usuario, devuelve un error con el mensaje correspondiente.
-	 *              Si el usuario no existe o no tiene permiso para realizar la acción, devuelve un error con el mensaje correspondiente.
+	 * @name putUsuario
+	 * @description Método asíncrono que actualiza los datos de un usuario en la base de datos.
+	 * 						Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+	 * 						Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
 	 * @static
 	 * @async
 	 * @function
@@ -607,7 +544,7 @@ class UsuarioController {
 	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
 	 * @memberof UsuarioController
 	 */
-	static async putUsuarioPaciente(req, res) {
+	static async putUsuario(req, res) {
 		let usuario_id = 0;
 
 		if (req.user_role === 2) {
@@ -623,121 +560,59 @@ class UsuarioController {
 				return res.status(404).json({ errors: ['Usuario no encontrado.'] });
 			}
 
-			const dniExits = await UsuarioService.readUsuarioByDNI(req.body.dni);
-
-			if (dniExits &amp;&amp; user.dni !== req.body.dni) {
-				return res.status(409).json({
-					errors: ['El DNI ya está en uso.'],
-				});
+			if (user.rol_id === 1) {
+				return res.status(409).json({ errors: ['No se puede modificar a un admin.'] });
 			}
 
-			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.email);
+			const errors = await UsuarioController.#verifyUser(req.body.email, req.body.dni, req.body.num_colegiado);
 
-			if (emailExists &amp;&amp; user.email !== req.body.email) {
-				return res.status(409).json({
-					errors: ['El correo ya está en uso.'],
-				});
+			if (errors.length > 0) {
+				return res.status(409).json({ errors: errors });
 			}
 
-			const userUpdate = {
-				email: req.body.email,
-				nombre: req.body.nombre,
-				primer_apellido: req.body.primer_apellido,
-				segundo_apellido: req.body.segundo_apellido,
-				dni: req.body.dni,
-			};
+			await UsuarioService.updateUsuario(req.body, usuario_id);
 
-			const patientUpdate = {
-				fecha_nacimiento: req.body.fecha_nacimiento,
-				tipo_via: req.body.tipo_via,
-				nombre_via: req.body.nombre_via,
-				numero: req.body.numero,
-				piso: req.body.piso,
-				puerta: req.body.puerta,
-				municipio: req.body.municipio,
-				codigo_postal: req.body.codigo_postal,
-				tel_fijo: req.body.tel_fijo,
-				tel_movil: req.body.tel_movil,
-			};
-
-			await UsuarioService.updateUsuarioPaciente(userUpdate, patientUpdate);
-
-			return res.status(200).json({ message: 'Usuario actualizado exitosamente.' });
 		} catch (err) {
 			return res.status(500).json({ errors: [err.message] });
 		}
 	}
 
 	/**
-	 * @name putUsuarioEspecialista
-	 * @description Método asíncrono que actualiza los datos de un usuario especialista en la base de datos.
-	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
-	 *              Si el usuario no existe o no tiene permiso para realizar la acción, devuelve un error con el mensaje correspondiente.
+	 * @name verifyUser
+	 * @description Método estático privado que verifica si un usuario ya existe en la base de datos.
+	 * @private
 	 * @static
 	 * @async
 	 * @function
-	 * @param {Object} req - El objeto de solicitud de Express.
-	 * @param {Object} res - El objeto de respuesta de Express.
-	 * @returns {Object} res - El objeto de respuesta de Express.
-	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+	 * @param {string} email - El correo electrónico del usuario.
+	 * @param {string} dni - El DNI del usuario.
+	 * @param {string} num_colegiado - El número de colegiado del especialista.
+	 * @returns {Array} - Un array con los errores encontrados.
 	 * @memberof UsuarioController
 	 */
-	static async putUsuarioEspecialista(req, res) {
-		const id = req.params.usuario_id;
+	static async #verifyUser(email, dni, num_colegiado) {
+		const errors = [];
 
-		try {
-			const user = await UsuarioService.readUsuarioById(id);
+		const emailExists = await UsuarioService.readUsuarioByEmail(email);
+		const dniExists = await UsuarioService.readUsuarioByDNI(dni);
 
-			if (!user) {
-				return res.status(404).json({ errors: ['Usuario no encontrado.'] });
+		if (num_colegiado) {
+			const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(num_colegiado);
+
+			if (numColegiadoExists) {
+				errors.push('El número de colegiado ya está en uso.');
 			}
-
-			const dniExits = await UsuarioService.readUsuarioByDNI(req.body.dni);
-
-			if (dniExits &amp;&amp; user.dni !== req.body.dni) {
-				return res.status(409).json({
-					errors: ['El DNI ya está en uso.'],
-				});
-			}
-
-			const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(
-				req.body.num_colegiado,
-			);
-
-			if (numColegiadoExists &amp;&amp; user.num_colegiado !== req.body.num_colegiado) {
-				return res.status(409).json({
-					errors: ['El número de colegiado ya está en uso.'],
-				});
-			}
-
-			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.email);
-
-			if (emailExists &amp;&amp; user.email !== req.body.email) {
-				return res.status(409).json({
-					errors: ['El correo ya está en uso.'],
-				});
-			}
-
-			const specialist = {
-				email: req.body.email,
-				nombre: req.body.nombre,
-				primer_apellido: req.body.primer_apellido,
-				segundo_apellido: req.body.segundo_apellido,
-				dni: req.body.dni,
-				num_colegiado: req.body.num_colegiado,
-				descripcion: req.body.descripcion,
-				turno: req.body.turno,
-				especialidad_id: req.body.especialidad_id,
-				consulta_id: req.body.consulta_id,
-				imagen: req.body.imagen,
-			};
-
-			await UsuarioService.updateUsuarioEspecialista(user, specialist);
-
-			return res.status(200).json({ message: 'Usuario actualizado exitosamente.' });
-		} catch (err) {
-			return res.status(500).json({ errors: [err.message] });
 		}
+
+		if (emailExists) {
+			errors.push('El correo ya está en uso.');
+		}
+
+		if (dniExists) {
+			errors.push('El DNI ya está en uso.');
+		}
+
+		return errors;
 	}
 }
 
@@ -753,13 +628,13 @@ export default UsuarioController;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul><h3>Classes</h3><ul><li><a href="CitaController.html">CitaController</a></li><li><a href="CitaModel.html">CitaModel</a></li><li><a href="CitaService.html">CitaService</a></li><li><a href="CodigoPostalMunicipioController.html">CodigoPostalMunicipioController</a></li><li><a href="CodigoPostalMunicipioModel.html">CodigoPostalMunicipioModel</a></li><li><a href="CodigoPostalMunicipioService.html">CodigoPostalMunicipioService</a></li><li><a href="ConsultaController.html">ConsultaController</a></li><li><a href="ConsultaModel.html">ConsultaModel</a></li><li><a href="ConsultaService.html">ConsultaService</a></li><li><a href="ContactoController.html">ContactoController</a></li><li><a href="EmailService.html">EmailService</a></li><li><a href="EspecialidadController.html">EspecialidadController</a></li><li><a href="EspecialidadModel.html">EspecialidadModel</a></li><li><a href="EspecialidadService.html">EspecialidadService</a></li><li><a href="EspecialistaController.html">EspecialistaController</a></li><li><a href="EspecialistaModel.html">EspecialistaModel</a></li><li><a href="EspecialistaService.html">EspecialistaService</a></li><li><a href="GlucometriaController.html">GlucometriaController</a></li><li><a href="GlucometriaModel.html">GlucometriaModel</a></li><li><a href="GlucometriaService.html">GlucometriaService</a></li><li><a href="InformeController.html">InformeController</a></li><li><a href="InformeModel.html">InformeModel</a></li><li><a href="InformePatologiaModel.html">InformePatologiaModel</a></li><li><a href="InformePatologiaService.html">InformePatologiaService</a></li><li><a href="InformeService.html">InformeService</a></li><li><a href="MedicamentoController.html">MedicamentoController</a></li><li><a href="MedicamentoModel.html">MedicamentoModel</a></li><li><a href="MedicamentoService.html">MedicamentoService</a></li><li><a href="MunicipioController.html">MunicipioController</a></li><li><a href="MunicipioModel.html">MunicipioModel</a></li><li><a href="MunicipioService.html">MunicipioService</a></li><li><a href="PacienteController.html">PacienteController</a></li><li><a href="PacienteModel.html">PacienteModel</a></li><li><a href="PacienteService.html">PacienteService</a></li><li><a href="PacienteTomaMedicamentoController.html">PacienteTomaMedicamentoController</a></li><li><a href="PacienteTomaMedicamentoModel.html">PacienteTomaMedicamentoModel</a></li><li><a href="PacienteTomaMedicamentoService.html">PacienteTomaMedicamentoService</a></li><li><a href="PatologiaController.html">PatologiaController</a></li><li><a href="PatologiaModel.html">PatologiaModel</a></li><li><a href="PatologiaService.html">PatologiaService</a></li><li><a href="PdfService.html">PdfService</a></li><li><a href="ProvinciaController.html">ProvinciaController</a></li><li><a href="ProvinciaModel.html">ProvinciaModel</a></li><li><a href="ProvinciaService.html">ProvinciaService</a></li><li><a href="TensionArterialController.html">TensionArterialController</a></li><li><a href="TensionArterialModel.html">TensionArterialModel</a></li><li><a href="TensionArterialService.html">TensionArterialService</a></li><li><a href="TipoViaController.html">TipoViaController</a></li><li><a href="TipoViaModel.html">TipoViaModel</a></li><li><a href="TipoViaService.html">TipoViaService</a></li><li><a href="TokenModel.html">TokenModel</a></li><li><a href="TokenService.html">TokenService</a></li><li><a href="TomaModel.html">TomaModel</a></li><li><a href="TomaService.html">TomaService</a></li><li><a href="UsuarioController.html">UsuarioController</a></li><li><a href="UsuarioModel.html">UsuarioModel</a></li><li><a href="UsuarioService.html">UsuarioService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul><h3>Classes</h3><ul><li><a href="CitaController.html">CitaController</a></li><li><a href="CitaModel.html">CitaModel</a></li><li><a href="CitaService.html">CitaService</a></li><li><a href="CodigoPostalMunicipioController.html">CodigoPostalMunicipioController</a></li><li><a href="CodigoPostalMunicipioModel.html">CodigoPostalMunicipioModel</a></li><li><a href="CodigoPostalMunicipioService.html">CodigoPostalMunicipioService</a></li><li><a href="ConsultaController.html">ConsultaController</a></li><li><a href="ConsultaModel.html">ConsultaModel</a></li><li><a href="ConsultaService.html">ConsultaService</a></li><li><a href="ContactoController.html">ContactoController</a></li><li><a href="EmailService.html">EmailService</a></li><li><a href="EspecialidadController.html">EspecialidadController</a></li><li><a href="EspecialidadModel.html">EspecialidadModel</a></li><li><a href="EspecialidadService.html">EspecialidadService</a></li><li><a href="EspecialistaController.html">EspecialistaController</a></li><li><a href="EspecialistaModel.html">EspecialistaModel</a></li><li><a href="EspecialistaService.html">EspecialistaService</a></li><li><a href="GlucometriaController.html">GlucometriaController</a></li><li><a href="GlucometriaModel.html">GlucometriaModel</a></li><li><a href="GlucometriaService.html">GlucometriaService</a></li><li><a href="InformeController.html">InformeController</a></li><li><a href="InformeModel.html">InformeModel</a></li><li><a href="InformePatologiaModel.html">InformePatologiaModel</a></li><li><a href="InformePatologiaService.html">InformePatologiaService</a></li><li><a href="InformeService.html">InformeService</a></li><li><a href="MedicamentoController.html">MedicamentoController</a></li><li><a href="MedicamentoModel.html">MedicamentoModel</a></li><li><a href="MedicamentoService.html">MedicamentoService</a></li><li><a href="MunicipioController.html">MunicipioController</a></li><li><a href="MunicipioModel.html">MunicipioModel</a></li><li><a href="MunicipioService.html">MunicipioService</a></li><li><a href="PacienteController.html">PacienteController</a></li><li><a href="PacienteModel.html">PacienteModel</a></li><li><a href="PacienteService.html">PacienteService</a></li><li><a href="PacienteTomaMedicamentoController.html">PacienteTomaMedicamentoController</a></li><li><a href="PacienteTomaMedicamentoModel.html">PacienteTomaMedicamentoModel</a></li><li><a href="PacienteTomaMedicamentoService.html">PacienteTomaMedicamentoService</a></li><li><a href="PatologiaController.html">PatologiaController</a></li><li><a href="PatologiaModel.html">PatologiaModel</a></li><li><a href="PatologiaService.html">PatologiaService</a></li><li><a href="PdfService.html">PdfService</a></li><li><a href="ProvinciaController.html">ProvinciaController</a></li><li><a href="ProvinciaModel.html">ProvinciaModel</a></li><li><a href="ProvinciaService.html">ProvinciaService</a></li><li><a href="TensionArterialController.html">TensionArterialController</a></li><li><a href="TensionArterialModel.html">TensionArterialModel</a></li><li><a href="TensionArterialService.html">TensionArterialService</a></li><li><a href="TipoViaController.html">TipoViaController</a></li><li><a href="TipoViaModel.html">TipoViaModel</a></li><li><a href="TipoViaService.html">TipoViaService</a></li><li><a href="TokenModel.html">TokenModel</a></li><li><a href="TokenService.html">TokenService</a></li><li><a href="TomaModel.html">TomaModel</a></li><li><a href="TomaService.html">TomaService</a></li><li><a href="UsuarioController.html">UsuarioController</a></li><li><a href="UsuarioModel.html">UsuarioModel</a></li><li><a href="UsuarioService.html">UsuarioService</a></li></ul><h3>Global</h3><ul><li><a href="global.html">getConsultaListado</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu May 02 2024 01:58:17 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

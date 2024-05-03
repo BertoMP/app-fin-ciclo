@@ -20,14 +20,20 @@ export class AdminPanelService {
     return this.http.get<UserListResponseModel>(`${this.baseUrl}${url}`);
   }
 
-  getUsersByRole(role: number):Observable<UserListResponseModel>{
-    const url: string = (role === 1 || isNaN(role)) ? `${this.baseUrl}/usuario/listado` : `${this.baseUrl}/usuario/listado?role=${role}`;
+  getUsersByRoleAndSearch(role:number, search:string):Observable<UserListResponseModel>{
+    let query: string = '';
 
-    return this.http.get<UserListResponseModel>(url);
-  }
+    if (role > 1) {
+      query += `role=${role}&`;
+    }
 
-  getUsersBySearch(search: string):Observable<UserListResponseModel>{
-    return this.http.get<UserListResponseModel>(`${this.baseUrl}/usuario/listado?search=${search}`);
+    if (search) {
+      query += `search=${search}&`;
+    }
+
+    query = query.slice(0, -1);
+
+    return this.http.get<UserListResponseModel>(`${this.baseUrl}/usuario/listado?${query}`);
   }
 
   eliminateUser(id:number):Observable<any>{

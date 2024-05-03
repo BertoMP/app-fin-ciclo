@@ -7,7 +7,7 @@ import pkg from 'moment-timezone';
 const { tz } = pkg;
 
 // Importación de funciones
-import { getSearchValuesByDate } from '../util/functions/getSearchValuesByDate.js';
+import { getSearchValues } from "../util/functions/getSearchValues.js";
 
 /**
  * @class GlucometriaController
@@ -31,15 +31,21 @@ class GlucometriaController {
 	 * @memberof GlucometriaController
 	 */
 	static async getGlucometria(req, res) {
-		const limit = 10;
+		let paciente_id = 0;
+
+		if (req.user_role === 2) {
+			paciente_id = req.user_id;
+		} else if (req.user_role === 3) {
+			paciente_id = req.params.usuario_id;
+		}
 
 		try {
-			const searchValues = getSearchValuesByDate(req);
+			const searchValues = getSearchValues(req, 'date');
 
 			const page = searchValues.page;
 			const fechaInicio = searchValues.fechaInicio;
 			const fechaFin = searchValues.fechaFin;
-			const paciente_id = searchValues.paciente_id;
+			const limit = searchValues.limit;
 
 			const pacienteExists = await PacienteService.readPacienteByUserId(paciente_id);
 
@@ -54,7 +60,7 @@ class GlucometriaController {
 				total: cantidad_glucometrias,
 				actualPage: pagina_actual,
 				totalPages: paginas_totales,
-			} = await GlucometriaService.readGlucometria(searchValues, limit);
+			} = await GlucometriaService.readGlucometria(searchValues, paciente_id);
 
 			if (page > 1 && page > paginas_totales) {
 				return res.status(404).json({
@@ -62,24 +68,30 @@ class GlucometriaController {
 				});
 			}
 
+			let query = '';
+
+			if (fechaInicio) {
+				query += `&fechaInicio=${fechaInicio}`;
+			}
+
+			if (fechaFin) {
+				query += `&fechaFin=${fechaFin}`;
+			}
+
 			const prev =
 				page > 1
-					? `/glucometria/${paciente_id}?page=${
-							page - 1
-					  }&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+					? `/glucometria/${paciente_id}?page=${page - 1}&limit=${limit}${query}`
 					: null;
 			const next =
 				page < paginas_totales
-					? `/glucometria/${paciente_id}?page=${
-							page + 1
-					  }&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+					? `/glucometria/${paciente_id}?page=${page + 1}&limit=${limit}${query}`
 					: null;
 			const result_min = (page - 1) * limit + 1;
 			const result_max =
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
 			const fecha_inicio = fechaInicio;
 			const fecha_fin = fechaFin;
-			const items_pagina = limit;
+			const items_pagina = parseInt(limit);
 
 			return res.status(200).json({
 				prev,
