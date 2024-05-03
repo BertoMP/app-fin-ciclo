@@ -16,6 +16,101 @@ import { validateConsultaIdParam } from '../../helpers/validators/params/consult
 // Rutas GET
 /**
  * @swagger
+ * /consulta/listado:
+ *   get:
+ *     summary: Obtiene una lista de consultas
+ *     tags: [Consulta]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: La lista de consultas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ConsultaListado'
+ *       401:
+ *         description: No autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenExpiredError'
+ *       403:
+ *         description: Token inválido o no proporcionado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenInvalidError'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ */
+router.get(
+	'/consulta/listado',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	ConsultaController.getConsultaListado,
+);
+
+/**
+ * @swagger
+ * /consulta:
+ *   get:
+ *     summary: Obtiene una lista paginada de consultas
+ *     tags: [Consulta]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: El número de la página a obtener
+ *     responses:
+ *       200:
+ *         description: La lista de consultas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ConsultaPaginada'
+ *       401:
+ *         description: No autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenExpiredError'
+ *       403:
+ *         description: Token inválido o no proporcionado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenInvalidError'
+ *       404:
+ *         description: No se encontró la página de consultas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NotFoundError'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ */
+router.get(
+	'/consulta',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	ConsultaController.getConsultas
+);
+
+/**
+ * @swagger
  * /consulta/{consulta_id}:
  *   get:
  *     summary: Obtiene los detalles de una consulta específica
@@ -73,60 +168,6 @@ router.get(
 	verifyUserRole([1]),
 	validateConsultaIdParam,
 	ConsultaController.getConsultaById,
-);
-
-/**
- * @swagger
- * /consulta:
- *   get:
- *     summary: Obtiene una lista paginada de consultas
- *     tags: [Consulta]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: query
- *         name: page
- *         schema:
- *           type: integer
- *         required: false
- *         description: El número de la página a obtener
- *     responses:
- *       200:
- *         description: La lista de consultas
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ConsultaPaginada'
- *       401:
- *         description: No autorizado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/TokenExpiredError'
- *       403:
- *         description: Token inválido o no proporcionado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/TokenInvalidError'
- *       404:
- *         description: No se encontró la página de consultas
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/NotFoundError'
- *       500:
- *         description: Error del servidor
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ServerError'
- */
-router.get(
-	'/consulta',
-	verifyAccessToken,
-	verifyUserRole([1]),
-	ConsultaController.getConsultas
 );
 
 // Rutas POST

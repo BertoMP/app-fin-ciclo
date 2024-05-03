@@ -80,6 +80,34 @@ class ConsultaModel {
 	}
 
 	/**
+	 * @method findAllListado
+	 * @description Método para obtener todas las consultas.
+	 * @static
+	 * @async
+	 * @memberof ConsultaModel
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} Un array de consultas.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async findAllListado(dbConn) {
+		const query =
+			'SELECT ' +
+			'		id, ' +
+			'		nombre ' +
+			'FROM ' +
+			'		consulta ' +
+			'ORDER BY ' +
+			'		id ASC';
+
+		try {
+			const [rows] = await dbConn.execute(query);
+			return rows;
+		} catch (err) {
+			throw new Error('Error al obtener las consultas.');
+		}
+	}
+
+	/**
 	 * @method findById
 	 * @description Método para obtener una consulta por su ID.
 	 * @static

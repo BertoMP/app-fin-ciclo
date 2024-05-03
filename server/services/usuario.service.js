@@ -9,6 +9,7 @@ import EmailService from "./email.service.js";
 // Importación de las utilidades necesarias
 import { dbConn } from '../util/database/database.js';
 import ObjectFactory from "../util/classes/objectFactory.js";
+import { createEncryptedPassword } from "../util/functions/createEncryptedPassword.js";
 
 /**
  * @class UsuarioService
@@ -82,6 +83,16 @@ class UsuarioService {
 		}
 	}
 
+	/**
+	 * @method updateUsuario
+	 * @description Método para actualizar un usuario.
+	 * @static
+	 * @async
+	 * @memberof UsuarioService
+	 * @param data - Los datos del usuario a actualizar.
+	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
+	 * @returns {Promise<void>} No devuelve nada. Si la operación es exitosa, se habrá actualizado el usuario y el paciente o especialista asociado en la base de datos.
+	 */
 	static async updateUsuario(data, conn = null) {
 		const isConnProvided = !!conn;
 
@@ -174,7 +185,8 @@ class UsuarioService {
 	 * @returns {Promise<Object>} El resultado de la operación de actualización.
 	 */
 	static async updatePassword(email, password, conn = dbConn) {
-		return await UsuarioModel.updatePassword(email, password, conn);
+		const encryptedPassword = await createEncryptedPassword(password);
+		return await UsuarioModel.updatePassword(email, encryptedPassword, conn);
 	}
 
 	/**

@@ -25,6 +25,20 @@ class ConsultaService {
 	}
 
 	/**
+	 * @method readConsultasListado
+	 * @description Método para leer consultas.
+	 * @static
+	 * @async
+	 * @memberof ConsultaService
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} Un array de consultas.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async readConsultasListado(conn = dbConn) {
+		return await ConsultaModel.findAllListado(conn);
+	}
+
+	/**
 	 * @method readConsultaById
 	 * @description Método para leer una consulta por su ID.
 	 * @static

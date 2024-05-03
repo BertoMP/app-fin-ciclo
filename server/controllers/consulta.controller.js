@@ -67,6 +67,31 @@ class ConsultaController {
 	}
 
 	/**
+	 * @name getConsultaListado
+	 * @description Método asíncrono que obtiene una lista de consultas de la base de datos.
+	 * 						Devuelve un objeto JSON con la respuesta HTTP que incluye las consultas.
+	 * 						Si no hay consultas, devuelve un error con el mensaje correspondiente.
+	 * @static
+	 * @async
+	 * @function
+	 * @param {Object} req - El objeto de solicitud de Express.
+	 * @param {Object} res - El objeto de respuesta de Express.
+	 * @returns {Object} res - El objeto de respuesta de Express.
+	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+	 */
+	static async getConsultaListado(req, res) {
+		try {
+			const consultas = await ConsultaService.readConsultasListado();
+
+			return res.status(200).json(consultas);
+		} catch (err) {
+			return res.status(500).json({
+				errors: [err.message],
+			});
+		}
+	}
+
+	/**
 	 * @name getConsultaById
 	 * @description Método asíncrono que obtiene una consulta específica de la base de datos utilizando su ID.
 	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de la consulta.

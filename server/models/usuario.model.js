@@ -96,7 +96,6 @@ class UsuarioModel {
 
 			return { formattedRows, total, actualPage, totalPages };
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al obtener los usuarios.');
 		}
 	}
@@ -391,6 +390,40 @@ class UsuarioModel {
 			return await dbConn.execute(query, [email, nombre, primer_apellido, segundo_apellido, dni, id]);
 		} catch (err) {
 			throw new Error('Error al actualizar el usuario.');
+		}
+	}
+
+	static async countAll(searchValues, conn) {
+		const role_id = searchValues.role;
+
+		let query =
+			'SELECT ' +
+			'   COUNT(*) AS count ' +
+			'FROM ' +
+			'   usuario ' +
+			'INNER JOIN ' +
+			'   rol ON usuario.rol_id = rol.id ' +
+			'LEFT JOIN ' +
+			'   paciente ON usuario.id = paciente.usuario_id ' +
+			'LEFT JOIN ' +
+			'	 especialista ON usuario.id = especialista.usuario_id ' +
+			'WHERE ' +
+			'   rol_id <> 1 AND ' +
+			'   (turno IS NULL OR turno <> "no-trabajando")';
+
+		let countParams = [];
+
+		if (role_id) {
+			query += 'AND rol_id = ? ';
+			countParams.push(`${role_id}`);
+		}
+
+		try {
+			const [count] = await conn.execute(query, countParams);
+			return count[0].count;
+		} catch (err) {
+			console.log(err);
+			throw new Error('Error al obtener el conteo de usuarios.');
 		}
 	}
 }

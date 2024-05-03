@@ -1,3 +1,7 @@
+// Carga de las variables de entorno desde el archivo '.env'
+import dotenv from 'dotenv';
+dotenv.config();
+
 // Importación de los servicios necesarios
 import UsuarioService from '../services/usuario.service.js';
 import EspecialistaService from '../services/especialista.service.js';
@@ -8,17 +12,7 @@ import EmailService from '../services/email.service.js';
 import pkg from 'bcryptjs';
 const { compare } = pkg;
 
-import pkg2 from 'jsonwebtoken';
-const { verify } = pkg2;
-
-// Carga de las variables de entorno desde el archivo '.env'
-import dotenv from 'dotenv';
-dotenv.config();
-
 // Importación de los helpers necesarios
-import { createAccessToken } from '../helpers/jwt/createAccessToken.js';
-import { createResetToken } from '../helpers/jwt/createResetToken.js';
-import { createRefreshToken } from '../helpers/jwt/createRefreshToken.js';
 import { createEncryptedPassword } from '../util/functions/createEncryptedPassword.js';
 import { verifyResetToken } from '../helpers/jwt/verifyResetToken.js';
 
@@ -72,15 +66,9 @@ class UsuarioController {
 				});
 			} else if (usuarioRole === 2) {
 				const paciente = await PacienteService.readPacienteByUserId(id);
-
-				console.log(paciente);
-
 				usuario = { ...usuario, ...paciente };
 			} else {
 				const especialista = await EspecialistaService.readEspecialistaByUserId(id);
-
-				console.log(especialista);
-
 				usuario = { ...usuario, ...especialista };
 			}
 
@@ -175,7 +163,7 @@ class UsuarioController {
 	 */
 	static async postRegistro(req, res) {
 		try {
-			const errors = await UsuarioController.#verifyUser(req.body.email, req.body.dni, req.body.num_colegiado);
+			const errors = UsuarioController.#verifyUser(req.body.email, req.body.dni, req.body.num_colegiado);
 
 			if (errors.length > 0) {
 				return res.status(409).json({ errors: errors });
@@ -224,8 +212,8 @@ class UsuarioController {
 				});
 			}
 
-			const accessToken = createAccessToken(user);
-			const refreshToken = createRefreshToken(user);
+			const accessToken = TokenService.createAccessToken(user);
+			const refreshToken = TokenService.createRefreshToken(user);
 
 			await UsuarioService.updateRefreshToken(user.id, refreshToken);
 
@@ -265,7 +253,7 @@ class UsuarioController {
 			}
 
 			const idUser = user.id;
-			const resetToken = createResetToken(user);
+			const resetToken = TokenService.createResetToken(user);
 
 			await TokenService.createToken(idUser, resetToken);
 			await EmailService.sendPasswordResetEmail(email, user, resetToken);
@@ -351,9 +339,7 @@ class UsuarioController {
 				});
 			}
 
-			const encryptedPassword = await createEncryptedPassword(password);
-
-			await UsuarioService.updatePassword(email, encryptedPassword);
+			await UsuarioService.updatePassword(email, password);
 
 			return res.status(200).json({
 				message: 'Contraseña actualizada exitosamente.',
@@ -453,7 +439,7 @@ class UsuarioController {
 		}
 
 		try {
-			const decodedToken = verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY);
+			const decodedToken = TokenService.verifyRefreshToken(refreshToken);
 
 			const user = await UsuarioService.readUsuarioById(decodedToken.user_id);
 			if (!user) {
@@ -468,8 +454,8 @@ class UsuarioController {
 				});
 			}
 
-			const newAccessToken = createAccessToken(user);
-			const newRefreshToken = createRefreshToken(user);
+			const newAccessToken = TokenService.createAccessToken(user);
+			const newRefreshToken = TokenService.createRefreshToken(user);
 
 			await UsuarioService.updateRefreshToken(user.id, newRefreshToken);
 
@@ -511,6 +497,20 @@ class UsuarioController {
 		}
 	}
 
+	/**
+	 * @name putUsuario
+	 * @description Método asíncrono que actualiza los datos de un usuario en la base de datos.
+	 * 						Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
+	 * 						Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+	 * @static
+	 * @async
+	 * @function
+	 * @param {Object} req - El objeto de solicitud de Express.
+	 * @param {Object} res - El objeto de respuesta de Express.
+	 * @returns {Object} res - El objeto de respuesta de Express.
+	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+	 * @memberof UsuarioController
+	 */
 	static async putUsuario(req, res) {
 		let usuario_id = 0;
 
@@ -544,6 +544,19 @@ class UsuarioController {
 		}
 	}
 
+	/**
+	 * @name verifyUser
+	 * @description Método estático privado que verifica si un usuario ya existe en la base de datos.
+	 * @private
+	 * @static
+	 * @async
+	 * @function
+	 * @param {string} email - El correo electrónico del usuario.
+	 * @param {string} dni - El DNI del usuario.
+	 * @param {string} num_colegiado - El número de colegiado del especialista.
+	 * @returns {Array} - Un array con los errores encontrados.
+	 * @memberof UsuarioController
+	 */
 	static async #verifyUser(email, dni, num_colegiado) {
 		const errors = [];
 

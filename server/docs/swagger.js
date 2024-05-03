@@ -295,6 +295,12 @@ const options = {
 						},
 					},
 				},
+				ConsultaListado: {
+					type: 'array',
+					items: {
+						$ref: '#/components/schemas/ConsultaItem',
+					},
+				},
 				ConsultaPaginada: {
 					type: 'object',
 					properties: {
