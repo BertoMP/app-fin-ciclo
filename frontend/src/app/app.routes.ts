@@ -23,6 +23,7 @@ import { loginGuard } from './core/guards/login.guard';
 import {
   PageNotFoundComponent
 } from "./pages/page-not-found/page-not-found.component";
+import { SpecialistFormComponent } from './pages/panel-functions/specialist-form/specialist-form.component';
 
 export const routes: Routes = [
   {
@@ -57,6 +58,14 @@ export const routes: Routes = [
   {
     path: 'auth/register',
     component: RegisterComponent
+  },
+  {
+    path: 'crearUsuario',
+    component: RegisterComponent
+  },
+  {
+    path: 'crearEspecialista',
+    component: SpecialistFormComponent
   },
   {
     path:'auth/forgotten-password',

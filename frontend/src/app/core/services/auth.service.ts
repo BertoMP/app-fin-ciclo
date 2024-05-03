@@ -5,6 +5,7 @@ import {environment} from "../../environments/environment";
 import {UserModel} from "../interfaces/user.model";
 import {JwtHelperService} from "@auth0/angular-jwt"
 import {UserRole} from "../enum/user-role.enum";
+import { EspecialistModel } from '../interfaces/especialist-Model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,11 @@ export class AuthService {
 
   register(newUser: UserModel): Observable<any> {
     return this.http.post(`${this.apiUrl}/usuario/registro`, newUser)
+      .pipe(catchError(this.handleError));
+  }
+
+  registerSpecialist(newUser: EspecialistModel): Observable<any> {
+    return this.http.post(`${this.apiUrl}/usuario/registro-especialista`, newUser)
       .pipe(catchError(this.handleError));
   }
 

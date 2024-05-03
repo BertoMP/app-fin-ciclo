@@ -10,6 +10,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import {ListedUserModel} from "../../../core/interfaces/listed-user.model";
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-admin-panel',
@@ -20,7 +21,8 @@ import {ListedUserModel} from "../../../core/interfaces/listed-user.model";
     LoadingSpinnerComponent,
     NgxPaginationModule,
     NgForOf,
-    NgIf],
+    NgIf,
+  RouterLink,RouterOutlet],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.scss'
 })
