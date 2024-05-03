@@ -18,6 +18,7 @@ class UsuarioModel {
 	static async fetchAll(searchValues, limit, dbConn) {
 		const page = searchValues.page;
 		const role_id = searchValues.role;
+		const search = searchValues.search;
 
 		const offset = (page - 1) * limit;
 
@@ -66,6 +67,13 @@ class UsuarioModel {
 			countQuery += 'AND rol_id = ? ';
 			queryParams.unshift(`${role_id}`);
 			countParams.push(`${role_id}`);
+		}
+
+		if (search) {
+			query += 'AND CONCAT(usuario.nombre, " ", primer_apellido, " ", segundo_apellido) LIKE ? ';
+			countQuery += 'AND CONCAT(usuario.nombre, " ", primer_apellido, " ", segundo_apellido) LIKE ? ';
+			queryParams.unshift(`%${search}%`);
+			countParams.push(`%${search}%`);
 		}
 
 		query += ' ORDER BY usuario.id ASC LIMIT ? OFFSET ?';

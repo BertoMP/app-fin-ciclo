@@ -1,6 +1,18 @@
 <h1>Panel de Administrador.</h1>
 <pagination-controls (pageChange)="actualPage = $event; getUsers(actualPage)" maxSize="10" directionLinks="true"
   previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+<section class="filter">
+  <article class="role-filter">
+    <label for="role">Roles</label>
+    <select id="role" [(ngModel)]="role" (change)="filterByRole()">
+      <option *ngFor="let rol of roles" [value]="rol.id">{{rol.value}}</option>
+    </select>
+  </article>
+  <article class="search">
+    <label for="search">Buscar</label>
+    <input type="text" id="search" [(ngModel)]="search" (keyup)="filterBySearch()">
+  </article>
+</section>
 <section class="card-container">
   <div *ngFor="let user of users | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
     <div class="m-3 d-flex justify-content-between align-items-center">

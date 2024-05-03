@@ -99,6 +99,7 @@ class UsuarioController {
 			const searchValues = getSearchValuesByRole(req);
 			const page = searchValues.page;
 			const role_id = searchValues.role;
+			const search = searchValues.search;
 			const {
 				formattedRows: resultados,
 				actualPage: pagina_actual,
@@ -112,17 +113,24 @@ class UsuarioController {
 				});
 			}
 
+			let queryParams = '';
+
+			if (role_id) {
+				queryParams += `role=${role_id}&`;
+			}
+			if (search) {
+				queryParams += `search=${search}&`;
+			}
+
+			queryParams = queryParams.slice(0, -1);
+
 			const prev =
 				page > 1
-					? role_id
-						? `/usuario/listado?page=${page - 1}&role=${role_id}`
-						: `/usuario/listado?page=${page - 1}`
+					? `/usuario/listado?page=${page - 1}&${queryParams}`
 					: null;
 			const next =
 				page < paginas_totales
-					? role_id
-						? `/usuario/listado?page=${page + 1}&role=${role_id}`
-						: `/usuario/listado?page=${page + 1}`
+					? `/usuario/listado?page=${page + 1}&${queryParams}`
 					: null;
 			const result_min = (page - 1) * limit + 1;
 			const result_max =

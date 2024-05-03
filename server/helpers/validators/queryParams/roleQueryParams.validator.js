@@ -3,9 +3,7 @@ import { query, validationResult } from 'express-validator';
 
 /**
  * @name validateRoleQueryParams
- * @description Middleware que valida el parámetro de consulta 'role'.
- *              Si 'role' no es numérico, se envía una respuesta con el estado 400 y un mensaje de error.
- *              Si 'role' es válido o no se proporciona, se llama a la función next() para pasar al siguiente middleware o ruta.
+ * @description Middleware que valida el parámetro de consulta 'role' y el parámetro de consulta 'search'.
  * @memberof Helpers-Validators-QueryParams
  * @function
  * @param {Object} req - El objeto de solicitud de Express.
@@ -14,7 +12,7 @@ import { query, validationResult } from 'express-validator';
  */
 export const validateRoleQueryParams = [
 	query('role').optional().isNumeric().withMessage('El rol debe ser un valor numérico.'),
-
+	query('search').optional().isString().withMessage('El campo de búsqueda debe ser una cadena de texto.'),
 	(req, res, next) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {

@@ -10,6 +10,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import {ListedUserModel} from "../../../core/interfaces/listed-user.model";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-admin-panel',
@@ -20,12 +21,26 @@ import {ListedUserModel} from "../../../core/interfaces/listed-user.model";
     LoadingSpinnerComponent,
     NgxPaginationModule,
     NgForOf,
-    NgIf],
+    NgIf, FormsModule],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.scss'
 })
 
 export class AdminPanelComponent implements OnInit {
+  roles: {id: number, value: string}[] = [
+    {
+      id: 1,
+      value: 'Todos'
+    },
+    {
+      id: 2,
+      value: 'Pacientes'
+    },
+    {
+      id: 3,
+      value: 'Especialistas'
+    }
+  ];
   users: ListedUserModel[];
   nextPageUrl: string;
   previousPageUrl: string;
@@ -35,6 +50,8 @@ export class AdminPanelComponent implements OnInit {
   itemsPerPage: number;
   errores: string[];
   @Input("userRole") userRole: number;
+  role: string = "1";
+  search: string = "";
 
   constructor(private adminPanelService: AdminPanelService) { }
 
@@ -50,6 +67,35 @@ export class AdminPanelComponent implements OnInit {
     request.subscribe({
       next: (response: UserListResponseModel) => {
         console.log(response);
+        this.users = response.resultados;
+        this.nextPageUrl = response.next;
+        this.previousPageUrl = response.prev;
+        this.totalPages = response.paginas_totales;
+        this.totalItems = response.cantidad_usuarios;
+        this.itemsPerPage = response.items_pagina;
+        this.actualPage = response.pagina_actual;
+      }
+    });
+  }
+
+  filterByRole() {
+    console.log(this.role);
+    this.adminPanelService.getUsersByRole(parseInt(this.role)).subscribe({
+      next: (response: UserListResponseModel) => {
+        this.users = response.resultados;
+        this.nextPageUrl = response.next;
+        this.previousPageUrl = response.prev;
+        this.totalPages = response.paginas_totales;
+        this.totalItems = response.cantidad_usuarios;
+        this.itemsPerPage = response.items_pagina;
+        this.actualPage = response.pagina_actual;
+      }
+    });
+  }
+
+  filterBySearch() {
+    this.adminPanelService.getUsersBySearch(this.search).subscribe({
+      next: (response: UserListResponseModel) => {
         this.users = response.resultados;
         this.nextPageUrl = response.next;
         this.previousPageUrl = response.prev;
