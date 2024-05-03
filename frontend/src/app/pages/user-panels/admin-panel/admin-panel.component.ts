@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AdminPanelService } from '../../../core/services/admin-panel.service';
 import { UserListResponseModel } from '../../../core/interfaces/user-list-response.model';
-import { UserModel } from '../../../core/interfaces/user.model';
 import { NgxPaginationModule } from "ngx-pagination";
 import { LowerCasePipe, NgForOf, NgIf } from '@angular/common';
 import { VerticalCardComponent } from '../../../shared/components/vertical-card/vertical-card.component';
@@ -10,8 +9,9 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import {ListedUserModel} from "../../../core/interfaces/listed-user.model";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RouterLink, RouterOutlet } from '@angular/router';
+import {Select2Data, Select2Module} from "ng-select2-component";
 
 @Component({
   selector: 'app-admin-panel',
@@ -25,24 +25,24 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     NgIf,
     FormsModule,
     RouterLink,
-    RouterOutlet],
+    RouterOutlet, ReactiveFormsModule, Select2Module],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.scss'
 })
 
 export class AdminPanelComponent implements OnInit {
-  roles: {id: number, value: string}[] = [
+  roles: Select2Data = [
     {
-      id: 1,
-      value: 'Todos'
+      value: 1,
+      label: 'Todos'
     },
     {
-      id: 2,
-      value: 'Pacientes'
+      value: 2,
+      label: 'Pacientes'
     },
     {
-      id: 3,
-      value: 'Especialistas'
+      value: 3,
+      label: 'Especialistas'
     }
   ];
   users: ListedUserModel[];
@@ -83,7 +83,6 @@ export class AdminPanelComponent implements OnInit {
   }
 
   filterByRole() {
-    console.log(this.role);
     this.adminPanelService.getUsersByRole(parseInt(this.role)).subscribe({
       next: (response: UserListResponseModel) => {
         this.users = response.resultados;

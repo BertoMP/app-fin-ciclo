@@ -21,7 +21,7 @@ export class AdminPanelService {
   }
 
   getUsersByRole(role: number):Observable<UserListResponseModel>{
-    const url: string = role === 1 ? `${this.baseUrl}/usuario/listado` : `${this.baseUrl}/usuario/listado?role=${role}`;
+    const url: string = (role === 1 || isNaN(role)) ? `${this.baseUrl}/usuario/listado` : `${this.baseUrl}/usuario/listado?role=${role}`;
 
     return this.http.get<UserListResponseModel>(url);
   }

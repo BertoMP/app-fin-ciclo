@@ -2,11 +2,10 @@
 <pagination-controls (pageChange)="actualPage = $event; getUsers(actualPage)" maxSize="10" directionLinks="true"
   previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
 <section class="filter">
-  <article class="role-filter">
-    <label for="role">Roles</label>
-    <select id="role" [(ngModel)]="role" (change)="filterByRole()">
-      <option *ngFor="let rol of roles" [value]="rol.id">{{rol.value}}</option>
-    </select>
+  <article class="floor-field">
+    <label for="turno">Turno</label>
+    <select2 id="turno" [data]="roles" [value]="1" [(ngModel)]="role" (update)="filterByRole()">
+    </select2>
   </article>
   <article class="search">
     <label for="search">Buscar</label>

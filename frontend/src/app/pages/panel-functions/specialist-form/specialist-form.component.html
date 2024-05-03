@@ -64,8 +64,8 @@
                 </select2>
             </article>
             <article class="address-field">
-                <label for="consulta">Especialidad</label>
-                <select2 id="consulta" formControlName="especialidad" [ngClass]="{ 'invalid': registerForm.get('especialidad').invalid &&
+                <label for="especialidad">Especialidad</label>
+                <select2 id="especialidad" formControlName="especialidad" [ngClass]="{ 'invalid': registerForm.get('especialidad').invalid &&
                   sendedAttempt }" [data]="especialidad" placeholder="Elige una opcion">
                 </select2>
             </article>
@@ -166,9 +166,9 @@
                 </li>
                 }
 
-                @if (registerForm.get('imagen').invalid) {
+                @if (!imageBase64) {
                 <li>
-                    <strong>Imagen:</strong> Debe de tener una imagen.
+                    <strong>Imagen:</strong> Debe seleccionar una imagen.
                 </li>
                 }
 

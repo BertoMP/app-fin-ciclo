@@ -54,6 +54,7 @@ export class SpecialistFormComponent implements OnInit {
   sendedAttempt: boolean = false;
   isLoading: boolean = false;
   errores: string[] = [];
+  imageBase64: string;
 
   especialidad: Select2Data;
   turno: Select2Data;
@@ -235,9 +236,10 @@ export class SpecialistFormComponent implements OnInit {
   onFileSelect(event: { target: { files: File[]; }; }) {
     if (event.target.files && event.target.files[0]) {
       this.fileUploadService.toBase64(event.target.files[0]).then(base64 => {
-        this.registerForm.get('image').setValue(base64);
-        console.log(this.registerForm.get('image').value);
+        this.imageBase64 = base64;
       });
+    } else {
+      this.imageBase64 = null;
     }
   }
 
@@ -252,7 +254,7 @@ export class SpecialistFormComponent implements OnInit {
       consulta_id: this.registerForm.get('consulta').value,
       especialidad_id: this.registerForm.get('especialidad').value,
       num_colegiado: this.registerForm.get('numero_colegiado').value,
-      imagen: this.registerForm.get('imagen').value,
+      imagen: this.imageBase64,
       descripcion: this.registerForm.get('descripcion').value,
       turno:this.registerForm.get('turno').value
     }
