@@ -70,14 +70,7 @@ export class AdminPanelComponent implements OnInit {
 
     request.subscribe({
       next: (response: UserListResponseModel) => {
-        console.log(response);
-        this.users = response.resultados;
-        this.nextPageUrl = response.next;
-        this.previousPageUrl = response.prev;
-        this.totalPages = response.paginas_totales;
-        this.totalItems = response.cantidad_usuarios;
-        this.itemsPerPage = response.items_pagina;
-        this.actualPage = response.pagina_actual;
+        this.#showResults(response);
       }
     });
   }
@@ -85,13 +78,7 @@ export class AdminPanelComponent implements OnInit {
   filterByRole() {
     this.adminPanelService.getUsersByRole(parseInt(this.role)).subscribe({
       next: (response: UserListResponseModel) => {
-        this.users = response.resultados;
-        this.nextPageUrl = response.next;
-        this.previousPageUrl = response.prev;
-        this.totalPages = response.paginas_totales;
-        this.totalItems = response.cantidad_usuarios;
-        this.itemsPerPage = response.items_pagina;
-        this.actualPage = response.pagina_actual;
+        this.#showResults(response);
       }
     });
   }
@@ -99,15 +86,19 @@ export class AdminPanelComponent implements OnInit {
   filterBySearch() {
     this.adminPanelService.getUsersBySearch(this.search).subscribe({
       next: (response: UserListResponseModel) => {
-        this.users = response.resultados;
-        this.nextPageUrl = response.next;
-        this.previousPageUrl = response.prev;
-        this.totalPages = response.paginas_totales;
-        this.totalItems = response.cantidad_usuarios;
-        this.itemsPerPage = response.items_pagina;
-        this.actualPage = response.pagina_actual;
+        this.#showResults(response);
       }
     });
+  }
+
+  #showResults(data) {
+    this.users = data.resultados;
+    this.nextPageUrl = data.next;
+    this.previousPageUrl = data.prev;
+    this.totalPages = data.paginas_totales;
+    this.totalItems = data.cantidad_usuarios;
+    this.itemsPerPage = data.items_pagina;
+    this.actualPage = data.pagina_actual;
   }
 
   confirmarCancelacion(id: number) {

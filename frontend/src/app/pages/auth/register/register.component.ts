@@ -249,7 +249,6 @@ export class RegisterComponent implements OnInit {
               error: (error: HttpErrorResponse) => {
                 console.error('Error fetching codigos_postales', error.error);
               }
-
             })
         }
       });
