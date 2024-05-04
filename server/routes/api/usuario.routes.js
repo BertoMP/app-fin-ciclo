@@ -15,10 +15,9 @@ import { validateUserLogin } from '../../helpers/validators/usuarioLogin.validat
 import { validatePacienteRegister } from '../../helpers/validators/pacienteRegistro.validador.js';
 import { validateEspecialistaRegister } from '../../helpers/validators/especialistaRegistro.validator.js';
 import { validateUserPasswordChange } from '../../helpers/validators/usuarioPasswordChange.validator.js';
-import { validateRoleQueryParams } from '../../helpers/validators/queryParams/roleQueryParams.validator.js';
 import { validateUsuarioIdParam } from '../../helpers/validators/params/usuarioIdParam.validator.js';
 import { validatePacienteUpdate } from '../../helpers/validators/pacienteUpdate.validator.js';
-import { validateEspecialistaUpdate } from "../../helpers/validators/especialistaUpdate.validator.js";
+import { validateQueryParams } from "../../helpers/validators/queryParams/queryParams.validator.js";
 
 // Rutas GET
 /**
@@ -84,7 +83,7 @@ router.get(
 	'/usuario/listado',
 	verifyAccessToken,
 	verifyUserRole([1]),
-	validateRoleQueryParams,
+	validateQueryParams,
 	UsuarioController.getListado,
 );
 
@@ -821,7 +820,7 @@ router.put(
 	verifyAccessToken,
 	verifyUserRole([1]),
 	validateUsuarioIdParam,
-	validateEspecialistaUpdate,
+	validateEspecialistaRegister,
 	UsuarioController.putUsuario,
 );
 

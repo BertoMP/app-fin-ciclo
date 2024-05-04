@@ -1,5 +1,6 @@
 // Importación de los servicios necesarios
 import MedicamentoService from '../services/medicamento.service.js';
+import {getSearchValues} from "../util/functions/getSearchValues.js";
 
 /**
  * @class MedicamentoController
@@ -48,16 +49,18 @@ class MedicamentoController {
 	 * @memberof MedicamentoController
 	 */
 	static async getMedicamentos(req, res) {
-		const page = parseInt(req.query.page) || 1;
-		const limit = 4;
-
 		try {
+			const searchValues = getSearchValues(req, 'search');
+			const page = searchValues.page;
+			const limit = searchValues.limit;
+			const search = searchValues.search;
+
 			const {
 				rows: resultados,
 				actualPage: pagina_actual,
 				total: cantidad_medicamentos,
 				totalPages: paginas_totales,
-			} = await MedicamentoService.readMedicamentos(page, limit);
+			} = await MedicamentoService.readMedicamentos(searchValues);
 
 			if (page > 1 && page > paginas_totales) {
 				return res.status(404).json({
@@ -65,12 +68,18 @@ class MedicamentoController {
 				});
 			}
 
-			const prev = page > 1 ? `/medicamento?page=${page - 1}` : null;
-			const next = page < paginas_totales ? `/medicamento?page=${page + 1}` : null;
+			let query = '';
+
+			if (search) {
+				query += `&search=${search}`;
+			}
+
+			const prev = page > 1 ? `/medicamento?page=${page - 1}&limit=${limit}${query}` : null;
+			const next = page < paginas_totales ? `/medicamento?page=${page + 1}&limit=${limit}${query}` : null;
 			const result_min = (page - 1) * limit + 1;
 			const result_max =
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const items_pagina = limit;
+			const items_pagina = parseInt(limit);
 
 			return res.status(200).json({
 				prev,

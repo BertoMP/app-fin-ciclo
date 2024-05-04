@@ -45,72 +45,6 @@ class EspecialistaModel {
 	}
 
 	/**
-	 * @method create
-	 * @description Método para crear un nuevo especialista.
-	 * @static
-	 * @async
-	 * @memberof EspecialistaModel
-	 * @param usuario_id - El ID del usuario.
-	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise<Object>} El nuevo especialista creado.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async findById(usuario_id, dbConn) {
-		const query =
-			'SELECT' +
-			'    especialista.usuario_id,' +
-			'    usuario.nombre,' +
-			'    usuario.primer_apellido,' +
-			'    usuario.segundo_apellido,' +
-			'    usuario.email,' +
-			'    especialista.descripcion,' +
-			'    especialista.imagen,' +
-			'    especialista.turno,' +
-			'    especialista.num_colegiado,' +
-			'    especialidad.id AS especialidad_id,' +
-			'    especialidad.nombre AS especialidad,' +
-			'    consulta.id AS consulta_id, ' +
-			'    consulta.nombre AS consulta_nombre ' +
-			'FROM' +
-			'    especialista ' +
-			'INNER JOIN' +
-			'    usuario ON especialista.usuario_id = usuario.id ' +
-			'INNER JOIN' +
-			'    especialidad ON especialista.especialidad_id = especialidad.id ' +
-			'INNER JOIN' +
-			'    consulta ON especialista.consulta_id = consulta.id ' +
-			'WHERE' +
-			'    especialista.usuario_id = ?';
-
-		try {
-			const [rows] = await dbConn.execute(query, [usuario_id]);
-			const row = rows[0];
-
-			return {
-				usuario_id: row.usuario_id,
-				nombre: row.nombre,
-				primer_apellido: row.primer_apellido,
-				segundo_apellido: row.segundo_apellido,
-				email: row.email,
-				descripcion: row.descripcion,
-				imagen: row.imagen,
-				turno: row.turno,
-				num_colegiado: row.num_colegiado,
-				especialidad: {
-					especialidad_id: row.especialidad_id,
-					especialidad: row.especialidad,
-				},
-				consulta: {
-					consulta_id: row.consulta_id,
-					consulta_nombre: row.consulta_nombre,
-				},
-			};
-		} catch (err) {
-			throw new Error('Error al obtener el especialista.');
-		}
-	}
-
-	/**
 	 * @method findByNumColegiado
 	 * @description Método para obtener un especialista por su número de colegiado.
 	 * @static
@@ -225,33 +159,61 @@ class EspecialistaModel {
 	static async findByUserId(usuario_id, dbConn) {
 		const query =
 			'SELECT ' +
-			'    especialidad_id, ' +
-			'		 especialidad.nombre AS especialidad_nombre, ' +
-			'    consulta_id, ' +
-			'    consulta.nombre AS consulta_nombre, ' +
-			'    num_colegiado, ' +
-			'    especialista.descripcion, ' +
-			'    especialista.imagen, ' +
-			'    turno ' +
+			'   usuario.id, ' +
+			'   email, ' +
+			'   usuario.nombre AS usuario_nombre, ' +
+			'   primer_apellido, ' +
+			'   segundo_apellido, ' +
+			'   dni, ' +
+			'   rol_id, ' +
+			'		rol.nombre AS nombre_rol, ' +
+			'   especialidad_id, ' +
+			'		especialidad.nombre AS especialidad_nombre, ' +
+			'   consulta_id, ' +
+			'   consulta.nombre AS consulta_nombre, ' +
+			'   num_colegiado, ' +
+			'   especialista.descripcion, ' +
+			'   especialista.imagen, ' +
+			'   turno ' +
 			'FROM ' +
 			'   especialista ' +
 			'INNER JOIN ' +
 			'   especialidad ON especialista.especialidad_id = especialidad.id ' +
 			'INNER JOIN ' +
 			'   consulta ON especialista.consulta_id = consulta.id ' +
+			'INNER JOIN ' +
+			'   usuario ON especialista.usuario_id = usuario.id ' +
+			'INNER JOIN ' +
+			'   rol ON usuario.rol_id = rol.id ' +
 			'WHERE ' +
 			'   usuario_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [usuario_id]);
 
+			if (rows.length === 0) {
+				return null;
+			}
+
 			return {
+				usuario_id: rows[0].id,
+				datos_personales: {
+					email: rows[0].email,
+					nombre: rows[0].usuario_nombre,
+					primer_apellido: rows[0].primer_apellido,
+					segundo_apellido: rows[0].segundo_apellido,
+					dni: rows[0].dni,
+				},
+				datos_rol: {
+					id: rows[0].rol_id,
+					nombre: rows[0].nombre_rol,
+				},
 				datos_especialista: {
-					datos_especialidad: {
+					especialidad: {
 						especialidad_id: rows[0].especialidad_id,
 						especialidad_nombre: rows[0].especialidad_nombre,
 					},
-					datos_consulta: {
+					consulta: {
 						consulta_id: rows[0].consulta_id,
 						consulta_nombre: rows[0].consulta_nombre,
 					},
@@ -261,10 +223,7 @@ class EspecialistaModel {
 					imagen: rows[0].imagen,
 				}
 			}
-
-			return rows[0];
 		} catch (err) {
-			console.log(err)
 			throw new Error('Error al obtener el especialista.');
 		}
 	}

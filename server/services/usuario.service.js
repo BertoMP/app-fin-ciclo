@@ -10,6 +10,8 @@ import EmailService from "./email.service.js";
 import { dbConn } from '../util/database/database.js';
 import ObjectFactory from "../util/classes/objectFactory.js";
 import { createEncryptedPassword } from "../util/functions/createEncryptedPassword.js";
+import pkg from 'bcryptjs';
+const { compare } = pkg;
 
 /**
  * @class UsuarioService
@@ -23,12 +25,15 @@ class UsuarioService {
 	 * @async
 	 * @memberof UsuarioService
 	 * @param {Object} searchValues - Los valores de búsqueda.
-	 * @param {number} limit - El límite de resultados.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un array de usuarios.
 	 */
-	static async readAllUsuarios(searchValues, limit, conn = dbConn) {
-		return await UsuarioModel.fetchAll(searchValues, limit, conn);
+	static async readAllUsuarios(searchValues, conn = dbConn) {
+		return await UsuarioModel.fetchAll(searchValues, conn);
+	}
+
+	static async getRoleByUserId(userId, conn = dbConn) {
+		return await UsuarioModel.getRoleByUserId(userId, conn);
 	}
 
 	/**
@@ -105,14 +110,23 @@ class UsuarioService {
 				await conn.beginTransaction();
 			}
 
-			const usuario = ObjectFactory.createUpdateUsuarioObject(data);
+			const password = data.datos_personales.password;
+			const realPassword = await UsuarioModel.getPasswordById(data.usuario_id, conn);
+
+			const validPassword = await compare(password, realPassword);
+
+			if (!validPassword) {
+				throw new Error('La contraseña actual no es correcta.');
+			}
+
+			const usuario = ObjectFactory.updateUserObject(data);
 			await UsuarioModel.updateUsuario(usuario, conn);
 
-			if (data.fecha_nacimiento) {
-				const paciente = ObjectFactory.createUpdatePacienteObject(data);
+			if (data.datos_paciente) {
+				const paciente = ObjectFactory.updatePacienteObject(data);
 				await PacienteService.updatePaciente(paciente, conn);
 			} else {
-				const especialista = ObjectFactory.createUpdateEspecialistaObject(data);
+				const especialista = ObjectFactory.createEspecialistaObject(data);
 				await EspecialistaService.updateEspecialista(especialista, conn);
 			}
 

@@ -18,7 +18,7 @@ import { validateUserRegister } from './usuarioRegistro.validator.js';
  */
 export const validateEspecialistaRegister = [
 	validateUserRegister,
-	body('num_colegiado')
+	body('datos_especialista.num_colegiado')
 		.trim()
 		.notEmpty()
 		.withMessage('El número de colegiado es requerido.')
@@ -35,33 +35,35 @@ export const validateEspecialistaRegister = [
 				throw new Error('El número de colegiado no puede ser 0 o negativo.');
 			}
 
+			console.log('value', value)
+
 			return true;
 		}),
-	body('descripcion')
+	body('datos_especialista.descripcion')
 		.trim()
 		.notEmpty()
 		.withMessage('La descripción es requerida.')
 		.isString()
 		.withMessage('La descripción debe ser una cadena de texto.'),
-	body('turno')
+	body('datos_especialista.turno')
 		.trim()
 		.notEmpty()
 		.withMessage('El turno es requerido.')
 		.isString()
 		.withMessage('El turno debe ser una cadena de texto.'),
-	body('especialidad_id')
+	body('datos_especialista.especialidad.especialidad_id')
 		.trim()
 		.notEmpty()
 		.withMessage('La especialidad es requerida.')
 		.isNumeric()
 		.withMessage('La especialidad debe ser un valor numérico.'),
-	body('consulta_id')
+	body('datos_especialista.consulta.consulta_id')
 		.trim()
 		.notEmpty()
 		.withMessage('La consulta es requerida.')
 		.isNumeric()
 		.withMessage('La consulta debe ser un valor numérico.'),
-	body('imagen')
+	body('datos_especialista.imagen')
 		.trim()
 		.notEmpty()
 		.withMessage('La imagen del especialista no puede estar vacía.')

@@ -93,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line17">line 17</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -149,7 +149,7 @@
     
 
     
-    <h4 class="name" id=".createUsuarioEspecialista"><span class="type-signature">(async, static) </span>createUsuarioEspecialista<span class="signature">(usuario, especialista, conn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+    <h4 class="name" id=".createUsuario"><span class="type-signature">(async, static) </span>createUsuario<span class="signature">(data, conn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
     
 
     
@@ -157,7 +157,7 @@
 
 
 <div class="description">
-    Método para crear un nuevo usuario y un nuevo especialista asociado a ese usuario.
+    Método para crear un nuevo usuario.
 </div>
 
 
@@ -197,15 +197,10 @@
 
         <tr>
             
-                <td class="name"><code>usuario</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
             
             </td>
 
@@ -225,42 +220,7 @@
                 </td>
             
 
-            <td class="description last">El objeto del nuevo usuario.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>especialista</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">El objeto del nuevo especialista.</td>
+            <td class="description last">Los datos del usuario a crear.</td>
         </tr>
 
     
@@ -340,285 +300,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line122">line 122</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Throws:</h5>
-
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        Si ocurre un error durante la operación, se lanzará un error.
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">Error</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    No devuelve nada. Si la operación es exitosa, se habrá creado un nuevo usuario y un nuevo especialista en la base de datos.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;void></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".createUsuarioPaciente"><span class="type-signature">(async, static) </span>createUsuarioPaciente<span class="signature">(usuario, paciente, conn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Método para crear un nuevo usuario y un nuevo paciente asociado a ese usuario.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>usuario</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">El objeto del nuevo usuario.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>paciente</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">El objeto del nuevo paciente.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>conn</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last">La conexión a la base de datos. Si no se proporciona, se creará una nueva.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line79">line 79</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line33">line 33</a>
     </li></ul></dd>
     
 
@@ -705,7 +387,7 @@
     
 
     
-    <h4 class="name" id=".deleteUsuario"><span class="type-signature">(async, static) </span>deleteUsuario<span class="signature">(id, conn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+    <h4 class="name" id=".deleteUsuario"><span class="type-signature">(async, static) </span>deleteUsuario<span class="signature">(id, conn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -713,7 +395,7 @@
 
 
 <div class="description">
-    Método para eliminar un usuario y todas sus asociaciones.
+    Método para eliminar un usuario.
 </div>
 
 
@@ -861,7 +543,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line310">line 310</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line220">line 220</a>
     </li></ul></dd>
     
 
@@ -919,7 +601,7 @@
 
         
 <div class="param-desc">
-    No devuelve nada. Si la operación es exitosa, se habrá eliminado el usuario y todas sus asociaciones en la base de datos.
+    El resultado de la operación de eliminación.
 </div>
 
 
@@ -930,7 +612,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;void></span>
+<span class="param-type">Promise.&lt;Object></span>
 
 
     </dd>
@@ -948,7 +630,7 @@
     
 
     
-    <h4 class="name" id=".readAllUsuarios"><span class="type-signature">(async, static) </span>readAllUsuarios<span class="signature">(searchValues, limit, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".readAllUsuarios"><span class="type-signature">(async, static) </span>readAllUsuarios<span class="signature">(searchValues, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1015,29 +697,6 @@
 
         <tr>
             
-                <td class="name"><code>limit</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">El límite de resultados.</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>conn</code></td>
             
 
@@ -1095,7 +754,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line22">line 22</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -1153,7 +812,7 @@
     
 
     
-    <h4 class="name" id=".readEmailByUserId"><span class="type-signature">(async, static) </span>readEmailByUserId<span class="signature">(id, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".readEmailByUserId"><span class="type-signature">(async, static) </span>readEmailByUserId<span class="signature">(id, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span></h4>
     
 
     
@@ -1277,7 +936,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line253">line 253</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line133">line 133</a>
     </li></ul></dd>
     
 
@@ -1317,7 +976,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;Object></span>
+<span class="param-type">Promise.&lt;string></span>
 
 
     </dd>
@@ -1459,7 +1118,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line281">line 281</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line161">line 161</a>
     </li></ul></dd>
     
 
@@ -1641,7 +1300,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line267">line 267</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -1823,7 +1482,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line389">line 389</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line206">line 206</a>
     </li></ul></dd>
     
 
@@ -1853,552 +1512,6 @@
         
 <div class="param-desc">
     El usuario.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;Object></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".readUsuarioEspecialista"><span class="type-signature">(async, static) </span>readUsuarioEspecialista<span class="signature">(id, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Método para leer un usuario especialista por su ID.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">El ID del usuario especialista.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>conn</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">La conexión a la base de datos.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line51">line 51</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    El usuario especialista.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;Object></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".readUsuarioPaciente"><span class="type-signature">(async, static) </span>readUsuarioPaciente<span class="signature">(id, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Método para leer un usuario paciente por su ID.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">El ID del usuario paciente.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>conn</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">La conexión a la base de datos.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line37">line 37</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    El usuario paciente.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;Object></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".readUsuarioRoleById"><span class="type-signature">(async, static) </span>readUsuarioRoleById<span class="signature">(id, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Método para leer el rol de un usuario por su ID.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">El ID del usuario.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>conn</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">La conexión a la base de datos.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line65">line 65</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    El rol del usuario.
 </div>
 
 
@@ -2574,7 +1687,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line295">line 295</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -2782,7 +1895,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line374">line 374</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line191">line 191</a>
     </li></ul></dd>
     
 
@@ -2840,7 +1953,7 @@
     
 
     
-    <h4 class="name" id=".updateUsuarioEspecialista"><span class="type-signature">(async, static) </span>updateUsuarioEspecialista<span class="signature">(usuario, especialista, conn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+    <h4 class="name" id=".updateUsuario"><span class="type-signature">(async, static) </span>updateUsuario<span class="signature">(data, conn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
     
 
     
@@ -2848,7 +1961,7 @@
 
 
 <div class="description">
-    Método para actualizar un usuario y un especialista asociado a ese usuario.
+    Método para actualizar un usuario.
 </div>
 
 
@@ -2888,15 +2001,10 @@
 
         <tr>
             
-                <td class="name"><code>usuario</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
             
             </td>
 
@@ -2916,42 +2024,7 @@
                 </td>
             
 
-            <td class="description last">El objeto del usuario a actualizar.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>especialista</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">El objeto del especialista a actualizar.</td>
+            <td class="description last">Los datos del usuario a actualizar.</td>
         </tr>
 
     
@@ -3031,7 +2104,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line210">line 210</a>
+        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line85">line 85</a>
     </li></ul></dd>
     
 
@@ -3054,320 +2127,13 @@
 
 
 
-<h5>Throws:</h5>
-
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        Si ocurre un error durante la operación, se lanzará un error.
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">Error</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
 
 
 <h5>Returns:</h5>
 
         
 <div class="param-desc">
-    No devuelve nada. Si la operación es exitosa, se habrá actualizado el usuario y el especialista en la base de datos.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;void></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".updateUsuarioPaciente"><span class="type-signature">(async, static) </span>updateUsuarioPaciente<span class="signature">(usuario, paciente, conn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Método para actualizar un usuario y un paciente asociado a ese usuario.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>usuario</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">El objeto del usuario a actualizar.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>paciente</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">El objeto del paciente a actualizar.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>conn</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last">La conexión a la base de datos. Si no se proporciona, se creará una nueva.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_usuario.service.js.html">services/usuario.service.js</a>, <a href="services_usuario.service.js.html#line167">line 167</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Throws:</h5>
-
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        Si ocurre un error durante la operación, se lanzará un error.
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">Error</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    No devuelve nada. Si la operación es exitosa, se habrá actualizado el usuario y el paciente en la base de datos.
+    No devuelve nada. Si la operación es exitosa, se habrá actualizado el usuario y el paciente o especialista asociado en la base de datos.
 </div>
 
 
@@ -3406,13 +2172,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul><h3>Classes</h3><ul><li><a href="CitaController.html">CitaController</a></li><li><a href="CitaModel.html">CitaModel</a></li><li><a href="CitaService.html">CitaService</a></li><li><a href="CodigoPostalMunicipioController.html">CodigoPostalMunicipioController</a></li><li><a href="CodigoPostalMunicipioModel.html">CodigoPostalMunicipioModel</a></li><li><a href="CodigoPostalMunicipioService.html">CodigoPostalMunicipioService</a></li><li><a href="ConsultaController.html">ConsultaController</a></li><li><a href="ConsultaModel.html">ConsultaModel</a></li><li><a href="ConsultaService.html">ConsultaService</a></li><li><a href="ContactoController.html">ContactoController</a></li><li><a href="EmailService.html">EmailService</a></li><li><a href="EspecialidadController.html">EspecialidadController</a></li><li><a href="EspecialidadModel.html">EspecialidadModel</a></li><li><a href="EspecialidadService.html">EspecialidadService</a></li><li><a href="EspecialistaController.html">EspecialistaController</a></li><li><a href="EspecialistaModel.html">EspecialistaModel</a></li><li><a href="EspecialistaService.html">EspecialistaService</a></li><li><a href="GlucometriaController.html">GlucometriaController</a></li><li><a href="GlucometriaModel.html">GlucometriaModel</a></li><li><a href="GlucometriaService.html">GlucometriaService</a></li><li><a href="InformeController.html">InformeController</a></li><li><a href="InformeModel.html">InformeModel</a></li><li><a href="InformePatologiaModel.html">InformePatologiaModel</a></li><li><a href="InformePatologiaService.html">InformePatologiaService</a></li><li><a href="InformeService.html">InformeService</a></li><li><a href="MedicamentoController.html">MedicamentoController</a></li><li><a href="MedicamentoModel.html">MedicamentoModel</a></li><li><a href="MedicamentoService.html">MedicamentoService</a></li><li><a href="MunicipioController.html">MunicipioController</a></li><li><a href="MunicipioModel.html">MunicipioModel</a></li><li><a href="MunicipioService.html">MunicipioService</a></li><li><a href="PacienteController.html">PacienteController</a></li><li><a href="PacienteModel.html">PacienteModel</a></li><li><a href="PacienteService.html">PacienteService</a></li><li><a href="PacienteTomaMedicamentoController.html">PacienteTomaMedicamentoController</a></li><li><a href="PacienteTomaMedicamentoModel.html">PacienteTomaMedicamentoModel</a></li><li><a href="PacienteTomaMedicamentoService.html">PacienteTomaMedicamentoService</a></li><li><a href="PatologiaController.html">PatologiaController</a></li><li><a href="PatologiaModel.html">PatologiaModel</a></li><li><a href="PatologiaService.html">PatologiaService</a></li><li><a href="PdfService.html">PdfService</a></li><li><a href="ProvinciaController.html">ProvinciaController</a></li><li><a href="ProvinciaModel.html">ProvinciaModel</a></li><li><a href="ProvinciaService.html">ProvinciaService</a></li><li><a href="TensionArterialController.html">TensionArterialController</a></li><li><a href="TensionArterialModel.html">TensionArterialModel</a></li><li><a href="TensionArterialService.html">TensionArterialService</a></li><li><a href="TipoViaController.html">TipoViaController</a></li><li><a href="TipoViaModel.html">TipoViaModel</a></li><li><a href="TipoViaService.html">TipoViaService</a></li><li><a href="TokenModel.html">TokenModel</a></li><li><a href="TokenService.html">TokenService</a></li><li><a href="TomaModel.html">TomaModel</a></li><li><a href="TomaService.html">TomaService</a></li><li><a href="UsuarioController.html">UsuarioController</a></li><li><a href="UsuarioModel.html">UsuarioModel</a></li><li><a href="UsuarioService.html">UsuarioService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul><h3>Classes</h3><ul><li><a href="CitaController.html">CitaController</a></li><li><a href="CitaModel.html">CitaModel</a></li><li><a href="CitaService.html">CitaService</a></li><li><a href="CodigoPostalMunicipioController.html">CodigoPostalMunicipioController</a></li><li><a href="CodigoPostalMunicipioModel.html">CodigoPostalMunicipioModel</a></li><li><a href="CodigoPostalMunicipioService.html">CodigoPostalMunicipioService</a></li><li><a href="ConsultaController.html">ConsultaController</a></li><li><a href="ConsultaModel.html">ConsultaModel</a></li><li><a href="ConsultaService.html">ConsultaService</a></li><li><a href="ContactoController.html">ContactoController</a></li><li><a href="EmailService.html">EmailService</a></li><li><a href="EspecialidadController.html">EspecialidadController</a></li><li><a href="EspecialidadModel.html">EspecialidadModel</a></li><li><a href="EspecialidadService.html">EspecialidadService</a></li><li><a href="EspecialistaController.html">EspecialistaController</a></li><li><a href="EspecialistaModel.html">EspecialistaModel</a></li><li><a href="EspecialistaService.html">EspecialistaService</a></li><li><a href="GlucometriaController.html">GlucometriaController</a></li><li><a href="GlucometriaModel.html">GlucometriaModel</a></li><li><a href="GlucometriaService.html">GlucometriaService</a></li><li><a href="InformeController.html">InformeController</a></li><li><a href="InformeModel.html">InformeModel</a></li><li><a href="InformePatologiaModel.html">InformePatologiaModel</a></li><li><a href="InformePatologiaService.html">InformePatologiaService</a></li><li><a href="InformeService.html">InformeService</a></li><li><a href="MedicamentoController.html">MedicamentoController</a></li><li><a href="MedicamentoModel.html">MedicamentoModel</a></li><li><a href="MedicamentoService.html">MedicamentoService</a></li><li><a href="MunicipioController.html">MunicipioController</a></li><li><a href="MunicipioModel.html">MunicipioModel</a></li><li><a href="MunicipioService.html">MunicipioService</a></li><li><a href="PacienteController.html">PacienteController</a></li><li><a href="PacienteModel.html">PacienteModel</a></li><li><a href="PacienteService.html">PacienteService</a></li><li><a href="PacienteTomaMedicamentoController.html">PacienteTomaMedicamentoController</a></li><li><a href="PacienteTomaMedicamentoModel.html">PacienteTomaMedicamentoModel</a></li><li><a href="PacienteTomaMedicamentoService.html">PacienteTomaMedicamentoService</a></li><li><a href="PatologiaController.html">PatologiaController</a></li><li><a href="PatologiaModel.html">PatologiaModel</a></li><li><a href="PatologiaService.html">PatologiaService</a></li><li><a href="PdfService.html">PdfService</a></li><li><a href="ProvinciaController.html">ProvinciaController</a></li><li><a href="ProvinciaModel.html">ProvinciaModel</a></li><li><a href="ProvinciaService.html">ProvinciaService</a></li><li><a href="TensionArterialController.html">TensionArterialController</a></li><li><a href="TensionArterialModel.html">TensionArterialModel</a></li><li><a href="TensionArterialService.html">TensionArterialService</a></li><li><a href="TipoViaController.html">TipoViaController</a></li><li><a href="TipoViaModel.html">TipoViaModel</a></li><li><a href="TipoViaService.html">TipoViaService</a></li><li><a href="TokenModel.html">TokenModel</a></li><li><a href="TokenService.html">TokenService</a></li><li><a href="TomaModel.html">TomaModel</a></li><li><a href="TomaService.html">TomaService</a></li><li><a href="UsuarioController.html">UsuarioController</a></li><li><a href="UsuarioModel.html">UsuarioModel</a></li><li><a href="UsuarioService.html">UsuarioService</a></li></ul><h3>Global</h3><ul><li><a href="global.html">getConsultaListado</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu May 02 2024 01:58:17 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

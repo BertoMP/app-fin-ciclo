@@ -10,15 +10,15 @@ class UsuarioModel {
 	 * @async
 	 * @memberof UsuarioModel
 	 * @param {Object} searchValues - Los valores de búsqueda.
-	 * @param {number} limit - El número de usuarios por página.
 	 * @param {Object} dbConn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto con los usuarios y la información de la paginación.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async fetchAll(searchValues, limit, dbConn) {
+	static async fetchAll(searchValues, dbConn) {
 		const page = searchValues.page;
 		const role_id = searchValues.role;
 		const search = searchValues.search;
+		const limit = searchValues.limit;
 
 		const offset = (page - 1) * limit;
 
@@ -59,24 +59,25 @@ class UsuarioModel {
 			'		rol_id <> 1 AND ' +
 			'		(turno IS NULL OR turno <> "no-trabajando")';
 
-		let queryParams = [`${limit}`, `${offset}`];
+		let queryParams = [];
 		let countParams = [];
+
+		if (search) {
+			query += 'AND CONCAT(usuario.nombre, " ", primer_apellido, " ", segundo_apellido) LIKE CONCAT("%", ?, "%") ';
+			countQuery += 'AND CONCAT(usuario.nombre, " ", primer_apellido, " ", segundo_apellido) LIKE CONCAT("%", ?, "%") ';
+			queryParams.push(`%${search}%`);
+			countParams.push(`%${search}%`);
+		}
 
 		if (role_id) {
 			query += 'AND rol_id = ? ';
 			countQuery += 'AND rol_id = ? ';
-			queryParams.unshift(`${role_id}`);
+			queryParams.push(`${role_id}`);
 			countParams.push(`${role_id}`);
 		}
 
-		if (search) {
-			query += 'AND CONCAT(usuario.nombre, " ", primer_apellido, " ", segundo_apellido) LIKE ? ';
-			countQuery += 'AND CONCAT(usuario.nombre, " ", primer_apellido, " ", segundo_apellido) LIKE ? ';
-			queryParams.unshift(`%${search}%`);
-			countParams.push(`%${search}%`);
-		}
-
 		query += ' ORDER BY usuario.id ASC LIMIT ? OFFSET ?';
+		queryParams.push(`${limit}`, `${offset}`);
 
 		try {
 			const [rows] = await dbConn.execute(query, queryParams);
@@ -108,6 +109,56 @@ class UsuarioModel {
 		}
 	}
 
+	static async getPasswordById(id, dbConn) {
+		const query =
+			'SELECT ' +
+			'		password ' +
+			'FROM ' +
+			'		usuario ' +
+			'WHERE ' +
+			'		id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				password: rows[0].password
+			}
+		} catch (err) {
+			throw new Error('Error al obtener la contraseña.');
+		}
+
+	}
+
+	static async getRoleByUserId(id, dbConn) {
+		const query =
+			'SELECT ' +
+			'   rol_id ' +
+			'FROM ' +
+			'   usuario ' +
+			'WHERE ' +
+			'   id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				rol_id: rows[0].rol_id
+			}
+
+		} catch (err) {
+			throw new Error('Error al obtener el rol del usuario.');
+		}
+	}
+
 	/**
 	 * @method findByEmail
 	 * @description Método para obtener un usuario por su email.
@@ -124,7 +175,6 @@ class UsuarioModel {
 			'SELECT ' +
 			'   id, ' +
 			'   email, ' +
-			'   password,' +
 			'   nombre, ' +
 			'   primer_apellido, ' +
 			'   segundo_apellido, ' +
@@ -358,7 +408,6 @@ class UsuarioModel {
 				}
 			};
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al obtener el usuario.');
 		}
 	}
@@ -395,7 +444,8 @@ class UsuarioModel {
 			'   id = ?';
 
 		try {
-			return await dbConn.execute(query, [email, nombre, primer_apellido, segundo_apellido, dni, id]);
+			return await dbConn.execute(query,
+				[email, nombre, primer_apellido, segundo_apellido, dni, id]);
 		} catch (err) {
 			throw new Error('Error al actualizar el usuario.');
 		}

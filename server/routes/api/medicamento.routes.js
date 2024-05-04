@@ -11,7 +11,7 @@ import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
 
 // Importación de middlewares para la validación de datos
 import { validateMedicamento } from '../../helpers/validators/medicamento.validator.js';
-import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
+import { validateQueryParams } from '../../helpers/validators/queryParams/queryParams.validator.js';
 import { validateMedicamentoIdParam } from '../../helpers/validators/params/medicamentoIdParam.validator.js';
 
 // Rutas GET
@@ -174,7 +174,7 @@ router.get(
 	'/medicamento',
 	verifyAccessToken,
 	verifyUserRole([3]),
-	validatePaginationQueryParams,
+	validateQueryParams,
 	MedicamentoController.getMedicamentos,
 );
 

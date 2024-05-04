@@ -9,16 +9,19 @@ class ConsultaModel {
 	 * @static
 	 * @async
 	 * @memberof ConsultaModel
-	 * @param {number} page - La página actual.
-	 * @param {number} limit - El número de consultas por página.
+	 * @param {Object} searchValues - Los valores de búsqueda.
 	 * @param {Object} dbConn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto que contiene las consultas, el total de consultas, la página actual y el total de páginas.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async findAll(page, limit, dbConn) {
+	static async findAll(searchValues, dbConn) {
+		const page = searchValues.page;
+		const limit = searchValues.limit;
+		const search = searchValues.search;
+
 		const offset = (page - 1) * limit;
 
-		const query =
+		let query =
 			'SELECT ' +
 			'   consulta.id, ' +
 			'   consulta.nombre, ' +
@@ -35,16 +38,36 @@ class ConsultaModel {
 			'LEFT JOIN ' +
 			'   usuario ON especialista.usuario_id = usuario.id ' +
 			'LEFT JOIN ' +
-			'   especialidad ON especialista.especialidad_id = especialidad.id ' +
+			'   especialidad ON especialista.especialidad_id = especialidad.id ';
+
+		let countQuery =
+			'SELECT ' +
+			'   COUNT(*) AS count ' +
+			'FROM ' +
+			'   consulta ';
+
+		const queryParams = [];
+		const countParams = [];
+
+		if (search) {
+			query += ' WHERE ' +
+				'   consulta.nombre LIKE ? ';
+			countQuery += ' WHERE ' +
+				'   consulta.nombre LIKE ? ';
+			queryParams.push(`%${search}%`);
+			countParams.push(`%${search}%`);
+		}
+
+		query +=
 			'ORDER BY ' +
 			'   consulta.id ASC ' +
 			'LIMIT ? OFFSET ?';
 
+		queryParams.push(`${limit}`, `${offset}`);
+
 		try {
-			const [rows] = await dbConn.execute(query, [`${limit}`, `${offset}`]);
-			const [count] = await dbConn.execute(
-				'SELECT ' + '   COUNT(*) AS count ' + 'FROM ' + '   consulta',
-			);
+			const [rows] = await dbConn.execute(query, queryParams);
+			const [count] = await dbConn.execute(countQuery, countParams);
 			const total = count[0].count;
 			const actualPage = page;
 			const totalPages = Math.ceil(total / limit);

@@ -12,6 +12,7 @@ import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
 // Importación de middlewares para la validación de datos
 import { validateConsulta } from '../../helpers/validators/consulta.validator.js';
 import { validateConsultaIdParam } from '../../helpers/validators/params/consultaIdParam.validator.js';
+import { validateQueryParams } from "../../helpers/validators/queryParams/queryParams.validator.js";
 
 // Rutas GET
 /**
@@ -106,6 +107,7 @@ router.get(
 	'/consulta',
 	verifyAccessToken,
 	verifyUserRole([1]),
+	validateQueryParams,
 	ConsultaController.getConsultas
 );
 

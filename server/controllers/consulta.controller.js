@@ -1,6 +1,7 @@
 // Importación de los servicios necesarios
 import ConsultaService from '../services/consulta.service.js';
 import EspecialistaService from '../services/especialista.service.js';
+import {getSearchValues} from "../util/functions/getSearchValues.js";
 
 /**
  * @class ConsultaController
@@ -24,16 +25,19 @@ class ConsultaController {
 	 * @memberof ConsultaController
 	 */
 	static async getConsultas(req, res) {
-		const page = parseInt(req.query.page) || 1;
-		const limit = 10;
-
 		try {
+			const searchValues = getSearchValues(req, 'search');
+
+			const page = searchValues.page;
+			const limit = searchValues.limit;
+			const search = searchValues.search;
+
 			const {
 				rows: resultados,
 				total: cantidad_consultas,
 				actualPage: pagina_actual,
 				totalPages: paginas_totales,
-			} = await ConsultaService.readConsultas(page, limit);
+			} = await ConsultaService.readConsultas(searchValues);
 
 			if (page > 1 && page > paginas_totales) {
 				return res.status(404).json({
@@ -41,12 +45,12 @@ class ConsultaController {
 				});
 			}
 
-			const prev = page > 1 ? `/consulta?page=${page - 1}` : null;
-			const next = page < paginas_totales ? `/consulta?page=${page + 1}` : null;
+			const prev = page > 1 ? `/consulta?page=${page - 1}&limit=${limit}` : null;
+			const next = page < paginas_totales ? `/consulta?page=${page + 1}&limit=${limit}` : null;
 			const result_min = (page - 1) * limit + 1;
 			const result_max =
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const items_pagina = limit;
+			const items_pagina = parseInt(limit);
 
 			return res.status(200).json({
 				prev,

@@ -1,6 +1,9 @@
 // Importación de los servicios necesarios
 import PatologiaService from '../services/patologia.service.js';
 
+// Importación de las funciones necesarias
+import { getSearchValues } from "../util/functions/getSearchValues.js";
+
 /**
  * @class PatologiaController
  * @description Clase estática que implementa la lógica de las patologías de la aplicación.
@@ -46,16 +49,18 @@ class PatologiaController {
 	 * @memberof PatologiaController
 	 */
 	static async getPatologias(req, res) {
-		const page = parseInt(req.query.page) || 1;
-		const limit = 10;
-
 		try {
+			const searchValues = getSearchValues(req, 'search');
+			const page = searchValues.page;
+			const limit = searchValues.limit;
+			const search = searchValues.search;
+
 			const {
 				rows: resultados,
 				actualPage: pagina_actual,
 				total: cantidad_patologias,
 				totalPages: paginas_totales,
-			} = await PatologiaService.readPatologias(page, limit);
+			} = await PatologiaService.readPatologias(searchValues);
 
 			if (page > 1 && page > paginas_totales) {
 				return res.status(404).json({
@@ -63,11 +68,18 @@ class PatologiaController {
 				});
 			}
 
-			const prev = page > 1 ? `/patologia?page=${page - 1}` : null;
-			const next = page < paginas_totales ? `/patologia?page=${page + 1}` : null;
+			let query = '';
+
+			if (search) {
+				query += `&search=${search}`;
+			}
+
+			const prev = page > 1 ? `/patologia?page=${page - 1}&limit=${limit}${query}` : null;
+			const next = page < paginas_totales ? `/patologia?page=${page + 1}&limit=${limit}${query}` : null;
 			const result_min = (page - 1) * limit + 1;
 			const result_max =
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
+			const items_pagina = parseInt(limit);
 
 			return res.status(200).json({
 				prev,
@@ -75,6 +87,7 @@ class PatologiaController {
 				pagina_actual,
 				paginas_totales,
 				cantidad_patologias,
+				items_pagina,
 				result_min,
 				result_max,
 				resultados,

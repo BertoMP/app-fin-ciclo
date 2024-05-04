@@ -29,20 +29,6 @@ class EspecialistaService {
 	}
 
 	/**
-	 * @method readEspecialistaById
-	 * @description Método para leer un especialista por su ID.
-	 * @static
-	 * @async
-	 * @memberOf EspecialistaService
-	 * @param {number} id - El ID del especialista.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise<Object>} El especialista.
-	 */
-	static async readEspecialistaById(id, conn = dbConn) {
-		return await EspecialistaModel.findById(id, conn);
-	}
-
-	/**
 	 * @method readEspecialistaByNumColegiado
 	 * @description Método para leer un especialista por su número de colegiado.
 	 * @static

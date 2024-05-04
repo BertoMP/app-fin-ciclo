@@ -10,7 +10,7 @@ import { verifyAccessToken } from '../../helpers/jwt/verifyAccessToken.js';
 import { verifyUserRole } from '../../util/middleware/verifyUserRole.js';
 
 // Importación de middlewares para la validación de datos
-import { validatePaginationQueryParams } from '../../helpers/validators/queryParams/paginationQueryParams.validator.js';
+import { validateQueryParams } from '../../helpers/validators/queryParams/queryParams.validator.js';
 import { validatePatologia } from '../../helpers/validators/patologia.validator.js';
 
 // Ruta GET
@@ -196,7 +196,7 @@ router.get(
 	'/patologia',
 	verifyAccessToken,
 	verifyUserRole([3]),
-	validatePaginationQueryParams,
+	validateQueryParams,
 	PatologiaController.getPatologias,
 );
 

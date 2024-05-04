@@ -75,16 +75,8 @@ export class AdminPanelComponent implements OnInit {
     });
   }
 
-  filterByRole() {
-    this.adminPanelService.getUsersByRole(parseInt(this.role)).subscribe({
-      next: (response: UserListResponseModel) => {
-        this.#showResults(response);
-      }
-    });
-  }
-
-  filterBySearch() {
-    this.adminPanelService.getUsersBySearch(this.search).subscribe({
+  filterByRoleAndSearch() {
+    this.adminPanelService.getUsersByRoleAndSearch(parseInt(this.role), this.search).subscribe({
       next: (response: UserListResponseModel) => {
         this.#showResults(response);
       }

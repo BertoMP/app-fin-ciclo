@@ -32,15 +32,12 @@ import UsuarioModel from '../models/usuario.model.js';
 // Importación de los servicios auxiliares
 import PacienteService from './paciente.service.js';
 import EspecialistaService from './especialista.service.js';
-import TokenService from './token.service.js';
-import TensionArterialService from './tensionArterial.service.js';
-import InformeService from './informe.service.js';
-import PacienteTomaMedicamentoService from './pacienteTomaMedicamento.service.js';
-import GlucometriaService from './glucometria.service.js';
-import InformePatologiaService from './informePatologia.service.js';
+import EmailService from "./email.service.js";
 
 // Importación de las utilidades necesarias
 import { dbConn } from '../util/database/database.js';
+import ObjectFactory from "../util/classes/objectFactory.js";
+import { createEncryptedPassword } from "../util/functions/createEncryptedPassword.js";
 
 /**
  * @class UsuarioService
@@ -54,69 +51,25 @@ class UsuarioService {
 	 * @async
 	 * @memberof UsuarioService
 	 * @param {Object} searchValues - Los valores de búsqueda.
-	 * @param {number} limit - El límite de resultados.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise&lt;Object>} Un array de usuarios.
 	 */
-	static async readAllUsuarios(searchValues, limit, conn = dbConn) {
-		return await UsuarioModel.fetchAll(searchValues, limit, conn);
+	static async readAllUsuarios(searchValues, conn = dbConn) {
+		return await UsuarioModel.fetchAll(searchValues, conn);
 	}
 
 	/**
-	 * @method readUsuarioPaciente
-	 * @description Método para leer un usuario paciente por su ID.
+	 * @method createUsuario
+	 * @description Método para crear un nuevo usuario.
 	 * @static
 	 * @async
 	 * @memberof UsuarioService
-	 * @param {number} id - El ID del usuario paciente.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise&lt;Object>} El usuario paciente.
-	 */
-	static async readUsuarioPaciente(id, conn = dbConn) {
-		return await UsuarioModel.findPacienteById(id, conn);
-	}
-
-	/**
-	 * @method readUsuarioEspecialista
-	 * @description Método para leer un usuario especialista por su ID.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {number} id - El ID del usuario especialista.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise&lt;Object>} El usuario especialista.
-	 */
-	static async readUsuarioEspecialista(id, conn = dbConn) {
-		return await UsuarioModel.findEspecialistaById(id, conn);
-	}
-
-	/**
-	 * @method readUsuarioRoleById
-	 * @description Método para leer el rol de un usuario por su ID.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {number} id - El ID del usuario.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise&lt;Object>} El rol del usuario.
-	 */
-	static async readUsuarioRoleById(id, conn = dbConn) {
-		return await UsuarioModel.findRoleById(id, conn);
-	}
-
-	/**
-	 * @method createUsuarioPaciente
-	 * @description Método para crear un nuevo usuario y un nuevo paciente asociado a ese usuario.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {Object} usuario - El objeto del nuevo usuario.
-	 * @param {Object} paciente - El objeto del nuevo paciente.
+	 * @param data - Los datos del usuario a crear.
 	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
 	 * @returns {Promise&lt;void>} No devuelve nada. Si la operación es exitosa, se habrá creado un nuevo usuario y un nuevo paciente en la base de datos.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async createUsuarioPaciente(usuario, paciente, conn = null) {
+	static async createUsuario(data, conn = null) {
 		const isConnProvided = !!conn;
 
 		if (!isConnProvided) {
@@ -128,9 +81,19 @@ class UsuarioService {
 				await conn.beginTransaction();
 			}
 
-			paciente.usuario_id = await UsuarioModel.create(usuario, conn);
+			const usuario = await ObjectFactory.createUserObject(data);
+			const nuevoUsuario = await UsuarioModel.create(usuario, conn);
 
-			await PacienteService.createPaciente(paciente, conn);
+			if (usuario.rol_id === 2) {
+				const paciente = ObjectFactory.createPacienteObject(data);
+				paciente.usuario_id = nuevoUsuario.insertId;
+				await PacienteService.createPaciente(paciente, conn);
+				await EmailService.sendWelcomeEmail(usuario.email, usuario.nombre);
+			} else {
+				const especialista = ObjectFactory.createEspecialistaObject(data);
+				especialista.usuario_id = nuevoUsuario.insertId;
+				await EspecialistaService.createEspecialista(especialista, conn);
+			}
 
 			if (!isConnProvided) {
 				await conn.commit();
@@ -148,18 +111,16 @@ class UsuarioService {
 	}
 
 	/**
-	 * @method createUsuarioEspecialista
-	 * @description Método para crear un nuevo usuario y un nuevo especialista asociado a ese usuario.
+	 * @method updateUsuario
+	 * @description Método para actualizar un usuario.
 	 * @static
 	 * @async
 	 * @memberof UsuarioService
-	 * @param {Object} usuario - El objeto del nuevo usuario.
-	 * @param {Object} especialista - El objeto del nuevo especialista.
+	 * @param data - Los datos del usuario a actualizar.
 	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
-	 * @returns {Promise&lt;void>} No devuelve nada. Si la operación es exitosa, se habrá creado un nuevo usuario y un nuevo especialista en la base de datos.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 * @returns {Promise&lt;void>} No devuelve nada. Si la operación es exitosa, se habrá actualizado el usuario y el paciente o especialista asociado en la base de datos.
 	 */
-	static async createUsuarioEspecialista(usuario, especialista, conn = null) {
+	static async updateUsuario(data, conn = null) {
 		const isConnProvided = !!conn;
 
 		if (!isConnProvided) {
@@ -171,97 +132,16 @@ class UsuarioService {
 				await conn.beginTransaction();
 			}
 
-			const usuarioCreado = await UsuarioModel.create(usuario, conn);
-
-			especialista.usuario_id = usuarioCreado.insertId;
-
-			await EspecialistaService.create(especialista, conn);
-
-			if (!isConnProvided) {
-				await conn.commit();
-			}
-		} catch (err) {
-			if (!isConnProvided) {
-				await conn.rollback();
-			}
-			throw new Error(err);
-		} finally {
-			if (!isConnProvided) {
-				conn.release();
-			}
-		}
-	}
-
-	/**
-	 * @method updateUsuarioPaciente
-	 * @description Método para actualizar un usuario y un paciente asociado a ese usuario.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {Object} usuario - El objeto del usuario a actualizar.
-	 * @param {Object} paciente - El objeto del paciente a actualizar.
-	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
-	 * @returns {Promise&lt;void>} No devuelve nada. Si la operación es exitosa, se habrá actualizado el usuario y el paciente en la base de datos.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async updateUsuarioPaciente(usuario, paciente, conn = null) {
-		const isConnProvided = !!conn;
-
-		if (!isConnProvided) {
-			conn = await dbConn.getConnection();
-		}
-
-		try {
-			if (!isConnProvided) {
-				await conn.beginTransaction();
-			}
-
+			const usuario = ObjectFactory.createUpdateUsuarioObject(data);
 			await UsuarioModel.updateUsuario(usuario, conn);
 
-			await PacienteService.updatePacienteByUserId(paciente, conn);
-
-			if (!isConnProvided) {
-				await conn.commit();
+			if (data.fecha_nacimiento) {
+				const paciente = ObjectFactory.createUpdatePacienteObject(data);
+				await PacienteService.updatePaciente(paciente, conn);
+			} else {
+				const especialista = ObjectFactory.createUpdateEspecialistaObject(data);
+				await EspecialistaService.updateEspecialista(especialista, conn);
 			}
-		} catch (err) {
-			if (!isConnProvided) {
-				await conn.rollback();
-			}
-			throw new Error(err);
-		} finally {
-			if (!isConnProvided) {
-				conn.release();
-			}
-		}
-	}
-
-	/**
-	 * @method updateUsuarioEspecialista
-	 * @description Método para actualizar un usuario y un especialista asociado a ese usuario.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {Object} usuario - El objeto del usuario a actualizar.
-	 * @param {Object} especialista - El objeto del especialista a actualizar.
-	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
-	 * @returns {Promise&lt;void>} No devuelve nada. Si la operación es exitosa, se habrá actualizado el usuario y el especialista en la base de datos.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async updateUsuarioEspecialista(usuario, especialista, conn = null) {
-		const isConnProvided = !!conn;
-
-		if (!isConnProvided) {
-			conn = await dbConn.getConnection();
-		}
-
-		try {
-			if (!isConnProvided) {
-				await conn.beginTransaction();
-			}
-
-			await UsuarioModel.updateUsuario(usuario, conn);
-
-			await EspecialistaService.updateEspecialista(especialista, conn);
 
 			if (!isConnProvided) {
 				await conn.commit();
@@ -286,7 +166,7 @@ class UsuarioService {
 	 * @memberof UsuarioService
 	 * @param {number} id - El ID del usuario.
 	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise&lt;Object>} El correo electrónico del usuario.
+	 * @returns {Promise&lt;string>} El correo electrónico del usuario.
 	 */
 	static async readEmailByUserId(id, conn = dbConn) {
 		return await UsuarioModel.getEmailById(id, conn);
@@ -332,71 +212,8 @@ class UsuarioService {
 	 * @returns {Promise&lt;Object>} El resultado de la operación de actualización.
 	 */
 	static async updatePassword(email, password, conn = dbConn) {
-		return await _updatePassword(email, password, conn);
-	}
-
-	/**
-	 * @method deleteUsuario
-	 * @description Método para eliminar un usuario y todas sus asociaciones.
-	 * @static
-	 * @async
-	 * @memberof UsuarioService
-	 * @param {number} id - El ID del usuario.
-	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
-	 * @returns {Promise&lt;void>} No devuelve nada. Si la operación es exitosa, se habrá eliminado el usuario y todas sus asociaciones en la base de datos.
-	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
-	 */
-	static async deleteUsuario(id, conn = null) {
-		const CitaService = require('./cita.service'); // Se importa aquí para evitar un ciclo de dependencias
-		const isConnProvided = !!conn;
-
-		if (!isConnProvided) {
-			conn = await dbConn.getConnection();
-		}
-
-		try {
-			if (!isConnProvided) {
-				await conn.beginTransaction();
-			}
-
-			await TokenService.deleteToken(id, conn);
-
-			const idsTomas = await PacienteTomaMedicamentoService.readTomasByUserId(id, conn);
-
-			for (const idToma of idsTomas) {
-				await PacienteTomaMedicamentoService.deleteTomaFromPrescription(idToma, conn);
-			}
-
-			await TensionArterialService.deleteTensionArterialByUserId(id, conn);
-
-			await GlucometriaService.deleteGlucometriaByUserId(id, conn);
-
-			const idInformes = await CitaService.readInformesByUserId(id, conn);
-
-			await CitaService.deleteCitasByUserId(id, conn);
-
-			for (const idInforme of idInformes) {
-				await InformePatologiaService.deletePatologiaByInformeId(idInforme, conn);
-				await InformeService.deleteInforme(idInforme, conn);
-			}
-
-			await PacienteService.deletePacienteByUserId(id, conn);
-
-			await _deleteUsuario(id, conn);
-
-			if (!isConnProvided) {
-				await conn.commit();
-			}
-		} catch (err) {
-			if (!isConnProvided) {
-				await conn.rollback();
-			}
-			throw new Error(err);
-		} finally {
-			if (!isConnProvided) {
-				conn.release();
-			}
-		}
+		const encryptedPassword = await createEncryptedPassword(password);
+		return await UsuarioModel.updatePassword(email, encryptedPassword, conn);
 	}
 
 	/**
@@ -427,6 +244,21 @@ class UsuarioService {
 	static async readUsuarioById(id, conn = dbConn) {
 		return await UsuarioModel.findById(id, conn);
 	}
+
+	/**
+	 * @method deleteUsuario
+	 * @description Método para eliminar un usuario.
+	 * @static
+	 * @async
+	 * @memberof UsuarioService
+	 * @param {number} id - El ID del usuario.
+	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
+	 * @returns {Promise&lt;Object>} El resultado de la operación de eliminación.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async deleteUsuario(id, conn = dbConn) {
+		return await UsuarioModel.deleteUsuario(id, conn);
+	}
 }
 
 // Exportación del servicio
@@ -441,13 +273,13 @@ export default UsuarioService;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul><h3>Classes</h3><ul><li><a href="CitaController.html">CitaController</a></li><li><a href="CitaModel.html">CitaModel</a></li><li><a href="CitaService.html">CitaService</a></li><li><a href="CodigoPostalMunicipioController.html">CodigoPostalMunicipioController</a></li><li><a href="CodigoPostalMunicipioModel.html">CodigoPostalMunicipioModel</a></li><li><a href="CodigoPostalMunicipioService.html">CodigoPostalMunicipioService</a></li><li><a href="ConsultaController.html">ConsultaController</a></li><li><a href="ConsultaModel.html">ConsultaModel</a></li><li><a href="ConsultaService.html">ConsultaService</a></li><li><a href="ContactoController.html">ContactoController</a></li><li><a href="EmailService.html">EmailService</a></li><li><a href="EspecialidadController.html">EspecialidadController</a></li><li><a href="EspecialidadModel.html">EspecialidadModel</a></li><li><a href="EspecialidadService.html">EspecialidadService</a></li><li><a href="EspecialistaController.html">EspecialistaController</a></li><li><a href="EspecialistaModel.html">EspecialistaModel</a></li><li><a href="EspecialistaService.html">EspecialistaService</a></li><li><a href="GlucometriaController.html">GlucometriaController</a></li><li><a href="GlucometriaModel.html">GlucometriaModel</a></li><li><a href="GlucometriaService.html">GlucometriaService</a></li><li><a href="InformeController.html">InformeController</a></li><li><a href="InformeModel.html">InformeModel</a></li><li><a href="InformePatologiaModel.html">InformePatologiaModel</a></li><li><a href="InformePatologiaService.html">InformePatologiaService</a></li><li><a href="InformeService.html">InformeService</a></li><li><a href="MedicamentoController.html">MedicamentoController</a></li><li><a href="MedicamentoModel.html">MedicamentoModel</a></li><li><a href="MedicamentoService.html">MedicamentoService</a></li><li><a href="MunicipioController.html">MunicipioController</a></li><li><a href="MunicipioModel.html">MunicipioModel</a></li><li><a href="MunicipioService.html">MunicipioService</a></li><li><a href="PacienteController.html">PacienteController</a></li><li><a href="PacienteModel.html">PacienteModel</a></li><li><a href="PacienteService.html">PacienteService</a></li><li><a href="PacienteTomaMedicamentoController.html">PacienteTomaMedicamentoController</a></li><li><a href="PacienteTomaMedicamentoModel.html">PacienteTomaMedicamentoModel</a></li><li><a href="PacienteTomaMedicamentoService.html">PacienteTomaMedicamentoService</a></li><li><a href="PatologiaController.html">PatologiaController</a></li><li><a href="PatologiaModel.html">PatologiaModel</a></li><li><a href="PatologiaService.html">PatologiaService</a></li><li><a href="PdfService.html">PdfService</a></li><li><a href="ProvinciaController.html">ProvinciaController</a></li><li><a href="ProvinciaModel.html">ProvinciaModel</a></li><li><a href="ProvinciaService.html">ProvinciaService</a></li><li><a href="TensionArterialController.html">TensionArterialController</a></li><li><a href="TensionArterialModel.html">TensionArterialModel</a></li><li><a href="TensionArterialService.html">TensionArterialService</a></li><li><a href="TipoViaController.html">TipoViaController</a></li><li><a href="TipoViaModel.html">TipoViaModel</a></li><li><a href="TipoViaService.html">TipoViaService</a></li><li><a href="TokenModel.html">TokenModel</a></li><li><a href="TokenService.html">TokenService</a></li><li><a href="TomaModel.html">TomaModel</a></li><li><a href="TomaService.html">TomaService</a></li><li><a href="UsuarioController.html">UsuarioController</a></li><li><a href="UsuarioModel.html">UsuarioModel</a></li><li><a href="UsuarioService.html">UsuarioService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Helpers-JWT.html">Helpers-JWT</a></li><li><a href="Helpers-Validators-Body.html">Helpers-Validators-Body</a></li><li><a href="Helpers-Validators-Params.html">Helpers-Validators-Params</a></li><li><a href="Helpers-Validators-QueryParams.html">Helpers-Validators-QueryParams</a></li><li><a href="Util-Database.html">Util-Database</a></li><li><a href="Util-Functions.html">Util-Functions</a></li><li><a href="Util-Middleware.html">Util-Middleware</a></li></ul><h3>Classes</h3><ul><li><a href="CitaController.html">CitaController</a></li><li><a href="CitaModel.html">CitaModel</a></li><li><a href="CitaService.html">CitaService</a></li><li><a href="CodigoPostalMunicipioController.html">CodigoPostalMunicipioController</a></li><li><a href="CodigoPostalMunicipioModel.html">CodigoPostalMunicipioModel</a></li><li><a href="CodigoPostalMunicipioService.html">CodigoPostalMunicipioService</a></li><li><a href="ConsultaController.html">ConsultaController</a></li><li><a href="ConsultaModel.html">ConsultaModel</a></li><li><a href="ConsultaService.html">ConsultaService</a></li><li><a href="ContactoController.html">ContactoController</a></li><li><a href="EmailService.html">EmailService</a></li><li><a href="EspecialidadController.html">EspecialidadController</a></li><li><a href="EspecialidadModel.html">EspecialidadModel</a></li><li><a href="EspecialidadService.html">EspecialidadService</a></li><li><a href="EspecialistaController.html">EspecialistaController</a></li><li><a href="EspecialistaModel.html">EspecialistaModel</a></li><li><a href="EspecialistaService.html">EspecialistaService</a></li><li><a href="GlucometriaController.html">GlucometriaController</a></li><li><a href="GlucometriaModel.html">GlucometriaModel</a></li><li><a href="GlucometriaService.html">GlucometriaService</a></li><li><a href="InformeController.html">InformeController</a></li><li><a href="InformeModel.html">InformeModel</a></li><li><a href="InformePatologiaModel.html">InformePatologiaModel</a></li><li><a href="InformePatologiaService.html">InformePatologiaService</a></li><li><a href="InformeService.html">InformeService</a></li><li><a href="MedicamentoController.html">MedicamentoController</a></li><li><a href="MedicamentoModel.html">MedicamentoModel</a></li><li><a href="MedicamentoService.html">MedicamentoService</a></li><li><a href="MunicipioController.html">MunicipioController</a></li><li><a href="MunicipioModel.html">MunicipioModel</a></li><li><a href="MunicipioService.html">MunicipioService</a></li><li><a href="PacienteController.html">PacienteController</a></li><li><a href="PacienteModel.html">PacienteModel</a></li><li><a href="PacienteService.html">PacienteService</a></li><li><a href="PacienteTomaMedicamentoController.html">PacienteTomaMedicamentoController</a></li><li><a href="PacienteTomaMedicamentoModel.html">PacienteTomaMedicamentoModel</a></li><li><a href="PacienteTomaMedicamentoService.html">PacienteTomaMedicamentoService</a></li><li><a href="PatologiaController.html">PatologiaController</a></li><li><a href="PatologiaModel.html">PatologiaModel</a></li><li><a href="PatologiaService.html">PatologiaService</a></li><li><a href="PdfService.html">PdfService</a></li><li><a href="ProvinciaController.html">ProvinciaController</a></li><li><a href="ProvinciaModel.html">ProvinciaModel</a></li><li><a href="ProvinciaService.html">ProvinciaService</a></li><li><a href="TensionArterialController.html">TensionArterialController</a></li><li><a href="TensionArterialModel.html">TensionArterialModel</a></li><li><a href="TensionArterialService.html">TensionArterialService</a></li><li><a href="TipoViaController.html">TipoViaController</a></li><li><a href="TipoViaModel.html">TipoViaModel</a></li><li><a href="TipoViaService.html">TipoViaService</a></li><li><a href="TokenModel.html">TokenModel</a></li><li><a href="TokenService.html">TokenService</a></li><li><a href="TomaModel.html">TomaModel</a></li><li><a href="TomaService.html">TomaService</a></li><li><a href="UsuarioController.html">UsuarioController</a></li><li><a href="UsuarioModel.html">UsuarioModel</a></li><li><a href="UsuarioService.html">UsuarioService</a></li></ul><h3>Global</h3><ul><li><a href="global.html">getConsultaListado</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu May 02 2024 01:58:17 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>
