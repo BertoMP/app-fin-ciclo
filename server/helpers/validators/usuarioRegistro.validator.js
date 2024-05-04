@@ -13,7 +13,7 @@ import { body } from 'express-validator';
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
 export const validateUserRegister = [
-	body('email')
+	body('datos_personales.email')
 		.trim()
 		.notEmpty()
 		.withMessage('El correo es requerido.')
@@ -26,7 +26,7 @@ export const validateUserRegister = [
 
 			return true;
 		}),
-	body('password')
+	body('datos_personales.password')
 		.trim()
 		.notEmpty()
 		.withMessage('La contraseña es requerida.')
@@ -43,25 +43,25 @@ export const validateUserRegister = [
 
 			return true;
 		}),
-	body('nombre')
+	body('datos_personales.nombre')
 		.trim()
 		.notEmpty()
 		.withMessage('El nombre es requerido.')
 		.isString()
 		.withMessage('El nombre debe ser una cadena de texto.'),
-	body('primer_apellido')
+	body('datos_personales.primer_apellido')
 		.trim()
 		.notEmpty()
 		.withMessage('El primer apellido es requerido.')
 		.isString()
 		.withMessage('El primer apellido debe ser una cadena de texto.'),
-	body('segundo_apellido')
+	body('datos_personales.segundo_apellido')
 		.trim()
 		.notEmpty()
 		.withMessage('El segundo apellido es requerido.')
 		.isString()
 		.withMessage('El segundo apellido debe ser una cadena de texto.'),
-	body('dni')
+	body('datos_personales.dni')
 		.trim()
 		.notEmpty()
 		.withMessage('El DNI es requerido.')

@@ -17,7 +17,6 @@ import { validateEspecialistaRegister } from '../../helpers/validators/especiali
 import { validateUserPasswordChange } from '../../helpers/validators/usuarioPasswordChange.validator.js';
 import { validateUsuarioIdParam } from '../../helpers/validators/params/usuarioIdParam.validator.js';
 import { validatePacienteUpdate } from '../../helpers/validators/pacienteUpdate.validator.js';
-import { validateEspecialistaUpdate } from "../../helpers/validators/especialistaUpdate.validator.js";
 import { validateQueryParams } from "../../helpers/validators/queryParams/queryParams.validator.js";
 
 // Rutas GET
@@ -821,7 +820,7 @@ router.put(
 	verifyAccessToken,
 	verifyUserRole([1]),
 	validateUsuarioIdParam,
-	validateEspecialistaUpdate,
+	validateEspecialistaRegister,
 	UsuarioController.putUsuario,
 );
 

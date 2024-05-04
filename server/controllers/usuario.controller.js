@@ -50,7 +50,8 @@ class UsuarioController {
 		}
 
 		try {
-			let usuario = await UsuarioService.readUsuarioById(id);
+			let usuario = await UsuarioService.getRoleByUserId(id);
+			let userData = {};
 
 			if (!usuario) {
 				return res.status(404).json({
@@ -58,21 +59,19 @@ class UsuarioController {
 				});
 			}
 
-			const usuarioRole = usuario.datos_rol.rol_id;
+			const usuarioRole = usuario.rol_id;
 
 			if (usuarioRole === 1) {
 				return res.status(409).json({
 					errors: ['No se puede obtener a un admin.']
 				});
 			} else if (usuarioRole === 2) {
-				const paciente = await PacienteService.readPacienteByUserId(id);
-				usuario = { ...usuario, ...paciente };
+				userData = await PacienteService.readPacienteByUserId(id);
 			} else {
-				const especialista = await EspecialistaService.readEspecialistaByUserId(id);
-				usuario = { ...usuario, ...especialista };
+				userData = await EspecialistaService.readEspecialistaByUserId(id);
 			}
 
-			return res.status(200).json(usuario);
+			return res.status(200).json(userData);
 		} catch (err) {
 			return res.status(500).json({ errors: [err.message] });
 		}

@@ -109,6 +109,56 @@ class UsuarioModel {
 		}
 	}
 
+	static async getPasswordById(id, dbConn) {
+		const query =
+			'SELECT ' +
+			'		password ' +
+			'FROM ' +
+			'		usuario ' +
+			'WHERE ' +
+			'		id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				password: rows[0].password
+			}
+		} catch (err) {
+			throw new Error('Error al obtener la contraseña.');
+		}
+
+	}
+
+	static async getRoleByUserId(id, dbConn) {
+		const query =
+			'SELECT ' +
+			'   rol_id ' +
+			'FROM ' +
+			'   usuario ' +
+			'WHERE ' +
+			'   id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				rol_id: rows[0].rol_id
+			}
+
+		} catch (err) {
+			throw new Error('Error al obtener el rol del usuario.');
+		}
+	}
+
 	/**
 	 * @method findByEmail
 	 * @description Método para obtener un usuario por su email.
@@ -125,7 +175,6 @@ class UsuarioModel {
 			'SELECT ' +
 			'   id, ' +
 			'   email, ' +
-			'   password,' +
 			'   nombre, ' +
 			'   primer_apellido, ' +
 			'   segundo_apellido, ' +
@@ -359,7 +408,6 @@ class UsuarioModel {
 				}
 			};
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al obtener el usuario.');
 		}
 	}
@@ -396,7 +444,8 @@ class UsuarioModel {
 			'   id = ?';
 
 		try {
-			return await dbConn.execute(query, [email, nombre, primer_apellido, segundo_apellido, dni, id]);
+			return await dbConn.execute(query,
+				[email, nombre, primer_apellido, segundo_apellido, dni, id]);
 		} catch (err) {
 			throw new Error('Error al actualizar el usuario.');
 		}

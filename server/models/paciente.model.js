@@ -105,6 +105,14 @@ class PacienteModel {
 	static async findByUserId(usuario_id, dbConn) {
 		const query =
 			'SELECT ' +
+			'   usuario.id, ' +
+			'   email, ' +
+			'   usuario.nombre AS usuario_nombre, ' +
+			'   primer_apellido, ' +
+			'   segundo_apellido, ' +
+			'   dni, ' +
+			'   rol_id, ' +
+			'   rol.nombre AS nombre_rol, ' +
 			'   num_historia_clinica, ' +
 			'   fecha_nacimiento, ' +
 			'   tipo_via, ' +
@@ -121,16 +129,36 @@ class PacienteModel {
 			'FROM ' +
 			'   paciente ' +
 			'INNER JOIN ' +
+			'   usuario ON paciente.usuario_id = usuario.id ' +
+			'INNER JOIN ' +
 			'   tipo_via ON paciente.tipo_via = tipo_via.id ' +
 			'INNER JOIN ' +
 			'   municipio ON paciente.municipio = municipio.id ' +
+			'INNER JOIN ' +
+			'   rol ON usuario.rol_id = rol.id ' +
 			'WHERE ' +
 			'   usuario_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [usuario_id]);
 
+			if (rows.length === 0) {
+				return null;
+			}
+
 			return {
+				usuario_id: rows[0].id,
+				datos_personales: {
+					email: rows[0].email,
+					nombre: rows[0].usuario_nombre,
+					primer_apellido: rows[0].primer_apellido,
+					segundo_apellido: rows[0].segundo_apellido,
+					dni: rows[0].dni,
+				},
+				datos_rol: {
+					id: rows[0].rol_id,
+					nombre: rows[0].nombre_rol,
+				},
 				datos_paciente: {
 					num_historia_clinica: rows[0].num_historia_clinica,
 					fecha_nacimiento: tz(rows[0].fecha_nacimiento, 'Europe/Madrid').format('DD-MM-YYYY'),
@@ -156,6 +184,7 @@ class PacienteModel {
 				}
 			};
 		} catch (err) {
+			console.log(err);
 			throw new Error('Error al obtener el paciente.');
 		}
 	}

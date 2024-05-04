@@ -24,7 +24,7 @@ class EspecialistaController {
 		const id = parseInt(req.params.usuario_id);
 
 		try {
-			const especialista = await EspecialistaService.readEspecialistaById(id);
+			const especialista = await EspecialistaService.readEspecialistaByUserId(id);
 
 			if (!especialista || especialista.turno === 'no-trabajando') {
 				return res.status(404).json({
