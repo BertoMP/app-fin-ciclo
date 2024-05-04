@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from "./pages/auth/login/login.component";
-import {RegisterComponent} from "./pages/auth/register/register.component";
+import { RegisterComponent } from "./pages/auth/register/register.component";
 import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { ClinicaComponent } from './pages/clinica/clinica.component';
 import {
@@ -34,13 +34,13 @@ export const routes: Routes = [
 
   {
     path: 'testeo',
-    component:PanelComponent,
-    canActivate:[loginGuard]
+    component: PanelComponent,
+    canActivate: [loginGuard]
   },
 
   {
     path: 'testeo-backend',
-    component:TesteoBackendComponent
+    component: TesteoBackendComponent
   },
 
   {
@@ -48,12 +48,12 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path:'sobre-nosotros',
-    component:ClinicaComponent
+    path: 'sobre-nosotros',
+    component: ClinicaComponent
   },
   {
     path: 'contacto',
-    component:ContactUsComponent
+    component: ContactUsComponent
   },
   {
     path: 'auth/register',
@@ -64,16 +64,20 @@ export const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path: 'crearEspecialista',
+    path: 'crearEditarEspecialista',
     component: SpecialistFormComponent
   },
   {
-    path:'auth/forgotten-password',
-    component:ForgottenPasswordComponent
+    path: 'crearEditarEspecialista/:id',
+    component: SpecialistFormComponent
   },
   {
-    path:'auth/reset-password/:token',
-    component:RefreshPasswordComponent
+    path: 'auth/forgotten-password',
+    component: ForgottenPasswordComponent
+  },
+  {
+    path: 'auth/reset-password/:token',
+    component: RefreshPasswordComponent
   },
   {
     path: 'nuestros-servicios',

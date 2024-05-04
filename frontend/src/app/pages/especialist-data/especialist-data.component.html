@@ -1,22 +1,22 @@
 @if(datosEspecialista!=null){
-<h1>Datos especialista: {{datosEspecialista.nombre}} {{datosEspecialista.primer_apellido}} {{datosEspecialista.segundo_apellido}}</h1>
+<h1>Datos especialista: {{datosEspecialista.datos_personales.nombre}} {{datosEspecialista.datos_personales.primer_apellido}} {{datosEspecialista.datos_personales.segundo_apellido}}</h1>
 <div>
     <section class="data">
-        <img [src]="datosEspecialista.imagen">
+        <img [src]="datosEspecialista.datos_especialista.imagen">
         <section class="info">
             <h2>Información especialista</h2>
-            <p>Número de colegiado: {{datosEspecialista.num_colegiado}}</p>
-            <p> Correo de contacto: <a href="mailto:{{datosEspecialista.email}}">{{datosEspecialista.email}}</a></p>
+            <p>Número de colegiado: {{datosEspecialista.datos_especialista.num_colegiado}}</p>
+            <p> Correo de contacto: <a href="mailto:{{datosEspecialista.datos_personales.email}}">{{datosEspecialista.datos_personales.email}}</a></p>
             <section class="consulta">
-                <p>Consulta: {{datosEspecialista.consulta.consulta_nombre}}</p>
-            <p>Turno de consulta: {{datosEspecialista.turno}}</p>
+                <p>Consulta: {{datosEspecialista.datos_especialista.consulta.consulta_nombre}}</p>
+            <p>Turno de consulta: {{datosEspecialista.datos_especialista.turno}}</p>
         </section>
-            <p>Especialidad: {{datosEspecialista.especialidad.especialidad}}</p>
+            <p>Especialidad: {{datosEspecialista.datos_especialista.especialidad.especialidad}}</p>
         </section>
     </section>
     <section class="description-data">
         <h2>¡Más sobre mí!</h2>
-        <p>{{datosEspecialista.descripcion}}</p>
+        <p>{{datosEspecialista.datos_especialista.descripcion}}</p>
         <button type="button" [routerLink]="'/listado-de-especialistas'">Volver</button>
     </section>
 </div>

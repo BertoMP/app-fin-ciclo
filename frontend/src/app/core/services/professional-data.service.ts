@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { EspecialistDataModel } from '../interfaces/especialist-data.model';
+import { EspecialistModel } from '../interfaces/especialist.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,8 @@ export class ProfessionalDataService {
 
   constructor(private http: HttpClient) { }
 
-  recogerInfoEspecialista(usuario_id: number): Observable<EspecialistDataModel> {
-    return this.http.get<EspecialistDataModel>(`${this.apiUrl}/especialista/${usuario_id}`)
+  recogerInfoEspecialista(usuario_id: number): Observable<EspecialistModel> {
+    return this.http.get<EspecialistModel>(`${this.apiUrl}/especialista/${usuario_id}`)
       .pipe(catchError(this.handleError));
   }
 

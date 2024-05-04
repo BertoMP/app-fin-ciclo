@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProfessionalDataService } from '../../core/services/professional-data.service';
-import { EspecialistDataModel } from '../../core/interfaces/especialist-data.model';
+import { EspecialistModel } from '../../core/interfaces/especialist.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -12,15 +12,18 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './especialist-data.component.html',
   styleUrl: './especialist-data.component.scss'
 })
-export class EspecialistDataComponent {
+export class EspecialistDataComponent implements OnDestroy, OnInit {
   suscripcionRuta: Subscription;
   id: number;
-  datosEspecialista: EspecialistDataModel;
+  datosEspecialista: EspecialistModel;
   errores: string[] = [];
 
   constructor(private professionalDataService: ProfessionalDataService,
     private activatedRoute: ActivatedRoute) {
 
+  }
+  ngOnDestroy(): void {
+    this.suscripcionRuta.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -28,7 +31,7 @@ export class EspecialistDataComponent {
       this.id = params['id'] || null;
       if (this.id != null) {
         this.professionalDataService.recogerInfoEspecialista(this.id).subscribe({
-          next: (res: EspecialistDataModel) => {
+          next: (res: EspecialistModel) => {
             this.datosEspecialista = res;
             console.log(this.datosEspecialista);
           },
@@ -38,5 +41,6 @@ export class EspecialistDataComponent {
         });
       }
     });
+
   }
 }
