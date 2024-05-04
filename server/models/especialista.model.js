@@ -240,7 +240,7 @@ class EspecialistaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async updateEspecialista(especialista, dbConn) {
-		const usuario_id = especialista.usuario_id;
+		const usuario_id = especialista.id;
 		const especialidad_id = especialista.especialidad_id;
 		const consulta_id = especialista.consulta_id;
 		const num_colegiado = especialista.num_colegiado;

@@ -35,14 +35,15 @@ class ObjectFactory {
 			num_colegiado: data.datos_especialista.num_colegiado,
 			descripcion: data.datos_especialista.descripcion.replace(/(\r\n|\n|\r)/g, '<br>'),
 			imagen: data.datos_especialista.imagen,
-			turno: data.datos_especialista.consulta.turno,
+			turno: data.datos_especialista.turno,
 			especialidad_id: data.datos_especialista.especialidad.especialidad_id,
 			consulta_id: data.datos_especialista.consulta.consulta_id,
 		};
 	}
 
-	static async updateUserObject(data) {
+	static updateUserObject(data) {
 		return {
+			id: data.usuario_id,
 			email: data.datos_personales.email,
 			nombre: data.datos_personales.nombre,
 			primer_apellido: data.datos_personales.primer_apellido,
@@ -54,6 +55,7 @@ class ObjectFactory {
 
 	static updatePacienteObject(data) {
 		return {
+			id: data.usuario_id,
 			fecha_nacimiento: data.datos_paciente.fecha_nacimiento,
 			tipo_via: data.datos_vivienda.tipo_via.id,
 			nombre_via: data.datos_vivienda.nombre_via,
@@ -65,6 +67,18 @@ class ObjectFactory {
 			tel_fijo: data.datos_contacto.tel_fijo,
 			tel_movil: data.datos_contacto.tel_movil,
 		}
+	}
+
+	static updateEspecialistaObject(data) {
+		return {
+			id: data.usuario_id,
+			num_colegiado: data.datos_especialista.num_colegiado,
+			descripcion: data.datos_especialista.descripcion.replace(/(\r\n|\n|\r)/g, '<br>'),
+			imagen: data.datos_especialista.imagen,
+			turno: data.datos_especialista.turno,
+			especialidad_id: data.datos_especialista.especialidad.especialidad_id,
+			consulta_id: data.datos_especialista.consulta.consulta_id,
+		};
 	}
 }
 

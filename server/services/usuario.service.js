@@ -113,20 +113,21 @@ class UsuarioService {
 			const password = data.datos_personales.password;
 			const realPassword = await UsuarioModel.getPasswordById(data.usuario_id, conn);
 
-			const validPassword = await compare(password, realPassword);
+			const validPassword = await compare(password, realPassword.password);
 
 			if (!validPassword) {
 				throw new Error('La contraseña actual no es correcta.');
 			}
 
 			const usuario = ObjectFactory.updateUserObject(data);
+
 			await UsuarioModel.updateUsuario(usuario, conn);
 
 			if (data.datos_paciente) {
 				const paciente = ObjectFactory.updatePacienteObject(data);
 				await PacienteService.updatePaciente(paciente, conn);
 			} else {
-				const especialista = ObjectFactory.createEspecialistaObject(data);
+				const especialista = ObjectFactory.updateEspecialistaObject(data);
 				await EspecialistaService.updateEspecialista(especialista, conn);
 			}
 
@@ -199,8 +200,7 @@ class UsuarioService {
 	 * @returns {Promise<Object>} El resultado de la operación de actualización.
 	 */
 	static async updatePassword(email, password, conn = dbConn) {
-		const encryptedPassword = await createEncryptedPassword(password);
-		return await UsuarioModel.updatePassword(email, encryptedPassword, conn);
+		return await UsuarioModel.updatePassword(email, password, conn);
 	}
 
 	/**

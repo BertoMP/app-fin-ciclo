@@ -208,7 +208,7 @@ class UsuarioController {
 				});
 			}
 
-			const validPassword = await compare(password, user.password);
+			const validPassword = await compare(password, user.datos_personales.password);
 
 			if (!validPassword) {
 				return res.status(403).json({
@@ -219,7 +219,7 @@ class UsuarioController {
 			const accessToken = TokenService.createAccessToken(user);
 			const refreshToken = TokenService.createRefreshToken(user);
 
-			await UsuarioService.updateRefreshToken(user.id, refreshToken);
+			await UsuarioService.updateRefreshToken(user.usuario_id, refreshToken);
 
 			return res.status(200).json({
 				message: 'Inicio de sesión exitoso.',
@@ -256,7 +256,8 @@ class UsuarioController {
 				});
 			}
 
-			const idUser = user.id;
+
+			const idUser = user.usuario_id;
 			const resetToken = TokenService.createResetToken(user);
 
 			await TokenService.createToken(idUser, resetToken);
@@ -298,7 +299,7 @@ class UsuarioController {
 			}
 
 			const encryptedPassword = await createEncryptedPassword(newPassword);
-			await UsuarioService.updatePassword(user.email, encryptedPassword);
+			await UsuarioService.updatePassword(user.datos_personales.email, encryptedPassword);
 
 			return res.status(200).json({
 				message: 'Contraseña actualizada exitosamente.',
@@ -535,13 +536,16 @@ class UsuarioController {
 				return res.status(409).json({ errors: ['No se puede modificar a un admin.'] });
 			}
 
-			const errors = UsuarioController.#verifyUser(req.body.email, req.body.dni, req.body.num_colegiado);
+			const errors = UsuarioController.#verifyUser(
+				req.body.datos_personales.email, req.body.datos_personales.dni, req.body.datos_personales.num_colegiado);
 
 			if (errors.length > 0) {
 				return res.status(409).json({ errors: errors });
 			}
 
-			await UsuarioService.updateUsuario(req.body, usuario_id);
+			await UsuarioService.updateUsuario(req.body);
+
+			return res.status(200).json({ message: 'Usuario actualizado exitosamente.' });
 
 		} catch (err) {
 			return res.status(500).json({ errors: [err.message] });

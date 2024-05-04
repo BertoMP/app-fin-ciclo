@@ -34,7 +34,7 @@ class EspecialistaService {
 	 * @static
 	 * @async
 	 * @memberOf EspecialistaService
-	 * @param {number} num_colegiado - El número de colegiado del especialista.
+	 * @param {string} num_colegiado - El número de colegiado del especialista.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} El especialista.
 	 */

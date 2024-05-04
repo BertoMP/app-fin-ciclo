@@ -27,8 +27,8 @@ class TokenService {
 	 */
 	static createAccessToken(user) {
 		const payload = {
-			user_id: user.id,
-			user_role: user.rol_id,
+			user_id: user.usuario_id,
+			user_role: user.datos_rol.rol_id,
 		};
 
 		return sign(payload, process.env.JWT_SECRET_KEY, {
@@ -46,8 +46,8 @@ class TokenService {
 	 */
 	static createRefreshToken(user) {
 		const payload = {
-			user_id: user.id,
-			user_role: user.rol_id,
+			user_id: user.usuario_id,
+			user_role: user.datos_rol.rol_id,
 		};
 
 		return sign(payload, process.env.JWT_REFRESH_SECRET_KEY, {
@@ -65,7 +65,7 @@ class TokenService {
 	 */
 	static createResetToken(user) {
 		const payload = {
-			email: user.email,
+			email: user.datos_personales.email,
 		};
 
 		return sign(payload, process.env.JWT_RESET_SECRET_KEY, {

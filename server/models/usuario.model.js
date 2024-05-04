@@ -175,6 +175,7 @@ class UsuarioModel {
 			'SELECT ' +
 			'   id, ' +
 			'   email, ' +
+			'	  password, ' +
 			'   nombre, ' +
 			'   primer_apellido, ' +
 			'   segundo_apellido, ' +
@@ -187,7 +188,25 @@ class UsuarioModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [email]);
-			return rows[0];
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				usuario_id: rows[0].id,
+				datos_personales: {
+					email: rows[0].email,
+					password: rows[0].password,
+					nombre: rows[0].nombre,
+					primer_apellido: rows[0].primer_apellido,
+					segundo_apellido: rows[0].segundo_apellido,
+					dni: rows[0].dni,
+				},
+				datos_rol: {
+					rol_id: rows[0].rol_id
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al obtener el usuario.');
 		}
@@ -429,7 +448,7 @@ class UsuarioModel {
 		const primer_apellido = usuario.primer_apellido;
 		const segundo_apellido = usuario.segundo_apellido;
 		const dni = usuario.dni;
-		const id = usuario.usuario_id;
+		const id = usuario.id;
 
 		const query =
 			'UPDATE ' +
@@ -447,6 +466,7 @@ class UsuarioModel {
 			return await dbConn.execute(query,
 				[email, nombre, primer_apellido, segundo_apellido, dni, id]);
 		} catch (err) {
+			console.log(err);
 			throw new Error('Error al actualizar el usuario.');
 		}
 	}

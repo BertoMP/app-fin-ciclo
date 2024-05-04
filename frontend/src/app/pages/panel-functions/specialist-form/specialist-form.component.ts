@@ -65,6 +65,7 @@ export class SpecialistFormComponent implements OnInit {
   nombre_turno: string = '';
   email: string = '';
 
+  imageToShow: string;
 
   constructor(private turnoService: TurnoService,
     private especialidadService: EspecialidadService,
@@ -84,7 +85,6 @@ export class SpecialistFormComponent implements OnInit {
           next: (res: EspecialistModel) => {
             this.especialista = res;
             this.nombre = this.especialista.datos_personales.nombre;
-            console.log(this.nombre);
             this.primer_apellido = this.especialista.datos_personales.primer_apellido;
             this.segundo_apellido = this.especialista.datos_personales.segundo_apellido;
             this.dni = this.especialista.datos_personales.dni;
@@ -94,7 +94,10 @@ export class SpecialistFormComponent implements OnInit {
             this.especialidad_id = this.especialista.datos_especialista.especialidad.especialidad_id;
             this.nombre_turno = this.especialista.datos_especialista.turno;
             this.email = this.especialista.datos_personales.email;
+            this.imageBase64 = this.especialista.datos_especialista.imagen;
+            this.imageToShow = this.imageBase64 ? this.imageBase64 : null;
 
+            this.patchForm();
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
@@ -171,10 +174,7 @@ export class SpecialistFormComponent implements OnInit {
           Validators.required,
         ]
       ),
-      'imagen': new FormControl(
-        null,
-        [Validators.required]
-      ),
+      'imagen': new FormControl(),
       'descripcion': new FormControl(
         null,
         [
@@ -223,6 +223,28 @@ export class SpecialistFormComponent implements OnInit {
     })
   }
 
+  patchForm(): void {
+    this.registerForm.patchValue({
+      'nombre': this.nombre,
+      'primer_apellido': this.primer_apellido,
+      'segundo_apellido': this.segundo_apellido,
+      'dni': this.dni,
+      'email': this.email,
+      'consulta': this.consulta_id,
+      'especialidad': this.especialidad_id,
+      'numero_colegiado': this.num_colegiado,
+      'turno': this.nombre_turno,
+      'descripcion': this.descripcion
+    });
+
+    Object.keys(this.registerForm.controls).forEach(field => {
+      const control = this.registerForm.get(field);
+      control.markAsTouched({ onlySelf: true });
+    });
+
+    this.registerForm.updateValueAndValidity();
+  }
+
   onRegisterAttempt(): void {
     this.sendedAttempt = true;
 
@@ -238,53 +260,52 @@ export class SpecialistFormComponent implements OnInit {
       this.authService.updateSpecialist(newEspecialist)
         .subscribe({
           next: (response) => {
-            this.isLoading = false;
-            Swal.fire({
-              title: 'Enhorabuena',
-              text: 'Has conseguido actualizar un especialista correctamente',
-              icon: 'success',
-              width: '50%'
-            })
-              .then(() => {
-                this.router.navigate(['auth/login'])
-                  .then(() => { })
-                  .catch((error) => console.error('Error navigating to login', error));
-              })
-              .catch(() => {
-                console.log('Se produjo un error.')
-              });
+            this.onSubmitted('actualizar');
           },
           error: (error: string[]): void => {
-            this.isLoading = false;
-            this.errores = error;
+            this.onSubmitError(error);
           }
         });
     } else {
       this.authService.registerSpecialist(newEspecialist)
         .subscribe({
           next: (response) => {
-            this.isLoading = false;
-            Swal.fire({
-              title: 'Enhorabuena',
-              text: 'Has conseguido registrar un especialista correctamente',
-              icon: 'success',
-              width: '50%'
-            })
-              .then(() => {
-                this.router.navigate(['auth/login'])
-                  .then(() => { })
-                  .catch((error) => console.error('Error navigating to login', error));
-              })
-              .catch(() => {
-                console.log('Se produjo un error.')
-              });
+            this.onSubmitted('registrar');
           },
           error: (error: string[]): void => {
-            this.isLoading = false;
-            this.errores = error;
+            this.onSubmitError(error);
           }
         });
     }
+  }
+
+  onSubmitted(message: string): void {
+    this.isLoading = false;
+    this.router.navigate(['auth/login'])
+      .then(() => { })
+      .catch((error) => console.error('Error navigating to login', error));
+    Swal.fire({
+      title: 'Enhorabuena',
+      text: `Has conseguido ${message} un especialista correctamente`,
+      icon: 'success',
+      width: '50%'
+    })
+      .then(() => {
+        Swal.close();
+      })
+      .catch(() => {
+        console.log('Se produjo un error.')
+      });
+  }
+
+  onSubmitError(error: string[]): void {
+    this.isLoading = false;
+    this.errores = error;
+
+    const formCopy = { ...this.registerForm.value };
+    delete formCopy.imagen;
+
+    this.registerForm.reset(formCopy);
   }
 
   onCancel(): void {
@@ -297,9 +318,11 @@ export class SpecialistFormComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       this.fileUploadService.toBase64(event.target.files[0]).then(base64 => {
         this.imageBase64 = base64;
+        this.imageToShow = base64;
       });
     } else {
       this.imageBase64 = null;
+      this.imageToShow = null;
     }
   }
 

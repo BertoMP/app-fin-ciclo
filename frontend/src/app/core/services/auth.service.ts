@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   updateSpecialist(newUser: EspecialistModel): Observable<any> {
-    return this.http.put(`${this.apiUrl}'/usuario/actualizar-especialista/${newUser.usuario_id}`, newUser)
+    return this.http.put(`${this.apiUrl}/usuario/actualizar-especialista/${newUser.usuario_id}`, newUser)
       .pipe(catchError(this.handleError));
   }
 

@@ -35,8 +35,6 @@ export const validateEspecialistaRegister = [
 				throw new Error('El número de colegiado no puede ser 0 o negativo.');
 			}
 
-			console.log('value', value)
-
 			return true;
 		}),
 	body('datos_especialista.descripcion')
