@@ -338,7 +338,7 @@ class UsuarioController {
 				});
 			}
 
-			if (user.id !== id) {
+			if (user.usuario_id !== id) {
 				return res.status(403).json({
 					errors: ['No tienes permiso para realizar esta acción.'],
 				});

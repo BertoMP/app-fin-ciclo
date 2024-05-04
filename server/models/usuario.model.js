@@ -240,6 +240,11 @@ class UsuarioModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [dni]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
 			return rows[0];
 		} catch (err) {
 			throw new Error('Error al obtener el usuario.');
