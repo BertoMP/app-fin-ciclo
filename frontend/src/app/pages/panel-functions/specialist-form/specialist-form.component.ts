@@ -80,10 +80,11 @@ export class SpecialistFormComponent implements OnInit {
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
       if (this.id != null) {
-        this.professionalDataService.recogerInfoEspecialista(this.id).subscribe({
+        this.professionalDataService.specificEspecialista(this.id).subscribe({
           next: (res: EspecialistModel) => {
             this.especialista = res;
             this.nombre = this.especialista.datos_personales.nombre;
+            console.log(this.nombre);
             this.primer_apellido = this.especialista.datos_personales.primer_apellido;
             this.segundo_apellido = this.especialista.datos_personales.segundo_apellido;
             this.dni = this.especialista.datos_personales.dni;
@@ -104,7 +105,7 @@ export class SpecialistFormComponent implements OnInit {
 
     this.registerForm = new FormGroup<any>({
       'nombre': new FormControl(
-        null,
+        this.nombre,
         [
           Validators.required,
           CustomValidators.validName

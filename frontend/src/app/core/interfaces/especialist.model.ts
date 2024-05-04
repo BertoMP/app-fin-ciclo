@@ -17,7 +17,7 @@ export interface EspecialistModel {
         turno:string,
         especialidad: {
             especialidad_id: number,
-            especialidad?: string
+            especialidad_nombre?: string
         },
         consulta: {
             consulta_id: number,
