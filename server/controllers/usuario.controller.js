@@ -536,7 +536,7 @@ class UsuarioController {
 				return res.status(409).json({ errors: ['No se puede modificar a un admin.'] });
 			}
 
-			const errors = await UsuarioController.#verifyUser(req.body.email, req.body.dni, req.body.num_colegiado);
+			const errors = UsuarioController.#verifyUser(req.body.email, req.body.dni, req.body.num_colegiado);
 
 			if (errors.length > 0) {
 				return res.status(409).json({ errors: errors });

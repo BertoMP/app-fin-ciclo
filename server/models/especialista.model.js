@@ -84,26 +84,36 @@ class EspecialistaModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [usuario_id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
 			const row = rows[0];
 
 			return {
 				usuario_id: row.usuario_id,
-				nombre: row.nombre,
-				primer_apellido: row.primer_apellido,
-				segundo_apellido: row.segundo_apellido,
-				email: row.email,
-				descripcion: row.descripcion,
-				imagen: row.imagen,
-				turno: row.turno,
-				num_colegiado: row.num_colegiado,
-				especialidad: {
-					especialidad_id: row.especialidad_id,
-					especialidad: row.especialidad,
+				datos_personales: {
+					nombre: row.nombre,
+					primer_apellido: row.primer_apellido,
+					segundo_apellido: row.segundo_apellido,
+					email: row.email,
+					dni: row.dni,
 				},
-				consulta: {
-					consulta_id: row.consulta_id,
-					consulta_nombre: row.consulta_nombre,
-				},
+				datos_especialista: {
+					num_colegiado: row.num_colegiado,
+					descripcion: row.descripcion,
+					especialidad: {
+						especialidad_id: row.especialidad_id,
+						especialidad: row.especialidad,
+					},
+					consulta: {
+						consulta_id: row.consulta_id,
+						consulta_nombre: row.consulta_nombre,
+						turno: row.turno,
+					},
+					imagen: row.imagen
+				}
 			};
 		} catch (err) {
 			throw new Error('Error al obtener el especialista.');
