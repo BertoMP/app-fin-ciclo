@@ -242,7 +242,7 @@ export class SpecialistFormComponent implements OnInit {
     this.registerForm.updateValueAndValidity();
   }
 
-  onRegisterAttempt(): void {
+  onRegisterSpecialist(): void {
     this.sendedAttempt = true;
 
     if (this.registerForm.invalid) {

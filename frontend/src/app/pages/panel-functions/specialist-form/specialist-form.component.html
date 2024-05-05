@@ -4,7 +4,7 @@
     <app-loading-spinner></app-loading-spinner>
 </section>
 } @else {
-<form [formGroup]="registerForm" (ngSubmit)="onRegisterAttempt()">
+<form [formGroup]="registerForm" (ngSubmit)="onRegisterSpecialist()">
     <h2>FORMULARIO CREAR/EDITAR ESPECIALISTA</h2>
     <section class="form-first-row">
         <fieldset class="form-personal-data">
@@ -47,21 +47,21 @@
         </fieldset>
     </section>
     <section class="form-second-row">
-        <fieldset class="form-contact-data">
-            <legend>Dirección y contacto</legend>
-            <article class="place-field">
+        <fieldset class="form-specialist-data">
+            <legend>Datos especialista</legend>
+            <article class="consultation-field">
                 <label for="consulta">Consulta</label>
                 <select2 id="consulta" formControlName="consulta" [ngClass]="{ 'invalid': registerForm.get('consulta').invalid &&
                   sendedAttempt }" [data]="consulta" placeholder="Elige una opcion">
                 </select2>
             </article>
-            <article class="address-field">
+            <article class="especiality-field">
                 <label for="especialidad">Especialidad</label>
                 <select2 id="especialidad" formControlName="especialidad" [ngClass]="{ 'invalid': registerForm.get('especialidad').invalid &&
                   sendedAttempt }" [data]="especialidad" placeholder="Elige una opcion">
                 </select2>
             </article>
-            <article class="floor-field">
+            <article class="turn-field">
                 <label for="turno">Turno</label>
                 <select2 id="turno" formControlName="turno" [ngClass]="{ 'invalid': registerForm.get('turno').invalid &&
                   sendedAttempt }" [data]="turno" placeholder="Elige una opcion">
@@ -73,13 +73,14 @@
                  registerForm.get('numero_colegiado').invalid &&
                  sendedAttempt }">
             </article>
-            <article class="province-field">
+            <article class="image-field">
                 <label for="imagen">Imagen</label>
                 <input type="file" formControlName="imagen" id="imagen" [ngClass]="{ 'invalid':
                  registerForm.get('imagen').invalid &&
                  sendedAttempt }" (change)="onFileSelect($event)">
+                 <img [src]="imageToShow" *ngIf="imageBase64" class="preview-image"  alt="Patata"/>
             </article>
-            <article class="postal-code-field">
+            <article class="description-field">
                 <label for="descripcion">Descripción</label>
                 <textarea formControlName="descripcion" id="descripcion" [ngClass]="{ 'invalid':
                  registerForm.get('descripcion').invalid &&
@@ -182,6 +183,5 @@
     </section>
 
 
-  <img [src]="imageToShow" *ngIf="imageBase64" class="preview-image"  alt="Patata"/>
 </form>
 }

@@ -134,61 +134,53 @@ button:disabled {
   gap: 1rem;
 }
 
-.form-contact-data {
+.form-specialist-data {
   grid-area: contact-data;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(3, 1fr);
   grid-template-areas:
-    "legend  legend  . . . ."
-    " place address address number floor floor"
-    "province province city city postal-code postal-code"
-    ". phone phone mobile  mobile .";
-  gap: 1rem;
+    "legend  legend   . . .  .  "
+    "legend  legend   . . .  .  "
+    " number number   especiality especiality   turn  consultation"
+    " number number   especiality especiality   turn  consultation"
+    " image image . description description description  " 
+    " preview-image preview-image . description description description  ";
+  gap: 1.5rem;
 }
 
-.form-contact-data legend {
+.form-specialist-data legend {
   grid-area: legend;
 }
 
-.place-field {
-  grid-area: place;
+.consultation-field {
+  grid-area: consultation;
 }
 
-.address-field {
-  grid-area: address;
+.especiality-field {
+  grid-area: especiality;
 }
 
 .number-field {
   grid-area: number;
 }
 
-.floor-field {
-  grid-area: floor;
+.turn-field {
+  grid-area: turn;
 }
 
-.door-field {
-  grid-area: door;
+.preview-image{
+  grid-area: preview-image;
+  width: 100%;
+  margin-top: 10%;
 }
 
-.province-field {
-  grid-area: province;
+.image-field {
+  grid-area: image;
 }
 
-.city-field {
-  grid-area: city;
-}
-
-.postal-code-field {
-  grid-area: postal-code;
-}
-
-.phone-field {
-  grid-area: phone;
-}
-
-.mobile-field {
-  grid-area: mobile;
+.description-field {
+  grid-area: description;
 }
 
 .btn-section {
@@ -275,6 +267,7 @@ textarea {
   .form-personal-data {
     grid-template-columns: 1fr;
     grid-template-areas:
+    "legend"
       "name"
       "first-surname"
       "second-surname"
@@ -283,20 +276,20 @@ textarea {
       "gender";
   }
 
-  .form-contact-data {
+  .form-specialist-data {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(6, 1fr);
     grid-template-areas:
-      "place"
-      "address"
+      "legend"
+      "legend"
       "number"
-      "floor"
-      "door"
-      "province"
-      "city"
-      "postal-code"
-      "phone"
-      "mobile";
+      "number"
+      "especiality" 
+      "especiality" 
+      "turn"
+      "consultation"
+      "image"
+      "description"
   }
 
   .form-account-data {
