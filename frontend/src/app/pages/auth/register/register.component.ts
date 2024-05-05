@@ -389,20 +389,22 @@ export class RegisterComponent implements OnInit {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-    Swal.fire({
-      title: 'Enhorabuena',
-      text: `Has conseguido ${message} un usuario correctamente`,
-      icon: 'success',
-      width: '50%'
-    })
+
+    this.router.navigate(['auth/login'])
       .then(() => {
-        this.router.navigate(['auth/login'])
-          .then(() => { })
-          .catch((error) => console.error('Error navigating to login', error));
+        Swal.fire({
+          title: 'Enhorabuena',
+          text: `Has conseguido ${message} un usuario correctamente`,
+          icon: 'success',
+          width: '50%'
+        }).then(() => {
+          Swal.close();
+        })
+          .catch(() => {
+            console.log('Se produjo un error.')
+          });
       })
-      .catch(() => {
-        console.log('Se produjo un error.')
-      });
+      .catch((error) => console.error('Error navigating to login', error));
   }
 
   onSubmitError(error: string[]): void {

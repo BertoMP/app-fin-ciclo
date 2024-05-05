@@ -1,17 +1,18 @@
 import { Component } from "@angular/core";
-import { RouterLink, RouterOutlet } from "@angular/router";
+import { RouterLink, RouterModule, RouterOutlet } from "@angular/router";
 
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
   imports: [
     RouterLink,
-    RouterOutlet],
+    RouterOutlet, 
+    RouterModule],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.scss'
 })
 
-export class AdminPanelComponent{
+export class AdminPanelComponent {
 
 }
 

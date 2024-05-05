@@ -18,13 +18,14 @@ import {
 import { ForgottenPasswordComponent } from './pages/auth/forgotten-password/forgotten-password.component';
 import { RefreshPasswordComponent } from './pages/auth/refresh-password/refresh-password.component';
 import { EspecialistDataComponent } from './pages/especialist-data/especialist-data.component';
-import { PanelComponent } from './pages/panel-functions/panel/panel.component';
 import { loginGuard } from './core/guards/login.guard';
 import {
   PageNotFoundComponent
 } from "./pages/page-not-found/page-not-found.component";
-import { SpecialistFormComponent } from './pages/panel-functions/specialist-functions/specialist-form/specialist-form.component';
-import { UserListComponent } from './pages/panel-functions/admin-functions/user-list/user-list.component';
+import { PanelComponent } from './pages/panels/panel-functions/panel/panel.component';
+import { UserListComponent } from './pages/panels/panel-functions/admin-functions/user-list/user-list.component';
+import { EspecialidadesListComponent } from './pages/panels/panel-functions/admin-functions/especialidades-list/especialidades-list.component';
+import { SpecialistFormComponent } from './pages/panels/panel-functions/specialist-functions/specialist-form/specialist-form.component';
 
 export const routes: Routes = [
   {
@@ -41,10 +42,15 @@ export const routes: Routes = [
       {
         path: 'listadoUsers',
         component: UserListComponent,
-      }, {
+      }, 
+      {
+        path: 'listadoEspecialidades',
+        component: EspecialidadesListComponent,
+      },
+      {
         path: '**',
         component: UserListComponent,
-      }
+      },
     ]
   },
   ,

@@ -6,14 +6,15 @@ import { Observable } from 'rxjs';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RouterLink, RouterOutlet } from '@angular/router';
 import {Select2Data, Select2Module} from "ng-select2-component";
-import { VerticalCardComponent } from '../../../../shared/components/vertical-card/vertical-card.component';
-import { RemoveAccentsPipe } from '../../../../shared/pipes/remove-accents.pipe';
-import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
-import { ListedUserModel } from '../../../../core/interfaces/listed-user.model';
-import { AdminPanelService } from '../../../../core/services/admin-panel.service';
-import { UserListResponseModel } from '../../../../core/interfaces/user-list-response.model';
+import { VerticalCardComponent } from '../../../../../shared/components/vertical-card/vertical-card.component';
+import { RemoveAccentsPipe } from '../../../../../shared/pipes/remove-accents.pipe';
+import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
+import { ListedSpecialityModel } from '../../../../../core/interfaces/speciality-list.model';
+import { AdminPanelService } from '../../../../../core/services/admin-panel.service';
+import { UserListResponseModel } from '../../../../../core/interfaces/user-list-response.model';
+
 @Component({
-  selector: 'app-user-list',
+  selector: 'app-especialidades-list',
   standalone: true,
   imports: [VerticalCardComponent,
     LowerCasePipe,
@@ -25,25 +26,11 @@ import { UserListResponseModel } from '../../../../core/interfaces/user-list-res
     FormsModule,
     RouterLink,
     RouterOutlet, ReactiveFormsModule, Select2Module],
-  templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.scss'
+  templateUrl: './especialidades-list.component.html',
+  styleUrl: './especialidades-list.component.scss'
 })
-export class UserListComponent {
-  roles: Select2Data = [
-    {
-      value: 1,
-      label: 'Todos'
-    },
-    {
-      value: 2,
-      label: 'Pacientes'
-    },
-    {
-      value: 3,
-      label: 'Especialistas'
-    }
-  ];
-  users: ListedUserModel[];
+export class EspecialidadesListComponent {
+  especialities: ListedSpecialityModel[];
   nextPageUrl: string;
   previousPageUrl: string;
   actualPage: number;
@@ -51,7 +38,6 @@ export class UserListComponent {
   totalItems: number;
   itemsPerPage: number;
   errores: string[];
-  @Input("userRole") userRole: number;
   role: string = "1";
   search: string = "";
 
@@ -59,14 +45,14 @@ export class UserListComponent {
 
   ngOnInit(): void {
     this.actualPage = 1;
-    this.getUsers(this.actualPage);
+    this.getSpecialities(this.actualPage);
   }
 
-  getUsers(pageOrUrl: number | string) {
-    let request: Observable<UserListResponseModel> = (typeof pageOrUrl === 'number') ? this.adminPanelService.getUserList(pageOrUrl) : this.adminPanelService.getSpecificPage(pageOrUrl);
+  getSpecialities(pageOrUrl: number | string) {
+    let request: Observable<ListedSpecialityModel> = (typeof pageOrUrl === 'number') ? this.adminPanelService.getSpecialitiesList(pageOrUrl) : this.adminPanelService.getSpecificPageSpeciality(pageOrUrl);
 
     request.subscribe({
-      next: (response: UserListResponseModel) => {
+      next: (response: ListedSpecialityModel) => {
         this.#showResults(response);
       }
     });
@@ -81,29 +67,30 @@ export class UserListComponent {
   }
 
   #showResults(data) {
-    this.users = data.resultados;
+    console.log(data);
+    this.especialities = data.resultados;
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;
     this.totalPages = data.paginas_totales;
-    this.totalItems = data.cantidad_usuarios;
+    this.totalItems = data.cantidad_especialidades;
     this.itemsPerPage = data.items_pagina;
     this.actualPage = data.pagina_actual;
   }
 
   confirmarCancelacion(id: number) {
     Swal.fire({
-      text: 'Estás seguro que quieres eliminar a este usuario?',
+      text: 'Estás seguro que quieres eliminar a esta especialidad?',
       confirmButtonText: 'Confirmar',
       cancelButtonText: 'Cancelar',
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        this.adminPanelService.eliminateUser(id).subscribe({
+        this.adminPanelService.eliminateSpeciality(id).subscribe({
           next: (response) => {
-            this.users.length <= 1 && this.previousPageUrl != null ? this.getUsers(this.previousPageUrl) : this.getUsers(this.actualPage);
+            this.especialities.length <= 1 && this.previousPageUrl != null ? this.getSpecialities(this.previousPageUrl) : this.getSpecialities(this.actualPage);
             Swal.fire({
               title: 'Enhorabuena',
-              text: 'Has conseguido eliminar al usuario correctamente',
+              text: 'Has conseguido eliminar la especialidad correctamente',
               icon: 'success',
               width: '50%'
             })

@@ -1,0 +1,49 @@
+img {
+    width: 200px;
+}
+
+textarea {
+    height: 150px;
+    padding: 10px;
+}
+
+button {
+    margin: 5px;
+}
+
+.filter {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  
+    article {
+      width: 90%;
+    }
+  
+    ::ng-deep .select2-selection--single {
+      font-size: 1.2rem;
+      width: 100%;
+      border-radius: 5px;
+      padding: 20px;
+      text-align: center;
+      align-items: center;
+    }
+  
+    label {
+      font-size: 1.2rem;
+      font-weight: 500;
+      display: block;
+    }
+  
+    input {
+      width: 100%;
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1.2rem;
+    }
+  
+  }
+  

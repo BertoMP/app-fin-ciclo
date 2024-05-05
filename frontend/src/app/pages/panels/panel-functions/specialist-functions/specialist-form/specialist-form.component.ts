@@ -11,18 +11,18 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Select2Module, Select2Data } from 'ng-select2-component';
 import Swal from 'sweetalert2';
-import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
-import { PasswordInputComponent } from '../../../../shared/components/password-input/password-input.component';
-import { TurnoService } from '../../../../core/services/turno.service';
-import { EspecialidadService } from '../../../../core/services/especialidad.service';
-import { ConsultaService } from '../../../../core/services/consulta.service';
-import { FileUploadService } from '../../../../core/services/file-uploader.service';
-import { ProfessionalDataService } from '../../../../core/services/professional-data.service';
-import { AuthService } from '../../../../core/services/auth.service';
-import { CustomValidators } from '../../../../core/classes/CustomValidators';
-import { EspecialidadModel } from '../../../../core/interfaces/especialidad-Model';
-import { EspecialistModel } from '../../../../core/interfaces/especialist.model';
 import { Subscription } from 'rxjs';
+import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
+import { PasswordInputComponent } from '../../../../../shared/components/password-input/password-input.component';
+import { EspecialistModel } from '../../../../../core/interfaces/especialist.model';
+import { TurnoService } from '../../../../../core/services/turno.service';
+import { EspecialidadService } from '../../../../../core/services/especialidad.service';
+import { ConsultaService } from '../../../../../core/services/consulta.service';
+import { FileUploadService } from '../../../../../core/services/file-uploader.service';
+import { ProfessionalDataService } from '../../../../../core/services/professional-data.service';
+import { AuthService } from '../../../../../core/services/auth.service';
+import { CustomValidators } from '../../../../../core/classes/CustomValidators';
+import { EspecialidadModel } from '../../../../../core/interfaces/especialidad-Model';
 
 
 @Component({

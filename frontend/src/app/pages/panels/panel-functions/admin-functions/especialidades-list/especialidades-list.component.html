@@ -1,0 +1,25 @@
+<pagination-controls (pageChange)="actualPage = $event; getSpecialities(actualPage)" maxSize="10" directionLinks="true"
+  previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+<!-- <section class="filter">
+    <article class="search">
+        <label for="search">Buscar</label>
+        <input type="text" id="search" [(ngModel)]="search" (keyup)="filterByRoleAndSearch()">
+    </article>
+</section> -->
+<section class="card-container">
+    <div
+        *ngFor="let especiality of especialities | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
+        <div class="m-3 d-flex justify-content-between align-items-center">
+            <img [src]="especiality.datos_especialidad.imagen" alt="imagen no disponible">
+            <span>Nombre:{{especiality.datos_especialidad.nombre}}</span>
+            <textarea>{{especiality.datos_especialidad.descripcion}}</textarea>
+            <section class="d-flex m-3">
+                <button type="button" class="btn btn-primary"
+                    routerLink="/crearEditarEspecialista/{{especiality.id}}">Editar</button>
+                <button type="button" class="btn btn-danger"
+                    (click)="confirmarCancelacion(especiality.id)">Eliminar</button>
+            </section>
+        </div>
+    </div>
+</section>
+<button type="button" class="btn btn-primary" routerLink="/crearEditarUsuario">Crear Especialidad</button>
