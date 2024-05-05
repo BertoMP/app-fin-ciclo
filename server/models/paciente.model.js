@@ -239,7 +239,7 @@ class PacienteModel {
 		const codigo_postal = paciente.codigo_postal;
 		const tel_fijo = paciente.tel_fijo;
 		const tel_movil = paciente.tel_movil;
-		const usuario_id = paciente.usuario_id;
+		const usuario_id = paciente.id;
 
 		const query =
 			'UPDATE ' +

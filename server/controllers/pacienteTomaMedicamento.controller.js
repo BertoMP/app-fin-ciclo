@@ -23,13 +23,15 @@ class PacienteTomaMedicamentoController {
 	 * @memberof PacienteTomaMedicamentoController
 	 */
 	static async getRecetas(req, res) {
-		let paciente_id = req.params.usuario_id;
+		let paciente_id = 0;
 
 		if (req.user_role === 2) {
 			paciente_id = req.user_id;
 		} else if (req.user_role === 3) {
 			paciente_id = req.params.usuario_id;
 		}
+
+		paciente_id = parseInt(paciente_id);
 
 		try {
 			const prescripciones = await PacienteTomaMedicamentoService.findPrescripciones(paciente_id);
@@ -185,6 +187,8 @@ class PacienteTomaMedicamentoController {
 		} else if (req.user_role === 3) {
 			paciente_id = req.params.usuario_id;
 		}
+
+		paciente_id = parseInt(paciente_id);
 
 		try {
 			const prescripciones = await PacienteTomaMedicamentoService.findPrescripciones(paciente_id);

@@ -49,6 +49,8 @@ class UsuarioController {
 			id = req.params.usuario_id;
 		}
 
+		id = parseInt(id);
+
 		try {
 			let usuario = await UsuarioService.getRoleByUserId(id);
 			let userData = {};
@@ -399,6 +401,8 @@ class UsuarioController {
 			id = req.user_id;
 		}
 
+		id = parseInt(id);
+
 		try {
 			const userExists = await UsuarioService.readUsuarioById(id);
 
@@ -545,6 +549,8 @@ class UsuarioController {
 		} else if (req.user_role === 1) {
 			usuario_id = req.params.usuario_id;
 		}
+
+		usuario_id = parseInt(usuario_id);
 
 		try {
 			const user = await UsuarioService.readUsuarioById(usuario_id);

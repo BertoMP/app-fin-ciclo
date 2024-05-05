@@ -39,6 +39,8 @@ class GlucometriaController {
 			paciente_id = req.params.usuario_id;
 		}
 
+		paciente_id = parseInt(paciente_id);
+
 		try {
 			const searchValues = getSearchValues(req, 'date');
 
