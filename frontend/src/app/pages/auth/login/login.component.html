@@ -12,9 +12,9 @@
       >
       @if (loginForm.get('email').invalid && loginForm.get('email').dirty) {
         @if (loginForm.get('email').errors['required']) {
-          <p class="invalid">El email es necesario para iniciar sesión.</p>
+          <small class="invalid">El email es necesario para iniciar sesión.</small>
         } @else if (loginForm.get('email').errors['isInvalidMail']) {
-          <p class="invalid">El email ingresado no tiene un formato válido.</p>
+          <small class="invalid">El email ingresado no tiene un formato válido.</small>
         }
       }
     </section>
@@ -23,18 +23,16 @@
       <app-password-input [id]="passwordId" formControlName="password"></app-password-input>
       @if (loginForm.get('password').invalid
       && loginForm.get('password').dirty) {
-        <p class="invalid">La contraseña es necesaria para iniciar sesión.</p>
+        <small class="invalid">La contraseña es necesaria para iniciar sesión.</small>
       }
+      <a routerLink="/auth/forgotten-password">He olvidado mi contraseña</a>
     </section>
     <section>
-      <button type="button" routerLink="/auth/forgotten-password"
-      >He olvidado mi contraseña
-      </button>
+
     </section>
     <section>
       <button type="submit"
-              [disabled]="!loginForm.valid"
-      >Iniciar sesión
+              [disabled]="loginForm.invalid">Iniciar sesión
       </button>
     </section>
   </form>
