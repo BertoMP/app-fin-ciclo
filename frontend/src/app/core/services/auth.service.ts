@@ -6,6 +6,7 @@ import {UserModel} from "../interfaces/user.model";
 import {JwtHelperService} from "@auth0/angular-jwt"
 import {UserRole} from "../enum/user-role.enum";
 import { EspecialistModel } from '../interfaces/especialist.model';
+import { PatientModel } from '../interfaces/patient.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class AuthService {
     return this.loggedInUser.asObservable();
   }
 
-  register(newUser: UserModel): Observable<any> {
+  registerUser(newUser: PatientModel): Observable<any> {
     return this.http.post(`${this.apiUrl}/usuario/registro`, newUser)
       .pipe(catchError(this.handleError));
   }
@@ -37,6 +38,15 @@ export class AuthService {
   updateSpecialist(newUser: EspecialistModel): Observable<any> {
     return this.http.put(`${this.apiUrl}/usuario/actualizar-especialista/${newUser.usuario_id}`, newUser)
       .pipe(catchError(this.handleError));
+  }
+
+  updateUser(newUser: PatientModel): Observable<any> {
+    return this.http.put(`${this.apiUrl}/usuario/actualizar-paciente/${newUser.usuario_id}`, newUser)
+      .pipe(catchError(this.handleError));
+  }
+
+  getPatient(id:number){
+    return this.http.get(`${this.apiUrl}/usuario/${id}`).pipe(catchError(this.handleError));
   }
 
   login(email: string, password: string): Observable<any> {

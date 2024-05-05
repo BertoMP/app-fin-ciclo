@@ -17,13 +17,14 @@
     <div class="m-3 d-flex justify-content-between align-items-center">
       <span>Nombre:{{user.datos_personales.nombre}} {{user.datos_personales.primer_apellido}} {{user.datos_personales.segundo_apellido}}<br> Rol:{{user.datos_rol.nombre_rol}}</span>
       <section class="d-flex m-3">
-      <button type="button" class="btn btn-primary" routerLink="/crearEditarEspecialista/{{user.usuario_id}}">Editar</button>
+      <button type="button" class="btn btn-primary" *ngIf="user.datos_rol.rol_id==2" routerLink="/crearEditarUsuario/{{user.usuario_id}}">Editar</button>
+      <button type="button" class="btn btn-primary" *ngIf="user.datos_rol.rol_id==3" routerLink="/crearEditarEspecialista/{{user.usuario_id}}">Editar</button>
       <button type="button" class="btn btn-danger" (click)="confirmarCancelacion(user.usuario_id)">Eliminar</button>
     </section>
     </div>
   </div>
 </section>
-<button type="button" class="btn btn-primary" routerLink="/crearUsuario">Crear paciente</button>
+<button type="button" class="btn btn-primary" routerLink="/crearEditarUsuario">Crear paciente</button>
 <button type="button" class="btn btn-primary" routerLink="/crearEditarEspecialista">Crear Especialista</button>
 
 

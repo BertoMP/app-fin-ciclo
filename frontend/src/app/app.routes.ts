@@ -60,7 +60,11 @@ export const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path: 'crearUsuario',
+    path: 'crearEditarUsuario',
+    component: RegisterComponent
+  },
+  {
+    path: 'crearEditarUsuario/:id',
     component: RegisterComponent
   },
   {

@@ -90,7 +90,7 @@ button:disabled {
   grid-template-areas:
     ". . ."
     "name first-surname second-surname"
-    "dni date-of-birth .";
+    "dni date-of-birth  clinic-historial";
   gap: 1rem;
   align-content: center;
 }
@@ -109,6 +109,10 @@ button:disabled {
 
 .dni-field {
   grid-area: dni;
+}
+
+.clinic-historial {
+  grid-area: clinic-historial;
 }
 
 .date-of-birth-field {

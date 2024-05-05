@@ -108,7 +108,7 @@ export class SpecialistFormComponent implements OnInit {
 
     this.registerForm = new FormGroup<any>({
       'nombre': new FormControl(
-        this.nombre,
+        null,
         [
           Validators.required,
           CustomValidators.validName
@@ -254,7 +254,6 @@ export class SpecialistFormComponent implements OnInit {
 
     this.isLoading = true;
     const newEspecialist: EspecialistModel = this.generateEspecialist();
-    console.log(newEspecialist);
 
     if (this.id != null) {
       this.authService.updateSpecialist(newEspecialist)

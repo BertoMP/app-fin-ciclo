@@ -8,7 +8,7 @@ export interface EspecialistModel {
         segundo_apellido: string,
         email: string,
         dni: string,
-        password: string
+        password?: string
     },
     datos_especialista: {
         num_colegiado: string,
