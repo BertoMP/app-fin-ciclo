@@ -559,20 +559,20 @@ class UsuarioController {
 
 			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.datos_personales.email);
 
-			if (emailExists) {
+			if (emailExists && emailExists.usuario_id !== parseInt(usuario_id)) {
 				errors.push('El correo ya está en uso.');
 			}
 
 			const dniExists = await UsuarioService.readUsuarioByDNI(req.body.datos_personales.dni);
 
-			if (dniExists) {
+			if (dniExists && dniExists.usuario_id !== parseInt(usuario_id)) {
 				errors.push('El DNI ya está en uso.');
 			}
 
 			if (req.body.datos_especialista) {
 				const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(req.body.datos_especialista);
 
-				if (numColegiadoExists) {
+				if (numColegiadoExists && numColegiadoExists.usuario_id !== usuario_id) {
 					errors.push('El número de colegiado ya está en uso.');
 				}
 			}

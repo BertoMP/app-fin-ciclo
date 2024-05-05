@@ -12,30 +12,22 @@
             <article class="name-field">
                 <label for="name">Nombre</label>
                 <input type="text" id="name" formControlName="nombre" [ngClass]="{'invalid':
-                 registerForm.get('nombre').invalid
-                 && sendedAttempt
-                 }" [value]="nombre">
+                 registerForm.get('nombre').invalid && sendedAttempt }">
             </article>
             <article class="first-surname-field">
                 <label for="first-surname">Primer apellido</label>
                 <input type="text" id="first-surname" formControlName="primer_apellido" [ngClass]="{ 'invalid':
-                 registerForm.get('primer_apellido').invalid &&
-                 sendedAttempt
-                 }" [value]="primer_apellido">
+                 registerForm.get('primer_apellido').invalid && sendedAttempt }">
             </article>
             <article class="second-surname-field">
                 <label for="second-surname">Segundo apellido</label>
                 <input type="text" id="second-surname" formControlName="segundo_apellido" [ngClass]="{ 'invalid':
-                 registerForm.get('segundo_apellido').invalid
-                 && sendedAttempt
-                 }" [value]="segundo_apellido">
+                 registerForm.get('segundo_apellido').invalid && sendedAttempt }">
             </article>
             <article class="dni-field">
                 <label for="dni">DNI</label>
                 <input type="text" id="dni" formControlName="dni" [ngClass]="{ 'invalid':
-                  registerForm.get('dni').invalid
-                  && sendedAttempt
-                  }" [value]="dni">
+                  registerForm.get('dni').invalid && sendedAttempt }">
             </article>
         </fieldset>
         <fieldset class="form-account-data">
@@ -44,7 +36,7 @@
                 <label for="email">Correo electrónico</label>
                 <input type="email" id="email" formControlName="email" [ngClass]="{ 'invalid':
                  registerForm.get('email').invalid &&
-                 sendedAttempt }" [value]="email">
+                 sendedAttempt }">
             </article>
             <article class="form-field">
                 <label for="password">Contraseña</label>
@@ -60,26 +52,26 @@
             <article class="place-field">
                 <label for="consulta">Consulta</label>
                 <select2 id="consulta" formControlName="consulta" [ngClass]="{ 'invalid': registerForm.get('consulta').invalid &&
-                  sendedAttempt }" [data]="consulta" placeholder="Elige una opcion" [value]="consulta_id">
+                  sendedAttempt }" [data]="consulta" placeholder="Elige una opcion">
                 </select2>
             </article>
             <article class="address-field">
                 <label for="especialidad">Especialidad</label>
                 <select2 id="especialidad" formControlName="especialidad" [ngClass]="{ 'invalid': registerForm.get('especialidad').invalid &&
-                  sendedAttempt }" [data]="especialidad" placeholder="Elige una opcion" [value]="especialidad_id">
+                  sendedAttempt }" [data]="especialidad" placeholder="Elige una opcion">
                 </select2>
             </article>
             <article class="floor-field">
                 <label for="turno">Turno</label>
                 <select2 id="turno" formControlName="turno" [ngClass]="{ 'invalid': registerForm.get('turno').invalid &&
-                  sendedAttempt }" [data]="turno" placeholder="Elige una opcion" [value]="nombre_turno">
+                  sendedAttempt }" [data]="turno" placeholder="Elige una opcion">
                 </select2>
             </article>
             <article class="number-field">
                 <label for="number">Nº Colegiado</label>
                 <input type="number" id="number" formControlName="numero_colegiado" [ngClass]="{ 'invalid':
                  registerForm.get('numero_colegiado').invalid &&
-                 sendedAttempt }" [value]="num_colegiado">
+                 sendedAttempt }">
             </article>
             <article class="province-field">
                 <label for="imagen">Imagen</label>
@@ -91,7 +83,7 @@
                 <label for="descripcion">Descripción</label>
                 <textarea formControlName="descripcion" id="descripcion" [ngClass]="{ 'invalid':
                  registerForm.get('descripcion').invalid &&
-                 sendedAttempt }" [value]="descripcion"></textarea>
+                 sendedAttempt }"></textarea>
             </article>
         </fieldset>
         @if (registerForm.invalid && sendedAttempt) {

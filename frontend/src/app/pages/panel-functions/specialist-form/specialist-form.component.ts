@@ -224,6 +224,8 @@ export class SpecialistFormComponent implements OnInit {
   }
 
   patchForm(): void {
+    let descripcionWithLineBreaks = this.descripcion.replace(/<br>/g, '\n');
+
     this.registerForm.patchValue({
       'nombre': this.nombre,
       'primer_apellido': this.primer_apellido,
@@ -234,12 +236,7 @@ export class SpecialistFormComponent implements OnInit {
       'especialidad': this.especialidad_id,
       'numero_colegiado': this.num_colegiado,
       'turno': this.nombre_turno,
-      'descripcion': this.descripcion
-    });
-
-    Object.keys(this.registerForm.controls).forEach(field => {
-      const control = this.registerForm.get(field);
-      control.markAsTouched({ onlySelf: true });
+      'descripcion': descripcionWithLineBreaks
     });
 
     this.registerForm.updateValueAndValidity();
