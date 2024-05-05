@@ -23,7 +23,8 @@ import { loginGuard } from './core/guards/login.guard';
 import {
   PageNotFoundComponent
 } from "./pages/page-not-found/page-not-found.component";
-import { SpecialistFormComponent } from './pages/panel-functions/specialist-form/specialist-form.component';
+import { SpecialistFormComponent } from './pages/panel-functions/specialist-functions/specialist-form/specialist-form.component';
+import { UserListComponent } from './pages/panel-functions/admin-functions/user-list/user-list.component';
 
 export const routes: Routes = [
   {
@@ -35,9 +36,18 @@ export const routes: Routes = [
   {
     path: 'testeo',
     component: PanelComponent,
-    canActivate: [loginGuard]
+    canActivate: [loginGuard],
+    children:[
+      {
+        path: 'listadoUsers',
+        component: UserListComponent,
+      }, {
+        path: '**',
+        component: UserListComponent,
+      }
+    ]
   },
-
+  ,
   {
     path: 'testeo-backend',
     component: TesteoBackendComponent

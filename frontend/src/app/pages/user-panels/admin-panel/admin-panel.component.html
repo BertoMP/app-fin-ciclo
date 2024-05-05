@@ -1,30 +1,4 @@
 <h1>Panel de Administrador.</h1>
-<pagination-controls (pageChange)="actualPage = $event; getUsers(actualPage)" maxSize="10" directionLinks="true"
-  previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
-<section class="filter">
-  <article class="role-filter">
-    <label for="role">Rol</label>
-    <select2 id="role" [data]="roles" [value]="1" [(ngModel)]="role" (update)="filterByRoleAndSearch()">
-    </select2>
-  </article>
-  <article class="search">
-    <label for="search">Buscar</label>
-    <input type="text" id="search" [(ngModel)]="search" (keyup)="filterByRoleAndSearch()">
-  </article>
-</section>
-<section class="card-container">
-  <div *ngFor="let user of users | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
-    <div class="m-3 d-flex justify-content-between align-items-center">
-      <span>Nombre:{{user.datos_personales.nombre}} {{user.datos_personales.primer_apellido}} {{user.datos_personales.segundo_apellido}}<br> Rol:{{user.datos_rol.nombre_rol}}</span>
-      <section class="d-flex m-3">
-      <button type="button" class="btn btn-primary" *ngIf="user.datos_rol.rol_id==2" routerLink="/crearEditarUsuario/{{user.usuario_id}}">Editar</button>
-      <button type="button" class="btn btn-primary" *ngIf="user.datos_rol.rol_id==3" routerLink="/crearEditarEspecialista/{{user.usuario_id}}">Editar</button>
-      <button type="button" class="btn btn-danger" (click)="confirmarCancelacion(user.usuario_id)">Eliminar</button>
-    </section>
-    </div>
-  </div>
-</section>
-<button type="button" class="btn btn-primary" routerLink="/crearEditarUsuario">Crear paciente</button>
-<button type="button" class="btn btn-primary" routerLink="/crearEditarEspecialista">Crear Especialista</button>
-
-
+<button type="button" routerLink="/testeo/listadoUsers">Listado Usuarios</button>
+<button type="button" routerLink="/testeo/listadoUsers">Listado Especialidades</button>
+<router-outlet></router-outlet>

@@ -6,7 +6,7 @@ export const loginGuard = () => {
     if ((localStorage.getItem("access_token"))){
         return true;
     }else{
-        router.navigate([""])
+        router.navigate(["/auth/login"])
           .then(() => {})
           .catch((err) => {
             console.error(err)
