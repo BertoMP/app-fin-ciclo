@@ -65,7 +65,7 @@ export class AdminPanelComponent implements OnInit {
     console.log("Rol usuario " + this.userRole);
   }
 
-  getUsers(pageOrUrl: number | string) {
+  getUsers(pageOrUrl: number | string): void {
     let request: Observable<UserListResponseModel> = (typeof pageOrUrl === 'number') ? this.adminPanelService.getUserList(pageOrUrl) : this.adminPanelService.getSpecificPage(pageOrUrl);
 
     request.subscribe({
@@ -75,12 +75,17 @@ export class AdminPanelComponent implements OnInit {
     });
   }
 
-  filterByRoleAndSearch() {
+  filterByRoleAndSearch(): void {
     this.adminPanelService.getUsersByRoleAndSearch(parseInt(this.role), this.search).subscribe({
       next: (response: UserListResponseModel) => {
         this.#showResults(response);
       }
     });
+  }
+
+  onClearSearch(): void {
+    this.search = "";
+    this.filterByRoleAndSearch();
   }
 
   #showResults(data) {

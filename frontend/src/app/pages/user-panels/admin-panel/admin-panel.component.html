@@ -9,7 +9,7 @@
   </article>
   <article class="search">
     <label for="search">Buscar</label>
-    <input type="text" id="search" [(ngModel)]="search" (keyup)="filterByRoleAndSearch()">
+    <input type="search" id="search" [(ngModel)]="search" (keyup)="filterByRoleAndSearch()" (search)="onClearSearch()">
   </article>
 </section>
 <section class="card-container">
