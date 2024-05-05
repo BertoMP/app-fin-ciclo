@@ -16,10 +16,17 @@ class InformePatologiaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async addPatologia(informeId, patologiaId, dbConn) {
-		const query = 'INSERT INTO informe_patologia (informe_id, patologia_id) VALUES (?, ?)';
+		const query =
+			'INSERT INTO informe_patologia (informe_id, patologia_id) ' +
+			'		VALUES (?, ?)';
 
 		try {
-			return await dbConn.execute(query, [informeId, patologiaId]);
+			await dbConn.execute(query, [informeId, patologiaId]);
+
+			return {
+				informe_id: informeId,
+				patologia_id: patologiaId,
+			};
 		} catch (err) {
 			throw new Error('Error al añadir la patología al informe.');
 		}
@@ -37,7 +44,12 @@ class InformePatologiaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deletePatologiaByInformeId(informeId, dbConn) {
-		const query = 'DELETE FROM informe_patologia WHERE informe_id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		informe_patologia ' +
+			'WHERE ' +
+			'		informe_id = ?';
 
 		try {
 			return await dbConn.execute(query, [informeId]);

@@ -11,7 +11,7 @@ class TomaModel {
 	 * @memberof TomaModel
 	 * @param {Object} prescripcion - El objeto de la nueva prescripción.
 	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise<number>} El ID de la nueva toma creada.
+	 * @returns {Promise<{id: number, datos_toma: {fecha_inicio: *, hora: *, fecha_fin: *, dosis: *, observaciones: *}}>} El ID de la nueva toma creada.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async createToma(prescripcion, dbConn) {
@@ -34,7 +34,16 @@ class TomaModel {
 				observaciones,
 			]);
 
-			return result[0];
+			return {
+				id: result[0].insertId,
+				datos_toma: {
+					dosis: dosis,
+					hora: hora,
+					fecha_inicio: fecha_inicio,
+					fecha_fin: fecha_fin,
+					observaciones: observaciones,
+				}
+			}
 		} catch (err) {
 			throw new Error('Error al guardar la toma.');
 		}
@@ -52,7 +61,12 @@ class TomaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteToma(id, dbConn) {
-		const query = 'DELETE FROM toma WHERE id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		toma ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);
@@ -73,12 +87,35 @@ class TomaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async findToma(id, dbConn) {
-		const query = 'SELECT * FROM toma WHERE id = ?';
+		const query =
+			'SELECT ' +
+			'		hora,' +
+			'   dosis,' +
+			'   fecha_inicio,' +
+			'   fecha_fin,' +
+			'   observaciones ' +
+			'FROM ' +
+			'		toma ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
-			const result = await dbConn.execute(query, [id]);
+			const [rows] = await dbConn.execute(query, [id]);
 
-			return result[0];
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				id: id,
+				datos_toma: {
+					dosis: rows[0].dosis,
+					hora: rows[0].hora,
+					fecha_inicio: rows[0].fecha_inicio,
+					fecha_fin: rows[0].fecha_fin,
+					observaciones: rows[0].observaciones,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al buscar la toma.');
 		}

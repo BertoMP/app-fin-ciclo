@@ -64,11 +64,17 @@ class GlucometriaModel {
 			const actualPage = page;
 			const totalPages = Math.ceil(total / limit);
 
-			rows.forEach((glucometria) => {
-				glucometria.fecha = tz(glucometria.fecha, 'Europe/Madrid').format('DD-MM-YYYY');
+			const formattedRows = rows.map((row) => {
+				return {
+					fecha: tz(row.fecha, 'Europe/Madrid').format('DD-MM-YYYY'),
+					hora: row.hora,
+					datos_toma: {
+						medicion: row.medicion,
+					}
+				}
 			});
 
-			return { rows, total, actualPage, totalPages };
+			return { formattedRows, total, actualPage, totalPages };
 		} catch (err) {
 			throw new Error('No se pudieron obtener las mediciones de glucosa.');
 		}
@@ -92,10 +98,20 @@ class GlucometriaModel {
 		const medicion = glucometria.medicion;
 
 		const query =
-			'INSERT INTO glucometria (paciente_id, fecha, hora, medicion) VALUES (?, ?, ?, ?)';
+			'INSERT INTO glucometria (paciente_id, fecha, hora, medicion) ' +
+			'		VALUES (?, ?, ?, ?)';
 
 		try {
-			return await dbConn.execute(query, [paciente_id, fecha, hora, medicion]);
+			await dbConn.execute(query, [paciente_id, fecha, hora, medicion]);
+
+			return {
+				fecha: tz(fecha, 'Europe/Madrid').format('DD-MM-YYYY'),
+				hora: hora,
+				datos_toma: {
+					medicion: medicion,
+				}
+			}
+
 		} catch (err) {
 			throw new Error('No se pudo crear la medición de glucosa.');
 		}
@@ -113,7 +129,12 @@ class GlucometriaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteGlucometriasByUserId(paciente_id, dbConn) {
-		const query = 'DELETE FROM glucometria WHERE paciente_id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		glucometria ' +
+			'WHERE ' +
+			'		paciente_id = ?';
 		try {
 			return await dbConn.execute(query, [paciente_id]);
 		} catch (err) {

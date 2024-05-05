@@ -30,6 +30,16 @@ class CitaService {
 		return await CitaModel.fetchAll(searchValues, limit, conn);
 	}
 
+	/**
+	 * @method readCitasByUserId
+	 * @description Método para leer citas por el ID del usuario.
+	 * @static
+	 * @async
+	 * @memberOf CitaService
+	 * @param {number} userId - El ID del usuario.
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} Un array de citas.
+	 */
 	static async readCitasByEspecialistaId(userId, conn = dbConn) {
 		return await CitaModel.fetchByEspecialistaId(userId, conn);
 	}
@@ -98,7 +108,7 @@ class CitaService {
 	 * @memberOf CitaService
 	 * @param {number} informe_id - El ID del informe.
 	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise<number>} El ID del paciente.
+	 * @returns {Promise<{paciente_id: *}>} El ID del paciente.
 	 */
 	static async readPacienteIdByInformeId(informe_id, conn = dbConn) {
 		return await CitaModel.fetchPacienteIdByInformeId(informe_id, conn);
@@ -130,11 +140,14 @@ class CitaService {
 			}
 
 			const newCitaId = await CitaModel.createCita(cita, conn);
-			const newCita = await CitaModel.fetchById(newCitaId, conn);
+			const newCita = await CitaModel.fetchById(newCitaId.id, conn);
 
 			const qr = await generateQRCode(newCita);
-			const emailPaciente = await UsuarioService.readEmailByUserId(cita.paciente_id, conn);
+			const paciente = await UsuarioService.readEmailByUserId(cita.paciente_id, conn);
+			const emailPaciente = paciente.email;
+
 			pdf = await PdfService.generateCitaPDF(newCita, qr);
+
 			await EmailService.sendPdfCita(newCita, emailPaciente, pdf);
 
 			if (!isConnProvided) {

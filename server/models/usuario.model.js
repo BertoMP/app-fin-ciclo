@@ -131,7 +131,6 @@ class UsuarioModel {
 		} catch (err) {
 			throw new Error('Error al obtener la contraseña.');
 		}
-
 	}
 
 	static async getRoleByUserId(id, dbConn) {
@@ -245,7 +244,19 @@ class UsuarioModel {
 				return null;
 			}
 
-			return rows[0];
+			return {
+				usuario_id: rows[0].id,
+				datos_personales: {
+					email: rows[0].email,
+					nombre: rows[0].nombre,
+					primer_apellido: rows[0].primer_apellido,
+					segundo_apellido: rows[0].segundo_apellido,
+					dni: rows[0].dni,
+				},
+				datos_rol: {
+					rol_id: rows[0].rol_id
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al obtener el usuario.');
 		}
@@ -288,7 +299,19 @@ class UsuarioModel {
 				rol_id,
 			]);
 
-			return user[0];
+			return {
+				usuario_id: user[0].insertId,
+				datos_personales: {
+					email: email,
+					nombre: nombre,
+					primer_apellido: primer_apellido,
+					segundo_apellido: segundo_apellido,
+					dni: dni,
+				},
+				datos_rol: {
+					rol_id: rol_id,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al crear el usuario.');
 		}
@@ -324,15 +347,29 @@ class UsuarioModel {
 	 * @memberof UsuarioModel
 	 * @param {number} id - El ID del usuario.
 	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise<string>} El email del usuario.
+	 * @returns {Promise<{email}>} El email del usuario.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async getEmailById(id, dbConn) {
-		const query = 'SELECT email FROM usuario WHERE id = ?';
+		const query = '' +
+			'SELECT ' +
+			'		email ' +
+			'FROM ' +
+			'   usuario ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
-			return rows[0].email;
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				email: rows[0].email
+			};
+
 		} catch (err) {
 			throw new Error('Error al obtener el email.');
 		}
@@ -350,7 +387,12 @@ class UsuarioModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteUsuario(id, dbConn) {
-		const query = 'DELETE FROM usuario WHERE id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		usuario ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);
@@ -372,7 +414,12 @@ class UsuarioModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async updateRefreshToken(userId, refreshToken, dbConn) {
-		const query = 'UPDATE usuario SET refresh_token = ? WHERE id = ?';
+		const query =
+			'UPDATE ' +
+			'		usuario ' +
+			'SET ' +
+			'		refresh_token = ? ' +
+			'WHERE id = ?';
 
 		try {
 			return await dbConn.execute(query, [refreshToken, userId]);
@@ -471,42 +518,7 @@ class UsuarioModel {
 			return await dbConn.execute(query,
 				[email, nombre, primer_apellido, segundo_apellido, dni, id]);
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al actualizar el usuario.');
-		}
-	}
-
-	static async countAll(searchValues, conn) {
-		const role_id = searchValues.role;
-
-		let query =
-			'SELECT ' +
-			'   COUNT(*) AS count ' +
-			'FROM ' +
-			'   usuario ' +
-			'INNER JOIN ' +
-			'   rol ON usuario.rol_id = rol.id ' +
-			'LEFT JOIN ' +
-			'   paciente ON usuario.id = paciente.usuario_id ' +
-			'LEFT JOIN ' +
-			'	 especialista ON usuario.id = especialista.usuario_id ' +
-			'WHERE ' +
-			'   rol_id <> 1 AND ' +
-			'   (turno IS NULL OR turno <> "no-trabajando")';
-
-		let countParams = [];
-
-		if (role_id) {
-			query += 'AND rol_id = ? ';
-			countParams.push(`${role_id}`);
-		}
-
-		try {
-			const [count] = await conn.execute(query, countParams);
-			return count[0].count;
-		} catch (err) {
-			console.log(err);
-			throw new Error('Error al obtener el conteo de usuarios.');
 		}
 	}
 }

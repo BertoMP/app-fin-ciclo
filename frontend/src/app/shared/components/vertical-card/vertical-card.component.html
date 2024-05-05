@@ -1,10 +1,10 @@
 <article class="card">
   <figure>
-    <img src="{{ info.imagen }}" alt="Imagen de {{ info.nombre | lowercase }}">
+    <img src="{{ info.datos_especialidad.imagen }}" alt="Imagen de {{ info.datos_especialidad.nombre | lowercase }}">
   </figure>
   <section class="contenido">
-    <h3>{{ info.nombre }}</h3>
-    <p>{{ info.descripcion }}</p>
+    <h3>{{ info.datos_especialidad.nombre }}</h3>
+    <p>{{ info.datos_especialidad.descripcion }}</p>
     <article>
       <button [routerLink]="routerLink" [fragment]="fragment"
       >Ver especialistas</button>

@@ -99,7 +99,7 @@ class PacienteTomaMedicamentoController {
 		try {
 			const tomaExists = await TomaService.findToma(toma_id);
 
-			if (!tomaExists || tomaExists.length === 0) {
+			if (!tomaExists) {
 				return res.status(404).json({
 					errors: ['La toma no existe.'],
 				});

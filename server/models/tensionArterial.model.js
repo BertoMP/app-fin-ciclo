@@ -65,11 +65,19 @@ class TensionArterialModel {
 			const actualPage = page;
 			const totalPages = Math.ceil(total / limit);
 
-			rows.forEach((tensionArterial) => {
-				tensionArterial.fecha = tz(tensionArterial.fecha, 'Europe/Madrid').format('DD-MM-YYYY');
+			const formattedRows = rows.map((tensionArterial) => {
+				return {
+					fecha: tz(tensionArterial.fecha, 'Europe/Madrid').format('DD-MM-YYYY'),
+					hora: tensionArterial.hora,
+					datos_toma: {
+						sistolica: tensionArterial.sistolica,
+						diastolica: tensionArterial.diastolica,
+						pulsaciones_minuto: tensionArterial.pulsaciones_minuto
+					}
+				};
 			});
 
-			return { rows, total, actualPage, totalPages };
+			return { formattedRows, total, actualPage, totalPages };
 		} catch (err) {
 			throw new Error('No se pudieron obtener las mediciones de tensión arterial.');
 		}
@@ -99,7 +107,7 @@ class TensionArterialModel {
 			'   VALUES (?, ?, ?, ?, ?, ?)';
 
 		try {
-			return await dbConn.execute(query, [
+			const insert = await dbConn.execute(query, [
 				paciente_id,
 				fecha,
 				hora,
@@ -107,6 +115,18 @@ class TensionArterialModel {
 				diastolica,
 				pulsaciones_minuto,
 			]);
+
+			return {
+				tension_arterial_id: insert[0].insertId,
+				paciente_id: paciente_id,
+				fecha: fecha,
+				hora: hora,
+				datos_toma: {
+					sistolica: sistolica,
+					diastolica: diastolica,
+					pulsaciones_minuto: pulsaciones_minuto
+				}
+			};
 		} catch (err) {
 			throw new Error('No se pudo crear la medición de tensión arterial.');
 		}
@@ -124,7 +144,12 @@ class TensionArterialModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteTensionesArterialesByUserId(paciente_id, dbConn) {
-		const query = 'DELETE FROM tension_arterial WHERE paciente_id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		tension_arterial ' +
+			'WHERE ' +
+			'		paciente_id = ?';
 		try {
 			return await dbConn.execute(query, [paciente_id]);
 		} catch (err) {

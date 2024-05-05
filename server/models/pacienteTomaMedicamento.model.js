@@ -118,7 +118,16 @@ class PacienteTomaMedicamentoModel {
 			'   VALUES (?, ?, ?)';
 
 		try {
-			return await dbConn.execute(query, [pacienteId, medicamentoId, tomaId]);
+			const insert = await dbConn.execute(query, [pacienteId, medicamentoId, tomaId]);
+
+			return {
+				id: insert[0].insertId,
+				datos: {
+					paciente_id: pacienteId,
+					medicamento_id: medicamentoId,
+					toma_id: tomaId
+				}
+			};
 		} catch (error) {
 			throw new Error('Error al guardar la receta.');
 		}
@@ -143,8 +152,8 @@ class PacienteTomaMedicamentoModel {
 			'FROM ' +
 			'   paciente_toma_medicamento ' +
 			'WHERE ' +
-			'   paciente_id = ? ' +
-			'   AND medicamento_id = ?';
+			'   paciente_id = ? AND ' +
+			'		medicamento_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [pacienteId, medicamentoId]);
@@ -210,7 +219,12 @@ class PacienteTomaMedicamentoModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteToma(idToma, dbConn) {
-		const query = 'DELETE ' + 'FROM paciente_toma_medicamento ' + 'WHERE toma_id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		paciente_toma_medicamento ' +
+			'WHERE ' +
+			'		toma_id = ?';
 
 		try {
 			return await dbConn.execute(query, [idToma]);
@@ -277,7 +291,13 @@ class PacienteTomaMedicamentoModel {
 		try {
 			const [rows] = await dbConn.execute(query, [pacienteId, medicamentoId, hora]);
 
-			return rows[0];
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				id: rows[0].toma_id,
+			};
 		} catch (error) {
 			throw new Error('Error al buscar la toma.');
 		}

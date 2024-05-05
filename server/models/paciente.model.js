@@ -123,6 +123,8 @@ class PacienteModel {
 			'   puerta, ' +
 			'   municipio AS municipio_id, ' +
 			'   municipio.nombre AS municipio_nombre,' +
+			'   provincia_id, ' +
+			'   provincia.nombre AS provincia_nombre, ' +
 			'   codigo_postal, ' +
 			'   tel_fijo, ' +
 			'   tel_movil ' +
@@ -134,6 +136,8 @@ class PacienteModel {
 			'   tipo_via ON paciente.tipo_via = tipo_via.id ' +
 			'INNER JOIN ' +
 			'   municipio ON paciente.municipio = municipio.id ' +
+			'INNER JOIN ' +
+			'   provincia ON municipio.provincia_id = provincia.id ' +
 			'INNER JOIN ' +
 			'   rol ON usuario.rol_id = rol.id ' +
 			'WHERE ' +
@@ -176,6 +180,10 @@ class PacienteModel {
 							nombre: rows[0].municipio_nombre,
 							codigo_postal: rows[0].codigo_postal
 						},
+						provincia: {
+							id: rows[0].provincia_id,
+							nombre: rows[0].provincia_nombre,
+						}
 					},
 					datos_contacto: {
 						tel_fijo: rows[0].tel_fijo,
@@ -184,7 +192,6 @@ class PacienteModel {
 				}
 			};
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al obtener el paciente.');
 		}
 	}

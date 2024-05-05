@@ -64,7 +64,17 @@
             text-align: center;
         }
 
-        tbody tr:nth-child(odd) {
+				td {
+					width: 200px;
+				}
+
+				th {
+					background-color: #6b81d7;
+					color: #fff;
+					font-weight: bold;
+				}
+
+        .pathologies-data tbody tr:nth-child(odd) {
             background-color: #7aa4ea;
         }
 
@@ -79,22 +89,78 @@
 </section>
 
 <section class="patient-data">
-    <h3>Datos del Paciente:</h3>
-    <p><strong>Nombre:</strong> {{datos_paciente.nombre}} {{datos_paciente.primer_apellido}} {{datos_paciente.segundo_apellido}}</p>
-    <p><strong>Número de Historia Clínica:</strong> {{datos_paciente.num_historia_clinica}}</p>
+	<h3>Datos del Paciente:</h3>
+	<table>
+		<tr>
+			<th>Nombre</th>
+			<td colspan="5">
+				{{datos_paciente.datos_personales.nombre}}
+				{{datos_paciente.datos_personales.primer_apellido}}
+				{{datos_paciente.datos_personales.segundo_apellido}}
+			</td>
+		</tr>
+		<tr>
+			<th>DNI</th>
+			<td colspan="2">{{datos_paciente.datos_personales.dni}}</td>
+			<th>NHC</th>
+			<td colspan="2">{{datos_paciente.num_historia_clinica}}</td>
+		</tr>
+		<tr>
+			<th>Dirección</th>
+			<td colspan="5">
+				{{datos_paciente.datos_vivienda.tipo_via}} {{datos_paciente.datos_vivienda.nombre_via}},
+				{{datos_paciente.datos_vivienda.numero}} {{datos_paciente.datos_vivienda.piso}}º
+				{{datos_paciente.datos_vivienda.puerta}} {{datos_paciente.datos_vivienda.codigo_postal}}
+				{{datos_paciente.datos_vivienda.municipio}} ({{datos_paciente.datos_vivienda.provincia}})
+			</td>
+		</tr>
+		<tr>
+			<th>Tel. fijo</th>
+			<td colspan="2">{{datos_paciente.telefonos.tel_fijo}}</td>
+			<th>Tel. móvil</th>
+			<td colspan="2">{{datos_paciente.telefonos.tel_movil}}</td>
+		</tr>
+		<tr>
+			<th>email</th>
+			<td colspan="5">{{datos_paciente.datos_personales.email}}</td>
+		</tr>
+	</table>
 </section>
 
 <section class="specialist-data">
-    <h3>Datos del Especialista:</h3>
-    <p><strong>Nombre:</strong> {{datos_especialista.nombre}} {{datos_especialista.primer_apellido}} {{datos_especialista.segundo_apellido}}</p>
-    <p><strong>Número de Colegiado:</strong> {{datos_especialista.num_colegiado}}</p>
-    <p><strong>Especialidad:</strong> {{datos_especialista.especialidad}}</p>
+	<h3>Datos del Especialista:</h3>
+	<table>
+		<tr>
+			<th>Nombre</th>
+			<td colspan="5">
+				{{datos_especialista.datos_personales.nombre}}
+				{{datos_especialista.datos_personales.primer_apellido}}
+				{{datos_especialista.datos_personales.segundo_apellido}}
+			</td>
+		</tr>
+		<tr>
+			<th>Nº Col.</th>
+			<td colspan="2">{{datos_especialista.num_colegiado}}</td>
+			<th>Especialidad</th>
+			<td colspan="2">{{datos_especialista.especialidad}}</td>
+		</tr>
+		<tr>
+			<th>email</th>
+			<td colspan="5">{{datos_especialista.datos_personales.email}}</td>
+		</tr>
+	</table>
 </section>
 
 <section class="date-data">
-    <h3>Datos de la Cita:</h3>
-    <p><strong>Fecha:</strong> {{datos_cita.fecha}}</p>
-    <p><strong>Hora:</strong> {{datos_cita.hora}}</p>
+	<h3>Datos de la Cita:</h3>
+	<table>
+		<tr>
+			<th>Fecha</th>
+			<td>{{datos_cita.fecha}}</td>
+			<th>Hora</th>
+			<td>{{datos_cita.hora}}</td>
+		</tr>
+	</table>
 </section>
 
 <section class="inform-data">
@@ -117,7 +183,7 @@
         {{#each datos_informe.patologias}}
             <tr>
                 <td>{{this.nombre}}</td>
-                <td>{{{this.descripcion}}}</td>
+                <td colspan="3">{{{this.descripcion}}}</td>
             </tr>
         {{/each}}
         </tbody>

@@ -224,6 +224,17 @@ class CitaModel {
 		}
 	}
 
+	/**
+	 * @method fetchByPacienteId
+	 * @description Método para obtener las citas de un especialista por su ID.
+	 * @static
+	 * @async
+	 * @memberof CitaModel
+	 * @param {number} especialista_id - El ID del especialista.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Array>} Un array de citas del especialista.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
 	static async fetchByEspecialistaId(especialista_id, dbConn) {
 		const query =
 			'SELECT * ' +
@@ -317,7 +328,7 @@ class CitaModel {
 	 * @memberof CitaModel
 	 * @param {Object} cita - El objeto de la nueva cita.
 	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise<number>} El ID de la nueva cita creada.
+	 * @returns {Promise<{datos_cita: {fecha: string, hora: *, paciente_id: *, especialista_id: *}, id: number}>} El ID de la nueva cita creada.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async createCita(cita, dbConn) {
@@ -327,12 +338,21 @@ class CitaModel {
 		const especialista_id = cita.especialista_id;
 
 		const query =
-			'INSERT INTO cita (fecha, hora, paciente_id, especialista_id) VALUES (?, ?, ?, ?)';
+			'INSERT INTO cita (fecha, hora, paciente_id, especialista_id) ' +
+			'		VALUES (?, ?, ?, ?)';
 
 		try {
 			const [rows] = await dbConn.execute(query, [fecha, hora, paciente_id, especialista_id]);
 
-			return rows.insertId;
+			return {
+				id: rows.insertId,
+				datos_cita: {
+					paciente_id: paciente_id,
+					especialista_id: especialista_id,
+					fecha: format(new Date(fecha), 'dd-MM-yyyy'),
+					hora: hora,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al crear la cita.');
 		}
@@ -350,7 +370,11 @@ class CitaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteCita(id, dbConn) {
-		const query = 'DELETE FROM cita WHERE id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		cita ' +
+			'WHERE id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);
@@ -371,7 +395,13 @@ class CitaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async getInformesByUserId(paciente_id, dbConn) {
-		const query = 'SELECT informe_id FROM cita WHERE paciente_id = ?';
+		const query =
+			'SELECT ' +
+			'		informe_id ' +
+			'FROM ' +
+			'		cita ' +
+			'WHERE ' +
+			'		paciente_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [paciente_id]);
@@ -393,7 +423,12 @@ class CitaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteCitasByUserId(paciente_id, dbConn) {
-		const query = 'DELETE FROM cita WHERE paciente_id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		cita ' +
+			'WHERE ' +
+			'		paciente_id = ?';
 
 		try {
 			return await dbConn.execute(query, [paciente_id]);
@@ -410,11 +445,17 @@ class CitaModel {
 	 * @memberof CitaModel
 	 * @param {number} informe_id - El ID del informe.
 	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise<number|null>} El ID del paciente o null si no se encuentra.
+	 * @returns {Promise<{paciente_id: *}>} El ID del paciente o null si no se encuentra.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async fetchPacienteIdByInformeId(informe_id, dbConn) {
-		const query = 'SELECT paciente_id FROM cita WHERE informe_id = ?';
+		const query =
+			'SELECT ' +
+			'		paciente_id ' +
+			'FROM ' +
+			'		cita ' +
+			'WHERE ' +
+			'		informe_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [informe_id]);
@@ -423,9 +464,10 @@ class CitaModel {
 				return null;
 			}
 
-			return rows[0].paciente_id;
+			return {
+				paciente_id: rows[0].paciente_id
+			}
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al obtener el ID del paciente.');
 		}
 	}
@@ -443,7 +485,13 @@ class CitaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async updateInformeId(cita_id, informe_id, dbConn) {
-		const query = 'UPDATE cita SET informe_id = ? WHERE id = ?';
+		const query =
+			'UPDATE ' +
+			'		cita ' +
+			'SET ' +
+			'		informe_id = ? ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
 			return await dbConn.execute(query, [informe_id, cita_id]);

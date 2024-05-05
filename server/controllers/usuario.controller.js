@@ -167,7 +167,27 @@ class UsuarioController {
 	 */
 	static async postRegistro(req, res) {
 		try {
-			const errors = UsuarioController.#verifyUser(req.body.email, req.body.dni, req.body.num_colegiado);
+			const errors = [];
+
+			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.datos_personales.email);
+
+			if (emailExists) {
+				errors.push('El correo ya está en uso.');
+			}
+
+			const dniExists = await UsuarioService.readUsuarioByDNI(req.body.datos_personales.dni);
+
+			if (dniExists) {
+				errors.push('El DNI ya está en uso.');
+			}
+
+			if (req.body.datos_especialista) {
+				const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(req.body.datos_especialista);
+
+				if (numColegiadoExists) {
+					errors.push('El número de colegiado ya está en uso.');
+				}
+			}
 
 			if (errors.length > 0) {
 				return res.status(409).json({ errors: errors });
@@ -517,6 +537,7 @@ class UsuarioController {
 	 * @memberof UsuarioController
 	 */
 	static async putUsuario(req, res) {
+		const errors = [];
 		let usuario_id = 0;
 
 		if (req.user_role === 2) {
@@ -536,8 +557,25 @@ class UsuarioController {
 				return res.status(409).json({ errors: ['No se puede modificar a un admin.'] });
 			}
 
-			const errors = UsuarioController.#verifyUser(
-				req.body.datos_personales.email, req.body.datos_personales.dni, req.body.datos_personales.num_colegiado);
+			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.datos_personales.email);
+
+			if (emailExists) {
+				errors.push('El correo ya está en uso.');
+			}
+
+			const dniExists = await UsuarioService.readUsuarioByDNI(req.body.datos_personales.dni);
+
+			if (dniExists) {
+				errors.push('El DNI ya está en uso.');
+			}
+
+			if (req.body.datos_especialista) {
+				const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(req.body.datos_especialista);
+
+				if (numColegiadoExists) {
+					errors.push('El número de colegiado ya está en uso.');
+				}
+			}
 
 			if (errors.length > 0) {
 				return res.status(409).json({ errors: errors });
@@ -550,44 +588,6 @@ class UsuarioController {
 		} catch (err) {
 			return res.status(500).json({ errors: [err.message] });
 		}
-	}
-
-	/**
-	 * @name verifyUser
-	 * @description Método estático privado que verifica si un usuario ya existe en la base de datos.
-	 * @private
-	 * @static
-	 * @async
-	 * @function
-	 * @param {string} email - El correo electrónico del usuario.
-	 * @param {string} dni - El DNI del usuario.
-	 * @param {string} num_colegiado - El número de colegiado del especialista.
-	 * @returns {Array} - Un array con los errores encontrados.
-	 * @memberof UsuarioController
-	 */
-	static async #verifyUser(email, dni, num_colegiado) {
-		const errors = [];
-
-		const emailExists = await UsuarioService.readUsuarioByEmail(email);
-		const dniExists = await UsuarioService.readUsuarioByDNI(dni);
-
-		if (num_colegiado) {
-			const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(num_colegiado);
-
-			if (numColegiadoExists) {
-				errors.push('El número de colegiado ya está en uso.');
-			}
-		}
-
-		if (emailExists) {
-			errors.push('El correo ya está en uso.');
-		}
-
-		if (dniExists) {
-			errors.push('El DNI ya está en uso.');
-		}
-
-		return errors;
 	}
 }
 

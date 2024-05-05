@@ -14,7 +14,14 @@ class ProvinciaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async fetchAll(dbConn) {
-		const query = 'SELECT id, nombre FROM provincia ORDER BY nombre';
+		const query =
+			'SELECT ' +
+			'		id, ' +
+			'		nombre ' +
+			'FROM ' +
+			'		provincia ' +
+			'ORDER BY ' +
+			'		nombre';
 
 		try {
 			const [rows] = await dbConn.execute(query);

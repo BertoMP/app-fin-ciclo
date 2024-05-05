@@ -16,10 +16,20 @@ class TokenModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async create(idUser, token, dbConn) {
-		const query = 'INSERT INTO token (usuario_id, reset_token) VALUES (?, ?)';
+		const query =
+			'INSERT INTO token (usuario_id, reset_token) ' +
+			'		VALUES (?, ?)';
 
 		try {
-			return await dbConn.execute(query, [idUser, token]);
+			const insert = await dbConn.execute(query, [idUser, token]);
+
+			return {
+				id: insert.insertId,
+				datos_token: {
+					usuario_id: idUser,
+					reset_token: token,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al crear el token.');
 		}
@@ -37,7 +47,12 @@ class TokenModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteTokensByUserId(idUser, dbConn) {
-		const query = 'DELETE FROM token WHERE usuario_id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		token ' +
+			'WHERE ' +
+			'		usuario_id = ?';
 
 		try {
 			return await dbConn.execute(query, [idUser]);

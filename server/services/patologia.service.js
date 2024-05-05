@@ -75,7 +75,7 @@ class PatologiaService {
 	 * @returns {Promise<void>} No devuelve nada.
 	 */
 	static async createPatologia(patologia, conn = dbConn) {
-		await PatologiaModel.save(patologia, conn);
+		return await PatologiaModel.save(patologia, conn);
 	}
 
 	/**
@@ -90,7 +90,7 @@ class PatologiaService {
 	 * @returns {Promise<void>} No devuelve nada.
 	 */
 	static async updatePatologia(id, patologia, conn = dbConn) {
-		await PatologiaModel.updateById(id, patologia, conn);
+		return await PatologiaModel.updateById(id, patologia, conn);
 	}
 }
 

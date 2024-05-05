@@ -90,6 +90,7 @@ class PdfService {
 		const template = readFileSync(join(templatesSource, 'informe.handlebars'), 'utf8');
 		const compiledTemplate = compile(template);
 		const bodyHtml = compiledTemplate(informe);
+
 		const filename = `informe_${informe.datos_paciente.nombre}_${informe.datos_paciente.primer_apellido}_${informe.datos_paciente.segundo_apellido}.pdf`;
 
 		return await PdfService.#generatePDFWithTemplate(bodyHtml, filename);
@@ -109,6 +110,7 @@ class PdfService {
 		const template = readFileSync(join(templatesSource, 'cita.handlebars'), 'utf8');
 		const compiledTemplate = compile(template);
 		const bodyHtml = compiledTemplate({ cita, qr });
+
 		const filename = `cita_${cita.datos_paciente.nombre}_${cita.datos_paciente.primer_apellido}_${cita.datos_paciente.segundo_apellido}.pdf`;
 
 		return await PdfService.#generatePDFWithTemplate(bodyHtml, filename);

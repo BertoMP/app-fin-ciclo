@@ -164,9 +164,11 @@ export class TesteoBackendComponent implements OnInit, OnDestroy {
   onSubmit() {
     const especialidad: MedicalSpecialtyModel = {
       id: "1",
-      nombre: 'Cardiología',
-      descripcion: 'Especialidad médica que se encarga del diagnóstico y tratamiento de las enfermedades del corazón y del aparato circulatorio.',
-      imagen: this.imageForm.get('image').value
+      datos_especialidad: {
+        nombre: 'Cardiología',
+        descripcion: 'Especialidad médica que se encarga del diagnóstico y tratamiento de las enfermedades del corazón y del aparato circulatorio.',
+        imagen: this.imageForm.get('image').value
+      }
     }
 
     this.testeoBack.submitForm(especialidad)

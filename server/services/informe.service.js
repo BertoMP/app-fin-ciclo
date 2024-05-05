@@ -10,7 +10,8 @@ import CitaService from './cita.service.js';
 import { dbConn } from '../util/database/database.js';
 
 /**
- *
+ * @class InformeService
+ * @description Clase que contiene los métodos para la gestión de informes.
  */
 class InformeService {
 	/**
@@ -51,7 +52,6 @@ class InformeService {
 			}
 
 			const informeCreado = await InformeModel.create(informe, conn);
-
 			const informeId = informeCreado.insertId;
 
 			for (const patologiaId of informe.patologias) {

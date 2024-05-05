@@ -81,7 +81,7 @@ class PacienteTomaMedicamentoService {
 						}
 
 						const toma = await TomaService.createToma(prescripcion, conn);
-						const idToma = toma.insertId;
+						const idToma = toma.id;
 						await PacienteTomaMedicamentoModel.createPacienteTomaMedicamento(pacienteId, medicamentoId, idToma, conn);
 					}
 				}

@@ -4,75 +4,118 @@
     <meta charset="utf-8">
     <title>Receta de Medicamentos</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
 
-        table {
-            border-collapse: collapse;
-            margin: 0 auto;
-            width: 100%;
-        }
+			body {
+				font-family: Arial, sans-serif;
+				display: flex;
+				flex-direction: column;
+				align-content: space-evenly;
+			}
 
-        thead {
-            background-color: #adabab;
-        }
+			.header {
+				text-align: center;
+				padding: 1.2rem;
+				background-color: #007BFF;
+				color: #fff;
+			}
 
-        th, td {
-            border: 2px solid black;
-            padding: 5px;
-            text-align: center;
-        }
+			h1 {
+				font-size: 2em;
+				text-transform: uppercase;
+				letter-spacing: 2px;
+			}
 
-        tbody tr:nth-child(odd) {
-            background-color: #d5d0d0;
-        }
+			section {
+				margin-bottom: 10px;
+				padding: 15px;
+				background-color: #fff;
+			}
 
-        .fecha {
-            margin-top: 2rem;
-            text-align: right;
-        }
+			table {
+				border-collapse: collapse;
+				margin: 0 auto;
+				width: 100%;
+				border: 1px solid #ddd;
+			}
 
-        .medicamento {
-            page-break-inside: avoid;
-        }
-    </style>
+			thead {
+				background-color: #007BFF;
+				color: #fff;
+			}
+
+			th, td {
+				border: 2px solid #6b81d7;
+				padding: 5px;
+				text-align: center;
+			}
+
+			tbody tr:nth-child(odd) {
+				background-color: #7aa4ea;
+			}
+
+			.fecha {
+					margin-top: 2rem;
+					text-align: right;
+			}
+
+			.medicamento {
+					page-break-inside: avoid;
+			}
+		</style>
 </head>
 <body>
-<h1 style="text-align: center;">Receta de Medicamentos</h1>
-<p>
-    <strong>Paciente: </strong>{{datos_paciente.nombre}} {{datos_paciente.primer_apellido}} {{datos_paciente.segundo_apellido}}
-</p>
-<p><strong>Número de Historia
-    Clínica: </strong>{{datos_paciente.num_historia_clinica}}</p>
-{{#each prescripciones}}
-    <section class="medicamento">
-        <h2>{{this.medicamento.nombre}}</h2>
-        <p><strong>Descripción: </strong>{{{this.medicamento.descripcion}}}</p>
-        <table>
-            <thead>
-            <tr>
-                <th>Hora</th>
-                <th>Dosis</th>
-                <th>Fecha de inicio</th>
-                <th>Fecha de fin</th>
-                <th>Observaciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{#each this.medicamento.tomas}}
-                <tr>
-                    <td>{{hora}}</td>
-                    <td>{{dosis}}</td>
-                    <td>{{fecha_inicio}}</td>
-                    <td>{{fecha_fin}}</td>
-                    <td>{{{observaciones}}}</td>
-                </tr>
-            {{/each}}
-            </tbody>
-        </table>
-    </section>
-{{/each}}
-<p class="fecha">Coslada, a {{fecha}}</p>
+<section class="header">
+		<h1>Receta de Medicamentos</h1>
+</section>
+
+<section class="patient-data">
+	<p>
+		<strong>Paciente: </strong>{{datos_paciente.nombre}} {{datos_paciente.primer_apellido}} {{datos_paciente.segundo_apellido}}
+	</p>
+	<p>
+		<strong>Número de Historia Clínica: </strong>{{datos_paciente.num_historia_clinica}}
+	</p>
+</section>
+
+<section class="meds-data">
+	<h2>Medicamentos</h2>
+	{{#each prescripciones}}
+		<section class="medicamento">
+			<h2>{{this.medicamento.nombre}}</h2>
+			<p><strong>Descripción: </strong>{{{this.medicamento.descripcion}}}</p>
+			<table>
+				<thead>
+				<tr>
+					<th>Hora</th>
+					<th>Dosis</th>
+					<th>Fecha de inicio</th>
+					<th>Fecha de fin</th>
+					<th>Observaciones</th>
+				</tr>
+				</thead>
+				<tbody>
+				{{#each this.medicamento.tomas}}
+					<tr>
+						<td>{{hora}}</td>
+						<td>{{dosis}}</td>
+						<td>{{fecha_inicio}}</td>
+						<td>{{fecha_fin}}</td>
+						<td>{{{observaciones}}}</td>
+					</tr>
+				{{/each}}
+				</tbody>
+			</table>
+		</section>
+	{{/each}}
+</section>
+
+<section class="date-data">
+	<p class="fecha">Coslada, a {{fecha}}</p>
+</section>
 </body>
 </html>

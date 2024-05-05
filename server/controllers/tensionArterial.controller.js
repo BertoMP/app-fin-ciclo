@@ -45,7 +45,7 @@ class TensionArterialController {
 			const limit = searchValues.limit;
 
 			const {
-				rows: resultados,
+				formattedRows: resultados,
 				total: cantidad_tensionArterial,
 				actualPage: pagina_actual,
 				totalPages: paginas_totales,

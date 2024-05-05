@@ -60,7 +60,18 @@ class EspecialidadModel {
 			const actualPage = page;
 			const totalPages = Math.ceil(total / limit);
 
-			return { rows, total, actualPage, totalPages };
+			const formattedRows = rows.map((row) => {
+				return {
+					id: row.id,
+					datos_especialidad: {
+						nombre: row.nombre,
+						descripcion: row.descripcion,
+						imagen: row.imagen,
+					}
+				};
+			});
+
+			return { formattedRows, total, actualPage, totalPages };
 		} catch (err) {
 			throw new Error('Error al obtener las especialidades.');
 		}
@@ -153,7 +164,19 @@ class EspecialidadModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
-			return rows[0];
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				id: rows[0].id,
+				datos_especialidad: {
+					nombre: rows[0].nombre,
+					descripcion: rows[0].descripcion,
+					imagen: rows[0].imagen,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al obtener la especialidad.');
 		}
@@ -184,7 +207,19 @@ class EspecialidadModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [nombre]);
-			return rows[0];
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				id: rows[0].id,
+				datos_especialidad: {
+					nombre: rows[0].nombre,
+					descripcion: rows[0].descripcion,
+					imagen: rows[0].imagen,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al obtener la especialidad.');
 		}
@@ -209,7 +244,16 @@ class EspecialidadModel {
 		const query = 'INSERT INTO especialidad (nombre, descripcion, imagen) VALUES (?, ?, ?)';
 
 		try {
-			return await dbConn.execute(query, [nombre, descripcion, imagen]);
+			const insert = await dbConn.execute(query, [nombre, descripcion, imagen]);
+
+			return {
+				id: insert[0].insertId,
+				datos_especialidad: {
+					nombre,
+					descripcion,
+					imagen,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al crear la especialidad.');
 		}
@@ -227,7 +271,12 @@ class EspecialidadModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteById(id, dbConn) {
-		const query = 'DELETE FROM especialidad WHERE id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		especialidad ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);
@@ -254,12 +303,6 @@ class EspecialidadModel {
 		const imagen = especialidad.imagen;
 
 		try {
-			const currentEspecialidad = await EspecialidadModel.findById(id, dbConn);
-
-			if (!currentEspecialidad) {
-				throw new Error('Especialidad no encontrada.');
-			}
-
 			const query =
 				'UPDATE ' +
 				'   especialidad ' +

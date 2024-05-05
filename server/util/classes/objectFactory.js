@@ -18,15 +18,15 @@ class ObjectFactory {
 		return {
 			num_hist_clinica: createHistClinica(),
 			fecha_nacimiento: data.datos_paciente.fecha_nacimiento,
-			tipo_via: data.datos_vivienda.tipo_via.id,
-			nombre_via: data.datos_vivienda.nombre_via,
-			numero: data.datos_vivienda.numero,
-			piso: data.datos_vivienda.piso,
-			puerta: data.datos_vivienda.puerta,
-			municipio: data.municipio.id,
-			codigo_postal: data.municipio.codigo_postal,
-			tel_fijo: data.datos_contacto.tel_fijo,
-			tel_movil: data.datos_contacto.tel_movil,
+			tipo_via: data.datos_paciente.datos_vivienda.tipo_via.id,
+			nombre_via: data.datos_paciente.datos_vivienda.nombre_via,
+			numero: data.datos_paciente.datos_vivienda.numero,
+			piso: data.datos_paciente.datos_vivienda.piso,
+			puerta: data.datos_paciente.datos_vivienda.puerta,
+			municipio: data.datos_paciente.datos_vivienda.municipio.id,
+			codigo_postal: data.datos_paciente.datos_vivienda.municipio.codigo_postal,
+			tel_fijo: data.datos_paciente.datos_contacto.tel_fijo,
+			tel_movil: data.datos_paciente.datos_contacto.tel_movil,
 		}
 	}
 
@@ -57,15 +57,15 @@ class ObjectFactory {
 		return {
 			id: data.usuario_id,
 			fecha_nacimiento: data.datos_paciente.fecha_nacimiento,
-			tipo_via: data.datos_vivienda.tipo_via.id,
-			nombre_via: data.datos_vivienda.nombre_via,
-			numero: data.datos_vivienda.numero,
-			piso: data.datos_vivienda.piso,
-			puerta: data.datos_vivienda.puerta,
-			municipio: data.municipio.id,
-			codigo_postal: data.municipio.codigo_postal,
-			tel_fijo: data.datos_contacto.tel_fijo,
-			tel_movil: data.datos_contacto.tel_movil,
+			tipo_via: data.datos_paciente.datos_vivienda.tipo_via.id,
+			nombre_via: data.datos_paciente.datos_vivienda.nombre_via,
+			numero: data.datos_paciente.datos_vivienda.numero,
+			piso: data.datos_paciente.datos_vivienda.piso,
+			puerta: data.datos_paciente.datos_vivienda.puerta,
+			municipio: data.datos_paciente.datos_vivienda.municipio.id,
+			codigo_postal: data.datos_paciente.datos_vivienda.municipio.codigo_postal,
+			tel_fijo: data.datos_paciente.datos_contacto.tel_fijo,
+			tel_movil: data.datos_paciente.datos_contacto.tel_movil,
 		}
 	}
 

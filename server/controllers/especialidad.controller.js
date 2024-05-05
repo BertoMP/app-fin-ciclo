@@ -32,7 +32,7 @@ class EspecialidadController {
 			const search = searchValues.search;
 
 			const {
-				rows: resultados,
+				formattedRows: resultados,
 				total: cantidad_especialidades,
 				actualPage: pagina_actual,
 				totalPages: paginas_totales,

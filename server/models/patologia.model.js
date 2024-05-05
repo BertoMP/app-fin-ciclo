@@ -14,7 +14,14 @@ class PatologiaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async fetchAllInforme(dbConn) {
-		const query = 'SELECT id, nombre FROM patologia';
+		const query =
+			'SELECT ' +
+			'		id, ' +
+			'		nombre ' +
+			'FROM ' +
+			'		patologia ' +
+			'ORDER BY ' +
+			'		nombre ASC';
 
 		try {
 			const [rows] = await dbConn.execute(query);
@@ -65,7 +72,10 @@ class PatologiaModel {
 			countParams.push(`%${search}%`);
 		}
 
-		query += 'LIMIT ? OFFSET ?';
+		query +=
+			'ORDER BY ' +
+			'		nombre ASC ' +
+			'LIMIT ? OFFSET ?';
 		queryParams.push(`${limit}`, `${offset}`);
 
 		try {
@@ -75,7 +85,17 @@ class PatologiaModel {
 			const actualPage = page;
 			const totalPages = Math.ceil(total / limit);
 
-			return { rows, total, actualPage, totalPages };
+			const formattedRows = rows.map((patologia) => {
+				return {
+					id: patologia.id,
+					datos_patologia: {
+						nombre: patologia.nombre,
+						descripcion: patologia.descripcion,
+					}
+				};
+			});
+
+			return { formattedRows, total, actualPage, totalPages };
 		} catch (err) {
 			throw new Error('Error al obtener las patologías.');
 		}
@@ -105,7 +125,18 @@ class PatologiaModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
-			return rows[0];
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				id: rows[0].id,
+				datos_patologia: {
+					nombre: rows[0].nombre,
+					descripcion: rows[0].descripcion,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al obtener el patologia.');
 		}
@@ -135,7 +166,18 @@ class PatologiaModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [nombre]);
-			return rows[0];
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				id: rows[0].id,
+				datos_patologia: {
+					nombre: rows[0].nombre,
+					descripcion: rows[0].descripcion,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al obtener la patología.');
 		}
@@ -155,10 +197,20 @@ class PatologiaModel {
 		const nombre = patologia.nombre;
 		const descripcion = patologia.descripcion;
 
-		const query = 'INSERT INTO patologia (nombre, descripcion) VALUES (?, ?)';
+		const query =
+			'INSERT INTO patologia (nombre, descripcion) ' +
+			'		VALUES (?, ?)';
 
 		try {
-			await dbConn.execute(query, [nombre, descripcion]);
+			const insert = await dbConn.execute(query, [nombre, descripcion]);
+
+			return {
+				id: insert.insertId,
+				datos_patologia: {
+					nombre,
+					descripcion,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al guardar la patología.');
 		}
@@ -189,7 +241,7 @@ class PatologiaModel {
 			'   id = ?';
 
 		try {
-			await dbConn.execute(query, [nombre, descripcion, id]);
+			return await dbConn.execute(query, [nombre, descripcion, id]);
 		} catch (err) {
 			throw new Error('Error al actualizar la patología.');
 		}

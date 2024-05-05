@@ -85,9 +85,11 @@ class ConsultaModel {
 				if (row.nombre_usuario) {
 					consultas[row.id].medicos_asociados.push({
 						id: row.especialista_id,
-						nombre: row.nombre_usuario,
-						primer_apellido: row.primer_apellido,
-						segundo_apellido: row.segundo_apellido,
+						datos_personales: {
+							nombre: row.nombre_usuario,
+							primer_apellido: row.primer_apellido,
+							segundo_apellido: row.segundo_apellido,
+						},
 						datos_especialidad: {
 							id: row.especialidad_id,
 							nombre: row.nombre_especialidad,

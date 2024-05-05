@@ -87,9 +87,18 @@ class MedicamentoModel {
 			const actualPage = page;
 			const totalPages = Math.ceil(total / limit);
 
-			return { rows, total, actualPage, totalPages };
+			const formattedRows = rows.map((row) => {
+				return {
+					id: row.id,
+					datos_medicamento: {
+						nombre: row.nombre,
+						descripcion: row.descripcion,
+					}
+				}
+			});
+
+			return { formattedRows, total, actualPage, totalPages };
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al obtener los medicamentos.');
 		}
 	}
@@ -118,7 +127,19 @@ class MedicamentoModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
-			return rows[0];
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				id: rows[0].id,
+				datos_medicamento: {
+					nombre: rows[0].nombre,
+					descripcion: rows[0].descripcion,
+				}
+			};
+
 		} catch (err) {
 			throw new Error('Error al obtener el medicamento.');
 		}
@@ -148,7 +169,19 @@ class MedicamentoModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [nombre]);
-			return rows[0];
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				id: rows[0].id,
+				datos_medicamento: {
+					nombre: rows[0].nombre,
+					descripcion: rows[0].descripcion,
+				}
+			};
+
 		} catch (err) {
 			throw new Error('Error al obtener el medicamento.');
 		}
@@ -169,10 +202,20 @@ class MedicamentoModel {
 		const nombre = medicamento.nombre;
 		const descripcion = medicamento.descripcion;
 
-		const query = 'INSERT INTO medicamento (nombre, descripcion) VALUES (?, ?)';
+		const query =
+			'INSERT INTO medicamento (nombre, descripcion) ' +
+			'		VALUES (?, ?)';
 
 		try {
-			return await dbConn.execute(query, [nombre, descripcion]);
+			const insert = await dbConn.execute(query, [nombre, descripcion]);
+
+			return {
+				id: insert[0].insertId,
+				datos_medicamento: {
+					nombre: nombre,
+					descripcion: descripcion,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al crear el medicamento.');
 		}
@@ -195,12 +238,6 @@ class MedicamentoModel {
 		const descripcion = medicamento.descripcion;
 
 		try {
-			const currentMedicamento = await MedicamentoModel.findById(id, dbConn);
-
-			if (!currentMedicamento) {
-				throw new Error('Medicamento no encontrado.');
-			}
-
 			const query =
 				'UPDATE ' +
 				'   medicamento ' +

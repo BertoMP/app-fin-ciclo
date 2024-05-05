@@ -18,8 +18,6 @@ describe('GET /api/provincia', () => {
 			.end((err, res) => {
 				if (err) return done(err);
 
-				// console.log(res.body);
-
 				done();
 			});
 	});

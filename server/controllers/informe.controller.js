@@ -27,7 +27,21 @@ class InformeController {
 		const informe_id = parseInt(req.params.informe_id);
 
 		try {
-			const informe = await InformeController.#fetchInforme(user_role, informe_id, req, res);
+			const paciente = await CitaService.readPacienteIdByInformeId(informe_id);
+
+			if (!paciente) {
+				return res.status(404).json({
+					errors: ['Informe no encontrado.'],
+				});
+			}
+
+			if (user_role === 2 && paciente.paciente_id !== req.user_id) {
+				return res.status(403).json({
+					errors: ['No tienes permiso para realizar esta acción.'],
+				});
+			}
+
+			const informe = await InformeService.readInforme(informe_id);
 
 			if (!informe) {
 				return res.status(404).json({
@@ -62,7 +76,21 @@ class InformeController {
 		const informe_id = parseInt(req.params.informe_id);
 
 		try {
-			const informe = await InformeController.#fetchInforme(user_role, informe_id, req, res);
+			const paciente = await CitaService.readPacienteIdByInformeId(informe_id);
+
+			if (!paciente) {
+				return res.status(404).json({
+					errors: ['Informe no encontrado.'],
+				});
+			}
+
+			if (user_role === 2 && paciente.paciente_id !== req.user_id) {
+				return res.status(403).json({
+					errors: ['No tienes permiso para realizar esta acción.'],
+				});
+			}
+
+			const informe = await InformeService.readInforme(informe_id);
 
 			if (!informe) {
 				return res.status(404).json({
@@ -120,41 +148,6 @@ class InformeController {
 				errors: [err.message],
 			});
 		}
-	}
-
-	/**
-	 * @name fetchInforme
-	 * @description Método asíncrono que obtiene un informe específico de la base de datos utilizando su ID.
-	 *              Devuelve el informe si el usuario tiene permiso para acceder a él.
-	 *              Si el informe no existe o el usuario no tiene permiso para acceder a él, devuelve un error con el mensaje correspondiente.
-	 * @static
-	 * @async
-	 * @private
-	 * @function
-	 * @param {number} user_role - El rol del usuario que realiza la solicitud.
-	 * @param {number} informe_id - El ID del informe que se desea obtener.
-	 * @param {Object} req - El objeto de solicitud de Express.
-	 * @param {Object} res - El objeto de respuesta de Express.
-	 * @returns {Object} res - El objeto de respuesta de Express, o el informe si el usuario tiene permiso para acceder a él.
-	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
-	 * @memberof InformeController
-	 */
-	static async #fetchInforme(user_role, informe_id, req, res) {
-		const pacienteId = await CitaService.readPacienteIdByInformeId(informe_id);
-
-		if (!pacienteId) {
-			return res.status(404).json({
-				errors: ['Informe no encontrado.'],
-			});
-		}
-
-		if (user_role === 2 && pacienteId !== req.user_id) {
-			return res.status(403).json({
-				errors: ['No tienes permiso para realizar esta acción.'],
-			});
-		}
-
-		return await InformeService.readInforme(informe_id);
 	}
 }
 

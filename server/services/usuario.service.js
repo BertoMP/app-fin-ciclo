@@ -64,7 +64,7 @@ class UsuarioService {
 
 			if (usuario.rol_id === 2) {
 				const paciente = ObjectFactory.createPacienteObject(data);
-				paciente.usuario_id = nuevoUsuario.insertId;
+				paciente.usuario_id = nuevoUsuario.usuario_id;
 				await PacienteService.createPaciente(paciente, conn);
 				await EmailService.sendWelcomeEmail(usuario.email, usuario.nombre);
 			} else {
@@ -154,7 +154,7 @@ class UsuarioService {
 	 * @memberof UsuarioService
 	 * @param {number} id - El ID del usuario.
 	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise<string>} El correo electrónico del usuario.
+	 * @returns {Promise<{email}>} El correo electrónico del usuario.
 	 */
 	static async readEmailByUserId(id, conn = dbConn) {
 		return await UsuarioModel.getEmailById(id, conn);

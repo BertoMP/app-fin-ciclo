@@ -14,10 +14,18 @@ class TipoViaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async fetchAll(dbConn) {
-		const query = 'SELECT id, nombre FROM tipo_via ORDER BY nombre';
+		const query =
+			'SELECT ' +
+			'		id, ' +
+			'		nombre ' +
+			'FROM ' +
+			'		tipo_via ' +
+			'ORDER BY ' +
+			'		nombre';
 
 		try {
 			const [rows] = await dbConn.execute(query);
+
 			return rows;
 		} catch (err) {
 			throw new Error('Error al obtener los tipos de vía.');

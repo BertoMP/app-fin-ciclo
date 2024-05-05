@@ -56,7 +56,7 @@ class GlucometriaController {
 			}
 
 			const {
-				rows: resultados,
+				formattedRows: resultados,
 				total: cantidad_glucometrias,
 				actualPage: pagina_actual,
 				totalPages: paginas_totales,

@@ -299,7 +299,6 @@ class EspecialistaModel {
 		try {
 			return await dbConn.execute(query, [id]);
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al actualizar el especialista.');
 		}
 	}

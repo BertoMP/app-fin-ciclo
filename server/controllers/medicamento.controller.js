@@ -56,7 +56,7 @@ class MedicamentoController {
 			const search = searchValues.search;
 
 			const {
-				rows: resultados,
+				formattedRows: resultados,
 				actualPage: pagina_actual,
 				total: cantidad_medicamentos,
 				totalPages: paginas_totales,

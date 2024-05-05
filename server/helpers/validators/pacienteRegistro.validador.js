@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 
 // Importación de los validadores necesarios
 import { validateUserRegister } from './usuarioRegistro.validator.js';
+import {log} from "qrcode/lib/core/galois-field.js";
 
 /**
  * @name validatePacienteRegister
@@ -18,19 +19,19 @@ import { validateUserRegister } from './usuarioRegistro.validator.js';
  */
 export const validatePacienteRegister = [
 	validateUserRegister,
-	body('tipo_via')
+	body('datos_paciente.datos_vivienda.tipo_via.id')
 		.trim()
 		.notEmpty()
 		.withMessage('El tipo de vía es requerido.')
 		.isNumeric()
 		.withMessage('El tipo de vía ha de ser un valor numérico'),
-	body('nombre_via')
+	body('datos_paciente.datos_vivienda.nombre_via')
 		.trim()
 		.notEmpty()
 		.withMessage('El nombre de la vía es requerido.')
 		.isString()
 		.withMessage('El nombre de la vía debe ser una cadena de texto.'),
-	body('numero')
+	body('datos_paciente.datos_vivienda.numero')
 		.trim()
 		.notEmpty()
 		.withMessage('El número es requerido.')
@@ -42,7 +43,7 @@ export const validatePacienteRegister = [
 			}
 			return true;
 		}),
-	body('piso')
+	body('datos_paciente.datos_vivienda.piso')
 		.trim()
 		.notEmpty()
 		.withMessage('El piso es requerido.')
@@ -54,7 +55,7 @@ export const validatePacienteRegister = [
 			}
 			return true;
 		}),
-	body('puerta')
+	body('datos_paciente.datos_vivienda.puerta')
 		.trim()
 		.isString()
 		.withMessage('La puerta debe ser una cadena de texto.')
@@ -68,7 +69,7 @@ export const validatePacienteRegister = [
 			}
 			return true;
 		}),
-	body('codigo_postal')
+	body('datos_paciente.datos_vivienda.municipio.codigo_postal')
 		.trim()
 		.notEmpty()
 		.withMessage('El código postal es requerido.')
@@ -82,13 +83,13 @@ export const validatePacienteRegister = [
 			}
 			return true;
 		}),
-	body('municipio')
+	body('datos_paciente.datos_vivienda.municipio.id')
 		.trim()
 		.notEmpty()
 		.withMessage('El municipio es requerido.')
 		.isNumeric()
 		.withMessage('El municipio debe ser un valor numérico.'),
-	body('tel_fijo')
+	body('datos_paciente.datos_contacto.tel_fijo')
 		.trim()
 		.notEmpty()
 		.withMessage('El teléfono fijo es requerido.')
@@ -102,7 +103,7 @@ export const validatePacienteRegister = [
 			}
 			return true;
 		}),
-	body('tel_movil')
+	body('datos_paciente.datos_contacto.tel_movil')
 		.trim()
 		.notEmpty()
 		.withMessage('El teléfono móvil es requerido.')
@@ -116,7 +117,7 @@ export const validatePacienteRegister = [
 			}
 			return true;
 		}),
-	body('fecha_nacimiento')
+	body('datos_paciente.fecha_nacimiento')
 		.trim()
 		.notEmpty()
 		.withMessage('La fecha de nacimiento es requerida.')

@@ -56,7 +56,7 @@ class PatologiaController {
 			const search = searchValues.search;
 
 			const {
-				rows: resultados,
+				formattedRows: resultados,
 				actualPage: pagina_actual,
 				total: cantidad_patologias,
 				totalPages: paginas_totales,
