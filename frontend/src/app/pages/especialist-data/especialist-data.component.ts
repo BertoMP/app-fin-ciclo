@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ProfessionalDataService } from '../../core/services/professional-data.service';
 import { EspecialistModel } from '../../core/interfaces/especialist.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-especialist-data',
@@ -17,9 +18,11 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
   id: number;
   datosEspecialista: EspecialistModel;
   errores: string[] = [];
+  safeDescription: SafeHtml;
 
   constructor(private professionalDataService: ProfessionalDataService,
-    private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private sanitizer: DomSanitizer) {
 
   }
   ngOnDestroy(): void {
@@ -33,6 +36,7 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
         this.professionalDataService.recogerInfoEspecialista(this.id).subscribe({
           next: (res: EspecialistModel) => {
             this.datosEspecialista = res;
+            this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(this.datosEspecialista.datos_especialista.descripcion);
             console.log(this.datosEspecialista);
           },
           error: (error: HttpErrorResponse): void => {
@@ -41,6 +45,5 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
         });
       }
     });
-
   }
 }

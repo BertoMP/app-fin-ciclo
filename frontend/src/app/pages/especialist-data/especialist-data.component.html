@@ -16,7 +16,7 @@
     </section>
     <section class="description-data">
         <h2>¡Más sobre mí!</h2>
-        <p>{{datosEspecialista.datos_especialista.descripcion}}</p>
+        <p [innerHTML]="safeDescription"></p>
         <button type="button" [routerLink]="'/listado-de-especialistas'">Volver</button>
     </section>
 </div>

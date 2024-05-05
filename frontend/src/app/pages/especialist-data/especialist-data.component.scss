@@ -122,3 +122,14 @@ a:hover{
 .consulta p + p{
     margin-left: 20%;
 }
+
+@media all and (max-width: 600px) {
+  img {
+    display: none;
+  }
+
+  .data {
+    flex-flow: column;
+    align-items: center;
+  }
+}
