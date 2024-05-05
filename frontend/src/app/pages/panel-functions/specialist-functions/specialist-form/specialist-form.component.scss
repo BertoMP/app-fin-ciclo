@@ -3,9 +3,21 @@
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  width: 100%;
   margin: 2rem;
+
+  form {
+    section {
+      fieldset {
+        ::ng-deep .select2-selection--single {
+          padding: 0.5rem 0.8rem;
+          border: 1px solid #ddd;
+          border-radius: 1rem;
+          width: 100%;
+          height: 43px;
+        }
+      }
+    }
+  }
 }
 
 h2 {
@@ -144,7 +156,7 @@ button:disabled {
     "legend  legend   . . .  .  "
     " number number   especiality especiality   turn  consultation"
     " number number   especiality especiality   turn  consultation"
-    " image image . description description description  " 
+    " image image . description description description  "
     " preview-image preview-image . description description description  ";
   gap: 1.5rem;
 }
@@ -219,14 +231,16 @@ select.invalid {
   --select2-selection-border-color: red;
 }
 
+
 select.invalid>option {
   background-color: white;
 }
 
 textarea {
   width: 100%;
-  height: 100px;
-  resize: none;
+  height: 85%;
+  padding: 1rem;
+  text-align: justify;
 }
 
 .error-message {
@@ -284,8 +298,8 @@ textarea {
       "legend"
       "number"
       "number"
-      "especiality" 
-      "especiality" 
+      "especiality"
+      "especiality"
       "turn"
       "consultation"
       "image"
@@ -301,5 +315,9 @@ textarea {
 
   .form-account-data>article {
     width: 100%;
+  }
+
+  textarea {
+    height: 300px;
   }
 }
