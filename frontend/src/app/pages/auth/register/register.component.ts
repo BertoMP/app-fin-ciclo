@@ -9,7 +9,6 @@ import { CustomValidators } from "../../../core/classes/CustomValidators";
 import { CommonModule, LowerCasePipe, NgClass } from "@angular/common";
 import { ProvinceService } from "../../../core/services/province.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { UserModel } from "../../../core/interfaces/user.model";
 import { AuthService } from "../../../core/services/auth.service";
 import {
   LoadingSpinnerComponent
@@ -78,8 +77,8 @@ export class RegisterComponent implements OnInit {
   municipio: string;
   codigo_postal: number;
   fecha_nac: string;
-  num_historia_clinica:string;
-  id_provincia:number;
+  num_historia_clinica: string;
+  id_provincia: number;
 
 
 
@@ -122,8 +121,8 @@ export class RegisterComponent implements OnInit {
             this.tel_movil = this.paciente.datos_paciente.datos_contacto.tel_movil;
             this.id_tipo_via = this.paciente.datos_paciente.datos_vivienda.tipo_via.id;
             this.fecha_nac = this.formatearFecha(this.paciente.datos_paciente.fecha_nacimiento);
-            this.num_historia_clinica=this.paciente.datos_paciente.num_historia_clinica;
-            this.id_provincia=this.paciente.datos_paciente.datos_vivienda.provincia.id;
+            this.num_historia_clinica = this.paciente.datos_paciente.num_historia_clinica;
+            this.id_provincia = this.paciente.datos_paciente.datos_vivienda.provincia.id;
             this.patchForm();
           },
           error: (error: HttpErrorResponse): void => {
@@ -284,6 +283,7 @@ export class RegisterComponent implements OnInit {
           console.error('Error fetching provinces', error.error);
         }
       });
+
     this.registerForm.get('province').valueChanges
       .subscribe({
         next: (province: string) => {
@@ -303,6 +303,7 @@ export class RegisterComponent implements OnInit {
             });
         }
       });
+
     this.registerForm.get('municipio').valueChanges
       .subscribe({
         next: (municipio: string) => {
@@ -339,11 +340,9 @@ export class RegisterComponent implements OnInit {
       'piso': this.piso,
       'nombre_via': this.nombre_via,
       'tipo_via': this.id_tipo_via,
-      'province':this.id_provincia,
-      'municipio':this.id_municipio,
-      'codigo_postal':this.codigo_postal
-      // this.id_municipio = this.paciente.datos_paciente.datos_vivienda.municipio.id;
-      // this.municipio = this.paciente.datos_paciente.datos_vivienda.municipio.nombre;
+      'province': this.id_provincia,
+      'municipio': this.id_municipio,
+      'codigo_postal': this.codigo_postal
     });
 
     Object.keys(this.registerForm.controls).forEach(field => {
@@ -364,17 +363,17 @@ export class RegisterComponent implements OnInit {
 
     this.isLoading = true;
     const newUser: PatientModel = this.generateUser();
-    console.log(newUser);
+
     if (this.id != null) {
       this.authService.updateUser(newUser)
-      .subscribe({
-        next: (response) => {
-          this.onSubmitted("editar")
-        },
-        error: (error: string[]): void => {
-          this.onSubmitError(error);
-        }
-      });
+        .subscribe({
+          next: (response) => {
+            this.onSubmitted("editar")
+          },
+          error: (error: string[]): void => {
+            this.onSubmitError(error);
+          }
+        });
     } else {
       this.authService.registerUser(newUser)
         .subscribe({
@@ -387,6 +386,7 @@ export class RegisterComponent implements OnInit {
         });
     }
   }
+
   onSubmitted(message: string): void {
     this.isLoading = false;
     Swal.fire({
@@ -429,23 +429,23 @@ export class RegisterComponent implements OnInit {
         password: this.registerForm.get('password').value,
       },
       datos_paciente: {
-        fecha_nacimiento:this.registerForm.get('fecha_nacimiento').value,
-        num_historia_clinica:this.num_historia_clinica,
+        fecha_nacimiento: this.registerForm.get('fecha_nacimiento').value,
+        num_historia_clinica: this.num_historia_clinica,
         datos_contacto: {
           tel_fijo: this.registerForm.get('tel_fijo').value,
           tel_movil: this.registerForm.get('tel_movil').value,
         },
         datos_vivienda: {
-          municipio:{
-            id:this.registerForm.get('municipio').value,
-            codigo_postal:this.registerForm.get('codigo_postal').value
-          } ,
-          nombre_via:this.registerForm.get('nombre_via').value,
-          numero:this.registerForm.get('numero').value,
-          piso:this.registerForm.get('piso').value,
-          puerta:this.registerForm.get('puerta').value,
-          tipo_via:{
-            id:this.registerForm.get('tipo_via').value
+          municipio: {
+            id: this.registerForm.get('municipio').value,
+            codigo_postal: this.registerForm.get('codigo_postal').value
+          },
+          nombre_via: this.registerForm.get('nombre_via').value,
+          numero: this.registerForm.get('numero').value,
+          piso: this.registerForm.get('piso').value,
+          puerta: this.registerForm.get('puerta').value,
+          tipo_via: {
+            id: this.registerForm.get('tipo_via').value
           },
         },
       }
