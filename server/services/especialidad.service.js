@@ -16,11 +16,26 @@ class EspecialidadService {
 	 * @async
 	 * @memberof EspecialidadService
 	 * @param {Object} searchValues - Los valores de búsqueda.
+	 * @param {number} limit - El límite de especialidades a obtener.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un array de especialidades.
 	 */
-	static async readEspecialidades(searchValues, conn = dbConn) {
-		return await EspecialidadModel.fetchAll(searchValues, conn);
+	static async readEspecialidades(searchValues, limit, conn = dbConn) {
+		return await EspecialidadModel.fetchAll(searchValues, limit, conn);
+	}
+
+	/**
+	 * @method readEspecialidadesListado
+	 * @description Método para leer todas las especialidades en formato de listado.
+	 * @static
+	 * @async
+	 * @memberof EspecialidadService
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<Array>} Un array de especialidades en formato de listado.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async readEspecialidadesListado(conn = dbConn) {
+		return await EspecialidadModel.fetchAllListado(conn);
 	}
 
 	/**

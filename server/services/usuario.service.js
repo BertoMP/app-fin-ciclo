@@ -69,7 +69,7 @@ class UsuarioService {
 				await EmailService.sendWelcomeEmail(usuario.email, usuario.nombre);
 			} else {
 				const especialista = ObjectFactory.createEspecialistaObject(data);
-				especialista.usuario_id = nuevoUsuario.insertId;
+				especialista.usuario_id = nuevoUsuario.usuario_id;
 				await EspecialistaService.createEspecialista(especialista, conn);
 			}
 

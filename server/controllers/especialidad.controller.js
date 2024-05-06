@@ -28,7 +28,7 @@ class EspecialidadController {
 			const searchValues = getSearchValues(req, 'search');
 
 			const page = searchValues.page;
-			const limit = searchValues.limit;
+			const limit = 5;
 			const search = searchValues.search;
 
 			const {
@@ -36,7 +36,7 @@ class EspecialidadController {
 				total: cantidad_especialidades,
 				actualPage: pagina_actual,
 				totalPages: paginas_totales,
-			} = await EspecialidadService.readEspecialidades(searchValues);
+			} = await EspecialidadService.readEspecialidades(searchValues, limit);
 
 			if (page > 1 && page > paginas_totales) {
 				return res.status(404).json({
@@ -68,6 +68,38 @@ class EspecialidadController {
 				result_max,
 				resultados,
 			});
+		} catch (err) {
+			return res.status(500).json({
+				errors: [err.message],
+			});
+		}
+	}
+
+	/**
+	 * @name getEspecialidadesListado
+	 * @description Método asíncrono que obtiene todas las especialidades en formato de listado de la base de datos.
+	 * 						  Devuelve un objeto JSON con la respuesta HTTP que incluye las especialidades.
+	 * 						  Si no hay especialidades, devuelve un error con el mensaje correspondiente.
+	 * @static
+	 * @async
+	 * @function
+	 * @param {Object} req - El objeto de solicitud de Express.
+	 * @param {Object} res - El objeto de respuesta de Express.
+	 * @returns {Object} res - El objeto de respuesta de Express.
+	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+	 * @memberof EspecialidadController
+	 */
+	static async getEspecialidadesListado(req, res) {
+		try {
+			const especialidades = await EspecialidadService.readEspecialidadesListado();
+
+			if (!especialidades || especialidades.length === 0) {
+				return res.status(404).json({
+					errors: ['No se encontraron especialidades.'],
+				});
+			}
+
+			return res.status(200).json(especialidades);
 		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],

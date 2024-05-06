@@ -10,13 +10,13 @@ class EspecialidadModel {
 	 * @async
 	 * @memberof EspecialidadModel
 	 * @param {Object} searchValues - Los valores de búsqueda.
+	 * @param {number} limit - El límite de especialidades a obtener.
 	 * @param {Object} dbConn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto que contiene las especialidades, el total de especialidades, la página actual y el total de páginas.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async fetchAll(searchValues, dbConn) {
+	static async fetchAll(searchValues, limit, dbConn) {
 		const page = searchValues.page;
-		const limit = searchValues.limit;
 		const search = searchValues.search;
 
 		const offset = (page - 1) * limit;
@@ -72,6 +72,35 @@ class EspecialidadModel {
 			});
 
 			return { formattedRows, total, actualPage, totalPages };
+		} catch (err) {
+			throw new Error('Error al obtener las especialidades.');
+		}
+	}
+
+	/**
+	 * @method fetchAllListado
+	 * @description Método para obtener todas las especialidades en formato de listado.
+	 * @static
+	 * @async
+	 * @memberof EspecialidadModel
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Array>} Un array de especialidades.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async fetchAllListado(dbConn) {
+		const query =
+			'SELECT ' +
+			'    id, ' +
+			'    nombre ' +
+			'FROM ' +
+			'   especialidad ' +
+			'ORDER BY ' +
+			'   nombre ASC';
+
+		try {
+			const [rows] = await dbConn.execute(query);
+
+			return rows;
 		} catch (err) {
 			throw new Error('Error al obtener las especialidades.');
 		}

@@ -77,6 +77,56 @@ router.get(
 
 /**
  * @swagger
+ * /especialidad/listado:
+ *   get:
+ *     summary: Obtiene una lista de todas las especialidades
+ *     tags: [Especialidad]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: La lista de especialidades
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: 'array'
+ *               items:
+ *                 type: 'object'
+ *                 properties:
+ *                   id:
+ *                     type: 'integer'
+ *                     description: 'El ID de la especialidad'
+ *                   nombre:
+ *                     type: 'string'
+ *                     description: 'El nombre de la especialidad'
+ *       401:
+ *         description: No autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenExpiredError'
+ *       403:
+ *         description: Token inválido o no proporcionado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenInvalidError'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ */
+router.get(
+	'/especialidad/listado',
+	verifyAccessToken,
+	verifyUserRole([1]),
+	EspecialidadController.getEspecialidadesListado
+);
+
+/**
+ * @swagger
  * /especialidad/{especialidad_id}:
  *   get:
  *     summary: Obtiene una especialidad por su ID
