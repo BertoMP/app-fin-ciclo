@@ -12,6 +12,6 @@ export class EspecialidadService {
   constructor(private http: HttpClient) { }
 
   getEspecialidad(): Observable<EspecialidadModel[]> {
-    return this.http.get<EspecialidadModel[]>(`${this.baseUrl}/especialidad/especialista`);
+    return this.http.get<EspecialidadModel[]>(`${this.baseUrl}/especialidad/listado`);
   }
 }

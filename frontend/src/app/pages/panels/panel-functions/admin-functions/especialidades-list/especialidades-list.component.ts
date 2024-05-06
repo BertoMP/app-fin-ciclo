@@ -67,7 +67,6 @@ export class EspecialidadesListComponent {
   }
 
   #showResults(data) {
-    console.log(data);
     this.especialities = data.resultados;
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;
@@ -97,7 +96,6 @@ export class EspecialidadesListComponent {
           },
           error: (error: string[]): void => {
             this.errores = error;
-            console.log(this.errores);
           }
         })
       } else if (result.dismiss === Swal.DismissReason.cancel) {

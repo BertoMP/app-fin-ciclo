@@ -111,7 +111,6 @@ export class UserListComponent {
           },
           error: (error: string[]): void => {
             this.errores = error;
-            console.log(this.errores);
           }
         })
       } else if (result.dismiss === Swal.DismissReason.cancel) {

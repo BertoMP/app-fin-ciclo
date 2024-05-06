@@ -37,7 +37,6 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
           next: (res: EspecialistModel) => {
             this.datosEspecialista = res;
             this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(this.datosEspecialista.datos_especialista.descripcion);
-            console.log(this.datosEspecialista);
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');

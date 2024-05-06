@@ -103,7 +103,6 @@ export class RegisterComponent implements OnInit {
       if (this.id != null) {
         this.authService.getPatient(this.id).subscribe({
           next: (res: PatientModel) => {
-            console.log(res);
             this.paciente = res;
             this.nombre = this.paciente.datos_personales.nombre;
             this.primer_apellido = this.paciente.datos_personales.primer_apellido;
