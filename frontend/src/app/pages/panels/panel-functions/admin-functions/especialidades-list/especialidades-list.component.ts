@@ -67,6 +67,7 @@ export class EspecialidadesListComponent {
   }
 
   #showResults(data) {
+    console.log(data);
     this.especialities = data.resultados;
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;

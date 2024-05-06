@@ -26,6 +26,7 @@ import { PanelComponent } from './pages/panels/panel-functions/panel/panel.compo
 import { UserListComponent } from './pages/panels/panel-functions/admin-functions/user-list/user-list.component';
 import { EspecialidadesListComponent } from './pages/panels/panel-functions/admin-functions/especialidades-list/especialidades-list.component';
 import { SpecialistFormComponent } from './pages/panels/panel-functions/specialist-functions/specialist-form/specialist-form.component';
+import { CrearEditarEspecialidadesComponent } from './pages/panels/panel-functions/admin-functions/crear-editar-especialidades/crear-editar-especialidades.component';
 
 export const routes: Routes = [
   {
@@ -38,11 +39,11 @@ export const routes: Routes = [
     path: 'testeo',
     component: PanelComponent,
     canActivate: [loginGuard],
-    children:[
+    children: [
       {
         path: 'listadoUsers',
         component: UserListComponent,
-      }, 
+      },
       {
         path: 'listadoEspecialidades',
         component: EspecialidadesListComponent,
@@ -90,6 +91,14 @@ export const routes: Routes = [
   {
     path: 'crearEditarEspecialista/:id',
     component: SpecialistFormComponent
+  },
+  {
+    path: 'crearEditarEspecialidad/:id',
+    component: CrearEditarEspecialidadesComponent,
+  },
+  {
+    path: 'crearEditarEspecialidad',
+    component: CrearEditarEspecialidadesComponent,
   },
   {
     path: 'auth/forgotten-password',

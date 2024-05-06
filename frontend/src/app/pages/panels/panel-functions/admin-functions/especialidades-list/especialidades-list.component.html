@@ -15,11 +15,11 @@
             <textarea>{{especiality.datos_especialidad.descripcion}}</textarea>
             <section class="d-flex m-3">
                 <button type="button" class="btn btn-primary"
-                    routerLink="/crearEditarEspecialista/{{especiality.id}}">Editar</button>
+                    routerLink="/crearEditarEspecialidad/{{especiality.id}}">Editar</button>
                 <button type="button" class="btn btn-danger"
                     (click)="confirmarCancelacion(especiality.id)">Eliminar</button>
             </section>
         </div>
     </div>
 </section>
-<button type="button" class="btn btn-primary" routerLink="/crearEditarUsuario">Crear Especialidad</button>
+<button type="button" class="btn btn-primary" routerLink="/crearEditarEspecialidad">Crear Especialidad</button>
