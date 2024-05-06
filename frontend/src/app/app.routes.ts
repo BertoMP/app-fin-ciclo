@@ -54,7 +54,7 @@ export const routes: Routes = [
       },
     ]
   },
-  ,
+
   {
     path: 'testeo-backend',
     component: TesteoBackendComponent

@@ -44,6 +44,8 @@ export class SpecialistFormComponent implements OnInit {
   isLoading: boolean = false;
   errores: string[] = [];
   imageBase64: string;
+  imageToShow: string;
+  isEditing: boolean = false;
 
   especialidad: Select2Data;
   turno: Select2Data;
@@ -52,18 +54,6 @@ export class SpecialistFormComponent implements OnInit {
   especialista: EspecialistModel;
 
   id: number;
-  nombre: string = '';
-  primer_apellido: string = '';
-  segundo_apellido: string = '';
-  dni: string = '';
-  descripcion: string = '';
-  num_colegiado: string = '';
-  consulta_id: number = null;
-  especialidad_id: number = null;
-  nombre_turno: string = '';
-  email: string = '';
-
-  imageToShow: string;
 
   constructor(private turnoService: TurnoService,
     private especialidadService: EspecialidadService,
@@ -78,22 +68,15 @@ export class SpecialistFormComponent implements OnInit {
   ngOnInit(): void {
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
-      if (this.id != null) {
+
+      if (this.id !== null) {
+        this.isEditing = true;
+      }
+
+      if (this.isEditing) {
         this.professionalDataService.specificEspecialista(this.id).subscribe({
           next: (res: EspecialistModel) => {
             this.especialista = res;
-            this.nombre = this.especialista.datos_personales.nombre;
-            this.primer_apellido = this.especialista.datos_personales.primer_apellido;
-            this.segundo_apellido = this.especialista.datos_personales.segundo_apellido;
-            this.dni = this.especialista.datos_personales.dni;
-            this.descripcion = this.especialista.datos_especialista.descripcion;
-            this.num_colegiado = this.especialista.datos_especialista.num_colegiado;
-            this.consulta_id = this.especialista.datos_especialista.consulta.consulta_id;
-            this.especialidad_id = this.especialista.datos_especialista.especialidad.especialidad_id;
-            this.nombre_turno = this.especialista.datos_especialista.turno;
-            this.email = this.especialista.datos_personales.email;
-            this.imageBase64 = this.especialista.datos_especialista.imagen;
-            this.imageToShow = this.imageBase64 ? this.imageBase64 : null;
 
             this.patchForm();
           },
@@ -222,18 +205,21 @@ export class SpecialistFormComponent implements OnInit {
   }
 
   patchForm(): void {
-    let descripcionWithLineBreaks = this.descripcion.replace(/<br>/g, '\n');
+    let descripcionWithLineBreaks: string = this.especialista.datos_especialista.descripcion.replace(/<br>/g, '\n');
+
+    this.imageBase64 = this.especialista.datos_especialista.imagen;
+    this.imageToShow = this.imageBase64 ? this.imageBase64 : null;
 
     this.registerForm.patchValue({
-      'nombre': this.nombre,
-      'primer_apellido': this.primer_apellido,
-      'segundo_apellido': this.segundo_apellido,
-      'dni': this.dni,
-      'email': this.email,
-      'consulta': this.consulta_id,
-      'especialidad': this.especialidad_id,
-      'numero_colegiado': this.num_colegiado,
-      'turno': this.nombre_turno,
+      'nombre': this.especialista.datos_personales.nombre,
+      'primer_apellido': this.especialista.datos_personales.primer_apellido,
+      'segundo_apellido': this.especialista.datos_personales.segundo_apellido,
+      'dni': this.especialista.datos_personales.dni,
+      'email': this.especialista.datos_personales.email,
+      'consulta': this.especialista.datos_especialista.consulta.consulta_id,
+      'especialidad': this.especialista.datos_especialista.especialidad.especialidad_id,
+      'numero_colegiado': this.especialista.datos_especialista.num_colegiado,
+      'turno': this.especialista.datos_especialista.turno,
       'descripcion': descripcionWithLineBreaks
     });
 

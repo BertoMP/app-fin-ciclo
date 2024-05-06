@@ -1,11 +1,14 @@
 @if (isLoading) {
 <section>
-    <p>Registrando usuario...</p>
+    <p>Registrando especialista...</p>
     <app-loading-spinner></app-loading-spinner>
 </section>
 } @else {
 <form [formGroup]="registerForm" (ngSubmit)="onRegisterSpecialist()">
-    <h2>FORMULARIO CREAR/EDITAR ESPECIALISTA</h2>
+    <h2 *ngIf="!isEditing; else isEditingH2">FORMULARIO CREAR ESPECIALISTA</h2>
+    <ng-template #isEditingH2>
+        <h2>FORMULARIO EDITAR ESPECIALISTA</h2>
+    </ng-template>
     <section class="form-first-row">
         <fieldset class="form-personal-data">
             <legend>Datos personales</legend>
@@ -39,10 +42,13 @@
                  sendedAttempt }">
             </article>
             <article class="form-field">
-                <label for="password">Contraseña</label>
-                <app-password-input id="password" formControlName="password"
-                    [ngClass]="{ 'invalid': registerForm.get('password').invalid && sendedAttempt }">
-                </app-password-input>
+              <label for="password" *ngIf="!isEditing; else isEditingPass">Contraseña</label>
+              <ng-template #isEditingPass>
+                  <label for="password">Contraseña actual</label>
+              </ng-template>
+              <app-password-input id="password" formControlName="password"
+                                  [ngClass]="{ 'invalid': registerForm.get('password').invalid && sendedAttempt }">
+              </app-password-input>
             </article>
         </fieldset>
     </section>
@@ -78,7 +84,9 @@
                 <input type="file" formControlName="imagen" id="imagen" [ngClass]="{ 'invalid':
                  registerForm.get('imagen').invalid &&
                  sendedAttempt }" (change)="onFileSelect($event)">
-                 <img [src]="imageToShow" *ngIf="imageBase64" class="preview-image"  alt="Patata"/>
+            </article>
+            <article class="preview-image">
+                <img *ngIf="imageBase64" [src]="imageBase64" alt="Imagen de perfil">
             </article>
             <article class="description-field">
                 <label for="descripcion">Descripción</label>
@@ -176,7 +184,10 @@
         <p class="error-message" *ngFor="let error of errores">{{ error }}</p>
         }
         <section class="btn-section">
-            <button type="submit">Registrarse</button>
+            <button type="submit" *ngIf="!isEditing; else isEditingBtn">Registrarse</button>
+            <ng-template #isEditingBtn>
+                <button type="submit">Editar</button>
+            </ng-template>
             <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar
             </button>
         </section>

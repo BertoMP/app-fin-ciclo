@@ -7,13 +7,16 @@
   <form [formGroup]="registerForm"
         (ngSubmit)="onRegisterAttempt()"
   >
-    <h2>FORMULARIO DE REGISTRO</h2>
+    <h2 *ngIf="!isEditing; else isEditingH2">FORMULARIO DE REGISTRO</h2>
+    <ng-template #isEditingH2>
+      <h2>EDICIÓN DE USUARIO</h2>
+    </ng-template>
     <section class="form-first-row">
       <fieldset class="form-personal-data">
         <legend>Datos personales</legend>
         <article class="name-field">
           <label for="name">Nombre</label>
-          <input type="text" [value]="nombre"
+          <input type="text"
                  id="name"
                  formControlName="nombre"
                  [ngClass]="{'invalid':
@@ -25,7 +28,7 @@
         <article class="first-surname-field">
           <label for="first-surname">Primer apellido</label>
           <input type="text"
-                 id="first-surname" [value]="primer_apellido"
+                 id="first-surname"
                  formControlName="primer_apellido"
                  [ngClass]="{ 'invalid':
                registerForm.get('primer_apellido').invalid &&
@@ -36,7 +39,7 @@
         <article class="second-surname-field">
           <label for="second-surname">Segundo apellido</label>
           <input type="text"
-                 id="second-surname" [value]="segundo_apellido"
+                 id="second-surname"
                  formControlName="segundo_apellido"
                  [ngClass]="{ 'invalid':
                registerForm.get('segundo_apellido').invalid
@@ -47,7 +50,7 @@
         <article class="dni-field">
           <label for="dni">DNI</label>
           <input type="text"
-                 id="dni" [value]="dni"
+                 id="dni"
                  formControlName="dni"
                  [ngClass]="{ 'invalid':
                 registerForm.get('dni').invalid
@@ -58,7 +61,7 @@
         <article class="date-of-birth-field">
           <label for="date-of-birth">Fecha de nacimiento</label>
           <input type="date"
-                 id="date-of-birth" [value]="fecha_nac"
+                 id="date-of-birth"
                  formControlName="fecha_nacimiento"
                  [ngClass]="{ 'invalid':
                 registerForm.get('fecha_nacimiento').invalid
@@ -66,19 +69,17 @@
                 }"
           >
         </article>
-        @if (id!=null) {
-          <article class="clinic-historial">
-            <label>Historia clínica</label>
-            <input type="text" disabled [value]="num_historia_clinica">
-            </article>
-        }
+        <article class="clinic-historial-field" *ngIf="isEditing">
+          <label>Historia clínica</label>
+          <input type="text" formControlName="clinic-historial">
+        </article>
       </fieldset>
       <fieldset class="form-account-data">
         <legend>Datos de acceso</legend>
         <article class="form-field">
           <label for="email">Correo electrónico</label>
           <input type="email"
-                 id="email" [value]="email"
+                 id="email"
                  formControlName="email"
                  [ngClass]="{ 'invalid':
                registerForm.get('email').invalid &&
@@ -86,7 +87,10 @@
           >
         </article>
         <article class="form-field">
-          <label for="password">Contraseña</label>
+          <label for="password" *ngIf="!isEditing; else isEditingPass">Contraseña</label>
+          <ng-template #isEditingPass>
+            <label for="password">Contraseña actual</label>
+          </ng-template>
           <app-password-input id="password"
                               formControlName="password"
                               [ngClass]="{ 'invalid': registerForm.get('password').invalid && sendedAttempt }">
@@ -101,14 +105,14 @@
           <label for="place">Plaza/Calle</label>
           <select2  id="place" formControlName="tipo_via"
                   [ngClass]="{ 'invalid': registerForm.get('tipo_via').invalid &&
-                sendedAttempt }" [data]="places" placeholder="Elige una opcion" [value]="id_tipo_via">
+                sendedAttempt }" [data]="places" placeholder="Elige una opcion">
           </select2>
         </article>
         <article class="address-field">
           <label for="address">Dirección</label>
           <input type="text"
                  id="address"
-                 formControlName="nombre_via" [value]="nombre_via"
+                 formControlName="nombre_via"
                  [ngClass]="{ 'invalid':
                registerForm.get('nombre_via').invalid &&
                sendedAttempt  } "
@@ -118,7 +122,7 @@
           <label for="number">Nº</label>
           <input type="number"
                  id="number"
-                 formControlName="numero" [value]="numero"
+                 formControlName="numero"
                  [ngClass]="{ 'invalid':
                registerForm.get('numero').invalid &&
                sendedAttempt }"
@@ -128,7 +132,7 @@
           <label for="floor">Piso</label>
           <input type="number"
                  id="floor"
-                 formControlName="piso" [value]="piso"
+                 formControlName="piso"
                  [ngClass]="{ 'invalid':
                registerForm.get('piso').invalid &&
                sendedAttempt }"
@@ -138,7 +142,7 @@
           <label for="door">Puerta</label>
           <input type="text"
                  id="door"
-                 formControlName="puerta" [value]="puerta"
+                 formControlName="puerta"
                  [ngClass]="{ 'invalid':
                registerForm.get('puerta').invalid &&
                sendedAttempt }"
@@ -146,7 +150,7 @@
         </article>
         <article class="province-field">
           <label for="province">Provincia</label>
-          <select2 formControlName="province" id="province" [value]="id_provincia"
+          <select2 formControlName="province" id="province"
                   [ngClass]="{ 'invalid':
                registerForm.get('province').invalid &&
                sendedAttempt }" [data]="provinces" placeholder="Elige una opcion">
@@ -157,7 +161,7 @@
           <select2 formControlName="municipio" id="city"
                   [ngClass]="{ 'invalid':
                registerForm.get('municipio').invalid &&
-               sendedAttempt }" [data]="municipios" placeholder="Elige una opcion" [value]="id_municipio">
+               sendedAttempt }" [data]="municipios" placeholder="Elige una opcion">
           </select2>
         </article>
         <article class="postal-code-field">
@@ -165,12 +169,12 @@
           <select2 formControlName="codigo_postal" id="postal-code"
                   [ngClass]="{ 'invalid':
                registerForm.get('codigo_postal').invalid &&
-               sendedAttempt }" [data]="codigosPostales" placeholder="Elige una opcion" [value]="codigo_postal">
+               sendedAttempt }" [data]="codigosPostales" placeholder="Elige una opcion">
           </select2>
         </article>
         <article class="phone-field">
           <label for="phone">Teléfono</label>
-          <input type="text" formControlName="tel_fijo" id="phone" [value]="tel_fijo"
+          <input type="text" formControlName="tel_fijo" id="phone"
                  [ngClass]="{ 'invalid':
                registerForm.get('tel_fijo').invalid &&
                sendedAttempt }"
@@ -178,7 +182,7 @@
         </article>
         <article class="mobile-field">
           <label for="mobile">Móvil</label>
-          <input type="text" formControlName="tel_movil" id="mobile" [value]="tel_movil"
+          <input type="text" formControlName="tel_movil" id="mobile"
                  [ngClass]="{ 'invalid':
                registerForm.get('tel_movil').invalid &&
                sendedAttempt }"
@@ -314,7 +318,10 @@
           <p class="error-message" *ngFor="let error of errores">{{ error }}</p>
       }
       <section class="btn-section">
-        <button type="submit">Registrarse</button>
+        <button type="submit" *ngIf="!isEditing; else isEditingBtn">Registrarse</button>
+        <ng-template #isEditingBtn>
+          <button type="submit">Editar</button>
+        </ng-template>
         <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar
         </button>
       </section>
