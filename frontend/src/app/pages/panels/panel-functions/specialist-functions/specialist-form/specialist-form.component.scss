@@ -39,7 +39,7 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
         gap: 1rem;
 
         @media screen and (max-width: 670px) {
-          grid-template-colums: 1fr;
+          grid-template-columns: 1fr;
           grid-template-areas:
             "personal-data"
             "account-data";
