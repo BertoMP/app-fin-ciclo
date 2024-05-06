@@ -132,6 +132,10 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
           grid-area: mobile;
         }
 
+        &.clinic-historial-field {
+          grid-area: clinic-historial;
+        }
+
         #province,
         #city,
         #place,
@@ -168,7 +172,7 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
         display: grid;
         grid-template-areas:
           "name first-surname second-surname"
-          "dni date-of-birth .";
+          "dni date-of-birth clinic-historial";
         gap: 1rem;
         align-content: center;
       }
@@ -301,7 +305,8 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
               "first-surname"
               "second-surname"
               "dni"
-              "date-of-birth";
+              "date-of-birth"
+              "clinic-historial";
           }
           &.form-account-data {
             flex-flow: column nowrap;

@@ -42,7 +42,7 @@ export const routes: Routes = [
       {
         path: 'listadoUsers',
         component: UserListComponent,
-      }, 
+      },
       {
         path: 'listadoEspecialidades',
         component: EspecialidadesListComponent,
@@ -53,7 +53,7 @@ export const routes: Routes = [
       },
     ]
   },
-  ,
+
   {
     path: 'testeo-backend',
     component: TesteoBackendComponent

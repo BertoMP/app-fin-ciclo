@@ -61,26 +61,8 @@ export class RegisterComponent implements OnInit {
   id: number = null;
 
   paciente: PatientModel;
-  nombre: string;
-  primer_apellido: string;
-  segundo_apellido: string;
-  dni: string;
-  email: string;
-  tel_fijo: string;
-  tel_movil: string;
-  nombre_via: string;
-  numero: number;
-  piso: number;
-  puerta: string;
-  id_tipo_via: number;
-  id_municipio: number;
-  municipio: string;
-  codigo_postal: number;
-  fecha_nac: string;
-  num_historia_clinica: string;
-  id_provincia: number;
 
-
+  isEditing: boolean = false;
 
   constructor(private provinceService: ProvinceService,
     private municipioService: MunicipioService,
@@ -91,37 +73,23 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService) {
   }
   formatearFecha(fechaString: string) {
-    var partesFecha = fechaString.split("-");
-    var fechaFormateada = partesFecha[2] + "-" + partesFecha[1] + "-" + partesFecha[0];
-
-    return fechaFormateada;
+    const partesFecha = fechaString.split("-");
+    return partesFecha[2] + "-" + partesFecha[1] + "-" + partesFecha[0];
   }
 
   ngOnInit(): void {
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
-      if (this.id != null) {
+
+      if (this.id) {
+        this.isEditing = true;
+      }
+
+      if (this.isEditing) {
         this.authService.getPatient(this.id).subscribe({
           next: (res: PatientModel) => {
             this.paciente = res;
-            this.nombre = this.paciente.datos_personales.nombre;
-            this.primer_apellido = this.paciente.datos_personales.primer_apellido;
-            this.segundo_apellido = this.paciente.datos_personales.segundo_apellido;
-            this.dni = this.paciente.datos_personales.dni;
-            this.email = this.paciente.datos_personales.email;
-            this.id_municipio = this.paciente.datos_paciente.datos_vivienda.municipio.id;
-            this.municipio = this.paciente.datos_paciente.datos_vivienda.municipio.nombre;
-            this.codigo_postal = this.paciente.datos_paciente.datos_vivienda.municipio.codigo_postal;
-            this.nombre_via = this.paciente.datos_paciente.datos_vivienda.nombre_via;
-            this.numero = this.paciente.datos_paciente.datos_vivienda.numero;
-            this.piso = this.paciente.datos_paciente.datos_vivienda.piso;
-            this.puerta = this.paciente.datos_paciente.datos_vivienda.puerta;
-            this.tel_fijo = this.paciente.datos_paciente.datos_contacto.tel_fijo;
-            this.tel_movil = this.paciente.datos_paciente.datos_contacto.tel_movil;
-            this.id_tipo_via = this.paciente.datos_paciente.datos_vivienda.tipo_via.id;
-            this.fecha_nac = this.formatearFecha(this.paciente.datos_paciente.fecha_nacimiento);
-            this.num_historia_clinica = this.paciente.datos_paciente.num_historia_clinica;
-            this.id_provincia = this.paciente.datos_paciente.datos_vivienda.provincia.id;
+
             this.patchForm();
           },
           error: (error: HttpErrorResponse): void => {
@@ -181,6 +149,10 @@ export class RegisterComponent implements OnInit {
           CustomValidators.validPassword
         ]
       ),
+      'clinic-historial': new FormControl({
+        value: null,
+        disabled: true
+      }),
       'tipo_via': new FormControl(
         null,
         [
@@ -249,8 +221,6 @@ export class RegisterComponent implements OnInit {
         ]
       ),
     });
-
-
 
     this.tipoViaService.getTipoVia()
       .subscribe({
@@ -326,22 +296,23 @@ export class RegisterComponent implements OnInit {
 
   patchForm(): void {
     this.registerForm.patchValue({
-      'nombre': this.nombre,
-      'primer_apellido': this.primer_apellido,
-      'segundo_apellido': this.segundo_apellido,
-      'dni': this.dni,
-      'email': this.email,
-      'fecha_nacimiento': this.fecha_nac,
-      'tel_fijo': this.tel_fijo,
-      'tel_movil': this.tel_movil,
-      'numero': this.numero,
-      'puerta': this.puerta,
-      'piso': this.piso,
-      'nombre_via': this.nombre_via,
-      'tipo_via': this.id_tipo_via,
-      'province': this.id_provincia,
-      'municipio': this.id_municipio,
-      'codigo_postal': this.codigo_postal
+      'nombre': this.paciente.datos_personales.nombre,
+      'primer_apellido': this.paciente.datos_personales.primer_apellido,
+      'segundo_apellido': this.paciente.datos_personales.segundo_apellido,
+      'dni': this.paciente.datos_personales.dni,
+      'email': this.paciente.datos_personales.email,
+      'fecha_nacimiento': this.formatearFecha(this.paciente.datos_paciente.fecha_nacimiento),
+      'clinic-historial': this.paciente.datos_paciente.num_historia_clinica,
+      'tel_fijo': this.paciente.datos_paciente.datos_contacto.tel_fijo,
+      'tel_movil': this.paciente.datos_paciente.datos_contacto.tel_movil,
+      'numero': this.paciente.datos_paciente.datos_vivienda.numero,
+      'puerta': this.paciente.datos_paciente.datos_vivienda.puerta,
+      'piso': this.paciente.datos_paciente.datos_vivienda.piso,
+      'nombre_via': this.paciente.datos_paciente.datos_vivienda.nombre_via,
+      'tipo_via': this.paciente.datos_paciente.datos_vivienda.tipo_via.id,
+      'province': this.paciente.datos_paciente.datos_vivienda.provincia.id,
+      'municipio': this.paciente.datos_paciente.datos_vivienda.municipio.id,
+      'codigo_postal': this.paciente.datos_paciente.datos_vivienda.municipio.codigo_postal
     });
 
     Object.keys(this.registerForm.controls).forEach(field => {
@@ -431,7 +402,7 @@ export class RegisterComponent implements OnInit {
       },
       datos_paciente: {
         fecha_nacimiento: this.registerForm.get('fecha_nacimiento').value,
-        num_historia_clinica: this.num_historia_clinica,
+        num_historia_clinica: (this.isEditing) ? this.paciente.datos_paciente.num_historia_clinica : null,
         datos_contacto: {
           tel_fijo: this.registerForm.get('tel_fijo').value,
           tel_movil: this.registerForm.get('tel_movil').value,
