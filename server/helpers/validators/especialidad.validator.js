@@ -14,19 +14,19 @@ import { body, validationResult } from 'express-validator';
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
 export const validateEspecialidad = [
-	body('nombre')
+	body('datos_especialidad.nombre')
 		.trim()
 		.notEmpty()
 		.withMessage('El nombre de la especialidad no puede estar vacío.')
 		.isString()
 		.withMessage('El nombre de la especialidad debe ser una cadena de texto'),
-	body('descripcion')
+	body('datos_especialidad.descripcion')
 		.trim()
 		.notEmpty()
 		.withMessage('La descripción de la especialidad no puede estar vacía.')
 		.isString()
 		.withMessage('La descripción de la especialidad es requerida.'),
-	body('imagen')
+	body('datos_especialidad.imagen')
 		.trim()
 		.notEmpty()
 		.withMessage('La imagen de la especialidad no puede estar vacía.')

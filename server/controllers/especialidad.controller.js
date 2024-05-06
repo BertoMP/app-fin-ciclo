@@ -188,14 +188,14 @@ class EspecialidadController {
 	 * @memberof EspecialidadController
 	 */
 	static async createEspecialidad(req, res) {
-		let descripcion = req.body.descripcion;
+		let descripcion = req.body.datos_especialidad.descripcion;
 		descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
 
 		try {
 			const especialidad = {
-				nombre: req.body.nombre,
+				nombre: req.body.datos_especialidad.nombre,
 				descripcion: descripcion,
-				imagen: req.body.imagen,
+				imagen: req.body.datos_especialidad.imagen,
 			};
 
 			const especialidadExists = await EspecialidadService.readEspecialidadByNombre(
@@ -234,7 +234,7 @@ class EspecialidadController {
 	 */
 	static async updateEspecialidad(req, res) {
 		const id = parseInt(req.params.especialidad_id);
-		let descripcion = req.body.descripcion;
+		let descripcion = req.body.datos_especialidad.descripcion;
 		descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
 
 		try {
@@ -247,9 +247,9 @@ class EspecialidadController {
 			}
 
 			const especialidad = {
-				nombre: req.body.nombre,
+				nombre: req.body.datos_especialidad.nombre,
 				descripcion: descripcion,
-				imagen: req.body.imagen,
+				imagen: req.body.datos_especialidad.imagen,
 			};
 
 			await EspecialidadService.updateEspecialidad(id, especialidad);
