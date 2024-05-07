@@ -27,49 +27,24 @@ class EspecialidadController {
 	static async getEspecialidades(req, res) {
 		try {
 			const searchValues = getSearchValues(req, 'search');
-
-			const page = searchValues.page;
-			const limit = 5;
-			const search = searchValues.search;
-
-			const {
-				formattedRows: resultados,
-				total: cantidad_especialidades,
-				actualPage: pagina_actual,
-				totalPages: paginas_totales,
-			} = await EspecialidadService.readEspecialidades(searchValues, limit);
-
-			if (page > 1 && page > paginas_totales) {
-				return res.status(404).json({
-					errors: ['La página de especialidades solicitada no existe.'],
-				});
-			}
-
-			let query = '';
-
-			if (search) {
-				query += `&search=${search}`;
-			}
-
-			const prev = page > 1 ? `/especialidad?page=${page - 1}&limit=${limit}${query}` : null;
-			const next = page < paginas_totales ? `/especialidad?page=${page + 1}&limit=${limit}${query}` : null;
-			const result_min = (page - 1) * limit + 1;
-			const result_max =
-				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const items_pagina = parseInt(limit);
+			const especialidades = await EspecialidadService.readEspecialidades(searchValues);
 
 			return res.status(200).json({
-				prev,
-				next,
-				pagina_actual,
-				paginas_totales,
-				cantidad_especialidades,
-				items_pagina,
-				result_min,
-				result_max,
-				resultados,
+				prev: especialidades.prev,
+				next: especialidades.next,
+				pagina_actual: especialidades.pagina_actual,
+				paginas_totales: especialidades.paginas_totales,
+				cantidad_especialidades: especialidades.cantidad_especialidades,
+				items_pagina: especialidades.items_pagina,
+				result_min: especialidades.result_min,
+				result_max: especialidades.result_max,
+				resultados: especialidades.resultados,
 			});
 		} catch (err) {
+			if (err.message === 'La página solicitada no existe.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -94,14 +69,12 @@ class EspecialidadController {
 		try {
 			const especialidades = await EspecialidadService.readEspecialidadesListado();
 
-			if (!especialidades || especialidades.length === 0) {
-				return res.status(404).json({
-					errors: ['No se encontraron especialidades.'],
-				});
-			}
-
 			return res.status(200).json(especialidades);
 		} catch (err) {
+			if (err.message === 'No se encontraron especialidades.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -128,14 +101,12 @@ class EspecialidadController {
 		try {
 			const especialidad = await EspecialidadService.readEspecialidadById(id);
 
-			if (!especialidad) {
-				return res.status(404).json({
-					errors: ['Especialidad no encontrada.'],
-				});
-			}
-
 			return res.status(200).json(especialidad);
 		} catch (err) {
+			if (err.message === 'Especialidad no encontrada.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -254,20 +225,18 @@ class EspecialidadController {
 		const id = parseInt(req.params.especialidad_id);
 
 		try {
-			const currentEspecialidad = await EspecialidadService.readEspecialidadById(id);
-
-			if (!currentEspecialidad) {
-				return res.status(404).json({
-					errors: ['Especialidad no encontrada.'],
-				});
-			}
-
 			await EspecialidadService.deleteEspecialidad(id);
 
 			return res.status(200).json({
 				message: 'Especialidad eliminada exitosamente.',
 			});
 		} catch (err) {
+			if (err.message === 'Especialidad no encontrada.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});

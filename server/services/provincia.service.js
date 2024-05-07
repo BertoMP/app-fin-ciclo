@@ -19,7 +19,17 @@ class ProvinciaService {
 	 * @returns {Promise<Array>} Un array de provincias.
 	 */
 	static async readProvincias(conn = dbConn) {
-		return await ProvinciaModel.fetchAll(conn);
+		try {
+			const provincias = await ProvinciaModel.fetchAll(conn);
+
+			if (!provincias) {
+				throw new Error('Las provincias no fueron encontradas.');
+			}
+
+			return provincias;
+		} catch (err) {
+			throw err;
+		}
 	}
 }
 

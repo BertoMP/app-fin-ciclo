@@ -20,7 +20,17 @@ class MunicipioService {
 	 * @returns {Promise<Array>} Un array de los municipios de la provincia.
 	 */
 	static async readMunicipioByProvinciaId(id, conn = dbConn) {
-		return await MunicipioModel.fetchByProvinciaId(id, conn);
+		try {
+			const municipios = await MunicipioModel.fetchByProvinciaId(id, conn);
+
+			if (!municipios ) {
+				throw new Error('El municipio no fue encontrado.');
+			}
+
+			return municipios;
+		} catch (err) {
+			throw err;
+		}
 	}
 }
 

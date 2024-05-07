@@ -36,14 +36,14 @@ class PacienteTomaMedicamentoController {
 		try {
 			const prescripciones = await PacienteTomaMedicamentoService.findPrescripciones(paciente_id);
 
-			if (!prescripciones || prescripciones.length === 0) {
+			return res.status(200).json(prescripciones);
+		} catch (error) {
+			if (error.message === 'No hay recetas para este paciente.') {
 				return res.status(404).json({
-					errors: ['No hay recetas para este paciente.'],
+					errors: [error.message],
 				});
 			}
 
-			return res.status(200).json(prescripciones);
-		} catch (error) {
 			return res.status(500).json({
 				errors: [error.message],
 			});
@@ -66,17 +66,34 @@ class PacienteTomaMedicamentoController {
 	 */
 	static async postReceta(req, res) {
 		const paciente_id = req.body.paciente_id;
-		const prescripcion = req.body.prescripcion;
 
 		try {
-			await PacienteTomaMedicamentoService.createPrescripcion(paciente_id, prescripcion);
+			await PacienteTomaMedicamentoService.createPrescripcion(paciente_id, req.body);
 
 			return res.status(200).json({
 				message: 'Receta guardada correctamente.',
 			});
-		} catch (error) {
+		} catch (err) {
+			if (err.message === 'Debe especificar un medicamento para cada prescripción.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'Debe especificar al menos una toma para cada medicamento.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'Ya existe una toma para este medicamento a esta hora.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
-				errors: [error.message],
+				errors: [err.message],
 			});
 		}
 	}
@@ -112,9 +129,15 @@ class PacienteTomaMedicamentoController {
 			return res.status(200).json({
 				message: 'Toma eliminada correctamente.',
 			});
-		} catch (error) {
+		} catch (err) {
+			if (err.message === 'La toma no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
-				errors: [error.message],
+				errors: [err.message],
 			});
 		}
 	}
@@ -138,17 +161,6 @@ class PacienteTomaMedicamentoController {
 		const medicamento_id = req.params.medicamento_id;
 
 		try {
-			const medicamentoExists = await PacienteTomaMedicamentoService.findMedicamento(
-				paciente_id,
-				medicamento_id,
-			);
-
-			if (!medicamentoExists || medicamentoExists.length === 0) {
-				return res.status(404).json({
-					errors: ['El medicamento no existe.'],
-				});
-			}
-
 			await PacienteTomaMedicamentoService.deleteMedicamentoFromPrescription(
 				paciente_id,
 				medicamento_id,
@@ -158,6 +170,12 @@ class PacienteTomaMedicamentoController {
 				message: 'Medicamento eliminado correctamente.',
 			});
 		} catch (error) {
+			if (error.message === 'No hay recetas de este medicamento para el paciente.') {
+				return res.status(404).json({
+					errors: [error.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [error.message],
 			});
@@ -191,15 +209,7 @@ class PacienteTomaMedicamentoController {
 		paciente_id = parseInt(paciente_id);
 
 		try {
-			const prescripciones = await PacienteTomaMedicamentoService.findPrescripciones(paciente_id);
-
-			if (!prescripciones || prescripciones.prescripciones.length === 0) {
-				return res.status(404).json({
-					errors: ['No hay recetas para este paciente.'],
-				});
-			}
-
-			const file = await PdfService.generateReceta(prescripciones);
+			const file = await PacienteTomaMedicamentoService.printPrescripcionPdf(paciente_id);
 
 			res.status(200).download(file, async (err) => {
 				await PdfService.destroyPDF(file);
@@ -208,6 +218,12 @@ class PacienteTomaMedicamentoController {
 				}
 			});
 		} catch (error) {
+			if (error.message === 'No hay recetas para este paciente.') {
+				return res.status(404).json({
+					errors: [error.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [error.message],
 			});

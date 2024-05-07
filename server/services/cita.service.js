@@ -9,6 +9,7 @@ import EmailService from './email.service.js';
 // Importación de utilidades necesarias
 import { dbConn } from '../util/database/database.js';
 import { generateQRCode } from '../util/functions/createQr.js';
+import EspecialistaService from "./especialista.service.js";
 
 /**
  * @class CitaService
@@ -22,12 +23,71 @@ class CitaService {
 	 * @async
 	 * @memberOf CitaService
 	 * @param {Object} searchValues - Los valores de búsqueda.
-	 * @param {number} limit - El límite de resultados.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un array de citas.
 	 */
-	static async readCitas(searchValues, limit, conn = dbConn) {
-		return await CitaModel.fetchAll(searchValues, limit, conn);
+	static async readCitas(searchValues, conn = dbConn) {
+		try {
+			const page = searchValues.page;
+			const fechaInicio = searchValues.fechaInicio;
+			const fechaFin = searchValues.fechaFin;
+			const paciente_id = searchValues.paciente_id;
+			const limit = searchValues.limit;
+
+			const {
+				rows: resultados,
+				actualPage: pagina_actual,
+				total: cantidad_citas,
+				totalPages: paginas_totales,
+			} = await CitaModel.fetchAll(searchValues, limit, conn);
+
+			if (page > 1 && page > paginas_totales) {
+				throw new Error('La página de citas solicitada no existe.');
+			}
+
+			let query = '';
+
+			if (fechaInicio) {
+				query += `&fechaInicio=${fechaInicio}`;
+			}
+
+			if (fechaFin) {
+				query += `&fechaFin=${fechaFin}`;
+			}
+
+			const prev =
+				page > 1
+					? `/cita/${paciente_id}?page=${page - 1}&limit=${limit}${query}`
+					: null;
+			const next =
+				page < paginas_totales
+					? `/cita/${paciente_id}?page=${page + 1}&limit=${limit}${query}`
+					: null;
+			const result_min = (page - 1) * limit + 1;
+			const result_max =
+				resultados[0].citas.length === limit
+					? page * limit
+					: (page - 1) * limit + resultados[0].citas.length;
+			const fecha_inicio = fechaInicio;
+			const fecha_fin = fechaFin;
+			const items_pagina = parseInt(limit);
+
+			return {
+				prev,
+				next,
+				pagina_actual,
+				paginas_totales,
+				cantidad_citas,
+				result_min,
+				result_max,
+				items_pagina,
+				fecha_inicio,
+				fecha_fin,
+				resultados,
+			};
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -65,11 +125,26 @@ class CitaService {
 	 * @async
 	 * @memberOf CitaService
 	 * @param {number} id - El ID de la cita.
+	 * @param {number} userId - El ID del usuario.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto que representa la cita.
 	 */
-	static async readCitaById(id, conn = dbConn) {
-		return await CitaModel.fetchById(id, conn);
+	static async readCitaById(id, userId, conn = dbConn) {
+		try {
+			const cita = await CitaModel.fetchById(id, conn);
+
+			if (!cita) {
+				throw new Error('La cita que intenta obtener no existe.');
+			}
+
+			if (cita.datos_paciente.paciente_id !== cita.paciente_id) {
+				throw new Error('No tiene permiso para obtener esta cita.');
+			}
+
+			return cita;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -97,7 +172,17 @@ class CitaService {
 	 * @returns {Promise<Array>} Un array de citas.
 	 */
 	static async readCitasAgenda(especialista_id, conn = dbConn) {
-		return await CitaModel.fetchAgenda(especialista_id, conn);
+		try {
+			const citas = await CitaModel.fetchAgenda(especialista_id, conn);
+
+			if (!citas) {
+				throw new Error('No hay citas disponibles.');
+			}
+
+			return citas;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -139,9 +224,35 @@ class CitaService {
 				await conn.beginTransaction();
 			}
 
+			const citaExists = await CitaModel.fetchByData(cita, conn);
+
+			if (citaExists) {
+				throw new Error('La cita que intenta crear no está disponible.');
+			}
+
+			const especialista = await EspecialistaService.readEspecialistaByEspecialistaId(cita.especialista_id, conn);
+
+			if (!especialista) {
+				throw new Error('El especialista seleccionado no existe.');
+			}
+
+			const citaHora = new Date(`1970-01-01T${cita.hora}Z`);
+			const diurnoInicio = new Date('1970-01-01T08:00:00Z');
+			const diurnoFin = new Date('1970-01-01T14:00:00Z');
+			const vespertinoInicio = new Date('1970-01-01T14:30:00Z');
+			const vespertinoFin = new Date('1970-01-01T20:00:00Z');
+
+			if (
+				especialista.turno === 'no-trabajando' ||
+				(especialista.turno === 'diurno' && (citaHora < diurnoInicio || citaHora > diurnoFin)) ||
+				(especialista.turno === 'vespertino' &&
+					(citaHora < vespertinoInicio || citaHora > vespertinoFin))
+			) {
+				throw new Error('El especialista no trabaja en el horario seleccionado.');
+			}
+
 			const newCitaId = await CitaModel.createCita(cita, conn);
 			const newCita = await CitaModel.fetchById(newCitaId.id, conn);
-
 			const qr = await generateQRCode(newCita);
 			const paciente = await UsuarioService.readEmailByUserId(cita.paciente_id, conn);
 			const emailPaciente = paciente.email;
@@ -191,11 +302,28 @@ class CitaService {
 	 * @async
 	 * @memberOf CitaService
 	 * @param {number} id - El ID de la cita.
+	 * @param {number} userId - El ID del usuario.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto que representa la cita eliminada.
 	 */
-	static async deleteCita(id, conn = dbConn) {
-		return await CitaModel.deleteCita(id, conn);
+	static async deleteCita(id, userId, conn = dbConn) {
+		try {
+			const cita = await CitaModel.fetchById(id, conn);
+
+			if (!cita) {
+				throw new Error('La cita que intenta eliminar no existe.');
+			}
+
+			if (cita.datos_paciente.paciente_id !== userId) {
+				throw new Error('No tiene permiso para eliminar esta cita.');
+			}
+
+			await CitaModel.deleteCita(id, conn);
+
+			return cita;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**

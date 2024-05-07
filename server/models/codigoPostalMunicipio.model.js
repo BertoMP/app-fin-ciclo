@@ -28,6 +28,10 @@ class CodigoPostalMunicipioModel {
 		try {
 			const [rows] = await dbConn.query(query, [formattedCod]);
 
+			if (!rows.length) {
+				return null;
+			}
+
 			return rows;
 		} catch (err) {
 			throw new Error('Error al conseguir los códigos postales del municipio.');

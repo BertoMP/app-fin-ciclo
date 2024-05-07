@@ -34,6 +34,12 @@ class EspecialistaController {
 
 			return res.status(200).json(especialista);
 		} catch (err) {
+			if (err.message === 'Especialista no encontrado.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});

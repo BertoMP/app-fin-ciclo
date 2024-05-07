@@ -25,7 +25,17 @@ class EspecialistaService {
 	}
 
 	static async readEspecialistaByUserId(usuario_id, conn = dbConn) {
-		return await EspecialistaModel.findByUserId(usuario_id, conn);
+		try {
+			const especialista = await EspecialistaModel.findByUserId(usuario_id, conn);
+
+			if (!especialista || especialista.turno === 'no-trabajando') {
+				throw new Error('Especialista no encontrado.');
+			}
+
+			return especialista;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -92,36 +102,10 @@ class EspecialistaService {
 	 * @memberof EspecialistaService
 	 * @param {number} id - El ID del especialista.
 	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
-	 * @returns {Promise<void>}
+	 * @returns {Promise<Object>}
 	 */
 	static async deleteEspecialista(id, conn = null) {
-		const isConnProvided = !!conn;
-
-		if (!isConnProvided) {
-			conn = await dbConn.getConnection();
-		}
-
-		try {
-			if (!isConnProvided) {
-				await conn.beginTransaction();
-			}
-
-			await EspecialistaModel.deleteEspecialistaById(id, conn);
-			await UsuarioService.deleteUsuario(id, conn);
-
-			if (!isConnProvided) {
-				await conn.commit();
-			}
-		} catch (err) {
-			if (!isConnProvided) {
-				await conn.rollback();
-			}
-			throw new Error(err);
-		} finally {
-			if (!isConnProvided) {
-				conn.release();
-			}
-		}
+		return await EspecialistaModel.deleteEspecialistaById(id, conn);
 	}
 
 	/**

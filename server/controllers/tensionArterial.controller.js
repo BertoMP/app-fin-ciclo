@@ -38,62 +38,20 @@ class TensionArterialController {
 
 		try {
 			const searchValues = getSearchValues(req, 'date');
-
-			const page = searchValues.page;
-			const fechaInicio = searchValues.fechaInicio;
-			const fechaFin = searchValues.fechaFin;
-			const limit = searchValues.limit;
-
-			const {
-				formattedRows: resultados,
-				total: cantidad_tensionArterial,
-				actualPage: pagina_actual,
-				totalPages: paginas_totales,
-			} = await TensionArterialService.readTensionArterial(searchValues, paciente_id);
-
-			if (page > 1 && page > paginas_totales) {
-				return res.status(404).json({
-					errors: ['La página de tensiones arteriales solicitada no existe.'],
-				});
-			}
-
-			let query = '';
-
-			if (fechaInicio) {
-				query += `&fechaInicio=${fechaInicio}`;
-			}
-
-			if (fechaFin) {
-				query += `&fechaFin=${fechaFin}`;
-			}
-
-			const prev =
-				page > 1
-					? `/tensionArterial/${paciente_id}?page=${page - 1}&limit=${limit}${query}`
-					: null;
-			const next =
-				page < paginas_totales
-					? `/tensionArterial/${paciente_id}?page=${page + 1}&limit=${limit}${query}`
-					: null;
-			const result_min = (page - 1) * limit + 1;
-			const result_max =
-				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const fecha_inicio = fechaInicio;
-			const fecha_fin = fechaFin;
-			const items_pagina = parseInt(limit);
+			const mediciones = await TensionArterialService.readTensionArterial(searchValues, paciente_id);
 
 			return res.status(200).json({
-				prev,
-				next,
-				result_min,
-				result_max,
-				cantidad_tensionArterial,
-				items_pagina,
-				pagina_actual,
-				paginas_totales,
-				fecha_inicio,
-				fecha_fin,
-				resultados,
+				prev: mediciones.prev,
+				next: mediciones.next,
+				pagina_actual: mediciones.pagina_actual,
+				paginas_totales: mediciones.paginas_totales,
+				cantidad_tensionArterial: mediciones.cantidad_tensionArterial,
+				result_min: mediciones.result_min,
+				result_max: mediciones.result_max,
+				fecha_inicio: mediciones.fecha_inicio,
+				fecha_fin: mediciones.fecha_fin,
+				items_pagina: mediciones.items_pagina,
+				resultados: mediciones.resultados,
 			});
 		} catch (error) {
 			return res.status(500).json({
@@ -115,24 +73,10 @@ class TensionArterialController {
 	 * @memberof TensionArterialController
 	 */
 	static async postTensionArterial(req, res) {
-		const fecha = tz(new Date(), 'Europe/Madrid').format('YYYY-MM-DD');
-		const hora = tz(new Date(), 'Europe/Madrid').format('HH:mm:ss');
-		const paciente_id = req.body.user_id;
-		const sistolica = parseInt(req.body.sistolica);
-		const diastolica = parseInt(req.body.diastolica);
-		const pulsaciones = parseInt(req.body.pulsaciones);
-
-		const tensionArterial = {
-			paciente_id: paciente_id,
-			sistolica: sistolica,
-			diastolica: diastolica,
-			pulsaciones: pulsaciones,
-			fecha: fecha,
-			hora: hora,
-		};
+		const paciente_id = req.user_id;
 
 		try {
-			await TensionArterialService.createTensionArterial(tensionArterial);
+			await TensionArterialService.createTensionArterial(paciente_id, req.body);
 
 			return res.status(200).json({ message: 'Tensión arterial registrada correctamente.' });
 		} catch (err) {

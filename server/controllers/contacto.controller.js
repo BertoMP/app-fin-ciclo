@@ -1,5 +1,6 @@
 // Importación de los servicios necesarios
 import EmailService from '../services/email.service.js';
+import ObjectFactory from "../util/classes/objectFactory.js";
 
 /**
  * @class ContactoController
@@ -21,19 +22,11 @@ class ContactoController {
 	 * @memberof ContactoController
 	 */
 	static async postContacto(req, res) {
-		let mensaje = req.body.mensaje;
-		mensaje = mensaje.replace(/(\r\n|\n|\r)/g, '<br>');
-
-		const contacto = {
-			nombre: req.body.nombre,
-			descripcion: req.body.descripcion,
-			email: req.body.email,
-			telefono: req.body.telefono,
-			mensaje: mensaje,
-		};
+		const contacto = ObjectFactory.createConstactoObject(req.body);
 
 		try {
 			await EmailService.sendContactEmail(contacto);
+
 			return res.status(200).json({ message: 'Mensaje enviado exitosamente.' });
 		} catch (err) {
 			return res.status(500).json({

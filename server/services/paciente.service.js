@@ -43,7 +43,17 @@ class PacienteService {
 	 * @returns {Promise<Array>} Un array de pacientes.
 	 */
 	static async readPacientes(conn = dbConn) {
-		return await PacienteModel.findAll(conn);
+		try {
+			const pacientes = await PacienteModel.findAll(conn);
+
+			if (!pacientes) {
+				throw new Error('No se encontraron pacientes');
+			}
+
+			return pacientes;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -120,8 +130,6 @@ class PacienteService {
 
 			await PacienteModel.deletePacienteByUserId(id, conn);
 
-			await UsuarioService.deleteUsuario(id, conn);
-
 			if (!isConnProvided) {
 				await conn.commit();
 			}
@@ -129,26 +137,12 @@ class PacienteService {
 			if (!isConnProvided) {
 				await conn.rollback();
 			}
-			throw new Error(err);
+			throw err;
 		} finally {
 			if (!isConnProvided) {
 				conn.release();
 			}
 		}
-	}
-
-	/**
-	 * @method deletePacienteByUserId
-	 * @description Método para eliminar un paciente por su ID de usuario.
-	 * @static
-	 * @async
-	 * @memberof PacienteService
-	 * @param {number} usuario_id - El ID de usuario del paciente.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise<Object>} El resultado de la operación de eliminación.
-	 */
-	static async deletePacienteByUserId(usuario_id, conn = dbConn) {
-		return await PacienteModel.deletePacienteByUserId(usuario_id, conn);
 	}
 }
 

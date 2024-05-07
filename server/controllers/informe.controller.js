@@ -23,34 +23,27 @@ class InformeController {
 	 * @memberof InformeController
 	 */
 	static async getInforme(req, res) {
+		const user_id = req.user_id;
 		const user_role = req.user_role;
 		const informe_id = parseInt(req.params.informe_id);
 
 		try {
-			const paciente = await CitaService.readPacienteIdByInformeId(informe_id);
-
-			if (!paciente) {
-				return res.status(404).json({
-					errors: ['Informe no encontrado.'],
-				});
-			}
-
-			if (user_role === 2 && paciente.paciente_id !== req.user_id) {
-				return res.status(403).json({
-					errors: ['No tienes permiso para realizar esta acción.'],
-				});
-			}
-
-			const informe = await InformeService.readInforme(informe_id);
-
-			if (!informe) {
-				return res.status(404).json({
-					errors: ['Informe no encontrado.'],
-				});
-			}
+			const informe = await InformeService.readInforme(informe_id, user_id, user_role);
 
 			return res.status(200).json(informe);
 		} catch (err) {
+			if (err.message === 'Informe no encontrado.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'No tienes permiso para realizar esta acción.') {
+				return res.status(403).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -76,29 +69,7 @@ class InformeController {
 		const informe_id = parseInt(req.params.informe_id);
 
 		try {
-			const paciente = await CitaService.readPacienteIdByInformeId(informe_id);
-
-			if (!paciente) {
-				return res.status(404).json({
-					errors: ['Informe no encontrado.'],
-				});
-			}
-
-			if (user_role === 2 && paciente.paciente_id !== req.user_id) {
-				return res.status(403).json({
-					errors: ['No tienes permiso para realizar esta acción.'],
-				});
-			}
-
-			const informe = await InformeService.readInforme(informe_id);
-
-			if (!informe) {
-				return res.status(404).json({
-					errors: ['Informe no encontrado.'],
-				});
-			}
-
-			const file = await PdfService.generateInforme(informe);
+			const file = await InformeService.printInformePDF(informe_id, req.user_id, user_role);
 
 			res.status(200).download(file, async (err) => {
 				await PdfService.destroyPDF(file);
@@ -128,22 +99,18 @@ class InformeController {
 	 */
 	static async createInforme(req, res) {
 		try {
-			let contenido = req.body.contenido;
-			contenido = contenido.replace(/(\r\n|\n|\r)/g, '<br>');
-
-			const informe = {
-				motivo: req.body.motivo,
-				patologias: req.body.patologias,
-				contenido: contenido,
-				cita_id: req.body.cita_id,
-			};
-
-			await InformeService.createInforme(informe);
+			await InformeService.createInforme(req.body);
 
 			return res.status(200).json({
 				message: 'Informe creado correctamente.',
 			});
 		} catch (err) {
+			if (err.message === 'La patología no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});

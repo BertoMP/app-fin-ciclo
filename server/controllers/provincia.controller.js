@@ -24,14 +24,14 @@ class ProvinciaController {
 		try {
 			const provincias = await ProvinciaService.readProvincias();
 
-			if (!provincias) {
+			return res.status(200).json(provincias);
+		} catch (err) {
+			if (err.message === 'Las provincias no fueron encontradas.') {
 				return res.status(404).json({
-					errors: ['Las provincias no fueron encontradas.'],
+					errors: [err.message],
 				});
 			}
 
-			return res.status(200).json(provincias);
-		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],
 			});
