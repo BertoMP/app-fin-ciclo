@@ -6,6 +6,7 @@ $text-color-hover: #152a88;
 $btn-bg-color: #007bff;
 $btn-bg-color-hover: #0056b3;
 $form-shadow: 0 0 20px rgba(0,0,0,0.3);
+$warning-text: #ff0000;
 
 :host {
   background-color: $bg-color-primary;
@@ -66,7 +67,7 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
     }
 
     small {
-      color: red;
+      color: $warning-text;
       font-weight: bold;
       display: block;
       text-align: center;
@@ -75,7 +76,7 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
 
   p {
     &.error {
-      color: red;
+      color: $warning-text;
       font-weight: bold;
       text-align: center;
     }

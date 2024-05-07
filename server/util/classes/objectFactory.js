@@ -80,6 +80,15 @@ class ObjectFactory {
 			consulta_id: data.datos_especialista.consulta.consulta_id,
 		};
 	}
+
+	static createEspecialidadObject(data) {
+		return {
+			nombre: data.datos_especialidad.nombre,
+			descripcion: data.datos_especialidad.descripcion
+				.replace(/(\r\n|\n|\r)/g, '<br>'),
+			imagen: data.datos_especialidad.imagen,
+		};
+	}
 }
 
 export default ObjectFactory;

@@ -140,6 +140,11 @@ class EspecialidadModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, ['no-trabajando']);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
 			const especialidades = [];
 			let currentEspecialidad = null;
 

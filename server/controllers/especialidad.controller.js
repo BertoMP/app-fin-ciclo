@@ -1,6 +1,7 @@
 // Importación de los servicios necesarios
 import EspecialidadService from '../services/especialidad.service.js';
 import {getSearchValues} from "../util/functions/getSearchValues.js";
+import ObjectFactory from "../util/classes/objectFactory.js";
 
 /**
  * @class EspecialidadController
@@ -159,14 +160,12 @@ class EspecialidadController {
 		try {
 			const especialidades = await EspecialidadService.readEspecialidesEspecialistas();
 
-			if (!especialidades || especialidades.length === 0) {
-				return res.status(404).json({
-					errors: ['No se encontraron especialidades con especialistas.'],
-				});
-			}
-
 			return res.status(200).json(especialidades);
 		} catch (err) {
+			if (err.message === 'No se encontraron especialidades con especialistas.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -188,33 +187,16 @@ class EspecialidadController {
 	 * @memberof EspecialidadController
 	 */
 	static async createEspecialidad(req, res) {
-		let descripcion = req.body.datos_especialidad.descripcion;
-		descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
-
 		try {
-			const especialidad = {
-				nombre: req.body.datos_especialidad.nombre,
-				descripcion: descripcion,
-				imagen: req.body.datos_especialidad.imagen,
-			};
-
-			const especialidadExists = await EspecialidadService.readEspecialidadByNombre(
-				especialidad.nombre,
-			);
-
-			if (especialidadExists) {
-				return res.status(409).json({
-					errors: ['Ya existe una especialidad con ese nombre.'],
-				});
-			}
-
-			await EspecialidadService.createEspecialidad(especialidad);
+			await EspecialidadService.createEspecialidad(req.body);
 
 			return res.status(200).json({ message: 'Especialidad creada exitosamente.' });
 		} catch (err) {
-			return res.status(500).json({
-				errors: [err.message],
-			});
+			if (err.message === 'Ya existe una especialidad con ese nombre.') {
+				return res.status(409).json({ errors: [err.message] });
+			}
+
+			return res.status(500).json({ errors: [err.message] });
 		}
 	}
 
@@ -234,30 +216,20 @@ class EspecialidadController {
 	 */
 	static async updateEspecialidad(req, res) {
 		const id = parseInt(req.params.especialidad_id);
-		let descripcion = req.body.datos_especialidad.descripcion;
-		descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
 
 		try {
-			const currentEspecialidad = await EspecialidadService.readEspecialidadById(id);
+			await EspecialidadService.updateEspecialidad(id, req.body);
 
-			if (!currentEspecialidad) {
-				return res.status(404).json({
-					errors: ['Especialidad no encontrada.'],
-				});
+			return res.status(200).json({ message: 'Especialidad actualizada exitosamente.' });
+		} catch (err) {
+			if (err.message === 'Especialidad no encontrada.') {
+				return res.status(404).json({ errors: [err.message] });
 			}
 
-			const especialidad = {
-				nombre: req.body.datos_especialidad.nombre,
-				descripcion: descripcion,
-				imagen: req.body.datos_especialidad.imagen,
-			};
+			if (err.message === 'Ya existe una especialidad con ese nombre.') {
+				return res.status(409).json({ errors: [err.message] });
+			}
 
-			await EspecialidadService.updateEspecialidad(id, especialidad);
-
-			return res.status(200).json({
-				message: 'Especialidad actualizada exitosamente.',
-			});
-		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],
 			});
