@@ -126,6 +126,11 @@ class ConsultaModel {
 
 		try {
 			const [rows] = await dbConn.execute(query);
+
+			if (!rows) {
+				return null;
+			}
+
 			return rows;
 		} catch (err) {
 			throw new Error('Error al obtener las consultas.');
@@ -168,6 +173,10 @@ class ConsultaModel {
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
 
+			if (!rows.length) {
+				return null;
+			}
+
 			const consulta = {
 				id: rows[0].id,
 				nombre: rows[0].nombre,
@@ -175,16 +184,18 @@ class ConsultaModel {
 			};
 
 			rows.forEach((row) => {
-				consulta.medicos_asociados.push({
-					id: row.especialista_id,
-					nombre: row.nombre_usuario,
-					primer_apellido: row.primer_apellido,
-					segundo_apellido: row.segundo_apellido,
-					datos_especialidad: {
-						id: row.especialidad_id,
-						nombre: row.nombre_especialidad,
-					},
-				});
+				if (row.especialista_id && row.nombre_usuario) {
+					consulta.medicos_asociados.push({
+						id: row.especialista_id,
+						nombre: row.nombre_usuario,
+						primer_apellido: row.primer_apellido,
+						segundo_apellido: row.segundo_apellido,
+						datos_especialidad: {
+							id: row.especialidad_id,
+							nombre: row.nombre_especialidad,
+						},
+					});
+				}
 			});
 
 			return consulta;
@@ -209,6 +220,11 @@ class ConsultaModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [nombre]);
+
+			if (!rows.length) {
+				return null;
+			}
+
 			return rows[0];
 		} catch (err) {
 			throw new Error('Error al obtener la consulta.');

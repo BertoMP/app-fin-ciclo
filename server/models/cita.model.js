@@ -185,40 +185,38 @@ class CitaModel {
 			const [rows] = await dbConn.execute(query, [id]);
 			const cita = rows[0];
 
-			if (cita) {
-				const fecha = format(new Date(cita.fecha), 'dd-MM-yyyy');
-
-				return {
-					datos_paciente: {
-						paciente_id: cita.paciente_id,
-						nombre: cita.paciente_nombre,
-						primer_apellido: cita.paciente_primer_apellido,
-						segundo_apellido: cita.paciente_segundo_apellido,
-					},
-					datos_cita: {
-						id: cita.id,
-						fecha: fecha,
-						hora: cita.hora
-					},
-					datos_especialista: {
-						especialista_id: cita.especialista_id,
-						nombre: cita.especialista_nombre,
-						primer_apellido: cita.especialista_primer_apellido,
-						segundo_apellido: cita.especialista_segundo_apellido,
-						datos_especialidad: {
-							especialidad_id: cita.especialidad_id,
-							especialidad_nombre: cita.especialidad_nombre,
-						},
-						datos_consulta: {
-							consulta_id: cita.consulta_id,
-							consulta_nombre: cita.consulta_nombre,
-						},
-					},
-					informe_id: cita.informe_id,
-				};
+			if (!cita) {
+				return null;
 			}
 
-			return cita;
+			return {
+				datos_paciente: {
+					paciente_id: cita.paciente_id,
+					nombre: cita.paciente_nombre,
+					primer_apellido: cita.paciente_primer_apellido,
+					segundo_apellido: cita.paciente_segundo_apellido,
+				},
+				datos_cita: {
+					id: cita.id,
+					fecha: format(new Date(cita.fecha), 'dd-MM-yyyy'),
+					hora: cita.hora
+				},
+				datos_especialista: {
+					especialista_id: cita.especialista_id,
+					nombre: cita.especialista_nombre,
+					primer_apellido: cita.especialista_primer_apellido,
+					segundo_apellido: cita.especialista_segundo_apellido,
+					datos_especialidad: {
+						especialidad_id: cita.especialidad_id,
+						especialidad_nombre: cita.especialidad_nombre,
+					},
+					datos_consulta: {
+						consulta_id: cita.consulta_id,
+						consulta_nombre: cita.consulta_nombre,
+					},
+				},
+				informe_id: cita.informe_id,
+			};
 		} catch (err) {
 			throw new Error('Error al obtener la cita.');
 		}
@@ -314,6 +312,11 @@ class CitaModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [especialista_id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
 			return rows;
 		} catch (err) {
 			throw new Error('Error al obtener la agenda.');

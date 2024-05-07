@@ -86,13 +86,13 @@ class GlucometriaModel {
 	 * @static
 	 * @async
 	 * @memberof GlucometriaModel
+	 * @param {number} paciente - El ID del paciente.
 	 * @param {Object} glucometria - El objeto de la nueva medición de glucosa.
 	 * @param {Object} dbConn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} El resultado de la operación de inserción.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async create(glucometria, dbConn) {
-		const paciente_id = glucometria.paciente_id;
+	static async create(paciente, glucometria, dbConn) {
 		const fecha = glucometria.fecha;
 		const hora = glucometria.hora;
 		const medicion = glucometria.medicion;
@@ -102,10 +102,10 @@ class GlucometriaModel {
 			'		VALUES (?, ?, ?, ?)';
 
 		try {
-			await dbConn.execute(query, [paciente_id, fecha, hora, medicion]);
+			await dbConn.execute(query, [paciente, fecha, hora, medicion]);
 
 			return {
-				fecha: tz(fecha, 'Europe/Madrid').format('DD-MM-YYYY'),
+				fecha: fecha,
 				hora: hora,
 				datos_toma: {
 					medicion: medicion,

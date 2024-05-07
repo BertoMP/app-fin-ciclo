@@ -19,7 +19,17 @@ class TipoViaService {
 	 * @returns {Promise<Array>} Un array de tipos de vías.
 	 */
 	static async readTipoVia(conn = dbConn) {
-		return await TipoViaModel.fetchAll(conn);
+		try {
+			const tiposVia = await TipoViaModel.fetchAll(conn);
+
+			if (!tiposVia) {
+				throw new Error('Los tipos de vía no fueron encontrados.');
+			}
+
+			return tiposVia;
+		} catch (err) {
+			throw err;
+		}
 	}
 }
 

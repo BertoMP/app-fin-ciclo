@@ -26,14 +26,14 @@ class MunicipioController {
 		try {
 			const municipio = await MunicipioService.readMunicipioByProvinciaId(provinciaId);
 
-			if (!municipio || municipio.length === 0) {
+			return res.status(200).json(municipio);
+		} catch (err) {
+			if (err.message === 'El municipio no fue encontrado.') {
 				return res.status(404).json({
-					errors: ['El municipio no fue encontrado.'],
+					errors: [err.message],
 				});
 			}
 
-			return res.status(200).json(municipio);
-		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],
 			});

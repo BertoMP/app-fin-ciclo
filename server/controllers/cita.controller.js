@@ -28,65 +28,19 @@ class CitaController {
 	static async getCitas(req, res) {
 		try {
 			const searchValues = getSearchValues(req, 'date');
-
-			const page = searchValues.page;
-			const fechaInicio = searchValues.fechaInicio;
-			const fechaFin = searchValues.fechaFin;
-			const paciente_id = searchValues.paciente_id;
-			const limit = searchValues.limit;
-
-			const {
-				rows: resultados,
-				actualPage: pagina_actual,
-				total: cantidad_citas,
-				totalPages: paginas_totales,
-			} = await CitaService.readCitas(searchValues, limit);
-
-			if (page > 1 && page > paginas_totales) {
-				return res.status(404).json({
-					errors: ['La página de citas solicitada no existe.'],
-				});
-			}
-
-			let query = '';
-
-			if (fechaInicio) {
-				query += `&fechaInicio=${fechaInicio}`;
-			}
-
-			if (fechaFin) {
-				query += `&fechaFin=${fechaFin}`;
-			}
-
-			const prev =
-				page > 1
-					? `/cita/${paciente_id}?page=${page - 1}&limit=${limit}${query}`
-					: null;
-			const next =
-				page < paginas_totales
-					? `/cita/${paciente_id}?page=${page + 1}&limit=${limit}${query}`
-					: null;
-			const result_min = (page - 1) * limit + 1;
-			const result_max =
-				resultados[0].citas.length === limit
-					? page * limit
-					: (page - 1) * limit + resultados[0].citas.length;
-			const fecha_inicio = fechaInicio;
-			const fecha_fin = fechaFin;
-			const items_pagina = parseInt(limit);
+			const citas = await CitaService.readCitas(searchValues);
 
 			return res.status(200).json({
-				prev,
-				next,
-				pagina_actual,
-				paginas_totales,
-				cantidad_citas,
-				result_min,
-				result_max,
-				items_pagina,
-				fecha_inicio,
-				fecha_fin,
-				resultados,
+				prev: citas.prev,
+				next: citas.next,
+				pagina_actual: citas.pagina_actual,
+				paginas_totales: citas.paginas_totales,
+				cantidad_citas: citas.cantidad_citas,
+				rango: citas.rango,
+				fechaInicio: citas.fechaInicio,
+				fechaFin: citas.fechaFin,
+				limit: citas.limit,
+				citas: citas.resultados,
 			});
 		} catch (err) {
 			return res.status(500).json({
@@ -114,22 +68,22 @@ class CitaController {
 		const userId = req.user_id;
 
 		try {
-			const cita = await CitaService.readCitaById(citaId);
-
-			if (!cita) {
-				return res.status(404).json({
-					errors: ['La cita que intenta obtener no existe.'],
-				});
-			}
-
-			if (cita.datos_paciente.paciente_id !== userId) {
-				return res.status(403).json({
-					errors: ['No tienes permiso para obtener esta cita.'],
-				});
-			}
+			const cita = await CitaService.readCitaById(citaId, userId);
 
 			return res.status(200).json(cita);
 		} catch (err) {
+			if (err.message === 'No tienes permiso para acceder a esta cita.') {
+				return res.status(403).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'La cita que intenta obtener no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -155,14 +109,14 @@ class CitaController {
 		try {
 			const citas = await CitaService.readCitasAgenda(especialista_id);
 
-			if (!citas || citas.length === 0) {
+			return res.status(200).json(citas);
+		} catch (err) {
+			if (err.message === 'No hay citas disponibles.') {
 				return res.status(404).json({
-					errors: ['No hay citas disponibles.'],
+					errors: [err.message],
 				});
 			}
 
-			return res.status(200).json(citas);
-		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -192,49 +146,30 @@ class CitaController {
 		};
 
 		try {
-			const citaExists = await CitaService.readCitaByData(cita);
-
-			if (citaExists) {
-				return res.status(404).json({
-					errors: ['La cita que intenta crear no esta disponible.'],
-				});
-			}
-
-			const especialista = await EspecialistaService.readEspecialistaByEspecialistaId(
-				cita.especialista_id,
-			);
-
-			if (!especialista) {
-				return res.status(404).json({
-					errors: ['El especialista seleccionado no existe.'],
-				});
-			}
-
-			const citaHora = new Date(`1970-01-01T${cita.hora}Z`);
-
-			const diurnoInicio = new Date('1970-01-01T08:00:00Z');
-			const diurnoFin = new Date('1970-01-01T14:00:00Z');
-
-			const vespertinoInicio = new Date('1970-01-01T14:30:00Z');
-			const vespertinoFin = new Date('1970-01-01T20:00:00Z');
-
-			if (
-				especialista.turno === 'no-trabajando' ||
-				(especialista.turno === 'diurno' && (citaHora < diurnoInicio || citaHora > diurnoFin)) ||
-				(especialista.turno === 'vespertino' &&
-					(citaHora < vespertinoInicio || citaHora > vespertinoFin))
-			) {
-				return res.status(404).json({
-					errors: ['El especialista no trabaja en el horario seleccionado.'],
-				});
-			}
-
 			await CitaService.createCita(cita);
 
 			return res.status(200).json({
 				message: 'Cita creada correctamente.',
 			});
 		} catch (err) {
+			if (err.message === 'La cita que intenta crear no está disponible.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'El especialista seleccionado no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'El especialista no trabaja en el horario seleccionado.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -259,26 +194,24 @@ class CitaController {
 		const userId = req.user_id;
 
 		try {
-			const cita = await CitaService.readCitaById(citaId);
-
-			if (!cita) {
-				return res.status(404).json({
-					errors: ['La cita que intenta eliminar no existe.'],
-				});
-			}
-
-			if (cita.datos_paciente.paciente_id !== userId) {
-				return res.status(403).json({
-					errors: ['No tienes permiso para eliminar esta cita.'],
-				});
-			}
-
-			await CitaService.deleteCita(citaId);
+			await CitaService.deleteCita(citaId, userId);
 
 			return res.status(200).json({
 				message: 'Cita eliminada correctamente.',
 			});
 		} catch (err) {
+			if (err.message === 'La cita que intenta eliminar no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'No tienes permiso para eliminar esta cita.') {
+				return res.status(403).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});

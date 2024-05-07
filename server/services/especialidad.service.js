@@ -17,11 +17,54 @@ class EspecialidadService {
 	 * @async
 	 * @memberof EspecialidadService
 	 * @param {Object} searchValues - Los valores de búsqueda.
-	 * @param {number} limit - El límite de especialidades a obtener.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un array de especialidades.
 	 */
-	static async readEspecialidades(searchValues, limit, conn = dbConn) {
+	static async readEspecialidades(searchValues, conn = dbConn) {
+		try {
+			const page = searchValues.page;
+			const limit = 5;
+			const search = searchValues.search;
+
+			const {
+				formattedRows: resultados,
+				total: cantidad_especialidades,
+				actualPage: pagina_actual,
+				totalPages: paginas_totales,
+			} = await EspecialidadModel.fetchAll(searchValues, limit, conn);
+
+			if (page > 1 && page > paginas_totales) {
+				throw new Error('La página solicitada no existe.');
+			}
+
+			let query = '';
+
+			if (search) {
+				query += `&search=${search}`;
+			}
+
+			const prev = page > 1 ? `/especialidad?page=${page - 1}&limit=${limit}${query}` : null;
+			const next = page < paginas_totales ? `/especialidad?page=${page + 1}&limit=${limit}${query}` : null;
+			const result_min = (page - 1) * limit + 1;
+			const result_max =
+				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
+			const items_pagina = parseInt(limit);
+
+			return {
+				prev,
+				next,
+				pagina_actual,
+				paginas_totales,
+				cantidad_especialidades,
+				items_pagina,
+				result_min,
+				result_max,
+				resultados,
+			};
+		} catch (err) {
+			throw err;
+		}
+
 		return await EspecialidadModel.fetchAll(searchValues, limit, conn);
 	}
 
@@ -36,7 +79,17 @@ class EspecialidadService {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async readEspecialidadesListado(conn = dbConn) {
-		return await EspecialidadModel.fetchAllListado(conn);
+		try {
+			const resultados = await EspecialidadModel.fetchAllListado(conn);
+
+			if (!resultados) {
+				throw new Error('No se encontraron especialidades.');
+			}
+
+			return resultados;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -50,21 +103,17 @@ class EspecialidadService {
 	 * @returns {Promise<Object>} La especialidad.
 	 */
 	static async readEspecialidadById(id, conn = dbConn) {
-		return await EspecialidadModel.findById(id, conn);
-	}
+		try {
+			const especialidad = await EspecialidadModel.findById(id, conn);
 
-	/**
-	 * @method readEspecialidadByNombre
-	 * @description Método para leer una especialidad por su nombre.
-	 * @static
-	 * @async
-	 * @memberof EspecialidadService
-	 * @param {string} nombre - El nombre de la especialidad.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise<Object>} La especialidad.
-	 */
-	static async readEspecialidadByNombre(nombre, conn = dbConn) {
-		return await EspecialidadModel.findByNombre(nombre, conn);
+			if (!especialidad) {
+				throw new Error('Especialidad no encontrada.');
+			}
+
+			return especialidad;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -104,7 +153,7 @@ class EspecialidadService {
 		const especialidad = ObjectFactory.createEspecialidadObject(data);
 
 		try {
-			const especialidadExists = await EspecialidadService.readEspecialidadByNombre(nombreEspecialidad);
+			const especialidadExists = await EspecialidadModel.findByNombre(especialidad.nombre, conn);
 
 			if (especialidadExists) {
 				throw new Error('Ya existe una especialidad con ese nombre.');
@@ -127,7 +176,17 @@ class EspecialidadService {
 	 * @returns {Promise<Object>} El resultado de la operación de eliminación.
 	 */
 	static async deleteEspecialidad(id, conn = dbConn) {
-		return await EspecialidadModel.deleteById(id, conn);
+		try {
+			const idExistente = await EspecialidadModel.findById(id, conn);
+
+			if (!idExistente) {
+				throw new Error('Especialidad no encontrada.');
+			}
+
+			return await EspecialidadModel.deleteById(id, conn);
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**

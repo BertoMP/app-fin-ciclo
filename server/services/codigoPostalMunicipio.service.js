@@ -20,7 +20,17 @@ class CodigoPostalMunicipioService {
 	 * @returns {Promise<Object>} Un objeto que representa el código postal.
 	 */
 	static async readCodigoPostalByMunicipioId(cod_municipio, conn = dbConn) {
-		return await CodigoPostalMunicipioModel.findByMunicipioId(cod_municipio, conn);
+		try {
+			const codigosPostales = await CodigoPostalMunicipioModel.findByMunicipioId(cod_municipio, conn);
+
+			if (!codigosPostales) {
+				throw new Error('No se ha encontrado el código postal.');
+			}
+
+			return codigosPostales;
+		} catch (err) {
+			throw err;
+		}
 	}
 }
 

@@ -4,10 +4,13 @@ import InformeModel from '../models/informe.model.js';
 // Importación de servicios auxiliares
 import PatologiaService from './patologia.service.js';
 import InformePatologiaService from './informePatologia.service.js';
-import CitaService from './cita.service.js';
+import CitaService from './cita.service.js'
+import PdfService from "./pdf.service.js";
 
 // Importación de utilidades necesarias
 import { dbConn } from '../util/database/database.js';
+import ObjectFactory from "../util/classes/objectFactory.js";
+
 
 /**
  * @class InformeService
@@ -21,11 +24,58 @@ class InformeService {
 	 * @async
 	 * @memberof InformeService
 	 * @param {number} id - El ID del informe.
+	 * @param {number} userId - El ID del usuario que realiza la solicitud.
+	 * @param {number} userRole - El rol del usuario que realiza la solicitud.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto que representa el informe.
 	 */
-	static async readInforme(id, conn = dbConn) {
-		return await InformeModel.fetchById(id, conn);
+	static async readInforme(id, userId, userRole, conn = dbConn) {
+		try {
+			const paciente = await CitaService.readPacienteIdByInformeId(id, conn);
+
+			if (!paciente) {
+				throw new Error('Informe no encontrado.');
+			}
+
+			if (userRole === 2 && paciente.paciente_id !== userId) {
+				throw new Error('No tienes permiso para realizar esta acción.');
+			}
+
+			const informe = await InformeModel.fetchById(id, conn);
+
+			if (!informe) {
+				throw new Error('Informe no encontrado.');
+			}
+
+			return informe;
+		} catch (err) {
+			throw err;
+		}
+	}
+
+	/**
+	 * @method printInformePDF
+	 * @description Método para imprimir un informe en formato PDF.
+	 * @static
+	 * @async
+	 * @memberof InformeService
+	 * @param {number} informeId - El ID del informe.
+	 * @param {number} userId - El ID del usuario que realiza la solicitud.
+	 * @param {number} userRole - El rol del usuario que realiza la solicitud.
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<string>} La ruta del archivo PDF generado.
+	 * @throws {Error} Si ocurre un error durante el proceso, captura el error y lo lanza.
+	 */
+	static async printInformePDF(informeId, userId, userRole, conn = dbConn) {
+		try {
+			const informe = await InformeService.readInforme(informeId, userId, userRole, conn);
+			return await PdfService.generateInforme(informe);
+		} catch (err) {
+
+			console.log(err);
+			throw err;
+		}
+
 	}
 
 	/**
@@ -34,13 +84,15 @@ class InformeService {
 	 * @static
 	 * @async
 	 * @memberof InformeService
-	 * @param {Object} informe - Los datos del informe.
+	 * @param {Object} data - Los datos del informe.
 	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
 	 * @returns {Promise<Object>} Un objeto que representa el informe creado.
 	 * @throws {Error} Si la patología no existe, se lanza un error.
 	 */
-	static async createInforme(informe, conn = null) {
+	static async createInforme(data, conn = null) {
 		const isConnProvided = !!conn;
+
+		const informe = ObjectFactory.createInformeObject(data);
 
 		if (!isConnProvided) {
 			conn = await dbConn.getConnection();

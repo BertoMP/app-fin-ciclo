@@ -89,13 +89,13 @@ class TensionArterialModel {
 	 * @static
 	 * @async
 	 * @memberof TensionArterialModel
+	 * @param {number} pacienteId - El ID del paciente.
 	 * @param {Object} tensionArterial - El objeto de la nueva medición de tensión arterial.
 	 * @param {Object} dbConn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} El resultado de la operación de inserción.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async create(tensionArterial, dbConn) {
-		const paciente_id = tensionArterial.paciente_id;
+	static async create(pacienteId, tensionArterial, dbConn) {
 		const fecha = tensionArterial.fecha;
 		const hora = tensionArterial.hora;
 		const sistolica = tensionArterial.sistolica;
@@ -108,7 +108,7 @@ class TensionArterialModel {
 
 		try {
 			const insert = await dbConn.execute(query, [
-				paciente_id,
+				pacienteId,
 				fecha,
 				hora,
 				sistolica,

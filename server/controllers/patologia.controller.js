@@ -28,6 +28,12 @@ class PatologiaController {
 
 			return res.status(200).json(patologias);
 		} catch (err) {
+			if (err.message === 'No se encontraron patologías para el informe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -51,46 +57,18 @@ class PatologiaController {
 	static async getPatologias(req, res) {
 		try {
 			const searchValues = getSearchValues(req, 'search');
-			const page = searchValues.page;
-			const limit = searchValues.limit;
-			const search = searchValues.search;
-
-			const {
-				formattedRows: resultados,
-				actualPage: pagina_actual,
-				total: cantidad_patologias,
-				totalPages: paginas_totales,
-			} = await PatologiaService.readPatologias(searchValues);
-
-			if (page > 1 && page > paginas_totales) {
-				return res.status(404).json({
-					errors: ['La página de patologías solicitada no existe.'],
-				});
-			}
-
-			let query = '';
-
-			if (search) {
-				query += `&search=${search}`;
-			}
-
-			const prev = page > 1 ? `/patologia?page=${page - 1}&limit=${limit}${query}` : null;
-			const next = page < paginas_totales ? `/patologia?page=${page + 1}&limit=${limit}${query}` : null;
-			const result_min = (page - 1) * limit + 1;
-			const result_max =
-				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const items_pagina = parseInt(limit);
+			const patologias = await PatologiaService.readPatologias(searchValues);
 
 			return res.status(200).json({
-				prev,
-				next,
-				pagina_actual,
-				paginas_totales,
-				cantidad_patologias,
-				items_pagina,
-				result_min,
-				result_max,
-				resultados,
+				prev: patologias.prev,
+				next: patologias.next,
+				pagina_actual: patologias.pagina_actual,
+				paginas_totales: patologias.paginas_totales,
+				cantidad_patologias: patologias.cantidad_patologias,
+				result_min: patologias.result_min,
+				result_max: patologias.result_max,
+				items_pagina: patologias.items_pagina,
+				resultados: patologias.resultados,
 			});
 		} catch (err) {
 			return res.status(500).json({
@@ -119,14 +97,14 @@ class PatologiaController {
 		try {
 			const patologia = await PatologiaService.readPatologiaById(id);
 
-			if (!patologia) {
+			return res.status(200).json(patologia);
+		} catch (err) {
+			if (err.message === 'La patología solicitada no existe.') {
 				return res.status(404).json({
-					errors: ['La patología solicitada no existe.'],
+					errors: [err.message],
 				});
 			}
 
-			return res.status(200).json(patologia);
-		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -148,29 +126,19 @@ class PatologiaController {
 	 * @memberof PatologiaController
 	 */
 	static async createPatologia(req, res) {
-		let descripcion = req.body.descripcion;
-		descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
-
-		const patologia = {
-			nombre: req.body.nombre,
-			descripcion: descripcion,
-		};
-
 		try {
-			const patologiaExists = await PatologiaService.readPatologiaByNombre(patologia.nombre);
-
-			if (patologiaExists) {
-				return res.status(409).json({
-					errors: ['La patología ya existe.'],
-				});
-			}
-
-			await PatologiaService.createPatologia(patologia);
+			await PatologiaService.createPatologia(req.body);
 
 			return res.status(200).json({
 				message: 'Patología creada correctamente.',
 			});
 		} catch (err) {
+			if (err.message === 'La patología ya existe.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -194,37 +162,25 @@ class PatologiaController {
 	static async updatePatologia(req, res) {
 		const id = parseInt(req.params.patologia_id);
 
-		let descripcion = req.body.descripcion;
-		descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
-
-		const patologia = {
-			nombre: req.body.nombre,
-			descripcion: descripcion,
-		};
-
 		try {
-			const currentPatologia = await PatologiaService.readPatologiaById(id);
-
-			if (!currentPatologia) {
-				return res.status(404).json({
-					errors: ['La patología solicitada no existe.'],
-				});
-			}
-
-			const patologiaExists = await PatologiaService.readPatologiaByNombre(patologia.nombre);
-
-			if (patologiaExists && patologiaExists.id !== id) {
-				return res.status(409).json({
-					errors: ['La patología ya existe.'],
-				});
-			}
-
-			await PatologiaService.updatePatologia(id, patologia);
+			await PatologiaService.updatePatologia(id, req.body);
 
 			return res.status(200).json({
 				message: 'Patología actualizada correctamente.',
 			});
 		} catch (err) {
+			if (err.message === 'La patología solicitada no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'Ya existe una patología con el mismo nombre.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});

@@ -6,6 +6,8 @@ import TomaService from './toma.service.js';
 
 // Importación de las utilidades necesarias
 import { dbConn } from '../util/database/database.js';
+import ObjectFactory from "../util/classes/objectFactory.js";
+import PdfService from "./pdf.service.js";
 
 /**
  * @class PacienteTomaMedicamentoService
@@ -24,7 +26,7 @@ class PacienteTomaMedicamentoService {
 	 * @returns {Promise<Object>} Un objeto que representa la prescripción creada.
 	 * @throws {Error} Si ocurre un error durante la creación de la prescripción, se lanza un error.
 	 */
-	static async createPrescripcion(pacienteId, prescripciones, conn = null) {
+	static async createPrescripcion(pacienteId, data, conn = null) {
 		const isConnProvided = !!conn;
 
 		if (!isConnProvided) {
@@ -36,7 +38,7 @@ class PacienteTomaMedicamentoService {
 				await conn.beginTransaction();
 			}
 
-			for (const prescripcion of prescripciones) {
+			for (const prescripcion of data.prescripciones) {
 				const medicamentoId = prescripcion.medicamento_id;
 				const tomas = prescripcion.tomas;
 
@@ -55,14 +57,7 @@ class PacienteTomaMedicamentoService {
 						observaciones = observaciones.replace(/(\r\n|\n|\r)/g, '<br>');
 					}
 
-					const prescripcion = {
-						id: toma.toma_id,
-						dosis: toma.dosis,
-						hora: toma.hora,
-						fecha_inicio: toma.fecha_inicio,
-						fecha_fin: toma.fecha_fin,
-						observaciones: toma.observaciones,
-					};
+					const prescripcion = ObjectFactory.createPrescripcion(toma);
 
 					if (prescripcion.id) {
 						await PacienteTomaMedicamentoModel.updateToma(prescripcion.id, prescripcion, conn);
@@ -75,9 +70,7 @@ class PacienteTomaMedicamentoService {
 						);
 
 						if (existingToma) {
-							throw new Error(
-								'Ya existe una toma para este medicamento a esta hora. Por favor, realice una actualización en lugar de una inserción.',
-							);
+							throw new Error('Ya existe una toma para este medicamento a esta hora.',);
 						}
 
 						const toma = await TomaService.createToma(prescripcion, conn);
@@ -94,7 +87,7 @@ class PacienteTomaMedicamentoService {
 			if (!isConnProvided) {
 				await conn.rollback();
 			}
-			throw new Error(err);
+			throw err;
 		} finally {
 			if (!isConnProvided) {
 				conn.release();
@@ -154,7 +147,13 @@ class PacienteTomaMedicamentoService {
 	 */
 	static async findPrescripciones(pacienteId, conn = dbConn) {
 		try {
-			return await PacienteTomaMedicamentoModel.findPrescripciones(pacienteId, conn);
+			const prescripcionesPaciente = await PacienteTomaMedicamentoModel.findPrescripciones(pacienteId, conn);
+
+			if (prescripcionesPaciente.prescripciones.length === 0) {
+				throw new Error('No hay recetas para este paciente.');
+			}
+
+			return prescripcionesPaciente;
 		} catch (err) {
 			throw new Error(err);
 		}
@@ -183,8 +182,13 @@ class PacienteTomaMedicamentoService {
 				await conn.beginTransaction();
 			}
 
-			await PacienteTomaMedicamentoModel.deleteToma(tomaId, conn);
+			const toma = await TomaService.findToma(tomaId, conn);
 
+			if (!toma) {
+				throw new Error('La toma no existe.');
+			}
+
+			await PacienteTomaMedicamentoModel.deleteToma(tomaId, conn);
 			await TomaService.deleteToma(tomaId, conn);
 
 			if (!isConnProvided) {
@@ -194,7 +198,7 @@ class PacienteTomaMedicamentoService {
 			if (!isConnProvided) {
 				await conn.rollback();
 			}
-			throw new Error(err);
+			throw err;
 		} finally {
 			if (!isConnProvided) {
 				conn.release();
@@ -232,6 +236,10 @@ class PacienteTomaMedicamentoService {
 				conn,
 			);
 
+			if (tomas.prescripciones.length === 0) {
+				throw new Error('No hay recetas de este medicamento para el paciente.');
+			}
+
 			for (const toma of tomas) {
 				await PacienteTomaMedicamentoModel.deleteToma(toma, conn);
 				await TomaService.deleteToma(toma, conn);
@@ -249,6 +257,21 @@ class PacienteTomaMedicamentoService {
 			if (!isConnProvided) {
 				conn.release();
 			}
+		}
+	}
+
+	static async printPrescripcionPdf(pacienteId, conn = dbConn) {
+		try {
+			const prescripcionesPaciente = await PacienteTomaMedicamentoModel.findPrescripciones(pacienteId, conn);
+
+			if (prescripcionesPaciente.prescripciones.length === 0) {
+				throw new Error('No hay recetas para este paciente.');
+			}
+
+			return await PdfService.generateReceta(prescripcionesPaciente);
+
+		} catch (err) {
+			throw err;
 		}
 	}
 }

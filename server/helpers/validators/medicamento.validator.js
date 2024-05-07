@@ -14,13 +14,13 @@ import { body, validationResult } from 'express-validator';
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
 export const validateMedicamento = [
-	body('nombre')
+	body('datos_medicamento.nombre')
 		.trim()
 		.notEmpty()
 		.withMessage('El nombre del medicamento es requerido')
 		.isString()
 		.withMessage('El nombre del medicamento debe ser una cadena de texto'),
-	body('descripcion')
+	body('datos_medicamento.descripcion')
 		.trim()
 		.notEmpty()
 		.withMessage('La descripción del medicamento es requerida.')

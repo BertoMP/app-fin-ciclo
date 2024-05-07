@@ -26,6 +26,12 @@ class MedicamentoController {
 
 			return res.status(200).json(medicamentos);
 		} catch (err) {
+			if (err.message === 'No se encontraron medicamentos.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -51,48 +57,26 @@ class MedicamentoController {
 	static async getMedicamentos(req, res) {
 		try {
 			const searchValues = getSearchValues(req, 'search');
-			const page = searchValues.page;
-			const limit = searchValues.limit;
-			const search = searchValues.search;
+			const medicamentos = await MedicamentoService.readMedicamentos(searchValues);
 
-			const {
-				formattedRows: resultados,
-				actualPage: pagina_actual,
-				total: cantidad_medicamentos,
-				totalPages: paginas_totales,
-			} = await MedicamentoService.readMedicamentos(searchValues);
-
-			if (page > 1 && page > paginas_totales) {
+			return res.status(200).json({
+				prev: medicamentos.prev,
+				next: medicamentos.next,
+				pagina_actual: medicamentos.pagina_actual,
+				paginas_totales: medicamentos.paginas_totales,
+				cantidad_medicamentos: medicamentos.cantidad_medicamentos,
+				items_pagina: medicamentos.items_pagina,
+				result_min: medicamentos.result_min,
+				result_max: medicamentos.result_max,
+				resultados: medicamentos.resultados,
+			});
+		} catch (err) {
+			if (err.message === 'Página no encontrada.') {
 				return res.status(404).json({
-					errors: ['La página de medicamentos solicitada no existe.'],
+					errors: [err.message],
 				});
 			}
 
-			let query = '';
-
-			if (search) {
-				query += `&search=${search}`;
-			}
-
-			const prev = page > 1 ? `/medicamento?page=${page - 1}&limit=${limit}${query}` : null;
-			const next = page < paginas_totales ? `/medicamento?page=${page + 1}&limit=${limit}${query}` : null;
-			const result_min = (page - 1) * limit + 1;
-			const result_max =
-				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const items_pagina = parseInt(limit);
-
-			return res.status(200).json({
-				prev,
-				next,
-				pagina_actual,
-				paginas_totales,
-				cantidad_medicamentos,
-				items_pagina,
-				result_min,
-				result_max,
-				resultados,
-			});
-		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -127,6 +111,12 @@ class MedicamentoController {
 
 			return res.status(200).json(medicamento);
 		} catch (err) {
+			if (err.message === 'El medicamento no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -148,29 +138,17 @@ class MedicamentoController {
 	 * @memberof MedicamentoController
 	 */
 	static async createMedicamento(req, res) {
-		let descripcion = req.body.descripcion;
-		descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
-
-		const medicamento = {
-			nombre: req.body.nombre,
-			descripcion: descripcion,
-		};
-
 		try {
-			const medicamentoExists = await MedicamentoService.readMedicamentoByNombre(
-				medicamento.nombre,
-			);
-
-			if (medicamentoExists) {
-				return res.status(409).json({
-					errors: ['El medicamento ya existe.'],
-				});
-			}
-
-			await MedicamentoService.createMedicamento(medicamento);
+			await MedicamentoService.createMedicamento(req.body);
 
 			return res.status(200).json({ message: 'Medicamento creado.' });
 		} catch (err) {
+			if (err.message === 'Ya existe un medicamento con ese nombre.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -193,24 +171,8 @@ class MedicamentoController {
 	static async updateMedicamento(req, res) {
 		const id = parseInt(req.params.medicamento_id);
 
-		let descripcion = req.body.descripcion;
-		descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '<br>');
-
-		const medicamento = {
-			nombre: req.body.nombre,
-			descripcion: descripcion,
-		};
-
 		try {
-			const currentMedicamento = await MedicamentoService.readMedicamentoById(id);
-
-			if (!currentMedicamento) {
-				return res.status(404).json({
-					errors: ['El medicamento no existe.'],
-				});
-			}
-
-			await MedicamentoService.updateMedicamento(id, medicamento);
+			await MedicamentoService.updateMedicamento(id, req.body);
 
 			return res.status(200).json({ message: 'Medicamento actualizado.' });
 		} catch (err) {

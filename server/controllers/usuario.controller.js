@@ -6,19 +6,11 @@ dotenv.config();
 import UsuarioService from '../services/usuario.service.js';
 import EspecialistaService from '../services/especialista.service.js';
 import TokenService from '../services/token.service.js';
-import EmailService from '../services/email.service.js';
-
-// Importación de las librerías necesarias
-import pkg from 'bcryptjs';
-const { compare } = pkg;
 
 // Importación de los helpers necesarios
-import { createEncryptedPassword } from '../util/functions/createEncryptedPassword.js';
 import { verifyResetToken } from '../helpers/jwt/verifyResetToken.js';
 
 // Importación de las funciones necesarias
-import PacienteService from "../services/paciente.service.js";
-import CitaService from "../services/cita.service.js";
 import {getSearchValues} from "../util/functions/getSearchValues.js";
 
 /**
@@ -52,29 +44,18 @@ class UsuarioController {
 		id = parseInt(id);
 
 		try {
-			let usuario = await UsuarioService.getRoleByUserId(id);
-			let userData = {};
-
-			if (!usuario) {
-				return res.status(404).json({
-					errors: ['Usuario no encontrado.'],
-				});
-			}
-
-			const usuarioRole = usuario.rol_id;
-
-			if (usuarioRole === 1) {
-				return res.status(409).json({
-					errors: ['No se puede obtener a un admin.']
-				});
-			} else if (usuarioRole === 2) {
-				userData = await PacienteService.readPacienteByUserId(id);
-			} else {
-				userData = await EspecialistaService.readEspecialistaByUserId(id);
-			}
+			const userData = await UsuarioService.readUsuarioById(id);
 
 			return res.status(200).json(userData);
 		} catch (err) {
+			if (err.message === 'El usuario no existe.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
+			if (err.message === 'El usuario es un admin.') {
+				return res.status(409).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({ errors: [err.message] });
 		}
 	}
@@ -96,59 +77,24 @@ class UsuarioController {
 	static async getListado(req, res) {
 		try {
 			const searchValues = getSearchValues(req, 'role');
-			const page = searchValues.page;
-			const role_id = searchValues.role;
-			const search = searchValues.search;
-			const limit = searchValues.limit;
-			const {
-				formattedRows: resultados,
-				actualPage: pagina_actual,
-				total: cantidad_usuarios,
-				totalPages: paginas_totales,
-			} = await UsuarioService.readAllUsuarios(searchValues);
+			const usuarios = await UsuarioService.readAllUsuarios(searchValues);
 
-			if (page > 1 && page > paginas_totales) {
-				return res.status(404).json({
-					errors: ['La página de usuarios solicitada no existe.'],
-				});
-			}
-
-			let queryParams = '';
-
-			if (role_id) {
-				queryParams += `&role=${role_id}`;
-			}
-			if (search) {
-				queryParams += `&search=${search}`;
-			}
-
-			const prev =
-				page > 1
-					? `/usuario/listado?page=${page - 1}&limit=${limit}${queryParams}`
-					: null;
-			const next =
-				page < paginas_totales
-					? `/usuario/listado?page=${page + 1}&limit=${limit}${queryParams}`
-					: null;
-			const result_min = (page - 1) * limit + 1;
-			const result_max =
-				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const items_pagina = parseInt(limit);
-
-			const users = {
-				prev,
-				next,
-				pagina_actual,
-				paginas_totales,
-				cantidad_usuarios,
-				items_pagina,
-				result_min,
-				result_max,
-				resultados,
-			};
-
-			return res.status(200).json(users);
+			return res.status(200).json({
+				prev: usuarios.prev,
+				next: usuarios.next,
+				pagina_actual: usuarios.pagina_actual,
+				paginas_totales: usuarios.paginas_totales,
+				cantidad_usuarios: usuarios.cantidad_usuarios,
+				result_min: usuarios.result_min,
+				result_max: usuarios.result_max,
+				items_pagina: usuarios.items_pagina,
+				resultados: usuarios.resultados,
+			});
 		} catch (err) {
+			if (err.message === 'La página solicitada no existe.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({ errors: [err.message] });
 		}
 	}
@@ -168,37 +114,28 @@ class UsuarioController {
 	 * @memberof UsuarioController
 	 */
 	static async postRegistro(req, res) {
+		const errors = [];
 		try {
-			const errors = [];
-
-			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.datos_personales.email);
-
-			if (emailExists) {
-				errors.push('El correo ya está en uso.');
-			}
-
-			const dniExists = await UsuarioService.readUsuarioByDNI(req.body.datos_personales.dni);
-
-			if (dniExists) {
-				errors.push('El DNI ya está en uso.');
-			}
-
-			if (req.body.datos_especialista) {
-				const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(req.body.datos_especialista);
-
-				if (numColegiadoExists) {
-					errors.push('El número de colegiado ya está en uso.');
-				}
-			}
-
-			if (errors.length > 0) {
-				return res.status(409).json({ errors: errors });
-			}
-
 			await UsuarioService.createUsuario(req.body);
 
 			return res.status(200).json({ message: 'Usuario creado exitosamente.' });
 		} catch (err) {
+			if (err.message === 'El correo electrónico ya está en uso.') {
+				errors.push(err.message);
+			}
+
+			if (err.message === 'El DNI ya está en uso.') {
+				errors.push(err.message);
+			}
+
+			if (err.message === 'El número de colegiado ya está en uso.') {
+				errors.push(err.message);
+			}
+
+			if (errors.length > 0) {
+				return res.status(409).json({ errors });
+			}
+
 			return res.status(500).json({ errors: [err.message] });
 		}
 	}
@@ -222,33 +159,17 @@ class UsuarioController {
 		const password = req.body.password;
 
 		try {
-			const user = await UsuarioService.readUsuarioByEmail(email);
-
-			if (!user) {
-				return res.status(403).json({
-					errors: ['Correo o contraseña incorrectos.'],
-				});
-			}
-
-			const validPassword = await compare(password, user.datos_personales.password);
-
-			if (!validPassword) {
-				return res.status(403).json({
-					errors: ['Correo o contraseña incorrectos.'],
-				});
-			}
-
-			const accessToken = TokenService.createAccessToken(user);
-			const refreshToken = TokenService.createRefreshToken(user);
-
-			await UsuarioService.updateRefreshToken(user.usuario_id, refreshToken);
-
+			const { accessToken, refreshToken } = await UsuarioService.userLogin(email, password);
 			return res.status(200).json({
 				message: 'Inicio de sesión exitoso.',
 				access_token: accessToken,
 				refresh_token: refreshToken,
 			});
 		} catch (err) {
+			if (err.message === 'Correo o contraseña incorrectos.') {
+				res.status(403).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({ errors: [err.message] });
 		}
 	}
@@ -271,24 +192,16 @@ class UsuarioController {
 		const email = req.body.email;
 
 		try {
-			const user = await UsuarioService.readUsuarioByEmail(email);
-			if (!user) {
-				return res.status(404).json({
-					errors: ['Correo no encontrado en la base de datos.'],
-				});
-			}
-
-
-			const idUser = user.usuario_id;
-			const resetToken = TokenService.createResetToken(user);
-
-			await TokenService.createToken(idUser, resetToken);
-			await EmailService.sendPasswordResetEmail(email, user, resetToken);
+			await UsuarioService.forgotPassword(email);
 
 			return res.status(200).json({
 				message: 'Correo enviado exitosamente.',
 			});
 		} catch (err) {
+			if (err.message === 'Correo no encontrado.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({ errors: [err.message] });
 		}
 	}
@@ -312,21 +225,15 @@ class UsuarioController {
 		const userEmail = await verifyResetToken(req, res);
 
 		try {
-			const user = await UsuarioService.readUsuarioByEmail(userEmail);
-
-			if (!user) {
-				return res.status(404).json({
-					errors: ['Usuario no encontrado.'],
-				});
-			}
-
-			const encryptedPassword = await createEncryptedPassword(newPassword);
-			await UsuarioService.updatePassword(user.datos_personales.email, encryptedPassword);
+			await UsuarioService.resetPassword(userEmail, newPassword);
 
 			return res.status(200).json({
 				message: 'Contraseña actualizada exitosamente.',
 			});
 		} catch (err) {
+			if (err.message === 'Correo no encontrado.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
 			return res.status(500).json({ errors: [err.message] });
 		}
 	}
@@ -352,26 +259,20 @@ class UsuarioController {
 		const id = req.user_id;
 
 		try {
-			const user = await UsuarioService.readUsuarioByEmail(email);
-
-			if (!user) {
-				return res.status(404).json({
-					errors: ['Correo no encontrado.'],
-				});
-			}
-
-			if (user.usuario_id !== id) {
-				return res.status(403).json({
-					errors: ['No tienes permiso para realizar esta acción.'],
-				});
-			}
-
-			await UsuarioService.updatePassword(email, password);
+			await UsuarioService.updatePassword(id, email, password);
 
 			return res.status(200).json({
 				message: 'Contraseña actualizada exitosamente.',
 			});
 		} catch (err) {
+			if (err.message === 'Correo no encontrado.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
+			if (err.message === 'No tienes permiso para realizar esta acción.') {
+				return res.status(403).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -404,34 +305,7 @@ class UsuarioController {
 		id = parseInt(id);
 
 		try {
-			const userExists = await UsuarioService.readUsuarioById(id);
-
-			if (!userExists) {
-				return res.status(404).json({
-					errors: ['Usuario no encontrado.'],
-				});
-			}
-
-			const userRole = userExists.datos_rol.rol_id;
-
-			switch (userRole) {
-				case 1:
-					return res.status(409).json({
-						errors: ['No se puede eliminar a un admin'],
-					});
-				case 2:
-					await PacienteService.deletePaciente(id);
-					break;
-				case 3:
-					const especialistaCita = await CitaService.readCitasByEspecialistaId(id);
-
-					if (especialistaCita.length > 0) {
-						await EspecialistaService.setNoTrabajando(id);
-					} else {
-						await EspecialistaService.deleteEspecialista(id);
-					}
-					break;
-			}
+			await UsuarioService.deleteUsuario(id);
 
 			return res.status(200).json({
 				message: 'Usuario eliminado exitosamente.',
@@ -468,25 +342,7 @@ class UsuarioController {
 		}
 
 		try {
-			const decodedToken = TokenService.verifyRefreshToken(refreshToken);
-
-			const user = await UsuarioService.readUsuarioById(decodedToken.user_id);
-			if (!user) {
-				return res.status(404).json({
-					errors: ['Usuario no encontrado.'],
-				});
-			}
-
-			if (user.refresh_token !== refreshToken) {
-				return res.status(403).json({
-					errors: ['Token de actualización inválido.'],
-				});
-			}
-
-			const newAccessToken = TokenService.createAccessToken(user);
-			const newRefreshToken = TokenService.createRefreshToken(user);
-
-			await UsuarioService.updateRefreshToken(user.id, newRefreshToken);
+			const { newAccessToken, newRefreshToken } = await UsuarioService.updateRefreshToken(refreshToken);
 
 			return res.status(200).json({
 				message: 'Token de acceso renovado exitosamente.',
@@ -494,6 +350,18 @@ class UsuarioController {
 				refresh_token: newRefreshToken,
 			});
 		} catch (err) {
+			if (err.message === 'El token no es valido.') {
+				return res.status(403).json({
+					errors: ['Token de actualización inválido.'],
+				});
+			}
+
+			if (err.message === 'El usuario no existe.') {
+				return res.status(404).json({
+					errors: ['Usuario no encontrado.'],
+				});
+			}
+
 			return res.status(403).json({
 				errors: ['Token de actualización inválido.'],
 			});
@@ -518,7 +386,7 @@ class UsuarioController {
 		const userId = req.user_id;
 
 		try {
-			await UsuarioService.updateRefreshToken(userId, null);
+			await UsuarioService.userLogout(userId);
 
 			return res.status(200).json({ message: 'Cierre de sesión correcto.' });
 		} catch (err) {
@@ -553,45 +421,39 @@ class UsuarioController {
 		usuario_id = parseInt(usuario_id);
 
 		try {
-			const user = await UsuarioService.readUsuarioById(usuario_id);
+			await UsuarioService.updateUsuario(usuario_id, req.body);
 
-			if (!user) {
-				return res.status(404).json({ errors: ['Usuario no encontrado.'] });
+			return res.status(200).json({ message: 'Usuario actualizado exitosamente.' });
+		} catch (err) {
+			if (err.message === 'La contraseña actual no es correcta') {
+				return res.status(403).json({ errors: [err.message] });
 			}
 
-			if (user.rol_id === 1) {
-				return res.status(409).json({ errors: ['No se puede modificar a un admin.'] });
+			if (err.message === 'El usuario no existe.') {
+				return res.status(404).json({ errors: [err.message] });
 			}
 
-			const emailExists = await UsuarioService.readUsuarioByEmail(req.body.datos_personales.email);
-
-			if (emailExists && emailExists.usuario_id !== parseInt(usuario_id)) {
-				errors.push('El correo ya está en uso.');
+			if (err.message === 'El usuario es un admin.') {
+				return res.status(409).json({ errors: [err.message] });
 			}
 
-			const dniExists = await UsuarioService.readUsuarioByDNI(req.body.datos_personales.dni);
-
-			if (dniExists && dniExists.usuario_id !== parseInt(usuario_id)) {
-				errors.push('El DNI ya está en uso.');
+			if (err.message === 'El correo electrónico ya está en uso.') {
+				errors.push(err.message);
 			}
 
-			if (req.body.datos_especialista) {
-				const numColegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(req.body.datos_especialista);
+			if (err.message === 'El DNI ya está en uso.') {
+				errors.push(err.message);
+			}
 
-				if (numColegiadoExists && numColegiadoExists.usuario_id !== usuario_id) {
-					errors.push('El número de colegiado ya está en uso.');
-				}
+			if (err.message === 'El número de colegiado ya está en uso.') {
+				errors.push(err.message);
 			}
 
 			if (errors.length > 0) {
-				return res.status(409).json({ errors: errors });
+				return res.status(409).json({ errors });
 			}
 
-			await UsuarioService.updateUsuario(req.body);
 
-			return res.status(200).json({ message: 'Usuario actualizado exitosamente.' });
-
-		} catch (err) {
 			return res.status(500).json({ errors: [err.message] });
 		}
 	}

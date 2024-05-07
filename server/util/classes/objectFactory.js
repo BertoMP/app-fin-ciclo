@@ -1,6 +1,10 @@
 import { createHistClinica } from "../functions/createHistClinica.js";
 import { createEncryptedPassword } from "../functions/createEncryptedPassword.js";
 
+// Importación de librerías
+import pkg from 'moment-timezone';
+const { tz } = pkg;
+
 class ObjectFactory {
 	static async createUserObject(data) {
 		return {
@@ -87,6 +91,68 @@ class ObjectFactory {
 			descripcion: data.datos_especialidad.descripcion
 				.replace(/(\r\n|\n|\r)/g, '<br>'),
 			imagen: data.datos_especialidad.imagen,
+		};
+	}
+
+	static createConstactoObject(data) {
+		return {
+			nombre: data.nombre,
+			descripcion: data.descripcion,
+			email: data.email,
+			telefono: data.telefono,
+			mensaje: data.mensaje.replace(/(\r\n|\n|\r)/g, '<br>'),
+		};
+	}
+
+	static createGlucometriaObject(data) {
+		return {
+			fecha: tz(new Date(), 'Europe/Madrid').format('YYYY-MM-DD'),
+			hora: tz(new Date(), 'Europe/Madrid').format('HH:mm:ss'),
+			medicion: data.medicion,
+		};
+	}
+
+	static createTensionArterialObject(data) {
+		return {
+			fecha: tz(new Date(), 'Europe/Madrid').format('YYYY-MM-DD'),
+			hora: tz(new Date(), 'Europe/Madrid').format('HH:mm:ss'),
+			sistolica: data.sistolica,
+			diastolica: data.diastolica,
+			pulsaciones: data.pulsaciones,
+		};
+	}
+
+	static createMedicamentoObject(data) {
+		return {
+			nombre: data.datos_medicamento.nombre,
+			descripcion: data.datos_medicamento.descripcion.replace(/(\r\n|\n|\r)/g, '<br>'),
+		};
+	}
+
+	static createInformeObject(data) {
+		return {
+			motivo: data.motivo,
+			contenido: data.contenido.replace(/(\r\n|\n|\r)/g, '<br>'),
+			cita_id: data.cita_id,
+			patologias: data.patologias,
+		};
+	}
+
+	static createPatologiaObject(data) {
+		return {
+			nombre: data.nombre,
+			descripcion: data.descripcion.replace(/(\r\n|\n|\r)/g, '<br>'),
+		};
+	}
+
+	static createPrescripcion(data) {
+		return {
+			id: data.toma_id ?? null,
+			dosis: data.dosis,
+			hora: data.hora,
+			fecha_inicio: data.fecha_inicio,
+			fecha_fin: data.fecha_fin,
+			observaciones: data.observaciones,
 		};
 	}
 }

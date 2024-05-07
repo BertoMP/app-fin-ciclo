@@ -2,6 +2,7 @@
 import ConsultaService from '../services/consulta.service.js';
 import EspecialistaService from '../services/especialista.service.js';
 import {getSearchValues} from "../util/functions/getSearchValues.js";
+import ObjectFactory from "../util/classes/objectFactory.js";
 
 /**
  * @class ConsultaController
@@ -27,43 +28,26 @@ class ConsultaController {
 	static async getConsultas(req, res) {
 		try {
 			const searchValues = getSearchValues(req, 'search');
+			const consultas = await ConsultaService.readConsultas(searchValues);
 
-			const page = searchValues.page;
-			const limit = searchValues.limit;
-			const search = searchValues.search;
-
-			const {
-				rows: resultados,
-				total: cantidad_consultas,
-				actualPage: pagina_actual,
-				totalPages: paginas_totales,
-			} = await ConsultaService.readConsultas(searchValues);
-
-			if (page > 1 && page > paginas_totales) {
+			return res.status(200).json({
+				prev: consultas.prev,
+				next: consultas.next,
+				pagina_actual: consultas.pagina_actual,
+				paginas_totales: consultas.paginas_totales,
+				cantidad_consultas: consultas.cantidad_consultas,
+				items_pagina: consultas.items_pagina,
+				result_min: consultas.result_min,
+				result_max: consultas.result_max,
+				resultados: consultas.resultados,
+			});
+		} catch (err) {
+			if (err.message === 'La página solicitada no existe.') {
 				return res.status(404).json({
-					errors: ['La página de consultas solicitada no existe.'],
+					errors: [err.message],
 				});
 			}
 
-			const prev = page > 1 ? `/consulta?page=${page - 1}&limit=${limit}` : null;
-			const next = page < paginas_totales ? `/consulta?page=${page + 1}&limit=${limit}` : null;
-			const result_min = (page - 1) * limit + 1;
-			const result_max =
-				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const items_pagina = parseInt(limit);
-
-			return res.status(200).json({
-				prev,
-				next,
-				pagina_actual,
-				paginas_totales,
-				cantidad_consultas,
-				items_pagina,
-				result_min,
-				result_max,
-				resultados,
-			});
-		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -89,6 +73,12 @@ class ConsultaController {
 
 			return res.status(200).json(consultas);
 		} catch (err) {
+			if (err.message === 'No se encontraron consultas.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -115,14 +105,14 @@ class ConsultaController {
 		try {
 			const consulta = await ConsultaService.readConsultaById(id);
 
-			if (!consulta) {
+			return res.status(200).json(consulta);
+		} catch (err) {
+			if (err.message === 'Consulta no encontrada.') {
 				return res.status(404).json({
-					errors: ['Consulta no encontrada.'],
+					errors: [err.message],
 				});
 			}
 
-			return res.status(200).json(consulta);
-		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -145,25 +135,18 @@ class ConsultaController {
 	 */
 	static async createConsulta(req, res) {
 		try {
-			const consulta = {
-				nombre: req.body.nombre,
-				id_medico: req.body.id_medico,
-			};
-
-			const consultaExists = await ConsultaService.readConsultaByName(consulta.nombre);
-
-			if (consultaExists) {
-				return res.status(409).json({
-					errors: ['Ya existe una consulta con ese nombre.'],
-				});
-			}
-
-			await ConsultaService.createConsulta(consulta);
+			await ConsultaService.createConsulta(req.body);
 
 			return res.status(200).json({
 				message: 'Consulta creada correctamente.',
 			});
 		} catch (err) {
+			if (err.message === 'La consulta ya existe.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -188,33 +171,24 @@ class ConsultaController {
 		const id = parseInt(req.params.consulta_id);
 
 		try {
-			const consultaExists = await ConsultaService.readConsultaById(id);
-
-			if (!consultaExists) {
-				return res.status(404).json({
-					errors: ['La consulta no existe.'],
-				});
-			}
-
-			const consultaNombre = await ConsultaService.readConsultaByName(req.body.nombre);
-
-			if (consultaNombre) {
-				return res.status(409).json({
-					errors: ['Ya existe una consulta con ese nombre.'],
-				});
-			}
-
-			const consulta = {
-				nombre: req.body.nombre,
-				id_medico: req.body.id_medico,
-			};
-
-			await ConsultaService.updateConsulta(id, consulta);
+			await ConsultaService.updateConsulta(id, req.body);
 
 			return res.status(200).json({
 				message: 'Consulta actualizada correctamente.',
 			});
 		} catch (err) {
+			if (err.message === 'La consulta no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'Ya existe una consulta con ese nombre.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -239,29 +213,24 @@ class ConsultaController {
 		const id = parseInt(req.params.consulta_id);
 
 		try {
-			const consulta = await ConsultaService.readConsultaById(id);
-
-			if (!consulta) {
-				return res.status(404).json({
-					errors: ['La consulta no existe.'],
-				});
-			}
-
-			const especialistaAsociado = await EspecialistaService.readEspecialistaByConsultaId(id);
-
-			if (especialistaAsociado) {
-				return res.status(409).json({
-					errors: ['No se puede eliminar la consulta porque está asociada a un médico.'],
-					especialista: especialistaAsociado,
-				});
-			}
-
 			await ConsultaService.deleteConsulta(id);
 
 			return res.status(200).json({
 				message: 'Consulta eliminada correctamente.',
 			});
 		} catch (err) {
+			if (err.message === 'La consulta no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'No se puede eliminar la consulta porque está asociada a un médico.') {
+				return res.status(409).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});

@@ -33,6 +33,10 @@ class PacienteModel {
 		try {
 			const [rows] = await dbConn.execute(query);
 
+			if (!rows.length) {
+				return null;
+			}
+
 			return rows;
 		} catch (err) {
 			throw new Error('Error al obtener los pacientes.');

@@ -109,6 +109,17 @@ class UsuarioModel {
 		}
 	}
 
+	/**
+	 * @method getPasswordById
+	 * @description Método para obtener la contraseña de un usuario por su ID.
+	 * @static
+	 * @async
+	 * @memberof UsuarioModel
+	 * @param {number} id - El ID del usuario.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} La contraseña del usuario.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
 	static async getPasswordById(id, dbConn) {
 		const query =
 			'SELECT ' +
@@ -133,6 +144,17 @@ class UsuarioModel {
 		}
 	}
 
+	/**
+	 * @method getRoleByUserId
+	 * @description Método para obtener el rol de un usuario por su ID.
+	 * @static
+	 * @async
+	 * @memberof UsuarioModel
+	 * @param {number} id - El ID del usuario.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} El rol del usuario.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
 	static async getRoleByUserId(id, dbConn) {
 		const query =
 			'SELECT ' +
@@ -376,6 +398,35 @@ class UsuarioModel {
 	}
 
 	/**
+	 * @method updateRefreshToken
+	 * @description Método para conseguir el token de refresco de un usuario.
+	 * @static
+	 * @async
+	 * @memberof UsuarioModel
+	 * @param {number} id - El ID del usuario.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<{refresh_token}>} El token de refresco.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async getRefreshTokenById(id, dbConn) {
+		const query = 'SELECT refresh_token FROM usuario WHERE id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				refresh_token: rows[0].refresh_token
+			};
+		} catch (err) {
+			throw new Error('Error al obtener el token de refresco.');
+		}
+	}
+
+	/**
 	 * @method deleteUsuario
 	 * @description Método para eliminar un usuario por su ID.
 	 * @static
@@ -425,6 +476,27 @@ class UsuarioModel {
 			return await dbConn.execute(query, [refreshToken, userId]);
 		} catch (err) {
 			throw new Error('Error al actualizar el token de refresco.');
+		}
+	}
+
+	/**
+	 * @method deleteRefreshToken
+	 * @description Método para eliminar el token de refresco de un usuario.
+	 * @static
+	 * @async
+	 * @memberof UsuarioModel
+	 * @param {number} userId - El ID del usuario.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} El resultado de la operación de eliminación.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async deleteRefreshToken(userId, dbConn) {
+		const query = 'UPDATE usuario SET refresh_token = NULL WHERE id = ?';
+
+		try {
+			return await dbConn.execute(query, [userId]);
+		} catch (err) {
+			throw new Error('Error al eliminar el token de refresco.');
 		}
 	}
 
