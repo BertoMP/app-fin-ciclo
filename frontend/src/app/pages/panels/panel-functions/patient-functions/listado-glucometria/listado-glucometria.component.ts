@@ -44,7 +44,7 @@ export class ListadoGlucometriaComponent implements OnInit {
     let request: Observable<GlucometriaListModel> = (typeof pageOrUrl === 'number') ? this.medicionesService.getGlucometria(pageOrUrl) : this.medicionesService.getSpecificPageGlucometria(pageOrUrl);
 
     request.subscribe({
-      next: (response:GlucometriaListModel) => {
+      next: (response) => {
         this.#showResults(response);
       }
     });
@@ -53,13 +53,12 @@ export class ListadoGlucometriaComponent implements OnInit {
 
   #showResults(data) {
     console.log(data);
-    console.log(Object.keys(data.resultados[0].datos_toma));
-    this.mediciones = data.resultados;
+    this.mediciones = data.glucometrias;
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;
     this.totalPages = data.paginas_totales;
     this.totalItems = data.cantidad_glucometrias;
-    this.itemsPerPage = data.items_pagina;
+    this.itemsPerPage = data.glucometrias.length;
     this.actualPage = data.pagina_actual;
   }
 }
