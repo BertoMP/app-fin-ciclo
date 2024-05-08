@@ -1,28 +1,28 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MedicionesService } from '../../../../../core/services/mediciones.service';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { Router } from '@angular/router';
-import { GlucometriaListModel } from '../../../../../core/interfaces/glucometria-list.model';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
+import { MedicionListModel } from '../../../../../core/interfaces/Medicion-list.model';
 
 @Component({
-  selector: 'app-listado-glucometria',
+  selector: 'app-listado-mediciones',
   standalone: true,
   imports: [NgxPaginationModule,
     NgForOf,
     NgIf,
-    FormsModule ],
-  templateUrl: './listado-glucometria.component.html',
-  styleUrl: './listado-glucometria.component.scss'
+    FormsModule],
+  templateUrl: './listado-mediciones.component.html',
+  styleUrl: './listado-mediciones.component.scss'
 })
-export class ListadoGlucometriaComponent implements OnInit {
+export class ListadoMedicionesComponent implements OnInit{
   isUserLoggedIn: boolean = false;
   userId: number;
   loggedInSubscription: Subscription;
-  mediciones:GlucometriaListModel;
+  mediciones:MedicionListModel;
 
   nextPageUrl: string;
   previousPageUrl: string;
@@ -32,8 +32,12 @@ export class ListadoGlucometriaComponent implements OnInit {
   itemsPerPage: number;
   errores: string[]
 
-  constructor(private medicionesService: MedicionesService) { }
+  constructor(private medicionesService: MedicionesService,private router: Router) { }
 
+  obtenerRutaActual() {
+    const rutaActual = this.router.url;
+    console.log('Ruta actual:', rutaActual);
+  }
 
   ngOnInit(): void {
     this.actualPage = 1;
@@ -41,7 +45,8 @@ export class ListadoGlucometriaComponent implements OnInit {
   }
 
   getMediciones(pageOrUrl: number | string) {
-    let request: Observable<GlucometriaListModel> = (typeof pageOrUrl === 'number') ? this.medicionesService.getGlucometria(pageOrUrl) : this.medicionesService.getSpecificPageGlucometria(pageOrUrl);
+    this.obtenerRutaActual();
+    let request: Observable<MedicionListModel> = (typeof pageOrUrl === 'number') ? this.medicionesService.getGlucometria(pageOrUrl) : this.medicionesService.getSpecificPageGlucometria(pageOrUrl);
 
     request.subscribe({
       next: (response) => {
@@ -61,4 +66,5 @@ export class ListadoGlucometriaComponent implements OnInit {
     this.itemsPerPage = data.glucometrias.length;
     this.actualPage = data.pagina_actual;
   }
+
 }

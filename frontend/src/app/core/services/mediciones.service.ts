@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
-import { GlucometriaListModel } from '../interfaces/glucometria-list.model';
+import { MedicionListModel } from '../interfaces/Medicion-list.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +14,10 @@ export class MedicionesService {
   constructor(private http: HttpClient) { }
 
   getGlucometria(page:number) {
-    return this.http.get<GlucometriaListModel>(`${this.apiUrl}/glucometria?page=${page}`);
+    return this.http.get<MedicionListModel>(`${this.apiUrl}/glucometria?page=${page}`);
   }
   getSpecificPageGlucometria(page:string) {
-    return this.http.get<GlucometriaListModel>(`${this.apiUrl}${page}`);
+    return this.http.get<MedicionListModel>(`${this.apiUrl}${page}`);
   }
 
   private handleError(errorRes: HttpErrorResponse) {

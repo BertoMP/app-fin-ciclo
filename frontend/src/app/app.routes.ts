@@ -27,8 +27,8 @@ import { UserListComponent } from './pages/panels/panel-functions/admin-function
 import { EspecialidadesListComponent } from './pages/panels/panel-functions/admin-functions/especialidades-list/especialidades-list.component';
 import { SpecialistFormComponent } from './pages/panels/panel-functions/specialist-functions/specialist-form/specialist-form.component';
 import { CrearEditarEspecialidadesComponent } from './pages/panels/panel-functions/admin-functions/crear-editar-especialidades/crear-editar-especialidades.component';
-import { ListadoGlucometriaComponent } from './pages/panels/panel-functions/patient-functions/listado-glucometria/listado-glucometria.component';
 import { adminGuard } from './core/guards/admin.guard';
+import { ListadoMedicionesComponent } from './pages/panels/panel-functions/patient-functions/listado-mediciones/listado-mediciones.component';
 
 export const routes: Routes = [
   {
@@ -99,7 +99,12 @@ export const routes: Routes = [
     component: CrearEditarEspecialidadesComponent,
   },{
     path:'listadoGlucometria',
-    component: ListadoGlucometriaComponent,
+    component: ListadoMedicionesComponent,
+
+  },
+  {
+    path:'listadoTension',
+    component: ListadoMedicionesComponent,
 
   },
   {
