@@ -6,7 +6,7 @@ import {
   Validators
 } from "@angular/forms";
 import { CustomValidators } from "../../../core/classes/CustomValidators";
-import { CommonModule, LowerCasePipe, NgClass } from "@angular/common";
+import {CommonModule, Location, LowerCasePipe, NgClass} from "@angular/common";
 import { ProvinceService } from "../../../core/services/province.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../../core/services/auth.service";
@@ -65,12 +65,13 @@ export class RegisterComponent implements OnInit {
   isEditing: boolean = false;
 
   constructor(private provinceService: ProvinceService,
-    private municipioService: MunicipioService,
-    private tipoViaService: TipoViaService,
-    private codigoPostalService: CodigoPostalService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService) {
+              private municipioService: MunicipioService,
+              private tipoViaService: TipoViaService,
+              private codigoPostalService: CodigoPostalService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private authService: AuthService,
+              private location: Location) {
   }
   formatearFecha(fechaString: string) {
     const partesFecha = fechaString.split("-");
@@ -359,22 +360,17 @@ export class RegisterComponent implements OnInit {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-
-    this.router.navigate(['auth/login'])
-      .then(() => {
-        Swal.fire({
-          title: 'Enhorabuena',
-          text: `Has conseguido ${message} un usuario correctamente`,
-          icon: 'success',
-          width: '50%'
-        }).then(() => {
-          Swal.close();
-        })
-          .catch(() => {
-            console.log('Se produjo un error.')
-          });
-      })
-      .catch((error) => console.error('Error navigating to login', error));
+    this.location.back()
+    Swal.fire({
+      title: 'Enhorabuena',
+      text: `Has conseguido ${message} un usuario correctamente`,
+      icon: 'success',
+      width: '50%'
+    }).then(() => {
+      Swal.close();
+    }).catch(() => {
+        console.log('Se produjo un error.')
+    });
   }
 
   onSubmitError(error: string[]): void {
@@ -384,9 +380,7 @@ export class RegisterComponent implements OnInit {
 
 
   onCancel(): void {
-    this.router.navigate(['/auth/login'])
-      .then(() => { })
-      .catch((error) => console.error('Error navigating to login', error));
+    this.location.back();
   }
 
   private generateUser(): PatientModel {

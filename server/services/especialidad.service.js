@@ -23,7 +23,7 @@ class EspecialidadService {
 	static async readEspecialidades(searchValues, conn = dbConn) {
 		try {
 			const page = searchValues.page;
-			const limit = 5;
+			const limit = searchValues.limit;
 			const search = searchValues.search;
 
 			const {

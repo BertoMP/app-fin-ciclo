@@ -48,12 +48,12 @@ class GlucometriaController {
 				next: glucometrias.next,
 				pagina_actual: glucometrias.pagina_actual,
 				paginas_totales: glucometrias.paginas_totales,
-				cantidad_glucometrias: glucometrias.cantidad_glucometrias,
+				cantidad_mediciones: glucometrias.cantidad_glucometrias,
 				rango: glucometrias.rango,
 				fechaInicio: searchValues.fechaInicio,
 				fechaFin: searchValues.fechaFin,
 				limit: searchValues.limit,
-				glucometrias: glucometrias.resultados,
+				mediciones: glucometrias.resultados,
 			});
 
 		} catch (err) {

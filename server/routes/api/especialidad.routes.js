@@ -122,6 +122,7 @@ router.get(
 	'/especialidad/listado',
 	verifyAccessToken,
 	verifyUserRole([1]),
+
 	EspecialidadController.getEspecialidadesListado
 );
 

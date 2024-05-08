@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FileUploadService } from '../../../../../core/services/file-uploader.service';
 import Swal from 'sweetalert2';
 import { SpecialityListedModel } from '../../../../../core/interfaces/speciality-listed.model';
-import { CommonModule, LowerCasePipe, NgClass } from '@angular/common';
+import {CommonModule, Location, LowerCasePipe, NgClass} from '@angular/common';
 import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
 import { Select2Module } from 'ng-select2-component';
 import { PasswordInputComponent } from '../../../../../shared/components/password-input/password-input.component';
@@ -41,18 +41,24 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
   descripcion: string = '';
   imageToShow: string;
 
-  constructor(
-    private router: Router,
-    private fileUploadService: FileUploadService,
-    private activatedRoute: ActivatedRoute,
-    private especialidadService: EspecialidadService) {
+  isEditing: boolean = false;
+
+  constructor(private fileUploadService: FileUploadService,
+              private activatedRoute: ActivatedRoute,
+              private especialidadService: EspecialidadService,
+              private location: Location) {
   }
 
   ngOnInit(): void {
 
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
-      if (this.id != null) {
+
+      if (this.id !== null) {
+        this.isEditing = true;
+      }
+
+      if (this.isEditing) {
         this.especialidadService.getEspecialidadId(this.id).subscribe({
           next: (res: SpecialityListedModel) => {
             this.especialidad = res;
@@ -86,9 +92,8 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
         ]
       )
     });
-
-
   }
+
   patchForm(): void {
     let descripcionWithLineBreaks = this.descripcion.replace(/<br>/g, '\n');
 
@@ -137,9 +142,7 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-    this.router.navigate(['/testeo/listadoEspecialidades'])
-      .then(() => { })
-      .catch((error) => console.error('Error navigating to login', error));
+    this.location.back();
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} una especialidad correctamente`,
@@ -165,9 +168,7 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/testeo/listadoEspecialidades'])
-      .then(() => { })
-      .catch((error) => console.error('Error navigating to login', error));
+    this.location.back();
   }
 
   onFileSelect(event: { target: { files: File[]; }; }) {

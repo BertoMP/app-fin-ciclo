@@ -167,7 +167,7 @@ class UsuarioController {
 			});
 		} catch (err) {
 			if (err.message === 'Correo o contraseña incorrectos.') {
-				res.status(403).json({ errors: [err.message] });
+				return res.status(403).json({ errors: [err.message] });
 			}
 
 			return res.status(500).json({ errors: [err.message] });

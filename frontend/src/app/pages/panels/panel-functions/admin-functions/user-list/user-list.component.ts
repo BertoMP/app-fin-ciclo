@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import { NgxPaginationModule } from "ngx-pagination";
-import { LowerCasePipe, NgForOf, NgIf } from '@angular/common';
+import {LowerCasePipe, NgClass, NgForOf, NgIf, UpperCasePipe} from '@angular/common';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
+import {debounceTime, Observable, Subject} from 'rxjs';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RouterLink, RouterOutlet } from '@angular/router';
 import {Select2Data, Select2Module} from "ng-select2-component";
@@ -25,11 +25,13 @@ import { UserListResponseModel } from '../../../../../core/interfaces/user-list-
     NgIf,
     FormsModule,
     RouterLink,
-    RouterOutlet, ReactiveFormsModule, Select2Module],
+    RouterOutlet, ReactiveFormsModule, Select2Module, UpperCasePipe, NgClass],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
+  @Input("userRole") userRole: number;
+
   roles: Select2Data = [
     {
       value: 1,
@@ -44,6 +46,26 @@ export class UserListComponent {
       label: 'Especialistas'
     }
   ];
+
+  perPageOptions: Select2Data = [
+    {
+      value: 5,
+      label: '5'
+    },
+    {
+      value: 10,
+      label: '10'
+    },
+    {
+      value: 15,
+      label: '15'
+    },
+    {
+      value: 20,
+      label: '20'
+    }
+  ];
+
   users: ListedUserModel[];
   nextPageUrl: string;
   previousPageUrl: string;
@@ -51,37 +73,73 @@ export class UserListComponent {
   totalPages: number;
   totalItems: number;
   itemsPerPage: number;
+  resultMin: number;
+  resultMax: number;
   errores: string[];
-  @Input("userRole") userRole: number;
   role: string = "1";
   search: string = "";
+  perPage: string = "10";
+
+  initialLoad: boolean = false;
+  dataLoaded: boolean = false;
+
+  private getUsersSubject: Subject<void> = new Subject<void>();
 
   constructor(private adminPanelService: AdminPanelService) { }
 
   ngOnInit(): void {
+    this.users = [];
     this.actualPage = 1;
-    this.getUsers(this.actualPage);
+    this.getUsersSubject
+      .pipe(debounceTime(1000))
+      .subscribe({
+        next: () => {
+          this.getUsers()
+        }
+      });
+    this.initialLoad = true;
+    this.getUsersSubject.next();
   }
 
-  getUsers(pageOrUrl: number | string) {
-    let request: Observable<UserListResponseModel> = (typeof pageOrUrl === 'number') ? this.adminPanelService.getUserList(pageOrUrl) : this.adminPanelService.getSpecificPage(pageOrUrl);
+  changePage(page: number) {
+    if (this.initialLoad) {
+      this.dataLoaded = false;
+      this.actualPage = page;
+      this.getUsersSubject.next();
+    }
+  }
+
+  updateFilters(): void {
+    if (this.initialLoad) {
+      this.dataLoaded = false;
+      this.actualPage = 1;
+      this.getUsersSubject.next();
+    }
+  }
+
+  getUsers() {
+    let request: Observable<UserListResponseModel>;
+    request = this.adminPanelService.getUsersByRoleAndSearch(
+      parseInt(this.role),
+      this.search,
+      parseInt(this.perPage),
+      this.actualPage
+    );
 
     request.subscribe({
       next: (response: UserListResponseModel) => {
         this.#showResults(response);
+        this.dataLoaded = true;
+
+        console.log(response)
+      },
+      error: (error: string[]) => {
+        this.errores = error;
       }
     });
   }
 
-  filterByRoleAndSearch() {
-    this.adminPanelService.getUsersByRoleAndSearch(parseInt(this.role), this.search).subscribe({
-      next: (response: UserListResponseModel) => {
-        this.#showResults(response);
-      }
-    });
-  }
-
-  #showResults(data) {
+  #showResults(data: UserListResponseModel) {
     this.users = data.resultados;
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;
@@ -89,11 +147,13 @@ export class UserListComponent {
     this.totalItems = data.cantidad_usuarios;
     this.itemsPerPage = data.items_pagina;
     this.actualPage = data.pagina_actual;
+    this.resultMin = data.result_min;
+    this.resultMax = data.result_max;
   }
 
   confirmarCancelacion(id: number) {
     Swal.fire({
-      text: 'Estás seguro que quieres eliminar a este usuario?',
+      text: '¿Estás seguro que quieres eliminar a este usuario?',
       confirmButtonText: 'Confirmar',
       cancelButtonText: 'Cancelar',
       showCancelButton: true,
@@ -101,7 +161,7 @@ export class UserListComponent {
       if (result.isConfirmed) {
         this.adminPanelService.eliminateUser(id).subscribe({
           next: (response) => {
-            this.users.length <= 1 && this.previousPageUrl != null ? this.getUsers(this.previousPageUrl) : this.getUsers(this.actualPage);
+            this.getUsers();
             Swal.fire({
               title: 'Enhorabuena',
               text: 'Has conseguido eliminar al usuario correctamente',

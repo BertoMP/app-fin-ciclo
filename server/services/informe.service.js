@@ -71,8 +71,6 @@ class InformeService {
 			const informe = await InformeService.readInforme(informeId, userId, userRole, conn);
 			return await PdfService.generateInforme(informe);
 		} catch (err) {
-
-			console.log(err);
 			throw err;
 		}
 

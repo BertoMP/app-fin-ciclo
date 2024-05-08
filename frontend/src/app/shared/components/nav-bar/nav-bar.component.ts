@@ -29,6 +29,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
   isMenuOpen: boolean = false;
   isUserLoggedIn: boolean = false;
 
+  userName: string = '';
+
   constructor(private elementRef: ElementRef,
               private router: Router,
               private authService: AuthService) {
@@ -40,7 +42,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
     });
 
     this.loggedInSubscription = this.authService.isLoggedInUser.subscribe(
-      loggedIn => this.isUserLoggedIn = loggedIn
+      loggedIn => {
+        this.userName = this.authService.getUserName();
+        this.isUserLoggedIn = loggedIn;
+      }
     );
   }
 

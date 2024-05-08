@@ -1,17 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { NgxPaginationModule } from "ngx-pagination";
-import { LowerCasePipe, NgForOf, NgIf } from '@angular/common';
+import {LowerCasePipe, NgForOf, NgIf, UpperCasePipe} from '@angular/common';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
+import {debounceTime, Observable, Subject} from 'rxjs';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RouterLink, RouterOutlet } from '@angular/router';
 import {Select2Data, Select2Module} from "ng-select2-component";
 import { VerticalCardComponent } from '../../../../../shared/components/vertical-card/vertical-card.component';
 import { RemoveAccentsPipe } from '../../../../../shared/pipes/remove-accents.pipe';
 import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
-import { ListedSpecialityModel } from '../../../../../core/interfaces/speciality-list.model';
 import { AdminPanelService } from '../../../../../core/services/admin-panel.service';
-import { UserListResponseModel } from '../../../../../core/interfaces/user-list-response.model';
+import {SpecialityDataModel} from "../../../../../core/interfaces/speciality-data.model";
+import {SpecialityListedModel} from "../../../../../core/interfaces/speciality-listed.model";
+import {RemoveBrPipe} from "../../../../../shared/pipes/remove-br.pipe";
 
 @Component({
   selector: 'app-especialidades-list',
@@ -25,12 +26,12 @@ import { UserListResponseModel } from '../../../../../core/interfaces/user-list-
     NgIf,
     FormsModule,
     RouterLink,
-    RouterOutlet, ReactiveFormsModule, Select2Module],
+    RouterOutlet, ReactiveFormsModule, Select2Module, UpperCasePipe, RemoveBrPipe],
   templateUrl: './especialidades-list.component.html',
   styleUrl: './especialidades-list.component.scss'
 })
-export class EspecialidadesListComponent {
-  especialities: ListedSpecialityModel[];
+export class EspecialidadesListComponent implements OnInit, OnDestroy {
+  specialties: SpecialityListedModel[];
   nextPageUrl: string;
   previousPageUrl: string;
   actualPage: number;
@@ -38,48 +39,99 @@ export class EspecialidadesListComponent {
   totalItems: number;
   itemsPerPage: number;
   errores: string[];
-  role: string = "1";
   search: string = "";
+  perPage: string = "10";
+  resultMin: number;
+  resultMax: number;
+
+  dataLoaded: boolean = false;
+  initialLoad: boolean = false;
+
+  perPageOptions: Select2Data = [
+    {
+      value: 5,
+      label: '5'
+    },
+    {
+      value: 10,
+      label: '10'
+    },
+    {
+      value: 15,
+      label: '15'
+    },
+    {
+      value: 20,
+      label: '20'
+    }
+  ];
+
+  private getSpecialtiesSubject: Subject<void> = new Subject<void>();
 
   constructor(private adminPanelService: AdminPanelService) { }
 
   ngOnInit(): void {
+    this.specialties = [];
     this.actualPage = 1;
-    this.getSpecialities(this.actualPage);
+    this.getSpecialtiesSubject.pipe(debounceTime(1000)).subscribe(() => this.getSpecialities());
+    this.initialLoad = true;
+    this.getSpecialtiesSubject.next();
   }
 
-  getSpecialities(pageOrUrl: number | string) {
-    let request: Observable<ListedSpecialityModel> = (typeof pageOrUrl === 'number') ? this.adminPanelService.getSpecialitiesList(pageOrUrl) : this.adminPanelService.getSpecificPageSpeciality(pageOrUrl);
+  ngOnDestroy() {
+    this.getSpecialtiesSubject.unsubscribe();
+  }
+
+  changePage(page: number) {
+    if (this.initialLoad) {
+      this.dataLoaded = false;
+      this.actualPage = page;
+      this.getSpecialtiesSubject.next();
+    }
+  }
+
+  updateFilters(): void {
+    if (this.initialLoad) {
+      this.dataLoaded = false;
+      this.actualPage = 1;
+      this.getSpecialtiesSubject.next();
+    }
+  }
+
+  getSpecialities() {
+    let request: Observable<SpecialityDataModel>;
+    request = this.adminPanelService.getSpecialitiesList(
+      this.search,
+      parseInt(this.perPage),
+      this.actualPage
+    );
 
     request.subscribe({
-      next: (response: ListedSpecialityModel) => {
+      next: (response: SpecialityDataModel) => {
         this.#showResults(response);
-      }
-    });
-  }
-
-  filterByRoleAndSearch() {
-    this.adminPanelService.getUsersByRoleAndSearch(parseInt(this.role), this.search).subscribe({
-      next: (response: UserListResponseModel) => {
-        this.#showResults(response);
+        this.dataLoaded = true;
+      },
+      error: (error: string[]) => {
+        this.errores = error;
       }
     });
   }
 
   #showResults(data) {
-    console.log(data);
-    this.especialities = data.resultados;
+    this.specialties = data.resultados;
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;
     this.totalPages = data.paginas_totales;
     this.totalItems = data.cantidad_especialidades;
     this.itemsPerPage = data.items_pagina;
     this.actualPage = data.pagina_actual;
+    this.resultMin = data.result_min;
+    this.resultMax = data.result_max;
   }
 
   confirmarCancelacion(id: number) {
     Swal.fire({
-      text: 'Estás seguro que quieres eliminar a esta especialidad?',
+      text: '¿Estás seguro que quieres eliminar a esta especialidad?',
       confirmButtonText: 'Confirmar',
       cancelButtonText: 'Cancelar',
       showCancelButton: true,
@@ -87,7 +139,7 @@ export class EspecialidadesListComponent {
       if (result.isConfirmed) {
         this.adminPanelService.eliminateSpeciality(id).subscribe({
           next: (response) => {
-            this.especialities.length <= 1 && this.previousPageUrl != null ? this.getSpecialities(this.previousPageUrl) : this.getSpecialities(this.actualPage);
+            this.getSpecialities();
             Swal.fire({
               title: 'Enhorabuena',
               text: 'Has conseguido eliminar la especialidad correctamente',

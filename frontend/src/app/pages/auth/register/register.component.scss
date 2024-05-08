@@ -2,16 +2,13 @@ $bg-color-primary: rgba(33, 85, 141, 0.2);
 $form-shadow: 0 0 20px rgba(0,0,0,0.3);
 
 :host {
-  background-color: $bg-color-primary;
-  box-shadow: $form-shadow;
-  padding: 2rem;
+  padding: .8rem;
   border-radius: 1.6rem;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  margin: 2rem;
+  width: 90%;
 
   h2 {
     font-size: 1.3rem;

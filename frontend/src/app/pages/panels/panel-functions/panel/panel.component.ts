@@ -7,11 +7,12 @@ import { EspecialistPanelComponent } from '../../user-panels/especialist-panel/e
 import { AdminPanelComponent } from '../../user-panels/admin-panel/admin-panel.component';
 import { UserRole } from '../../../../core/enum/user-role.enum';
 import { AuthService } from '../../../../core/services/auth.service';
+import {LoginComponent} from "../../../auth/login/login.component";
 
 @Component({
   selector: 'app-panel',
   standalone: true,
-  imports: [PacientPanelComponent, EspecialistPanelComponent, AdminPanelComponent],
+  imports: [PacientPanelComponent, EspecialistPanelComponent, AdminPanelComponent, LoginComponent],
   templateUrl: './panel.component.html',
   styleUrl: './panel.component.scss'
 })

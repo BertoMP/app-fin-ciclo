@@ -102,6 +102,18 @@ export class AuthService {
     return decodedToken.user_id;
   }
 
+  getUserName(): string {
+    const accessToken: string = this.getAccessToken();
+
+    if (!accessToken) {
+      return '';
+    }
+
+    const decodedToken = this.jwtHelper.decodeToken(accessToken);
+
+    return decodedToken.user_name;
+  }
+
   isLoggedIn(): boolean {
     const refreshToken: string = this.getRefreshToken();
 

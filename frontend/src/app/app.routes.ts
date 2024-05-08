@@ -28,7 +28,7 @@ import { EspecialidadesListComponent } from './pages/panels/panel-functions/admi
 import { SpecialistFormComponent } from './pages/panels/panel-functions/specialist-functions/specialist-form/specialist-form.component';
 import { CrearEditarEspecialidadesComponent } from './pages/panels/panel-functions/admin-functions/crear-editar-especialidades/crear-editar-especialidades.component';
 import { ListadoGlucometriaComponent } from './pages/panels/panel-functions/patient-functions/listado-glucometria/listado-glucometria.component';
-import { adminGuard } from './core/guards/admin.guard';
+import {adminGuard} from "./core/guards/admin.guard";
 
 export const routes: Routes = [
   {
@@ -38,18 +38,50 @@ export const routes: Routes = [
   },
 
   {
-    path: 'testeo',
+    path: 'mediapp',
     component: PanelComponent,
     canActivate: [loginGuard],
     children: [
       {
-        path: 'listadoUsers',
+        path: 'usuarios',
         component: UserListComponent,
+        canActivate: [adminGuard]
       },
       {
-        path: 'listadoEspecialidades',
-        component: EspecialidadesListComponent,
+        path: 'crear-paciente',
+        component: RegisterComponent,
+        canActivate: [adminGuard]
       },
+      {
+        path: 'crear-especialista',
+        component: SpecialistFormComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'editar-paciente/:id',
+        component: RegisterComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'editar-especialista/:id',
+        component: SpecialistFormComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'especialidades',
+        component: EspecialidadesListComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'crear-especialidad',
+        component: CrearEditarEspecialidadesComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'editar-especialidad/:id',
+        component: CrearEditarEspecialidadesComponent,
+        canActivate: [adminGuard]
+      }
     ]
   },
 

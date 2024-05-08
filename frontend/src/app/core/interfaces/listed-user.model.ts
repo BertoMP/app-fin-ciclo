@@ -1,6 +1,8 @@
-import { SpecialityDataModel } from "./speciality-data.model";
+import {PersonalDataModel} from "./personal-data.model";
+import {RolDataModel} from "./rol-data.model";
 
 export interface ListedUserModel {
-  id: number,
-  datos_personales: SpecialityDataModel,
+  usuario_id: number,
+  datos_personales: PersonalDataModel,
+  datos_rol: RolDataModel
 }

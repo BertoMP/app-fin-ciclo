@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from "@angular/forms";
-import { CommonModule, LowerCasePipe, NgClass } from "@angular/common";
+import {CommonModule, Location, LowerCasePipe, NgClass} from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { HttpErrorResponse } from "@angular/common/http";
@@ -56,13 +56,13 @@ export class SpecialistFormComponent implements OnInit {
   id: number;
 
   constructor(private turnoService: TurnoService,
-    private especialidadService: EspecialidadService,
-    private consultaService: ConsultaService,
-    private router: Router,
-    private fileUploadService: FileUploadService,
-    private activatedRoute: ActivatedRoute,
-    private professionalDataService: ProfessionalDataService,
-    private authService: AuthService) {
+              private especialidadService: EspecialidadService,
+              private consultaService: ConsultaService,
+              private fileUploadService: FileUploadService,
+              private activatedRoute: ActivatedRoute,
+              private professionalDataService: ProfessionalDataService,
+              private authService: AuthService,
+              private location: Location) {
   }
 
   ngOnInit(): void {
@@ -261,9 +261,7 @@ export class SpecialistFormComponent implements OnInit {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-    this.router.navigate(['auth/login'])
-      .then(() => { })
-      .catch((error) => console.error('Error navigating to login', error));
+    this.location.back();
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} un especialista correctamente`,
@@ -289,9 +287,7 @@ export class SpecialistFormComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/auth/login'])
-      .then(() => { })
-      .catch((error) => console.error('Error navigating to login', error));
+    this.location.back();
   }
 
   onFileSelect(event: { target: { files: File[]; }; }) {
