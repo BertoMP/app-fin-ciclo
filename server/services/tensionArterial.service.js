@@ -5,6 +5,10 @@ import TensionArterialModel from '../models/tensionArterial.model.js';
 import { dbConn } from '../util/database/database.js';
 import ObjectFactory from "../util/classes/objectFactory.js";
 
+// Importación de las librerías necesarias
+import pkg from 'moment-timezone';
+const { tz } = pkg;
+
 /**
  * @class TensionArterialService
  * @description Clase que contiene los métodos para interactuar con el modelo de TensionArterial.
@@ -60,8 +64,8 @@ class TensionArterialService {
 			const result_min = (page - 1) * limit + 1;
 			const result_max =
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const fecha_inicio = fechaInicio;
-			const fecha_fin = fechaFin;
+			const fecha_inicio = tz(fechaInicio, 'Europe/Madrid').format('DD-MM-YYYY');
+			const fecha_fin = tz(fechaFin, 'Europe/Madrid').format('DD-MM-YYYY');
 			const items_pagina = parseInt(limit);
 
 			return {
