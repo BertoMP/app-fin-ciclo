@@ -13,9 +13,9 @@ const { tz } = pkg;
  * @returns {Object} - Objeto con los valores de búsqueda por fecha
  */
 export const getSearchValues = (req, type) => {
-	const page = parseInt(req.query.page) || 1;
-	const limit = req.query.limit || 4;
-	const search = req.query.search || '';
+	const page 			= parseInt(req.query.page) 	|| 1;
+	const limit 		= req.query.limit 					|| 10;
+	const search 		= req.query.search 					|| '';
 
 	switch (type) {
 		case 'search':
