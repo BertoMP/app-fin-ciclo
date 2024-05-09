@@ -5,7 +5,7 @@
 	"main": "app.js",
 	"scripts": {
 		"start": "node app.js",
-		"dev": "nodemon app.js",
+		"dev": "node --watch app.js",
 		"doc": "jsdoc -c jsdoc.json",
 		"test": "mocha 'test/**/*.test.js' --exit"
 	},
@@ -34,7 +34,6 @@
 		"chai": "^5.1.0",
 		"jsdoc": "^4.0.2",
 		"mocha": "^10.4.0",
-		"nodemon": "^3.1.0",
 		"supertest": "^7.0.0"
 	}
 }

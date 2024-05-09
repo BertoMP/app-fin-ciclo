@@ -14,6 +14,6 @@ export class MedicalSpecialtiesService {
   constructor(private http: HttpClient) { }
 
   getSpecialties(page: number) {
-    return this.http.get<MedicalEspecialtiesResponseModel>(`${this.baseUrl}/especialidad?page=${page}`);
+    return this.http.get<MedicalEspecialtiesResponseModel>(`${this.baseUrl}/especialidad?page=${page}&limit=4`);
   }
 }

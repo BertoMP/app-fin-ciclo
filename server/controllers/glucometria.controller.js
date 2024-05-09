@@ -49,10 +49,11 @@ class GlucometriaController {
 				pagina_actual: glucometrias.pagina_actual,
 				paginas_totales: glucometrias.paginas_totales,
 				cantidad_mediciones: glucometrias.cantidad_glucometrias,
-				rango: glucometrias.rango,
-				fechaInicio: searchValues.fechaInicio,
-				fechaFin: searchValues.fechaFin,
-				limit: searchValues.limit,
+				result_min: glucometrias.result_min,
+				result_max: glucometrias.result_max,
+				fecha_inicio: glucometrias.fecha_inicio,
+				fecha_fin: glucometrias.fecha_fin,
+				items_pagina: glucometrias.items_pagina,
 				mediciones: glucometrias.resultados,
 			});
 

@@ -91,10 +91,15 @@ export class UserListComponent implements OnInit {
     this.users = [];
     this.actualPage = 1;
     this.getUsersSubject
-      .pipe(debounceTime(1000))
+      .pipe(
+        debounceTime(500)
+      )
       .subscribe({
         next: () => {
           this.getUsers()
+        },
+        error: (error: string[]) => {
+          this.errores = error;
         }
       });
     this.initialLoad = true;
@@ -119,19 +124,18 @@ export class UserListComponent implements OnInit {
 
   getUsers() {
     let request: Observable<UserListResponseModel>;
-    request = this.adminPanelService.getUsersByRoleAndSearch(
-      parseInt(this.role),
-      this.search,
-      parseInt(this.perPage),
-      this.actualPage
-    );
+    request = this.adminPanelService
+      .getUsersByRoleAndSearch(
+        parseInt(this.role),
+        this.search,
+        parseInt(this.perPage),
+        this.actualPage
+      );
 
     request.subscribe({
       next: (response: UserListResponseModel) => {
         this.#showResults(response);
         this.dataLoaded = true;
-
-        console.log(response)
       },
       error: (error: string[]) => {
         this.errores = error;
@@ -159,20 +163,22 @@ export class UserListComponent implements OnInit {
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        this.adminPanelService.eliminateUser(id).subscribe({
-          next: (response) => {
-            this.getUsers();
-            Swal.fire({
-              title: 'Enhorabuena',
-              text: 'Has conseguido eliminar al usuario correctamente',
-              icon: 'success',
-              width: '50%'
-            })
-          },
-          error: (error: string[]): void => {
-            this.errores = error;
-          }
-        })
+        this.adminPanelService
+          .eliminateUser(id)
+          .subscribe({
+            next: (response) => {
+              this.getUsers();
+              Swal.fire({
+                title: 'Enhorabuena',
+                text: 'Has conseguido eliminar al usuario correctamente',
+                icon: 'success',
+                width: '50%'
+              });
+              },
+            error: (error: string[]): void => {
+              this.errores = error;
+            }
+          });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         console.log("Usuario canceló la eliminación");
       }
