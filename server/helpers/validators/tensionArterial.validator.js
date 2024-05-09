@@ -14,7 +14,7 @@ import { body, validationResult } from 'express-validator';
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
 export const validateTensionArterial = [
-	body('sistolica')
+	body('tomas.sistolica')
 		.trim()
 		.notEmpty()
 		.withMessage('La medición sistólica es requerida.')
@@ -32,7 +32,7 @@ export const validateTensionArterial = [
 
 			return true;
 		}),
-	body('diastolica')
+	body('tomas.diastolica')
 		.trim()
 		.notEmpty()
 		.withMessage('La medición diastólica es requerida.')
@@ -50,7 +50,7 @@ export const validateTensionArterial = [
 
 			return true;
 		}),
-	body('pulsaciones')
+	body('tomas.pulsaciones_minuto')
 		.trim()
 		.notEmpty()
 		.withMessage('Las pulsaciones por minuto son requeridas.')

@@ -100,7 +100,7 @@ class TensionArterialModel {
 		const hora = tensionArterial.hora;
 		const sistolica = tensionArterial.sistolica;
 		const diastolica = tensionArterial.diastolica;
-		const pulsaciones_minuto = tensionArterial.pulsaciones;
+		const pulsaciones_minuto = tensionArterial.pulsaciones_minuto;
 
 		const query =
 			'INSERT INTO tension_arterial (paciente_id, fecha, hora, sistolica, diastolica, pulsaciones_minuto) ' +
@@ -117,8 +117,6 @@ class TensionArterialModel {
 			]);
 
 			return {
-				tension_arterial_id: insert[0].insertId,
-				paciente_id: paciente_id,
 				fecha: fecha,
 				hora: hora,
 				datos_toma: {

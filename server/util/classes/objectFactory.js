@@ -116,9 +116,9 @@ class ObjectFactory {
 		return {
 			fecha: tz(new Date(), 'Europe/Madrid').format('YYYY-MM-DD'),
 			hora: tz(new Date(), 'Europe/Madrid').format('HH:mm:ss'),
-			sistolica: data.sistolica,
-			diastolica: data.diastolica,
-			pulsaciones: data.pulsaciones,
+			sistolica: data.tomas.sistolica,
+			diastolica: data.tomas.diastolica,
+			pulsaciones_minuto: data.tomas.pulsaciones_minuto,
 		};
 	}
 

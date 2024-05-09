@@ -57,15 +57,13 @@ export class ListadoMedicionesComponent implements OnInit {
     });
   }
 
-
   #showResults(data) {
-    console.log(data);
     this.mediciones = data.mediciones;
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;
     this.totalPages = data.paginas_totales;
     this.totalItems = data.cantidad_mediciones;
-    this.itemsPerPage = data.mediciones.length;
+    this.itemsPerPage =this.totalItems/this.totalPages;
     this.actualPage = data.pagina_actual;
     if (data.mediciones[0] != null)
       this.campos = Object.keys(data.mediciones[0].datos_toma);

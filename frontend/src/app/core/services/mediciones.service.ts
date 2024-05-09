@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import { MedicionListModel } from '../interfaces/medicion-list.model';
 import { GlucometriaDataModel } from '../interfaces/glucometria-data.model';
+import { TensionArterialDataModel } from '../interfaces/tension-arterial-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class MedicionesService {
   
   uploadGlucometria(user_id:number,tomas:GlucometriaDataModel){
     return this.http.post(`${this.apiUrl}/glucometria`, {user_id,tomas}).pipe(catchError(this.handleError));
+  }
+
+  uploadTension(user_id:number,tomas:TensionArterialDataModel){
+    return this.http.post(`${this.apiUrl}/tension-arterial`, {user_id,tomas}).pipe(catchError(this.handleError));
   }
 
   private handleError(errorRes: HttpErrorResponse) {

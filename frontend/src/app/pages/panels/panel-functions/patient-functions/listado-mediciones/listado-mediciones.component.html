@@ -14,12 +14,13 @@
                 <thead>
                     <tr>
                         <th scope="col">Fecha y hora</th>
-
+                        <th scope="col" *ngFor="let campo of campos">{{campo}} &nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>{{medicion.hora}} || {{medicion.fecha}} &nbsp;</td>
+                        <td *ngFor="let propiedad of campos">{{ medicion.datos_toma[propiedad]}}</td>
                     </tr>
                 </tbody>
             </table>

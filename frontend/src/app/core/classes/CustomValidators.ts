@@ -168,7 +168,7 @@ export class CustomValidators {
     return null;
   }
 
-  static validGlucometria(control: FormControl): { [s: string]: boolean } | null {
+  static validMedicion(control: FormControl): { [s: string]: boolean } | null {
     const value=control.value;
     const regex:RegExp =new RegExp('^\\d{2,3}$');
 

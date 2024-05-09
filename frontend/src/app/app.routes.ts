@@ -30,6 +30,7 @@ import { CrearEditarEspecialidadesComponent } from './pages/panels/panel-functio
 import { adminGuard } from './core/guards/admin.guard';
 import { ListadoMedicionesComponent } from './pages/panels/panel-functions/patient-functions/listado-mediciones/listado-mediciones.component';
 import { GlucometriaFormComponent } from './pages/panels/panel-functions/patient-functions/glucometria-form/glucometria-form.component';
+import { TensionFormComponent } from './pages/panels/panel-functions/patient-functions/tension-form/tension-form.component';
 
 export const routes: Routes = [
   {
@@ -146,7 +147,7 @@ export const routes: Routes = [
   },
   {
     path:'tomarTension',
-    component: GlucometriaFormComponent,
+    component: TensionFormComponent,
   },
   {
     path: 'auth/forgotten-password',

@@ -10,10 +10,11 @@ import { Subscription } from 'rxjs';
 import { MedicionesService } from '../../../../../core/services/mediciones.service';
 import { CustomValidators } from '../../../../../core/classes/CustomValidators';
 import { AuthService } from '../../../../../core/services/auth.service';
-import { GlucometriaDataModel } from '../../../../../core/interfaces/glucometria-data.model';
+import { TensionArterialDataModel } from '../../../../../core/interfaces/tension-arterial-data.model';
+
 
 @Component({
-  selector: 'app-glucometria-form',
+  selector: 'app-tension-form',
   standalone: true,
   imports: [ReactiveFormsModule,
     LowerCasePipe,
@@ -22,18 +23,17 @@ import { GlucometriaDataModel } from '../../../../../core/interfaces/glucometria
     Select2Module,
     CommonModule,
     PasswordInputComponent],
-  templateUrl: './glucometria-form.component.html',
-  styleUrl: './glucometria-form.component.scss'
+  templateUrl: './tension-form.component.html',
+  styleUrl: './tension-form.component.scss'
 })
-
-export class GlucometriaFormComponent implements OnInit {
+export class TensionFormComponent implements OnInit {
   registerForm: FormGroup;
   sendedAttempt: boolean = false;
   isLoading: boolean = false;
   errores: string[] = [];
 
   suscripcionRuta: Subscription;
-  glucometria: GlucometriaDataModel;
+  tension: TensionArterialDataModel;
   id: number;
   fecha: string;
   hora: string;
@@ -58,17 +58,31 @@ export class GlucometriaFormComponent implements OnInit {
     );
 
     this.registerForm = new FormGroup<any>({
-      'medicion': new FormControl(
+      'sistolica': new FormControl(
         null,
         [
           Validators.required,
           CustomValidators.validMedicion
         ]
-      )
+      ),
+      'diastolica': new FormControl(
+        null,
+        [
+          Validators.required,
+          CustomValidators.validMedicion
+        ]
+      ),
+      'pulsaciones': new FormControl(
+        null,
+        [
+          Validators.required,
+          CustomValidators.validMedicion
+        ]
+      ),
     });
   }
 
-  onRegisterGlucometria(): void {
+  onRegisterTension(): void {
     this.sendedAttempt = true;
 
     if (this.registerForm.invalid) {
@@ -76,10 +90,10 @@ export class GlucometriaFormComponent implements OnInit {
     }
 
     this.isLoading = true;
-    const newGlucometria: GlucometriaDataModel = this.generateGlucometria();
-    console.log(newGlucometria);
+    const newTension: TensionArterialDataModel = this.generateTension();
+    console.log(newTension);
 
-    this.medicionesService.uploadGlucometria(this.id, newGlucometria)
+    this.medicionesService.uploadTension(this.id, newTension)
       .subscribe({
         next: (response) => {
           this.onSubmitted();
@@ -95,7 +109,7 @@ export class GlucometriaFormComponent implements OnInit {
     this.location.back();
     Swal.fire({
       title: 'Enhorabuena',
-      text: `Has conseguido registrar una toma de glucosa correctamente`,
+      text: `Has conseguido registrar una toma de tensión correctamente`,
       icon: 'success',
       width: '50%'
     })
@@ -117,9 +131,11 @@ export class GlucometriaFormComponent implements OnInit {
   }
 
 
-  private generateGlucometria(): GlucometriaDataModel {
+  private generateTension(): TensionArterialDataModel {
     return {
-        medicion: this.registerForm.get('medicion').value
+        sistolica: this.registerForm.get('sistolica').value,
+        diastolica: this.registerForm.get('diastolica').value,
+        pulsaciones_minuto:this.registerForm.get('pulsaciones').value
     }
   }
 }
