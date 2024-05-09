@@ -1,28 +1,17 @@
 @if (isUserLoggedIn) {
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            @switch (userRole) {
-            @case(UserRole.ADMIN) {
-            <app-admin-panel></app-admin-panel>
-            }
-            @case(UserRole.PACIENT) {
-            <app-pacient-panel></app-pacient-panel>
-            }
-            @case(UserRole.ESPECIALIST) {
-            <app-especialist-panel></app-especialist-panel>
-            }}
-            <p>Id Usuario: {{userId}}</p>
-            <button type="button" class="btn btn-primary" (click)="onLogout()">Logout</button>
-        </div>
-    </div>
-</div> } @else {
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Dashboard</h1>
-            <p>Debes estar logado para ver este contenido.</p>
-        </div>
-    </div>
-</div>
+@switch (userRole) {
+@case(UserRole.ADMIN) {
+<h1>Panel de administrador</h1>
+<app-admin-panel></app-admin-panel>
+}
+@case(UserRole.PACIENT) {
+<h1>Panel de paciente</h1>
+<app-pacient-panel></app-pacient-panel>
+}
+@case(UserRole.ESPECIALIST) {
+<h1>Panel de especialista</h1>
+<app-especialist-panel></app-especialist-panel>
+}
+}
+<button type="button" (click)="onLogout()">Cerrar Sesión</button>
 }

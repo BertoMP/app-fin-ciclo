@@ -14,7 +14,7 @@ import { body, validationResult } from 'express-validator';
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
 export const validateGlucometria = [
-	body('medicion')
+	body('tomas.medicion')
 		.trim()
 		.notEmpty()
 		.withMessage('La medición es requerida.')

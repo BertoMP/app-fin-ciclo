@@ -70,7 +70,6 @@ class UsuarioService {
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
 			const items_pagina = parseInt(limit);
 
-
 			return {
 				resultados,
 				pagina_actual,
@@ -144,20 +143,20 @@ class UsuarioService {
 				await conn.beginTransaction();
 			}
 
-			const emailExists = await UsuarioModel.findByEmail(data.email, conn);
+			const emailExists = await UsuarioModel.findByEmail(data.datos_personales.email, conn);
 
 			if (emailExists) {
 				throw new Error('El correo electrónico ya está en uso.');
 			}
 
-			const dniExists = await UsuarioModel.findByDNI(data.dni, conn);
+			const dniExists = await UsuarioModel.findByDNI(data.datos_personales.dni, conn);
 
 			if (dniExists) {
 				throw new Error('El DNI ya está en uso.');
 			}
 
 			if (data.datos_especialista) {
-				const colegiadoExists = await UsuarioModel.findByColegiado(data.datos_especialista.num_colegiado, conn);
+				const colegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(data.datos_especialista.num_colegiado, conn);
 
 				if (colegiadoExists) {
 					throw new Error('El número de colegiado ya está en uso.');

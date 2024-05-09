@@ -1,43 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { MedicionesService } from '../../../../../core/services/mediciones.service';
 import { Observable, Subscription } from 'rxjs';
-import { AuthService } from '../../../../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
-import { NgForOf, NgIf } from '@angular/common';
-import { MedicionListModel } from '../../../../../core/interfaces/Medicion-list.model';
+import { NgFor, NgForOf, NgIf } from '@angular/common';
+import { MedicionListModel } from '../../../../../core/interfaces/medicion-list.model';
 
 @Component({
   selector: 'app-listado-mediciones',
   standalone: true,
-  imports: [NgxPaginationModule,
+  imports: [NgxPaginationModule, NgFor,
     NgForOf,
     NgIf,
-    FormsModule],
+    FormsModule,RouterLink],
   templateUrl: './listado-mediciones.component.html',
   styleUrl: './listado-mediciones.component.scss'
 })
-export class ListadoMedicionesComponent implements OnInit{
+export class ListadoMedicionesComponent implements OnInit {
   isUserLoggedIn: boolean = false;
   userId: number;
   loggedInSubscription: Subscription;
-  mediciones:MedicionListModel;
+  mediciones: MedicionListModel;
 
+  rutaActual: string;
   nextPageUrl: string;
   previousPageUrl: string;
   actualPage: number;
   totalPages: number;
   totalItems: number;
   itemsPerPage: number;
-  errores: string[]
+  errores: string[];
+  campos: string[];
+  datos: string[];
 
-  constructor(private medicionesService: MedicionesService,private router: Router) { }
+  constructor(private medicionesService: MedicionesService, private router: Router) { }
 
-  obtenerRutaActual() {
-    const rutaActual = this.router.url;
-    console.log('Ruta actual:', rutaActual);
-  }
 
   ngOnInit(): void {
     this.actualPage = 1;
@@ -45,8 +43,12 @@ export class ListadoMedicionesComponent implements OnInit{
   }
 
   getMediciones(pageOrUrl: number | string) {
-    this.obtenerRutaActual();
-    let request: Observable<MedicionListModel> = (typeof pageOrUrl === 'number') ? this.medicionesService.getGlucometria(pageOrUrl) : this.medicionesService.getSpecificPageGlucometria(pageOrUrl);
+    this.rutaActual = this.router.url;
+    let request: Observable<MedicionListModel>;
+    if (this.rutaActual.includes('listadoGlucometria'))
+      request = (typeof pageOrUrl === 'number') ? this.medicionesService.getGlucometria(pageOrUrl) : this.medicionesService.getSpecificPage(pageOrUrl);
+    else
+      request = (typeof pageOrUrl === 'number') ? this.medicionesService.getTensionArterial(pageOrUrl) : this.medicionesService.getSpecificPage(pageOrUrl);
 
     request.subscribe({
       next: (response) => {
@@ -58,13 +60,15 @@ export class ListadoMedicionesComponent implements OnInit{
 
   #showResults(data) {
     console.log(data);
-    this.mediciones = data.glucometrias;
+    this.mediciones = data.mediciones;
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;
     this.totalPages = data.paginas_totales;
-    this.totalItems = data.cantidad_glucometrias;
-    this.itemsPerPage = data.glucometrias.length;
+    this.totalItems = data.cantidad_mediciones;
+    this.itemsPerPage = data.mediciones.length;
     this.actualPage = data.pagina_actual;
+    if (data.mediciones[0] != null)
+      this.campos = Object.keys(data.mediciones[0].datos_toma);
   }
 
 }

@@ -3,7 +3,7 @@ import { Subscription } from "rxjs";
 import { AuthService } from "../services/auth.service";
 import { Router } from "@angular/router";
 
-export const adminGuard = () => {
+export const patientGuard = () => {
   const router: Router = inject(Router);
     const authService: AuthService = inject(AuthService);
     let loggedInSubscription: Subscription;
@@ -14,7 +14,7 @@ export const adminGuard = () => {
         loggedIn => {
           isUserLoggedIn = loggedIn;
           if (isUserLoggedIn) {
-           if (authService.getUserRole()==1){
+           if (authService.getUserRole()==3){
             comprobarAdmin=true;
            }else{
             router.navigate(['/auth/login']).then(r => { });

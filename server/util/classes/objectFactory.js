@@ -108,7 +108,7 @@ class ObjectFactory {
 		return {
 			fecha: tz(new Date(), 'Europe/Madrid').format('YYYY-MM-DD'),
 			hora: tz(new Date(), 'Europe/Madrid').format('HH:mm:ss'),
-			medicion: data.medicion,
+			medicion: data.tomas.medicion,
 		};
 	}
 

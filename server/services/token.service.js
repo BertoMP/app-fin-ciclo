@@ -29,6 +29,7 @@ class TokenService {
 		const payload = {
 			user_id: user.usuario_id,
 			user_role: user.datos_rol.rol_id,
+			user_name: user.datos_personales.nombre
 		};
 
 		return sign(payload, process.env.JWT_SECRET_KEY, {

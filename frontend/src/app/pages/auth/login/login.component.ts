@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/testeo']).then(r => {});
+      this.router.navigate(['/mediapp']).then(r => {});
     }
 
     this.initForm();
@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           this.isLoading = false;
           this.loginForm.reset();
-          this.router.navigate(['/testeo']).then(r => {});
+          this.router.navigate(['/mediapp']).then(r => {});
         },
         error: (error: HttpErrorResponse): void => {
           this.error = error.error.errors[0].toString().replace(/Error: /g, '');

@@ -45,13 +45,13 @@ class TensionArterialController {
 				next: mediciones.next,
 				pagina_actual: mediciones.pagina_actual,
 				paginas_totales: mediciones.paginas_totales,
-				cantidad_tensionArterial: mediciones.cantidad_tensionArterial,
+				cantidad_mediciones: mediciones.cantidad_tensionArterial,
 				result_min: mediciones.result_min,
 				result_max: mediciones.result_max,
 				fecha_inicio: mediciones.fecha_inicio,
 				fecha_fin: mediciones.fecha_fin,
 				items_pagina: mediciones.items_pagina,
-				resultados: mediciones.resultados,
+				mediciones: mediciones.resultados,
 			});
 		} catch (error) {
 			return res.status(500).json({

@@ -1,49 +1,245 @@
-img {
-    width: 200px;
-}
+@import "bootstrap-icons";
 
-textarea {
-    height: 150px;
-    padding: 10px;
-}
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 
-button {
-    margin: 5px;
-}
-
-.filter {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-  
-    article {
-      width: 90%;
-    }
-  
-    ::ng-deep .select2-selection--single {
-      font-size: 1.2rem;
-      width: 100%;
-      border-radius: 5px;
-      padding: 20px;
-      text-align: center;
-      align-items: center;
-    }
-  
-    label {
-      font-size: 1.2rem;
-      font-weight: 500;
-      display: block;
-    }
-  
-    input {
-      width: 100%;
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1.2rem;
-    }
-  
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
   }
-  
+
+  section {
+    width: 100%;
+
+    &.filter-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    &.specialties-table {
+      width: 100%;
+
+      .info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        pagination-controls{
+          margin-bottom: 0;
+        }
+
+        ::ng-deep .ngx-pagination {
+          .current {
+            background-color: lightblue;
+            color: black;
+            font-size: 1.2rem;
+            border-radius: 50%;
+          }
+
+          li {
+            a {
+              font-size: 1rem;
+              padding: 5px 10px;
+              border-radius: 5px;
+              margin: 0 5px;
+              cursor: pointer;
+              transition: background-color 0.3s;
+
+              &:hover {
+                background-color: transparent;
+              }
+            }
+
+            &.pagination-next,
+            &.pagination-previous{
+              &:hover {
+                a {
+                  background-color: transparent;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .table-container {
+        max-height: 450px;
+        overflow-y: auto;
+        width: 100%;
+        display: block;
+
+        &::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+
+        table {
+          display: table;
+          width: 100%;
+          border-collapse: collapse;
+          border-spacing: 0;
+          border-radius: 5px;
+
+          thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+
+            tr {
+              background-color: lightblue;
+
+              th {
+                font-size: 1.2rem;
+                font-weight: 500;
+                padding: 10px;
+                text-align: left;
+
+                &:first-child {
+                  border-radius: 16px 0 0 0;
+                }
+
+                &:first-child,
+                &:nth-child(2) {
+                  width: 20%;
+                }
+
+                &:last-child {
+                  text-align: center;
+                  border-radius: 0 16px 0 0;
+                }
+              }
+            }
+          }
+
+          tbody {
+            tr {
+              border-bottom: 1px solid #ccc;
+              transition: background-color 0.3s;
+
+              &:hover {
+                background-color: lightblue;
+              }
+              td {
+                padding: 0 10px;
+                margin: 1rem 0;
+
+                &:nth-child(2) {
+                  text-align: justify;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+
+                img {
+                  width: 50%;
+                  padding: 10px;
+                }
+
+                &.btn-container {
+                  > div {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  }
+
+                  button {
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    border: none;
+                    font-size: 1rem;
+                    cursor: pointer;
+
+                    bi {
+                      font-size: 1.5rem;
+                      width: 20%;
+                    }
+
+                    span {
+                      width: 80%;
+                      display: inline-block;
+                      padding: .5rem;
+                      color: black;
+                      font-size: 1rem;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    article {
+      padding: 1rem;
+
+      label {
+        font-size: 1.2rem;
+        font-weight: 500;
+        display: block;
+      }
+
+      input {
+        width: 100%;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1.2rem;
+      }
+
+      &.filters {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 50%;
+
+        .search-filter {
+          width: 40%;
+        }
+
+        .per-page-filter {
+          width: 20%;
+        }
+
+        ::ng-deep .select2-selection--single {
+          font-size: 1.2rem;
+          width: 100%;
+          border-radius: 5px;
+          padding: 20px;
+          text-align: center;
+          align-items: center;
+        }
+
+        #per-page {
+          --select2-selection-border-color: #ccc;
+        }
+      }
+
+      &.buttons {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 1rem;
+        width: 50%;
+      }
+    }
+  }
+}

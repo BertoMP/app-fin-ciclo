@@ -14,28 +14,31 @@ export class AdminPanelService {
 
   constructor(private http: HttpClient) { }
 
-  getUserList(page:number):Observable<UserListResponseModel>{
-    return this.http.get<UserListResponseModel>(`${this.baseUrl}/usuario/listado?page=${page}`);
-  }
+  getSpecialitiesList(search: string, perPage: number, page: number): Observable<SpecialityDataModel> {
+    let query: string = '';
 
-  getSpecificPage(url:string):Observable<UserListResponseModel>{
-    return this.http.get<UserListResponseModel>(`${this.baseUrl}${url}`);
-  }
+    if (search) {
+      query += `search=${search}&`;
+    }
 
-  
-  getSpecialitiesList(page:number):Observable<ListedSpecialityModel>{
-    return this.http.get<ListedSpecialityModel>(`${this.baseUrl}/especialidad?page=${page}`);
+    if (perPage) {
+      query += `limit=${perPage}&`;
+    }
 
-  }
-  getSpecificPageSpeciality(url:string):Observable<ListedSpecialityModel>{
-    return this.http.get<ListedSpecialityModel>(`${this.baseUrl}${url}`);
+    if (page) {
+      query += `page=${page}&`;
+    }
+
+    query = query.slice(0, -1);
+
+    return this.http.get<SpecialityDataModel>(`${this.baseUrl}/especialidad/?${query}`);
   }
 
   eliminateSpeciality(id:number):Observable<any>{
     return this.http.delete<ListedSpecialityModel>(`${this.baseUrl}/especialidad/${id}`).pipe(catchError(this.handleError));
   }
 
-  getUsersByRoleAndSearch(role:number, search:string):Observable<UserListResponseModel>{
+  getUsersByRoleAndSearch(role: number, search: string, perPage: number, page: number): Observable<UserListResponseModel> {
     let query: string = '';
 
     if (role > 1) {
@@ -44,6 +47,14 @@ export class AdminPanelService {
 
     if (search) {
       query += `search=${search}&`;
+    }
+
+    if (perPage) {
+      query += `limit=${perPage}&`;
+    }
+
+    if (page) {
+      query += `page=${page}&`;
     }
 
     query = query.slice(0, -1);

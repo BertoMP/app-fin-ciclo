@@ -1,6 +1,9 @@
-<button type="button" class="btn btn-primary" routerLink="/crearEditarUsuario">Tomar medición</button>
+<button type="button" class="btn btn-primary" routerLink="/tomarGlucometria" *ngIf="rutaActual.includes('listadoGlucometria'); else listadoTension">Tomar Glucometría</button>
+<ng-template #listadoTension>
+    <button type="button" class="btn btn-primary" routerLink="/tomarTension">Tomar Tensión</button>
+</ng-template>
 <br><br>
-<pagination-controls (pageChange)="actualPage = $event; getMediciones(actualPage)" maxSize="10" directionLinks="true"
+<pagination-controls (pageChange)="actualPage = $event; getMediciones(actualPage)" maxSize="4" directionLinks="true"
     previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
 
 <section class="card-container">
@@ -11,13 +14,12 @@
                 <thead>
                     <tr>
                         <th scope="col">Fecha y hora</th>
-                        <th  scope="col">Medicion</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>{{medicion.hora}} || {{medicion.fecha}} &nbsp;</td>
-                        <td>{{medicion.datos_toma.medicion}}</td>
                     </tr>
                 </tbody>
             </table>
