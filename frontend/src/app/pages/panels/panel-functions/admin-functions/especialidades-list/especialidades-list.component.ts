@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import { NgxPaginationModule } from "ngx-pagination";
 import {LowerCasePipe, NgForOf, NgIf, UpperCasePipe} from '@angular/common';
 import Swal from 'sweetalert2';
-import {debounceTime, Observable, Subject} from 'rxjs';
+import {debounceTime, Observable, Subject, throttleTime} from 'rxjs';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RouterLink, RouterOutlet } from '@angular/router';
 import {Select2Data, Select2Module} from "ng-select2-component";
@@ -73,7 +73,18 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.specialties = [];
     this.actualPage = 1;
-    this.getSpecialtiesSubject.pipe(debounceTime(1000)).subscribe(() => this.getSpecialities());
+    this.getSpecialtiesSubject
+      .pipe(
+        debounceTime(500)
+      )
+      .subscribe({
+        next: () => {
+          this.getSpecialities()
+        },
+        error: (error: string[]) => {
+          this.errores = error;
+        }
+      });
     this.initialLoad = true;
     this.getSpecialtiesSubject.next();
   }
@@ -100,10 +111,11 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
 
   getSpecialities() {
     let request: Observable<SpecialityDataModel>;
-    request = this.adminPanelService.getSpecialitiesList(
-      this.search,
-      parseInt(this.perPage),
-      this.actualPage
+    request = this.adminPanelService
+      .getSpecialitiesList(
+        this.search,
+        parseInt(this.perPage),
+        this.actualPage
     );
 
     request.subscribe({
@@ -137,20 +149,22 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        this.adminPanelService.eliminateSpeciality(id).subscribe({
-          next: (response) => {
-            this.getSpecialities();
-            Swal.fire({
-              title: 'Enhorabuena',
-              text: 'Has conseguido eliminar la especialidad correctamente',
-              icon: 'success',
-              width: '50%'
-            })
-          },
-          error: (error: string[]): void => {
-            this.errores = error;
-          }
-        })
+        this.adminPanelService
+          .eliminateSpeciality(id)
+          .subscribe({
+            next: (response) => {
+              this.getSpecialities();
+              Swal.fire({
+                title: 'Enhorabuena',
+                text: 'Has conseguido eliminar la especialidad correctamente',
+                icon: 'success',
+                width: '50%'
+              })
+            },
+            error: (error: string[]): void => {
+              this.errores = error;
+            }
+          });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         console.log("Usuario canceló la eliminación");
       }
