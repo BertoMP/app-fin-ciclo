@@ -19,6 +19,107 @@
       justify-content: center;
       align-items: center;
       gap: 1rem;
+
+      @media all and (max-width: 1300px) {
+        flex-direction: column;
+      }
+    }
+
+    article {
+      padding: 1rem;
+
+      label {
+        font-size: 1.2rem;
+        font-weight: 500;
+        display: block;
+
+        @media all and (max-width: 1000px) {
+          font-size: 1rem;
+          text-align: center;
+        }
+      }
+
+      input {
+        width: 100%;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1.2rem;
+      }
+
+      &.filters {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 50%;
+
+        @media all and (max-width: 1300px) {
+          width: 100%;
+        }
+
+        @media all and (max-width: 1000px) {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+          grid-template-areas:
+           "search search"
+            "rol items";
+        }
+
+        .role-filter {
+          width: 40%;
+
+          @media all and (max-width: 1000px) {
+            grid-area: rol;
+            width: 100%;
+          }
+        }
+
+        .search-filter {
+          width: 40%;
+
+          @media all and (max-width: 1000px) {
+            grid-area: search;
+            width: 100%;
+          }
+        }
+
+        .per-page-filter {
+          width: 20%;
+
+          @media all and (max-width: 1000px) {
+            grid-area: items;
+            width: 100%;
+          }
+        }
+
+        ::ng-deep .select2-selection--single {
+          font-size: 1.2rem;
+          width: 100%;
+          border-radius: 5px;
+          padding: 20px;
+          text-align: left;
+          align-items: center;
+        }
+
+        #role,
+        #per-page {
+          --select2-selection-border-color: #ccc;
+        }
+      }
+
+      &.buttons {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 1rem;
+        width: 50%;
+
+        @media all and (max-width: 1300px) {
+          width: 100%;
+          justify-content: center;
+        }
+      }
     }
 
     &.user-table {
@@ -28,50 +129,21 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-        pagination-controls{
-          margin-bottom: 0;
-        }
-
-        ::ng-deep .ngx-pagination {
-          .current {
-            background-color: lightblue;
-            color: black;
-            font-size: 1.2rem;
-            border-radius: 50%;
-          }
-
-          li {
-            a {
-              font-size: 1rem;
-              padding: 5px 10px;
-              border-radius: 5px;
-              margin: 0 5px;
-              cursor: pointer;
-              transition: background-color 0.3s;
-
-              &:hover {
-                background-color: transparent;
-              }
-            }
-
-            &.pagination-next,
-            &.pagination-previous{
-              &:hover {
-                a {
-                  background-color: transparent;
-                }
-              }
-            }
-          }
-        }
       }
 
       .table-container {
-        max-height: 450px;
+        max-height: 650px;
         overflow-y: auto;
         width: 100%;
         display: block;
+
+        @media all and (min-width: 1000px) and (max-width: 1300px) {
+          max-height: 550px;
+        }
+
+        @media all and (max-width: 1000px) {
+          max-height: 450px;
+        }
 
         &::-webkit-scrollbar {
           width: 10px;
@@ -130,6 +202,18 @@
                 &:last-child {
                   border-radius: 0 16px 0 0;
                 }
+
+                @media all and (max-width: 700px) {
+                  &:nth-child(2) {
+                    display: none;
+                  }
+                }
+
+                @media all and (max-width: 1000px) {
+                  &:nth-child(3) {
+                    display: none;
+                  }
+                }
               }
             }
           }
@@ -148,6 +232,18 @@
 
                 &:nth-child(3), &:nth-child(4), &:nth-child(5) {
                   text-align: center;
+                }
+
+                @media all and (max-width: 700px) {
+                  &:nth-child(2) {
+                    display: none;
+                  }
+                }
+
+                @media all and (max-width: 950px) {
+                  &:nth-child(3) {
+                    display: none;
+                  }
                 }
 
                 &.btn-container {
@@ -189,11 +285,11 @@
                   border-radius: 1rem;
 
                   &.paciente {
-                    background-color: #3e999f;
+                    background-color: #677dd2;
                   }
 
                   &.especialista {
-                    background-color: #718c00;
+                    background-color: #29bbb2;
                   }
                 }
               }
@@ -201,64 +297,61 @@
           }
         }
       }
-    }
 
-    article {
-      padding: 1rem;
-
-      label {
-        font-size: 1.2rem;
-        font-weight: 500;
-        display: block;
-      }
-
-      input {
-        width: 100%;
-        padding: 5px 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 1.2rem;
-      }
-
-      &.filters {
+      .pagination {
         display: flex;
+        justify-content: center;
         align-items: center;
-        gap: 1rem;
-        width: 50%;
 
-        .role-filter {
-          width: 40%;
+        pagination-controls{
+          margin-top: 1rem;
+          margin-bottom: 0;
         }
 
-        .search-filter {
-          width: 40%;
-        }
+        ::ng-deep .ngx-pagination {
+          .current {
+            background-color: lightblue;
+            color: black;
+            font-size: 1.2rem;
+            border-radius: 50%;
 
-        .per-page-filter {
-          width: 20%;
-        }
+            @media all and (max-width: 1000px) {
+              font-size: 1rem;
+            }
+          }
 
-        ::ng-deep .select2-selection--single {
-          font-size: 1.2rem;
-          width: 100%;
-          border-radius: 5px;
-          padding: 20px;
-          text-align: center;
-          align-items: center;
-        }
+          li {
+            a {
+              font-size: 1rem;
+              padding: 5px 10px;
+              border-radius: 5px;
+              margin: 0 5px;
+              cursor: pointer;
+              transition: background-color 0.3s;
 
-        #role,
-        #per-page {
-          --select2-selection-border-color: #ccc;
-        }
-      }
+              @media all and (max-width: 1000px) {
+                font-size: .7rem;
+              }
 
-      &.buttons {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-        gap: 1rem;
-        width: 50%;
+              &:hover {
+                background-color: transparent;
+              }
+            }
+
+            &.pagination-next,
+            &.pagination-previous {
+              @media all and (max-width: 1000px) {
+                font-size: .7rem;
+              }
+
+              &:hover {
+                a {
+                  background-color: transparent;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

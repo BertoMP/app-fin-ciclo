@@ -19,6 +19,96 @@
       justify-content: center;
       align-items: center;
       gap: 1rem;
+
+      @media all and (max-width: 1300px) {
+        flex-direction: column;
+      }
+    }
+
+    article {
+      padding: 1rem;
+
+      label {
+        font-size: 1.2rem;
+        font-weight: 500;
+        display: block;
+
+        @media all and (max-width: 1000px) {
+          font-size: 1rem;
+          text-align: center;
+        }
+      }
+
+      input {
+        width: 100%;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1.2rem;
+      }
+
+      &.filters {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 50%;
+
+        @media all and (max-width: 1300px) {
+          width: 100%;
+        }
+
+        @media all and (max-width: 1000px) {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+          grid-template-areas:
+           "search items";
+        }
+
+        .search-filter {
+          width: 60%;
+
+          @media all and (max-width: 1000px) {
+            grid-area: search;
+            width: 100%;
+          }
+        }
+
+        .per-page-filter {
+          width: 40%;
+
+          @media all and (max-width: 1000px) {
+            grid-area: items;
+            width: 100%;
+          }
+        }
+
+        ::ng-deep .select2-selection--single {
+          font-size: 1.2rem;
+          width: 100%;
+          border-radius: 5px;
+          padding: 20px;
+          text-align: center;
+          align-items: center;
+        }
+
+        #per-page {
+          --select2-selection-border-color: #ccc;
+        }
+      }
+
+      &.buttons {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 1rem;
+        width: 50%;
+
+        @media all and (max-width: 1300px) {
+          width: 100%;
+          justify-content: center;
+        }
+      }
     }
 
     &.specialties-table {
@@ -28,8 +118,15 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         pagination-controls{
+          margin-top: 1rem;
           margin-bottom: 0;
         }
 
@@ -68,10 +165,14 @@
       }
 
       .table-container {
-        max-height: 450px;
+        max-height: 650px;
         overflow-y: auto;
         width: 100%;
         display: block;
+
+        @media all and (max-width: 1300px) {
+          max-height: 580px;
+        }
 
         &::-webkit-scrollbar {
           width: 10px;
@@ -124,6 +225,22 @@
                   text-align: center;
                   border-radius: 0 16px 0 0;
                 }
+
+                @media all and (max-width: 500px) {
+                  &:first-child {
+                    width: 70%;
+                  }
+
+                  &:nth-child(3) {
+                    display: none;
+                  }
+                }
+
+                @media all and (max-width: 1200px) {
+                  &:nth-child(2) {
+                    display: none;
+                  }
+                }
               }
             }
           }
@@ -141,10 +258,29 @@
                 margin: 1rem 0;
 
                 &:nth-child(2) {
+                  text-align: center;
+                  img {
+                    width: 100px;
+                    padding: 10px;
+                  }
+                }
+
+                &:nth-child(3) {
                   text-align: justify;
-                  white-space: nowrap;
                   overflow: hidden;
                   text-overflow: ellipsis;
+                }
+
+                @media all and (max-width: 500px) {
+                  &:nth-child(3) {
+                    display: none;
+                  }
+                }
+
+                @media all and (max-width: 1200px) {
+                  &:nth-child(2) {
+                    display: none;
+                  }
                 }
 
                 img {
@@ -185,60 +321,6 @@
             }
           }
         }
-      }
-    }
-
-    article {
-      padding: 1rem;
-
-      label {
-        font-size: 1.2rem;
-        font-weight: 500;
-        display: block;
-      }
-
-      input {
-        width: 100%;
-        padding: 5px 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 1.2rem;
-      }
-
-      &.filters {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        width: 50%;
-
-        .search-filter {
-          width: 40%;
-        }
-
-        .per-page-filter {
-          width: 20%;
-        }
-
-        ::ng-deep .select2-selection--single {
-          font-size: 1.2rem;
-          width: 100%;
-          border-radius: 5px;
-          padding: 20px;
-          text-align: center;
-          align-items: center;
-        }
-
-        #per-page {
-          --select2-selection-border-color: #ccc;
-        }
-      }
-
-      &.buttons {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-        gap: 1rem;
-        width: 50%;
       }
     }
   }

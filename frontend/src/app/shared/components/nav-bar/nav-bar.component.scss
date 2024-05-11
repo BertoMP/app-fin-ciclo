@@ -55,6 +55,7 @@ a:hover {
     backdrop-filter: blur(50px);
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
     transition: .3s ease;
+    z-index: 3;
   }
 
   .navbar-mobile.open {

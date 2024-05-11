@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {AuthService} from "../../../core/services/auth.service";
 import {NgForOf} from "@angular/common";
@@ -19,6 +19,7 @@ export class SidebarComponent {
   @Input() mainOptions: PanelOptionModel[];
   @Input() secondaryOptions: PanelOptionModel[];
   @Input() title: string;
+  @Output() closeSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   optionSelected: boolean = false;
 
@@ -41,6 +42,7 @@ export class SidebarComponent {
 
   onOptionSelected(): void {
     this.optionSelected = true;
+    this.closeSidebar.emit();
   }
 
   onLogout() {

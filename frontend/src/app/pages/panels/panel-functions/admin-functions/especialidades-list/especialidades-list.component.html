@@ -26,16 +26,6 @@
   <section class="specialties-table">
     <div class="info">
       <small>Mostrando {{ resultMin }} - {{ resultMax }} de {{ totalItems }} especialidades.</small>
-      @if (previousPageUrl || nextPageUrl) {
-        <pagination-controls
-          (pageChange)="actualPage = $event; changePage(actualPage)"
-          id="specialtyListPagination"
-          maxSize="10"
-          directionLinks="true"
-          previousLabel="Anterior"
-          nextLabel="Siguiente"
-        ></pagination-controls>
-      }
     </div>
     <div class="table-container">
       <table>
@@ -73,5 +63,17 @@
         </tbody>
       </table>
     </div>
+    @if (previousPageUrl || nextPageUrl) {
+    <div class="pagination">
+        <pagination-controls
+          (pageChange)="actualPage = $event; changePage(actualPage)"
+          id="specialtyListPagination"
+          maxSize="10"
+          directionLinks="true"
+          previousLabel="Anterior"
+          nextLabel="Siguiente"
+        ></pagination-controls>
+    </div>
+    }
   </section>
 }

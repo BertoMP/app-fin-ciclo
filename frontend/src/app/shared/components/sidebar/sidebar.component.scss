@@ -11,30 +11,28 @@
   overflow: auto;
   background-color: lightblue;
 
-  button {
-    &.menu-button {
-      display: none;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: transparent;
-      border: none;
-      font-size: 1.5rem;
-      color: #000000;
-    }
-  }
-
   section {
     width: 100%;
 
-    > h2 {
-      font-size: 1.5rem;
-      font-weight: 500;
-      margin-bottom: 1rem;
-    }
-
     &.accordion {
       width: 100%;
+    }
+
+    article.menu-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 10px;
+      border-radius: 1rem;
+      font-weight: 500;
+      transition: .5s all ease;
+
+      > h2 {
+        margin-bottom: 0;
+        font-size: 1.5rem;
+        text-align: center;
+      }
     }
 
     p {
@@ -47,16 +45,30 @@
       align-items: center;
       justify-content: start;
 
+      @media all and (min-width: 1001px) and (max-width: 1200px) {
+        text-align: center;
+      }
+
       i {
-        width: 20%;
+        width: 10%;
         font-size: 1.2rem;
+
+        @media all and (min-width: 1001px) and (max-width: 1200px) {
+          font-size: 3rem;
+          width: 100%;
+        }
       }
 
       span {
-        width: 80%;
+        width: 90%;
         display: block;
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 500;
+        text-align: center;
+
+        @media all and (min-width: 1001px) and (max-width: 1200px) {
+          display: none;
+        }
       }
 
       &.active {
@@ -69,6 +81,10 @@
         color: #ffffff;
         cursor: pointer;
         padding-left: 20px;
+
+        @media all and (min-width: 1001px) and (max-width: 1200px) {
+          padding-left: 10px;
+        }
       }
 
       &:last-child {
