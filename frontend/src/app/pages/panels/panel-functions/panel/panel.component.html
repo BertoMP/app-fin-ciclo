@@ -1,15 +1,12 @@
 @if (isUserLoggedIn) {
 @switch (userRole) {
 @case(UserRole.ADMIN) {
-<h1>Panel de administrador</h1>
 <app-admin-panel></app-admin-panel>
 }
 @case(UserRole.PACIENT) {
-<h1>Panel de paciente</h1>
 <app-pacient-panel></app-pacient-panel>
 }
 @case(UserRole.ESPECIALIST) {
-<h1>Panel de especialista</h1>
 <app-especialist-panel></app-especialist-panel>
 }
 }

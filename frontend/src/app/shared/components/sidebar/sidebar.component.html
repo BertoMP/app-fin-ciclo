@@ -1,0 +1,46 @@
+<section class="accordion"
+         id="sidebar-options">
+  <h2>{{ title }}</h2>
+  <article class="accordion-item"
+       *ngFor="let option of mainOptions"
+  >
+    <h2 class="accordion-header"
+        id="accordion-{{ option.name }}">
+      <button class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#option' + option.name"
+              aria-expanded="false"
+              [attr.aria-controls]="'option' + option.name"
+      >
+        {{ option.name }}
+      </button>
+    </h2>
+    <section id="option{{ option.name }}"
+             class="accordion-collapse collapse"
+             [attr.aria-labelledby]="'accordion-' + option.name"
+             data-bs-parent="#sidebar-options"
+    >
+      <article class="accordion-body">
+        <p *ngFor="let suboption of option.options"
+           [routerLink]="suboption.path"
+           routerLinkActive="active"
+           (click)="executeMethod(suboption.method)"
+        >
+          <i class="{{ suboption.icon }}"></i><span>{{ suboption.name }}</span>
+        </p>
+      </article>
+    </section>
+  </article>
+</section>
+<section>
+    <article>
+      <p *ngFor="let option of secondaryOptions" class="secondary"
+         (click)="executeMethod(option.method)"
+         [routerLink]="(option.path) ? option.path : ''"
+         [routerLinkActive]="(option.path) ? 'active' : ''"
+      >
+        <i class="{{ option.icon }}"></i><span>{{ option.name }}</span>
+      </p>
+    </article>
+</section>

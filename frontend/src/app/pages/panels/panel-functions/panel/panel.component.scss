@@ -1,6 +1,7 @@
 :host {
   display: block;
-  padding: 0 1rem;
+  padding: 0; /* Cambiado a 0 */
+  margin: 0; /* Añadido */
   width: 100%;
   height: 100vh;
 

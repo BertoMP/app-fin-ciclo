@@ -3,34 +3,24 @@ import { LoginComponent } from "./pages/auth/login/login.component";
 import { RegisterComponent } from "./pages/auth/register/register.component";
 import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { ClinicaComponent } from './pages/clinica/clinica.component';
-import {
-  MedicalSpecialtyListComponent
-} from "./pages/medical-specialty-list/medical-specialty-list.component";
-import {
-  ProfessionalsListComponent
-} from "./pages/professionals-list/professionals-list.component";
-import {
-  MedicalServicesComponent
-} from "./pages/medical-services/medical-services.component";
-import {
-  TesteoBackendComponent
-} from "./testComponent/testeo-backend/testeo-backend.component";
+import { MedicalSpecialtyListComponent } from "./pages/medical-specialty-list/medical-specialty-list.component";
+import { ProfessionalsListComponent } from "./pages/professionals-list/professionals-list.component";
+import { MedicalServicesComponent } from "./pages/medical-services/medical-services.component";
 import { ForgottenPasswordComponent } from './pages/auth/forgotten-password/forgotten-password.component';
 import { RefreshPasswordComponent } from './pages/auth/refresh-password/refresh-password.component';
 import { EspecialistDataComponent } from './pages/especialist-data/especialist-data.component';
-import { loginGuard } from './core/guards/login.guard';
-import {
-  PageNotFoundComponent
-} from "./pages/page-not-found/page-not-found.component";
+import { PageNotFoundComponent } from "./pages/page-not-found/page-not-found.component";
 import { PanelComponent } from './pages/panels/panel-functions/panel/panel.component';
 import { UserListComponent } from './pages/panels/panel-functions/admin-functions/user-list/user-list.component';
 import { EspecialidadesListComponent } from './pages/panels/panel-functions/admin-functions/especialidades-list/especialidades-list.component';
 import { SpecialistFormComponent } from './pages/panels/panel-functions/specialist-functions/specialist-form/specialist-form.component';
 import { CrearEditarEspecialidadesComponent } from './pages/panels/panel-functions/admin-functions/crear-editar-especialidades/crear-editar-especialidades.component';
-import { adminGuard } from './core/guards/admin.guard';
 import { ListadoMedicionesComponent } from './pages/panels/panel-functions/patient-functions/listado-mediciones/listado-mediciones.component';
 import { GlucometriaFormComponent } from './pages/panels/panel-functions/patient-functions/glucometria-form/glucometria-form.component';
 import { TensionFormComponent } from './pages/panels/panel-functions/patient-functions/tension-form/tension-form.component';
+
+import { loginGuard } from './core/guards/login.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -86,12 +76,6 @@ export const routes: Routes = [
       }
     ]
   },
-
-  {
-    path: 'testeo-backend',
-    component: TesteoBackendComponent
-  },
-
   {
     path: 'auth/login',
     component: LoginComponent,

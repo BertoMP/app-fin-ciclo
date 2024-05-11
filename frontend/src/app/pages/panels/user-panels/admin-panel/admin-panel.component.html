@@ -1,21 +1,10 @@
 <section>
-  <article class="sidebar">
-    <article>
-      <p routerLink="/mediapp/usuarios" routerLinkActive="active" (click)="onOptionSelected()">
-        <i class="bi bi-people-fill"></i><span>Usuarios</span>
-      </p>
-      <p routerLink="/mediapp/especialidades" routerLinkActive="active" (click)="onOptionSelected()">
-        <i class="bi bi-hospital-fill"></i><span>Especialidades</span>
-      </p>
-      <p routerLink="/mediapp/consultas" routerLinkActive="active" (click)="onOptionSelected()">
-        <i class="bi bi-calendar-check"></i><span>Consultas</span>
-      </p>
-    </article>
-    <article>
-      <p (click)="onLogout()">
-        <i class="bi bi-box-arrow-right"></i><span>Cerrar Sesión</span></p>
-    </article>
-  </article>
+  <aside class="sidebar">
+    <app-sidebar [mainOptions] = "sidebarOptionsTop"
+                 [secondaryOptions] = "sidebarOptionsBottom"
+                 title = "Panel de administración"
+    ></app-sidebar>
+  </aside>
   <article class="main">
     @if (!optionSelected) {
       <section class="welcome">
