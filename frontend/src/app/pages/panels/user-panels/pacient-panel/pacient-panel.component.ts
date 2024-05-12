@@ -61,6 +61,16 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
           method: 'onOptionSelected',
         },
       ],
+    },{
+      name: 'Citas',
+      options: [
+        {
+          name: 'Listado citas',
+          icon: 'bi bi-calendar-event',
+          path: '/mediapp/listado-citas',
+          method: 'onOptionSelected',
+        },
+      ],
     },
   ];
 

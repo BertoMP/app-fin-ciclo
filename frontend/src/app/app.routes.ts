@@ -23,6 +23,7 @@ import { loginGuard } from './core/guards/login.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { ListadoMedicacionComponent } from './pages/panels/panel-functions/patient-functions/listado-medicacion/listado-medicacion.component';
 import { patientGuard } from './core/guards/patient.guard';
+import { ListadoCitasComponent } from './pages/panels/panel-functions/patient-functions/listado-citas/listado-citas.component';
 
 export const routes: Routes = [
   {
@@ -99,6 +100,11 @@ export const routes: Routes = [
       {
         path: 'tomar-tension',
         component: TensionFormComponent,
+        canActivate: [patientGuard]
+      },
+      {
+        path: 'listado-citas',
+        component: ListadoCitasComponent,
         canActivate: [patientGuard]
       },
     ]
