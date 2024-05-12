@@ -5,11 +5,12 @@ import { ProfessionalDataService } from '../../core/services/professional-data.s
 import { EspecialistModel } from '../../core/interfaces/especialist.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-especialist-data',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink,NgIf],
   templateUrl: './especialist-data.component.html',
   styleUrl: './especialist-data.component.scss'
 })

@@ -1,38 +1,37 @@
 @if (isLoading) {
-<section>
-    <p>Registrando toma...</p>
-    <app-loading-spinner></app-loading-spinner>
-</section>
-} @else {
-<form [formGroup]="registerForm" (ngSubmit)="onRegisterGlucometria()">
-    <h2>FORMULARIO INSERCIÓN TOMA GLUCOMETRÍA</h2>
-    <section class="form-first-row">
-        <fieldset class="form-speciality-data">
-            <legend>Toma</legend>
-            <article class="medicion-field">
-                <label for="medicion">Medición</label>
-                <input type="number" id="medicion" formControlName="medicion" [ngClass]="{'invalid':
-                       registerForm.get('medicion').invalid && sendedAttempt }">
-            </article>
-        </fieldset>
+    <section>
+        <p>Registrando toma...</p>
+        <app-loading-spinner></app-loading-spinner>
     </section>
-    @if (registerForm.invalid && sendedAttempt) {
-    <section class="error-message">
-        <h3>Por favor, cumple con los requisitos de los campos</h3>
-        <ul>
-            @if (registerForm.get('medicion').invalid) {
-            <li>
-                <strong>Medición:</strong>El nivel de glucosa en sangre no puede ser negativo y tiene que ser un valor entre 2 a 3 dígitos.
-            </li>
-            }
-        </ul>
-    </section>
-    } @else if (errores.length > 0) {
-    <p class="error-message" *ngFor="let error of errores">{{ error }}</p>
+    } @else {
+    <form [formGroup]="registerForm" (ngSubmit)="onRegisterGlucometria()" class="container form-background bg-light p-4 rounded">
+        <h2 class="mb-4">FORMULARIO TOMA GLUCOMETRÍA</h2>
+        <section class="form-first-row">
+            <fieldset class="form-speciality-data">
+                <article class="medicion-field">
+                    <label for="medicion">Medición</label>
+                    <input type="number" id="medicion" formControlName="medicion" class="form-control" [ngClass]="{'is-invalid':
+                           registerForm.get('medicion').invalid && sendedAttempt }">
+                </article>
+            </fieldset>
+        </section>
+        @if (registerForm.invalid && sendedAttempt) {
+        <section class="error-message mt-4 bg-danger text-white p-3 rounded">
+            <h3>Error: Por favor, cumple con los requisitos de los campos</h3>
+            <ul>
+                @if (registerForm.get('medicion').invalid) {
+                <li>
+                    <strong>Medición:</strong> El nivel de glucosa en sangre no puede ser negativo y tiene que ser un valor entre 2 a 3 dígitos.
+                </li>
+                }
+            </ul>
+        </section>
+        } @else if (errores.length > 0) {
+        <p class="error-message mt-4 bg-danger text-white p-3 rounded" *ngFor="let error of errores">{{ error }}</p>
+        }
+        <section class="btn-section mt-4">
+            <button type="submit" class="btn btn-primary">Subir</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">Cancelar</button>
+        </section>
+    </form>
     }
-    <section class="btn-section">
-        <button type="submit">Subir</button>
-        <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
-    </section>
-</form>
-}

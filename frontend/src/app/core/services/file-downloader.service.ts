@@ -10,13 +10,9 @@ import { saveAs } from 'file-saver';
 export class FileDownloadService {
   constructor(private http: HttpClient) { }
 
-  downloadFile(url: string, fileName: string): Observable<Blob> {
+  downloadFile(url: string): Observable<Blob> {
     return this.http.get(url, { responseType: 'blob' })
       .pipe(
-        map(blob => {
-          saveAs(blob, fileName);
-          return blob;
-        }),
         catchError(error => {
           console.error('Error downloading file:', error);
           return throwError(() => error);

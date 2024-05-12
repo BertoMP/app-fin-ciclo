@@ -1,59 +1,64 @@
 @if (isLoading) {
-<section>
-    <p>Registrando toma...</p>
-    <app-loading-spinner></app-loading-spinner>
-</section>
+    <section class="container">
+        <div class="row">
+            <div class="col">
+                <p>Registrando toma...</p>
+                <app-loading-spinner></app-loading-spinner>
+            </div>
+        </div>
+    </section>
 } @else {
-<form [formGroup]="registerForm" (ngSubmit)="onRegisterTension()">
-    <h2>FORMULARIO INSERCIÓN TOMA TENSIÓN ARTERIAL</h2>
-    <section class="form-first-row">
-        <fieldset class="form-speciality-data">
-            <legend>Toma</legend>
-            <article class="medicion-field">
-                <label for="sistolica">Sistólica</label>
-                <input type="number" id="sistolica" formControlName="sistolica" [ngClass]="{'invalid':
-                           registerForm.get('sistolica').invalid && sendedAttempt }">
-            </article>
-            <article class="medicion-field">
-                <label for="diastolica">Diastólica</label>
-                <input type="number" id="diastolica" formControlName="diastolica" [ngClass]="{'invalid':
-                           registerForm.get('diastolica').invalid && sendedAttempt }">
-            </article>
-            <article class="medicion-field">
-                <label for="pulsaciones">Pulsaciones</label>
-                <input type="number" id="pulsaciones" formControlName="pulsaciones" [ngClass]="{'invalid':
-                           registerForm.get('pulsaciones').invalid && sendedAttempt }">
-            </article>
+<form class="container form-background bg-light p-4 rounded" [formGroup]="registerForm" (ngSubmit)="onRegisterTension()">
+    <h2 class="mb-4">FORMULARIO TOMA TENSIÓN ARTERIAL</h2>
+    <section class="form-row">
+        <fieldset class="form-group">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="sistolica" class="form-label">Sistólica</label>
+                    <input type="number" id="sistolica" formControlName="sistolica" class="form-control" [ngClass]="{'is-invalid':
+                               registerForm.get('sistolica').invalid && sendedAttempt }">
+                </div>
+                <div class="col-md-4">
+                    <label for="diastolica" class="form-label">Diastólica</label>
+                    <input type="number" id="diastolica" formControlName="diastolica" class="form-control" [ngClass]="{'is-invalid':
+                               registerForm.get('diastolica').invalid && sendedAttempt }">
+                </div>
+                <div class="col-md-4">
+                    <label for="pulsaciones" class="form-label">Pulsaciones</label>
+                    <input type="number" id="pulsaciones" formControlName="pulsaciones" class="form-control" [ngClass]="{'is-invalid':
+                               registerForm.get('pulsaciones').invalid && sendedAttempt }">
+                </div>
+            </div>
         </fieldset>
     </section>
     @if (registerForm.invalid && sendedAttempt) {
-    <section class="error-message">
-        <h3>Por favor, cumple con los requisitos de los campos</h3>
+    <section class="error-message mt-4 bg-danger text-white p-3 rounded">
+        <h3>Error: Por favor, cumple con los requisitos de los campos</h3>
         <ul>
             @if (registerForm.get('sistolica').invalid) {
             <li>
-                <strong>Sistolica:</strong>El valor no puede ser negativo y tiene que ser un valor entre 2 a 3 dígitos.
+                <strong>Sistólica:</strong> El valor no puede ser negativo y tiene que ser un valor entre 2 a 3 dígitos.
             </li>
             }
             @if (registerForm.get('diastolica').invalid) {
             <li>
-                <strong>Diastólica:</strong>El valor no puede ser negativo y tiene que ser un valor entre 2 a 3 dígitos.
+                <strong>Diastólica:</strong> El valor no puede ser negativo y tiene que ser un valor entre 2 a 3 dígitos.
             </li>
             }
             @if (registerForm.get('pulsaciones').invalid) {
             <li>
-                <strong>Pulsaciones:</strong>El valor no puede ser negativo y tiene que ser un valor entre 2 a 3
+                <strong>Pulsaciones:</strong> El valor no puede ser negativo y tiene que ser un valor entre 2 a 3
                 dígitos.
             </li>
             }
         </ul>
     </section>
     } @else if (errores.length > 0) {
-    <p class="error-message" *ngFor="let error of errores">{{ error }}</p>
+    <p class="error-message mt-4 bg-danger text-white p-3 rounded" *ngFor="let error of errores">{{ error }}</p>
     }
-    <section class="btn-section">
-        <button type="submit">Subir</button>
-        <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+    <section class="btn-section mt-4">
+        <button type="submit" class="btn btn-primary">Subir</button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">Cancelar</button>
     </section>
 </form>
 }

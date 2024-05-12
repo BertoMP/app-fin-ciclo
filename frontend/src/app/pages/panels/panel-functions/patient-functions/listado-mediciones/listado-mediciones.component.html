@@ -1,29 +1,31 @@
-<button type="button" class="btn btn-primary" routerLink="/tomarGlucometria" *ngIf="rutaActual.includes('listadoGlucometria'); else listadoTension">Tomar Glucometría</button>
+<button type="button" class="btn btn-primary m-3" routerLink="/mediapp/tomarGlucometria" *ngIf="rutaActual.includes('listadoGlucometria'); else listadoTension">Tomar Glucometría</button>
+<h1>Listado de mediciones</h1>
 <ng-template #listadoTension>
-    <button type="button" class="btn btn-primary" routerLink="/tomarTension">Tomar Tensión</button>
+    <button type="button" class="btn btn-primary m-3" routerLink="/mediapp/tomarTension">Tomar Tensión</button>
 </ng-template>
 <br><br>
 <pagination-controls (pageChange)="actualPage = $event; getMediciones(actualPage)" maxSize="4" directionLinks="true"
     previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
 
 <section class="card-container">
-    <div
-        *ngFor="let medicion of mediciones | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
-        <div class="m-3 d-flex justify-content-between align-items-center">
-            <table>
-                <thead>
+    <div class="m-3">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Hora</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col" *ngFor="let campo of campos">{{campo}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let medicion of mediciones | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
                     <tr>
-                        <th scope="col">Fecha y hora</th>
-                        <th scope="col" *ngFor="let campo of campos">{{campo}} &nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{medicion.hora}} || {{medicion.fecha}} &nbsp;</td>
+                        <td>{{medicion.hora}}</td>
+                        <td>{{medicion.fecha}}</td>
                         <td *ngFor="let propiedad of campos">{{ medicion.datos_toma[propiedad]}}</td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
+                </ng-container>
+            </tbody>
+        </table>
     </div>
 </section>

@@ -1,1 +1,47 @@
-<p>listado-medicacion works!</p>
+<section>
+    <div class="container">
+        <p class="text-muted">Número de historia clínica: {{prescripcionUser.datos_paciente.num_historia_clinica}}</p>
+        <h1>Estas son tus medicaciones, {{prescripcionUser.datos_paciente.nombre}}:</h1>
+    </div>
+
+    <div class="container">
+        <button type="button" (click)="downloadPrescripcion()" class="btn  btn-primary m-3">Descargar prescripción</button>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Tomas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let file of prescripcionUser.prescripciones">
+                    <tr>
+                        <td>{{file.medicamento.nombre}}</td>
+                        <td>{{file.medicamento.descripcion}}</td>
+                        <td>
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Hora</th>
+                                        <th scope="col">Dosis</th>
+                                        <th scope="col">Fecha de Inicio</th>
+                                        <th scope="col">Fecha de Fin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let toma of file.medicamento.tomas">
+                                        <td>{{toma.hora}}</td>
+                                        <td>{{toma.dosis}}</td>
+                                        <td>{{toma.fecha_inicio}}</td>
+                                        <td>{{toma.fecha_fin}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -21,6 +21,8 @@ import { TensionFormComponent } from './pages/panels/panel-functions/patient-fun
 
 import { loginGuard } from './core/guards/login.guard';
 import { adminGuard } from './core/guards/admin.guard';
+import { ListadoMedicacionComponent } from './pages/panels/panel-functions/patient-functions/listado-medicacion/listado-medicacion.component';
+import { patientGuard } from './core/guards/patient.guard';
 
 export const routes: Routes = [
   {
@@ -73,9 +75,35 @@ export const routes: Routes = [
         path: 'editar-especialidad/:id',
         component: CrearEditarEspecialidadesComponent,
         canActivate: [adminGuard]
-      }
+      },
+      {
+        path: 'listadoMedicacion',
+        component: ListadoMedicacionComponent,
+        canActivate: [patientGuard]
+      },
+      {
+        path: 'listadoGlucometria',
+        component: ListadoMedicionesComponent,
+        canActivate: [patientGuard]
+      },
+      {
+        path: 'listadoTension',
+        component: ListadoMedicionesComponent,
+        canActivate: [patientGuard]
+      },
+      {
+        path: 'tomarGlucometria',
+        component: GlucometriaFormComponent,
+        canActivate: [patientGuard]
+      },
+      {
+        path: 'tomarTension',
+        component: TensionFormComponent,
+        canActivate: [patientGuard]
+      },
     ]
   },
+  // Rutas comunes a todos los usuarios, tanto logados como no
   {
     path: 'auth/login',
     component: LoginComponent,
@@ -91,47 +119,6 @@ export const routes: Routes = [
   {
     path: 'auth/register',
     component: RegisterComponent
-  },
-  {
-    path: 'crearEditarUsuario',
-    component: RegisterComponent
-  },
-  {
-    path: 'crearEditarUsuario/:id',
-    component: RegisterComponent
-  },
-  {
-    path: 'crearEditarEspecialista',
-    component: SpecialistFormComponent
-  },
-  {
-    path: 'crearEditarEspecialista/:id',
-    component: SpecialistFormComponent
-  },
-  {
-    path: 'crearEditarEspecialidad/:id',
-    component: CrearEditarEspecialidadesComponent,
-  },
-  {
-    path: 'crearEditarEspecialidad',
-    component: CrearEditarEspecialidadesComponent,
-  },{
-    path:'listadoGlucometria',
-    component: ListadoMedicionesComponent,
-
-  },
-  {
-    path:'listadoTension',
-    component: ListadoMedicionesComponent,
-
-  },
-  {
-    path:'tomarGlucometria',
-    component: GlucometriaFormComponent,
-  },
-  {
-    path:'tomarTension',
-    component: TensionFormComponent,
   },
   {
     path: 'auth/forgotten-password',

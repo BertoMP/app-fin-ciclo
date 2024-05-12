@@ -3,7 +3,7 @@ import { Subscription } from "rxjs";
 import { AuthService } from "../services/auth.service";
 import { Router } from "@angular/router";
 
-export const patientGuard = () => {
+export const specialistGuard = () => {
   const router: Router = inject(Router);
     const authService: AuthService = inject(AuthService);
     let loggedInSubscription: Subscription;
