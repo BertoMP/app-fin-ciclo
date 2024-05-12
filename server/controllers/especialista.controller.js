@@ -26,12 +26,6 @@ class EspecialistaController {
 		try {
 			const especialista = await EspecialistaService.readEspecialistaByUserId(id);
 
-			if (!especialista || especialista.turno === 'no-trabajando') {
-				return res.status(404).json({
-					errors: ['Especialista no encontrado.'],
-				});
-			}
-
 			return res.status(200).json(especialista);
 		} catch (err) {
 			if (err.message === 'Especialista no encontrado.') {
