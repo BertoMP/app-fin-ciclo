@@ -145,7 +145,11 @@ export const routes: Routes = [
     component: EspecialistDataComponent
   },
   {
-    path: '**',
+    path: '404',
     component: PageNotFoundComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/404'
   }
 ];

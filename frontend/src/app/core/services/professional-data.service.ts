@@ -15,17 +15,10 @@ export class ProfessionalDataService {
   constructor(private http: HttpClient) { }
 
   recogerInfoEspecialista(usuario_id: number): Observable<EspecialistModel> {
-    return this.http.get<EspecialistModel>(`${this.apiUrl}/especialista/${usuario_id}`)
-      .pipe(catchError(this.handleError));
+    return this.http.get<EspecialistModel>(`${this.apiUrl}/especialista/${usuario_id}`);
   }
 
   specificEspecialista(usuario_id: number): Observable<EspecialistModel> {
-    return this.http.get<EspecialistModel>(`${this.apiUrl}/usuario/${usuario_id}`)
-      .pipe(catchError(this.handleError));
-  }
-
-  private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage: string = errorRes.error.errors??'Ha ocurrido un error durante el proceso';
-    return throwError(() => new Error(errorMessage));
+    return this.http.get<EspecialistModel>(`${this.apiUrl}/usuario/${usuario_id}`);
   }
 }

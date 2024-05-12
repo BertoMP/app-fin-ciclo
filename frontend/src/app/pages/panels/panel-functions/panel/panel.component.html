@@ -1,13 +1,14 @@
 @if (isUserLoggedIn) {
-@switch (userRole) {
-@case(UserRole.ADMIN) {
-<app-admin-panel></app-admin-panel>
-}
-@case(UserRole.PACIENT) {
-<app-pacient-panel></app-pacient-panel>
-}
-@case(UserRole.ESPECIALIST) {
-<app-especialist-panel></app-especialist-panel>
-}}
-<button type="button" class="btn btn-primary m-3" (click)="onLogout()">Cerrar Sesión</button>
+  @switch (userRole) {
+    @case(UserRole.ADMIN) {
+      <app-admin-panel></app-admin-panel>
+    }
+    @case(UserRole.PACIENT) {
+      <app-pacient-panel></app-pacient-panel>
+    }
+    @case(UserRole.ESPECIALIST) {
+      <app-especialist-panel></app-especialist-panel>
+      <button type="button" class="btn btn-primary m-3" (click)="onLogout()">Cerrar Sesión</button>
+    }
+  }
 }

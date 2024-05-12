@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProfessionalDataService } from '../../core/services/professional-data.service';
 import { EspecialistModel } from '../../core/interfaces/especialist.model';
@@ -23,7 +23,8 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
 
   constructor(private professionalDataService: ProfessionalDataService,
               private activatedRoute: ActivatedRoute,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private router: Router) {
 
   }
   ngOnDestroy(): void {
@@ -41,6 +42,12 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
+            console.log(error);
+
+            if (error.status === 404) {
+              this.router.navigate(['/404'])
+                .then(() => console.log('Navegación a 404'));
+            }
           }
         });
       }
