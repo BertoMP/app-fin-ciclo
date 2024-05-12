@@ -12,15 +12,15 @@ class CitaModel {
 	 * @static
 	 * @async
 	 * @memberof CitaModel
+	 * @param {number} userId - El ID del usuario.
 	 * @param {Object} searchValues - Los valores de búsqueda. Contiene el ID del paciente, la fecha de inicio y fin del rango de fechas, y la página de resultados.
 	 * @param {number} limit - El límite de resultados por página.
 	 * @param {Object} dbConn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto que contiene los datos del paciente, un array de citas, el total de citas, la página actual y el total de páginas.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async fetchAll(searchValues, limit, dbConn) {
+	static async fetchAll(userId, searchValues, limit, dbConn) {
 		const page = searchValues.page;
-		const paciente_id = searchValues.paciente_id;
 		const fechaInicio = searchValues.fechaInicio;
 		const fechaFin = searchValues.fechaFin;
 		const offset = (page - 1) * limit;
@@ -67,7 +67,7 @@ class CitaModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [
-				paciente_id,
+				userId,
 				fechaInicio,
 				fechaFin,
 				`${limit}`,
@@ -81,7 +81,7 @@ class CitaModel {
 					'WHERE ' +
 					'   paciente_id = ? AND ' +
 					'   fecha BETWEEN ? AND ?',
-				[paciente_id, fechaInicio, fechaFin],
+				[userId, fechaInicio, fechaFin],
 			);
 			const total = count[0].count;
 			const actualPage = page;
@@ -130,6 +130,7 @@ class CitaModel {
 
 			return { rows: [formattedRows], total, actualPage, totalPages };
 		} catch (err) {
+			console.log(err);
 			throw new Error('No se pudieron obtener las citas.');
 		}
 	}
