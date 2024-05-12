@@ -196,12 +196,7 @@ export class SpecialistFormComponent implements OnInit {
         }
       });
 
-    this.turno = this.turnoService.getTurno().map((turno: string) => {
-      return {
-        value: turno,
-        label: turno
-      }
-    })
+    this.turno = this.turnoService.getTurno();
   }
 
   patchForm(): void {

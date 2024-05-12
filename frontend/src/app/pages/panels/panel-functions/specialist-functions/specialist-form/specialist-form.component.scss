@@ -170,12 +170,12 @@
         &.form-specialist-data {
           grid-area: contact-data;
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
           grid-template-areas:
-            "number         especiality     description"
-            "turn           consultation    description"
-            "image          preview-image   description";
-          gap: 1.5rem;
+            "number         turn             especiality         consultation"
+            "image           image           description         description"
+            "preview-image   preview-image   description         description";
+          gap: 1rem;
         }
 
         #consulta,
