@@ -28,7 +28,7 @@ class CitaController {
 	static async getCitas(req, res) {
 		try {
 			const searchValues = getSearchValues(req, 'date');
-			const citas = await CitaService.readCitas(searchValues);
+			const citas = await CitaService.readCitas(req.user_id, searchValues);
 
 			return res.status(200).json({
 				prev: citas.prev,

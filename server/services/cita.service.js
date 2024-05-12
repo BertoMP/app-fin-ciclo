@@ -22,16 +22,16 @@ class CitaService {
 	 * @static
 	 * @async
 	 * @memberOf CitaService
+	 * @param {number} userId - El ID del usuario.
 	 * @param {Object} searchValues - Los valores de búsqueda.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un array de citas.
 	 */
-	static async readCitas(searchValues, conn = dbConn) {
+	static async readCitas(userId, searchValues, conn = dbConn) {
 		try {
 			const page = searchValues.page;
 			const fechaInicio = searchValues.fechaInicio;
 			const fechaFin = searchValues.fechaFin;
-			const paciente_id = searchValues.paciente_id;
 			const limit = searchValues.limit;
 
 			const {
@@ -39,7 +39,7 @@ class CitaService {
 				actualPage: pagina_actual,
 				total: cantidad_citas,
 				totalPages: paginas_totales,
-			} = await CitaModel.fetchAll(searchValues, limit, conn);
+			} = await CitaModel.fetchAll(userId, searchValues, limit, conn);
 
 			if (page > 1 && page > paginas_totales) {
 				throw new Error('La página de citas solicitada no existe.');
