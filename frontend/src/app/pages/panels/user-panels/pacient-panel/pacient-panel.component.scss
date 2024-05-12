@@ -79,7 +79,6 @@
         width: 20%;
         position: relative;
         transition: transform 0.3s ease-in-out;
-        height: 80vh;
         transform: translateX(-0%);
         z-index: 2;
 
@@ -105,7 +104,7 @@
         padding: 1rem;
         border-radius: 0 16px 16px 0;
         background-color: honeydew;
-        height: auto;
+        height: 100vh;
         flex-grow: 1;
       }
 
