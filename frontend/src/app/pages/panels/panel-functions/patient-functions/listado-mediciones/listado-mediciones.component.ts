@@ -1,27 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { MedicionesService } from '../../../../../core/services/mediciones.service';
-import { Observable, Subscription } from 'rxjs';
+import {debounceTime, Observable, Subject, Subscription} from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
-import { NgFor, NgForOf, NgIf } from '@angular/common';
+import {NgClass, NgFor, NgForOf, NgIf} from '@angular/common';
 import { MedicionListModel } from '../../../../../core/interfaces/medicion-list.model';
+import {MedicionListedModel} from "../../../../../core/interfaces/medicion-listed.model";
+import {LoadingSpinnerComponent} from "../../../../../shared/components/loading-spinner/loading-spinner.component";
+import {Select2Data, Select2Module} from "ng-select2-component";
+import {AuthService} from "../../../../../core/services/auth.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-listado-mediciones',
   standalone: true,
-  imports: [NgxPaginationModule, NgFor,
+  imports: [
+    NgxPaginationModule,
+    NgFor,
     NgForOf,
     NgIf,
-    FormsModule,RouterLink],
+    FormsModule,
+    RouterLink,
+    LoadingSpinnerComponent,
+    Select2Module,
+    NgClass
+  ],
   templateUrl: './listado-mediciones.component.html',
   styleUrl: './listado-mediciones.component.scss'
 })
 export class ListadoMedicionesComponent implements OnInit {
   isUserLoggedIn: boolean = false;
+  isGlucometria: boolean = false;
+
+  fields: string[] = ['SYS', 'DIA', 'Pulso'];
+
   userId: number;
   loggedInSubscription: Subscription;
-  mediciones: MedicionListModel;
+  mediciones: MedicionListedModel[];
 
   rutaActual: string;
   nextPageUrl: string;
@@ -33,28 +49,153 @@ export class ListadoMedicionesComponent implements OnInit {
   errores: string[];
   campos: string[];
   datos: string[];
+  resultMin: number;
+  resultMax: number;
 
-  constructor(private medicionesService: MedicionesService, private router: Router) { }
+  fechaInicio: string;
+  fechaFin: string;
+  perPage: string = "10";
+
+  initialLoad: boolean = false;
+  dataLoaded: boolean = false;
+
+  perPageOptions: Select2Data = [
+    {
+      value: 5,
+      label: '5'
+    },
+    {
+      value: 10,
+      label: '10'
+    },
+    {
+      value: 15,
+      label: '15'
+    },
+    {
+      value: 20,
+      label: '20'
+    }
+  ];
+
+  private getMedicionesSubject: Subject<void> = new Subject<void>();
+
+  constructor(private medicionesService: MedicionesService,
+              private router: Router,
+              private authService: AuthService) { }
 
 
   ngOnInit(): void {
     this.actualPage = 1;
-    this.getMediciones(this.actualPage);
+    this.mediciones = [];
+    this.errores = [];
+    this.rutaActual = this.router.url;
+
+    if (this.rutaActual.includes('listado-glucometria')) {
+      this.isGlucometria = true;
+
+      this.fields = ['Medición'];
+    }
+
+    this.getMedicionesSubject
+      .pipe(
+        debounceTime(500)
+      )
+      .subscribe( {
+        next: () => {
+          this.getMediciones();
+        },
+        error: (error) => {
+          this.errores = error;
+        }
+      });
+
+    this.initialLoad = true;
+    this.getMedicionesSubject.next();
   }
 
-  getMediciones(pageOrUrl: number | string) {
-    this.rutaActual = this.router.url;
+  getDangerClass(value: number, field: string): string {
+    switch (field) {
+      case 'sistolica':
+        if (value > 140) {
+          return 'hypertension';
+        } else if (value < 90) {
+          return 'hypotension';
+        }
+        break;
+      case 'diastolica':
+        if (value > 90) {
+          return 'hypertension';
+        } else if (value < 60) {
+          return 'hypotension';
+        }
+        break;
+      case 'pulsaciones_minuto':
+        if (value > 100) {
+          return 'hyperpulse';
+        } else if (value < 60) {
+          return 'hypopulse';
+        }
+        break;
+      case 'medicion':
+        if (value > 140) {
+          return 'hyperglycemia';
+        } else if (value < 70) {
+          return 'hypoglycemia';
+        }
+        break;
+      default:
+        return '';
+    }
+  }
+
+  getMediciones() {
+    this.mediciones = [];
+    this.errores = [];
+
     let request: Observable<MedicionListModel>;
-    if (this.rutaActual.includes('listadoGlucometria'))
-      request = (typeof pageOrUrl === 'number') ? this.medicionesService.getGlucometria(pageOrUrl) : this.medicionesService.getSpecificPage(pageOrUrl);
-    else
-      request = (typeof pageOrUrl === 'number') ? this.medicionesService.getTensionArterial(pageOrUrl) : this.medicionesService.getSpecificPage(pageOrUrl);
+    const type: string = this.isGlucometria ? 'glucometria' : 'tension';
+
+    request = this.medicionesService.getMedicion(
+      type,
+      this.authService.getUserId(),
+      this.fechaInicio,
+      this.fechaFin,
+      parseInt(this.perPage),
+      this.actualPage
+    );
 
     request.subscribe({
       next: (response) => {
         this.#showResults(response);
+        this.dataLoaded = true;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.dataLoaded = true;
+
+        if (error.error.errors) {
+          this.errores = error.error.errors;
+        } else {
+          this.errores = ['Ha ocurrido un error durante el proceso'];
+        }
       }
     });
+  }
+
+  updateFilters(): void {
+    if (this.initialLoad) {
+      this.dataLoaded = false;
+      this.actualPage = 1;
+      this.getMedicionesSubject.next();
+    }
+  }
+
+  changePage(page: number) {
+    if (this.initialLoad) {
+      this.dataLoaded = false;
+      this.actualPage = page;
+      this.getMedicionesSubject.next();
+    }
   }
 
   #showResults(data) {
@@ -63,11 +204,14 @@ export class ListadoMedicionesComponent implements OnInit {
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;
     this.totalPages = data.paginas_totales;
+    this.resultMin = data.result_min;
+    this.resultMax = data.result_max;
     this.totalItems = data.cantidad_mediciones;
-    this.itemsPerPage =this.totalItems/this.totalPages;
+    this.itemsPerPage = data.items_pagina;
     this.actualPage = data.pagina_actual;
-    if (data.mediciones[0] != null)
+    if (data.mediciones[0] != null) {
       this.campos = Object.keys(data.mediciones[0].datos_toma);
+    }
   }
 
 }

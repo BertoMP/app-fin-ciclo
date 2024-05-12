@@ -1,47 +1,55 @@
-<section>
-    <div class="container">
-        <p class="text-muted">Número de historia clínica: {{prescripcionUser.datos_paciente.num_historia_clinica}}</p>
-        <h1>Estas son tus medicaciones, {{prescripcionUser.datos_paciente.nombre}}:</h1>
-    </div>
-
-    <div class="container">
-        <button type="button" (click)="downloadPrescripcion()" class="btn  btn-primary m-3">Descargar prescripción</button>
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Tomas</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngFor="let file of prescripcionUser.prescripciones">
-                    <tr>
-                        <td>{{file.medicamento.nombre}}</td>
-                        <td>{{file.medicamento.descripcion}}</td>
-                        <td>
-                            <table class="table">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">Hora</th>
-                                        <th scope="col">Dosis</th>
-                                        <th scope="col">Fecha de Inicio</th>
-                                        <th scope="col">Fecha de Fin</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let toma of file.medicamento.tomas">
-                                        <td>{{toma.hora}}</td>
-                                        <td>{{toma.dosis}}</td>
-                                        <td>{{toma.fecha_inicio}}</td>
-                                        <td>{{toma.fecha_fin}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </ng-container>
-            </tbody>
-        </table>
-    </div>
+<section class="header">
+  <h2>Listado medicamentos</h2>
 </section>
+@if (!dataLoaded) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (!meds.length) {
+  <section class="no-results">
+    <p>Actualmente no tienes medicamentos asignados.</p>
+  </section>
+} @else {
+  <section class="name-download">
+    <p>Estas son tus medicaciones, {{ userData.nombre }}</p>
+    <button type="button"
+            (click)="downloadPrescripcion()">
+      <i class="bi bi-file-earmark-pdf-fill"></i><span>Descargar en PDF</span>
+    </button>
+  </section>
+  <section class="medication-table">
+    <div class="table-container">
+      <table class="med-list">
+        <thead>
+        <tr>
+          <th rowspan="2" class="nombre">Nombre</th>
+          <th class="hora">Hora</th>
+          <th class="dosis">Dosis</th>
+          <th class="fecha-inicio">Inicio</th>
+          <th class="fecha-fin">Fin</th>
+          <th class="observaciones">Observaciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let prescripcion of meds">
+          <ng-container *ngFor="let toma of prescripcion.medicamento.tomas; let i = index">
+            <tr [ngClass]="{'odd-row': i % 2 !== 0}">
+              <ng-container *ngIf="i == 0">
+                <td [attr.rowspan]="prescripcion.medicamento.tomas.length"
+                    class="nombre"
+                    title="{{ prescripcion.medicamento.descripcion }}"
+                >
+                  {{ prescripcion.medicamento.nombre }}
+                </td>
+              </ng-container>
+              <td class="hora">{{ toma.hora }}</td>
+              <td class="dosis">{{ toma.dosis }}</td>
+              <td class="fecha-inicio">{{ toma.fecha_inicio }}</td>
+              <td class="fecha-fin">{{ toma.fecha_fin }}</td>
+              <td class="observaciones" title="{{ toma.observaciones }}">{{ toma.observaciones }}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </section>
+}

@@ -8,28 +8,25 @@
         </div>
     </section>
 } @else {
-<form class="container form-background bg-light p-4 rounded" [formGroup]="registerForm" (ngSubmit)="onRegisterTension()">
-    <h2 class="mb-4">FORMULARIO TOMA TENSIÓN ARTERIAL</h2>
+  <h2>FORMULARIO TOMA TENSIÓN ARTERIAL</h2>
+<form [formGroup]="registerForm"
+      (ngSubmit)="onRegisterTension()">
     <section class="form-row">
-        <fieldset class="form-group">
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="sistolica" class="form-label">Sistólica</label>
-                    <input type="number" id="sistolica" formControlName="sistolica" class="form-control" [ngClass]="{'is-invalid':
+      <article>
+        <label for="sistolica" class="form-label">Sistólica</label>
+        <input type="number" id="sistolica" formControlName="sistolica" class="form-control" [ngClass]="{'is-invalid':
                                registerForm.get('sistolica').invalid && sendedAttempt }">
-                </div>
-                <div class="col-md-4">
-                    <label for="diastolica" class="form-label">Diastólica</label>
-                    <input type="number" id="diastolica" formControlName="diastolica" class="form-control" [ngClass]="{'is-invalid':
+      </article>
+      <article>
+        <label for="diastolica" class="form-label">Diastólica</label>
+        <input type="number" id="diastolica" formControlName="diastolica" class="form-control" [ngClass]="{'is-invalid':
                                registerForm.get('diastolica').invalid && sendedAttempt }">
-                </div>
-                <div class="col-md-4">
-                    <label for="pulsaciones" class="form-label">Pulsaciones</label>
-                    <input type="number" id="pulsaciones" formControlName="pulsaciones" class="form-control" [ngClass]="{'is-invalid':
+      </article>
+      <article>
+        <label for="pulsaciones" class="form-label">Pulsaciones</label>
+        <input type="number" id="pulsaciones" formControlName="pulsaciones" class="form-control" [ngClass]="{'is-invalid':
                                registerForm.get('pulsaciones').invalid && sendedAttempt }">
-                </div>
-            </div>
-        </fieldset>
+      </article>
     </section>
     @if (registerForm.invalid && sendedAttempt) {
     <section class="error-message mt-4 bg-danger text-white p-3 rounded">
@@ -56,9 +53,9 @@
     } @else if (errores.length > 0) {
     <p class="error-message mt-4 bg-danger text-white p-3 rounded" *ngFor="let error of errores">{{ error }}</p>
     }
-    <section class="btn-section mt-4">
-        <button type="submit" class="btn btn-primary">Subir</button>
-        <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">Cancelar</button>
-    </section>
+  <section class="btn-container">
+    <button type="submit" class="btn-send">Subir</button>
+    <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+  </section>
 </form>
 }

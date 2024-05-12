@@ -15,17 +15,29 @@ export class MedicionesService {
 
   constructor(private http: HttpClient) { }
 
-  getGlucometria(page:number) {
-    return this.http.get<MedicionListModel>(`${this.apiUrl}/glucometria?page=${page}`);
-  }
-  getTensionArterial(page:number) {
-    return this.http.get<MedicionListModel>(`${this.apiUrl}/tension-arterial?page=${page}`);
+  getMedicion(type: string, userId: number, fechaInicio: string, fechaFin: string, perPage: number, page: number) {
+    let typeUrl: string = type === 'glucometria' ? 'glucometria' : 'tension-arterial';
+    let query: string = `?user_id=${userId}`;
+
+    if (fechaInicio) {
+      query += `&fechaInicio=${fechaInicio}`;
+    }
+
+    if (fechaFin) {
+      query += `&fechaFin=${fechaFin}`;
+    }
+
+    if (page) {
+      query += `&page=${page}`;
+    }
+
+    if (perPage) {
+      query += `&limit=${perPage}`;
+    }
+
+    return this.http.get<MedicionListModel>(`${this.apiUrl}/${typeUrl}${query}`);
   }
 
-  getSpecificPage(page:string) {
-    return this.http.get<MedicionListModel>(`${this.apiUrl}${page}`);
-  }
-  
   uploadGlucometria(user_id:number,tomas:GlucometriaDataModel){
     return this.http.post(`${this.apiUrl}/glucometria`, {user_id,tomas}).pipe(catchError(this.handleError));
   }

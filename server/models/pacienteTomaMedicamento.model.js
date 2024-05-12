@@ -45,7 +45,10 @@ class PacienteTomaMedicamentoModel {
 			'INNER JOIN ' +
 			'   toma on toma.id = paciente_toma_medicamento.toma_id ' +
 			'WHERE ' +
-			'   usuario.id = ?';
+			'   usuario.id = ? ' +
+			'ORDER BY ' +
+			'   medicamento.nombre, ' +
+			'   toma.hora';
 
 		try {
 			const [rows] = await dbConn.execute(query, [pacienteId]);

@@ -77,27 +77,27 @@ export const routes: Routes = [
         canActivate: [adminGuard]
       },
       {
-        path: 'listadoMedicacion',
+        path: 'listado-medicacion',
         component: ListadoMedicacionComponent,
         canActivate: [patientGuard]
       },
       {
-        path: 'listadoGlucometria',
+        path: 'listado-glucometria',
         component: ListadoMedicionesComponent,
         canActivate: [patientGuard]
       },
       {
-        path: 'listadoTension',
+        path: 'listado-tension',
         component: ListadoMedicionesComponent,
         canActivate: [patientGuard]
       },
       {
-        path: 'tomarGlucometria',
+        path: 'tomar-glucometria',
         component: GlucometriaFormComponent,
         canActivate: [patientGuard]
       },
       {
-        path: 'tomarTension',
+        path: 'tomar-tension',
         component: TensionFormComponent,
         canActivate: [patientGuard]
       },

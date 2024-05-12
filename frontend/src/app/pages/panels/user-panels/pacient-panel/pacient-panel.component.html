@@ -1,23 +1,27 @@
-<div class="container-fluid">
-    <div class="row">
-        <nav class="col-md-3 col-lg-2 d-md-block bg-primary sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <button class="btn btn-primary btn-block mb-2" type="button" routerLink="listadoTension">Tensión Arterial</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary btn-block mb-2" type="button" routerLink="listadoGlucometria">Tensión Glucometria</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary btn-block mb-2" type="button" routerLink="listadoMedicacion">Medicaciones</button>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <main  class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <router-outlet></router-outlet>
-        </main>
-    </div>
-</div>
+<button class="menu-button"
+        (click)="toggleSidebar($event)"
+        *ngIf="!sidebarOpen">
+  <i class="bi bi-list"></i>
+</button>
+<section>
+  <aside class="sidebar" [class.open]="sidebarOpen">
+    <app-sidebar [mainOptions] = "sidebarOptionsTop"
+                 [secondaryOptions] = "sidebarOptionsBottom"
+                 title = "Panel de paciente"
+                 (closeSidebar)="sidebarOpen = false"
+    ></app-sidebar>
+  </aside>
+  <article class="main">
+    @if (!optionSelected) {
+      <section class="welcome">
+        <h3>¡Bienvenido/a, {{ userName }}!</h3>
+        <p class="welcome-p">Selecciona una opción del menú lateral para comenzar</p>
+        <figure>
+          <img src="assets/img/admin.png" alt="Bienvenido/a">
+        </figure>
+      </section>
+    } @else {
+      <router-outlet></router-outlet>
+    }
+  </article>
+</section>

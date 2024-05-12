@@ -4,8 +4,9 @@
         <app-loading-spinner></app-loading-spinner>
     </section>
     } @else {
-    <form [formGroup]="registerForm" (ngSubmit)="onRegisterGlucometria()" class="container form-background bg-light p-4 rounded">
-        <h2 class="mb-4">FORMULARIO TOMA GLUCOMETRÍA</h2>
+  <h2>FORMULARIO TOMA GLUCOMETRÍA</h2>
+    <form [formGroup]="registerForm"
+          (ngSubmit)="onRegisterGlucometria()">
         <section class="form-first-row">
             <fieldset class="form-speciality-data">
                 <article class="medicion-field">
@@ -29,9 +30,9 @@
         } @else if (errores.length > 0) {
         <p class="error-message mt-4 bg-danger text-white p-3 rounded" *ngFor="let error of errores">{{ error }}</p>
         }
-        <section class="btn-section mt-4">
-            <button type="submit" class="btn btn-primary">Subir</button>
-            <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">Cancelar</button>
+        <section class="btn-container">
+            <button type="submit" class="btn-send">Subir</button>
+            <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
         </section>
     </form>
     }

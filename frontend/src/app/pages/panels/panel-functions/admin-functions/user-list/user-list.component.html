@@ -25,7 +25,10 @@
   <app-loading-spinner></app-loading-spinner>
 } @else if (!users.length) {
   <section class="no-results">
-    <h3>No se encontraron resultados</h3>
+    <p>No se encontraron resultados con esos criterios de búsqueda.</p>
+    <figure>
+      <img src="assets/img/search-not-found.png" alt="No se encontraron resultados">
+    </figure>
   </section>
 } @else {
   <section class="user-table">
@@ -78,7 +81,7 @@
         <pagination-controls
           (pageChange)="actualPage = $event; changePage(actualPage)"
           id="userListPagination"
-          maxSize="10"
+          maxSize="5"
           directionLinks="true"
           previousLabel="Anterior"
           nextLabel="Siguiente"

@@ -38,12 +38,6 @@ class PacienteTomaMedicamentoController {
 
 			return res.status(200).json(prescripciones);
 		} catch (error) {
-			if (error.message === 'No hay recetas para este paciente.') {
-				return res.status(404).json({
-					errors: [error.message],
-				});
-			}
-
 			return res.status(500).json({
 				errors: [error.message],
 			});

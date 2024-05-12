@@ -80,16 +80,16 @@
         position: relative;
         transition: transform 0.3s ease-in-out;
         height: 80vh;
-        transform: translateX(0%);
+        transform: translateX(-0%);
         z-index: 2;
 
         @media (max-width: 1000px) {
           position: absolute;
-          width: 50%;
-          transform: translateX(-200%);
+          width: 30%;
+          transform: translateX(-1000px);
 
           &.open {
-            transform: translateX(-50%);
+            transform: translateX(-117%);
           }
         }
       }

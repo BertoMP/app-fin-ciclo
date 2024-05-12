@@ -31,7 +31,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   sidebarOptionsTop: PanelOptionModel[] = [
     {
       name: 'Usuarios',
-      icon: 'bi bi-people-fill',
       options: [
         {
           name: 'Listado usuarios',
@@ -55,7 +54,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     },
     {
       name: 'Especialidades',
-      icon: 'bi bi-hospital-fill',
       options: [
         {
           name: 'Listado Especialidades',

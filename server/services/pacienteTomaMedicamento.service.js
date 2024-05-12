@@ -5,7 +5,7 @@ import PacienteTomaMedicamentoModel from '../models/pacienteTomaMedicamento.mode
 import TomaService from './toma.service.js';
 
 // Importación de las utilidades necesarias
-import { dbConn } from '../util/database/database.js';
+import {dbConn} from '../util/database/database.js';
 import ObjectFactory from "../util/classes/objectFactory.js";
 import PdfService from "./pdf.service.js";
 
@@ -147,13 +147,7 @@ class PacienteTomaMedicamentoService {
 	 */
 	static async findPrescripciones(pacienteId, conn = dbConn) {
 		try {
-			const prescripcionesPaciente = await PacienteTomaMedicamentoModel.findPrescripciones(pacienteId, conn);
-
-			if (prescripcionesPaciente.prescripciones.length === 0) {
-				throw new Error('No hay recetas para este paciente.');
-			}
-
-			return prescripcionesPaciente;
+			return await PacienteTomaMedicamentoModel.findPrescripciones(pacienteId, conn);
 		} catch (err) {
 			throw new Error(err);
 		}
