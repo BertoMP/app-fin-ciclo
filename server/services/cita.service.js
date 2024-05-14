@@ -340,6 +340,38 @@ class CitaService {
 	static async updateInformeId(cita_id, informe_id, conn = dbConn) {
 		return await CitaModel.updateInformeId(cita_id, informe_id, conn);
 	}
+
+	/**
+	 * @method printCitaPDF
+	 * @description Método para imprimir una cita en formato PDF.
+	 * @static
+	 * @async
+	 * @memberOf CitaService
+	 * @param {number} userId - El ID del usuario.
+	 * @param {number} citaId - El ID de la cita.
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} Un objeto que representa el PDF de la cita.
+	 * @throws {Error} Si ocurre algún error durante el proceso, lanza un error.
+	 */
+	static async printCitaPDF(userId, citaId, conn = dbConn) {
+		try {
+			const cita = await CitaModel.fetchById(citaId, conn);
+
+			if (!cita) {
+				throw new Error('La cita que intenta imprimir no existe.');
+			}
+
+			if (cita.datos_paciente.paciente_id !== userId) {
+				throw new Error('No tiene permiso para imprimir esta cita.');
+			}
+
+			const qr = await generateQRCode(cita);
+
+			return await PdfService.generateCitaPDF(cita, qr);
+		} catch (err) {
+			throw err;
+		}
+	}
 }
 
 // Exportación del servicio

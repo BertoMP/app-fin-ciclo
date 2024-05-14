@@ -4,6 +4,7 @@ import EspecialistaService from '../services/especialista.service.js';
 
 // Importación de las funciones necesarias
 import {getSearchValues} from "../util/functions/getSearchValues.js";
+import PdfService from "../services/pdf.service.js";
 
 /**
  * @class CitaController
@@ -80,6 +81,52 @@ class CitaController {
 
 			if (err.message === 'La cita que intenta obtener no existe.') {
 				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
+			return res.status(500).json({
+				errors: [err.message],
+			});
+		}
+	}
+
+	/**
+	 * @name getCitaPdf
+	 * @description Método asíncrono que obtiene un archivo PDF de una cita específica de la base de datos utilizando su ID.
+	 * 						Devuelve un archivo PDF con los datos de la cita.
+	 * 						Si la cita no existe o el usuario no tiene permiso para obtenerla, devuelve un error con el mensaje correspondiente.
+	 * @static
+	 * @async
+	 * @function
+	 * @param {Object} req - El objeto de solicitud de Express.
+	 * @param {Object} res - El objeto de respuesta de Express.
+	 * @returns {Object} res - El objeto de respuesta de Express.
+	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+	 * @memberof CitaController
+	 */
+	static async getCitaPdf(req, res) {
+		const citaId = req.params.cita_id;
+		const userId = req.user_id;
+
+		try {
+			const file = await CitaService.printCitaPDF(userId, citaId);
+
+			res.status(200).download(file, async (err) => {
+				await PdfService.destroyPDF(file);
+				if (err) {
+					console.error('Error al descargar el archivo:', err);
+				}
+			});
+		} catch (err) {
+			if (err.message === 'La cita que intenta obtener no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
+			if (err.message === 'No tienes permiso para acceder a esta cita.') {
+				return res.status(403).json({
 					errors: [err.message],
 				});
 			}

@@ -130,7 +130,6 @@ class CitaModel {
 
 			return { rows: [formattedRows], total, actualPage, totalPages };
 		} catch (err) {
-			console.log(err);
 			throw new Error('No se pudieron obtener las citas.');
 		}
 	}

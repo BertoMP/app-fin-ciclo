@@ -68,6 +68,69 @@ router.get(
 
 /**
  * @swagger
+ * /cita/pdf/{cita_id}:
+ *   get:
+ *     summary: Obtiene el PDF de una cita específica
+ *     tags: [Cita]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: cita_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: El ID de la cita
+ *     responses:
+ *       200:
+ *         description: El PDF de la cita
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
+ *       401:
+ *         description: No autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenExpiredError'
+ *       403:
+ *         description: Token inválido o no proporcionado // No tienes permiso para obtener este PDF
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenInvalidError'
+ *       404:
+ *         description: No se encontró la cita
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NotFoundError'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ */
+router.get(
+	'/cita/pdf/:cita_id',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validateCitaIdParam,
+	CitaController.getCitaPdf,
+);
+
+/**
+ * @swagger
  * /cita/{cita_id}:
  *   get:
  *     summary: Obtiene los detalles de una cita específica
