@@ -93,7 +93,7 @@ class CitaModel {
 
 					if (!acumulador.datos_paciente) {
 						acumulador.datos_paciente = {
-							paciente_id: cita.paciente_id,
+							id: cita.paciente_id,
 							nombre: cita.paciente_nombre,
 							primer_apellido: cita.paciente_primer_apellido,
 							segundo_apellido: cita.paciente_segundo_apellido,
