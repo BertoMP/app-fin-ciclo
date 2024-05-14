@@ -46,6 +46,8 @@ class InformeModel {
 			'    especialista.usuario_id AS especialista_id,' +
 			'    especialista.num_colegiado,' +
 			'    especialidad.nombre AS especialidad_nombre,' +
+			'		 consulta.id AS consulta_id,' +
+			'		 consulta.nombre AS consulta_nombre,' +
 			'		 usuario_especialista.email AS especialista_email, ' +
 			'    usuario_especialista.nombre AS especialista_nombre, ' +
 			'    usuario_especialista.primer_apellido AS especialista_primer_apellido, ' +
@@ -71,6 +73,8 @@ class InformeModel {
 			'    especialista ON cita.especialista_id = especialista.usuario_id ' +
 			'INNER JOIN ' +
 			'    usuario AS usuario_especialista ON especialista.usuario_id = usuario_especialista.id ' +
+			'INNER JOIN ' +
+			'    consulta ON especialista.consulta_id = consulta.id ' +
 			'INNER JOIN ' +
 			'    especialidad ON especialista.especialidad_id = especialidad.id ' +
 			'INNER JOIN ' +
@@ -127,6 +131,10 @@ class InformeModel {
 						segundo_apellido: rows[0].especialista_segundo_apellido,
 					},
 					especialidad: rows[0].especialidad_nombre,
+					datos_consulta: {
+						id: row[0].consulta_id,
+						nombre: row[0].consulta_nombre,
+					}
 				},
 				datos_informe: {
 					id: rows[0].informe_id,
