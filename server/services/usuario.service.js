@@ -531,6 +531,10 @@ class UsuarioService {
 					}
 					break;
 			}
+
+			if (!isConnProvided) {
+				await conn.commit();
+			}
 		} catch (err) {
 			if (!isConnProvided) {
 				await conn.rollback();
