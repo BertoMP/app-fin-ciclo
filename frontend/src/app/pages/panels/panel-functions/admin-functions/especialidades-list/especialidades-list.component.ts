@@ -153,6 +153,10 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
           .eliminateSpeciality(id)
           .subscribe({
             next: (response) => {
+              if (this.actualPage > 1 && this.specialties.length === 1) {
+                this.actualPage--;
+              }
+
               this.getSpecialities();
               Swal.fire({
                 title: 'Enhorabuena',

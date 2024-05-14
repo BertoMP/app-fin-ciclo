@@ -229,7 +229,7 @@
                   }
                 }
 
-                @media all and (max-width: 1000px) {
+                @media all and (max-width: 1050px) {
                   &:nth-child(3) {
                     display: none;
                   }
@@ -260,7 +260,7 @@
                   }
                 }
 
-                @media all and (max-width: 1000px) {
+                @media all and (max-width: 1050px) {
                   &:nth-child(3) {
                     display: none;
                   }
@@ -337,10 +337,6 @@
             color: black;
             font-size: 1.2rem;
             border-radius: 50%;
-
-            @media all and (max-width: 1000px) {
-              font-size: 1rem;
-            }
           }
 
           li {
@@ -352,21 +348,13 @@
               cursor: pointer;
               transition: background-color 0.3s;
 
-              @media all and (max-width: 1000px) {
-                font-size: .7rem;
-              }
-
               &:hover {
                 background-color: transparent;
               }
             }
 
             &.pagination-next,
-            &.pagination-previous {
-              @media all and (max-width: 1000px) {
-                font-size: .7rem;
-              }
-
+            &.pagination-previous{
               &:hover {
                 a {
                   background-color: transparent;

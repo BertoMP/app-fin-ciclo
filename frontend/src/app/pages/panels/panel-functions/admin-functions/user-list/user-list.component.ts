@@ -167,6 +167,10 @@ export class UserListComponent implements OnInit {
           .eliminateUser(id)
           .subscribe({
             next: (response) => {
+              if (this.actualPage > 1 && this.users.length === 1) {
+                this.actualPage--;
+              }
+
               this.getUsers();
               Swal.fire({
                 title: 'Enhorabuena',
