@@ -1,3 +1,4 @@
+import { CitasListedModel } from "./citas-listed.model";
 import { MedicionListedModel } from "./medicion-listed.model";
 
 export interface CitasListModel {
@@ -6,5 +7,5 @@ export interface CitasListModel {
   cantidad_citas:number;
   next: string;
   prev: string;
-  citas: MedicionListedModel[];
+  citas: CitasListedModel[];
 }

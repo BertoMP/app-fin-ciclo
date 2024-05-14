@@ -17,7 +17,7 @@
     <section class="description-data">
         <h2>¡Más sobre mí!</h2>
         <p [innerHTML]="safeDescription"></p>
-        <button type="button" [routerLink]="'/listado-de-especialistas'">Volver</button>
+        <button type="button" (click)="volver()">Volver</button>
     </section>
 </div>
 }

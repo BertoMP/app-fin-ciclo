@@ -24,6 +24,7 @@ import { adminGuard } from './core/guards/admin.guard';
 import { ListadoMedicacionComponent } from './pages/panels/panel-functions/patient-functions/listado-medicacion/listado-medicacion.component';
 import { patientGuard } from './core/guards/patient.guard';
 import { ListadoCitasComponent } from './pages/panels/panel-functions/patient-functions/listado-citas/listado-citas.component';
+import { VerInformeComponent } from './pages/panels/panel-functions/patient-functions/ver-informe/ver-informe.component';
 
 export const routes: Routes = [
   {
@@ -107,6 +108,11 @@ export const routes: Routes = [
         component: ListadoCitasComponent,
         canActivate: [patientGuard]
       },
+      {
+        path: 'ver-informe/:id',
+        component: VerInformeComponent,
+        canActivate: [patientGuard]
+      }
     ]
   },
   // Rutas comunes a todos los usuarios, tanto logados como no

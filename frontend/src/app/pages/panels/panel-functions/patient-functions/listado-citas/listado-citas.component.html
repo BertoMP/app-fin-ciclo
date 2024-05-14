@@ -1,1 +1,53 @@
-<p>listado-citas works!</p>
+<section class="header">
+    <h2>Listado de Citas</h2>
+</section>
+
+@if (!dataLoaded) {
+<app-loading-spinner></app-loading-spinner>
+} @else if (!citas) {
+<section class="no-results">
+    <p>Actualmente no has acudido a ninguna cita.</p>
+</section>
+} @else {
+<section class="name-download">
+    <p>Estas son tus citas, {{paciente.nombre}}</p>
+</section>
+<section class="medication-table">
+    <div class="table-responsive"> <!-- Add responsive class for smaller screens -->
+        <table class="table table-striped"> <!-- Add Bootstrap table classes -->
+            <thead class="thead-dark"> <!-- Add dark background to table header -->
+                <tr>
+                    <th scope="col">Hora</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Consulta</th>
+                    <th scope="col">Especialista</th>
+                    <th scope="col">Especialidad</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let cita of citas">
+                    <tr>
+                        <td>{{cita.datos_cita.hora}}</td>
+                        <td>{{cita.datos_cita.fecha}}</td>
+                        <td>{{cita.datos_cita.datos_consulta.consulta_nombre}}</td>
+                        <td>{{cita.datos_cita.datos_especialista.nombre}}
+                            {{cita.datos_cita.datos_especialista.primer_apellido}}
+                            {{cita.datos_cita.datos_especialista.segundo_apellido}}</td>
+                        <td>{{cita.datos_cita.datos_especialista.datos_especialidad.especialidad_nombre}}</td>
+                        <td>
+                            @if(comprobarFecha(cita.datos_cita.hora,cita.datos_cita.fecha)){
+                            <button type="button" class="btn btn-danger" (click)="confirmarCancelar(cita.datos_cita.id)">Cancelar</button>
+                            }@else{
+                                <button type="button" class="btn btn-primary" routerLink="../ver-informe/{{cita.datos_cita.id}}">Ver informe</button>
+                            }
+                        </td>
+
+
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</section>
+}

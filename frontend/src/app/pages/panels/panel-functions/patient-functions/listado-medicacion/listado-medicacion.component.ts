@@ -68,8 +68,6 @@ export class ListadoMedicacionComponent implements OnInit {
         this.userData = response.datos_paciente;
         this.meds = response.prescripciones;
 
-        console.log(this.meds);
-
         this.dataLoaded = true;
       },
       error: (error: string[]) => {

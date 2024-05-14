@@ -137,7 +137,7 @@ class CitaService {
 				throw new Error('La cita que intenta obtener no existe.');
 			}
 
-			if (cita.datos_paciente.paciente_id !== cita.paciente_id) {
+			if (cita.datos_paciente.paciente_id !== userId) {
 				throw new Error('No tiene permiso para obtener esta cita.');
 			}
 

@@ -32,6 +32,7 @@ class InformeService {
 	static async readInforme(id, userId, userRole, conn = dbConn) {
 		try {
 			const paciente = await CitaService.readPacienteIdByInformeId(id, conn);
+			userId=parseInt(userId);
 
 			if (!paciente) {
 				throw new Error('Informe no encontrado.');
@@ -42,6 +43,7 @@ class InformeService {
 			}
 
 			const informe = await InformeModel.fetchById(id, conn);
+			console.log(informe);
 
 			if (!informe) {
 				throw new Error('Informe no encontrado.');

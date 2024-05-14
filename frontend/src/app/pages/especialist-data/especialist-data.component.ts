@@ -1,11 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, } from '@angular/core';
+
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProfessionalDataService } from '../../core/services/professional-data.service';
 import { EspecialistModel } from '../../core/interfaces/especialist.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import { NgIf } from '@angular/common';
+import { NgIf,Location } from '@angular/common';
 
 @Component({
   selector: 'app-especialist-data',
@@ -24,11 +25,16 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
   constructor(private professionalDataService: ProfessionalDataService,
               private activatedRoute: ActivatedRoute,
               private sanitizer: DomSanitizer,
+              private location: Location,
               private router: Router) {
 
   }
   ngOnDestroy(): void {
     this.suscripcionRuta.unsubscribe();
+  }
+
+  volver(){
+    this.location.back();
   }
 
   ngOnInit(): void {
