@@ -342,12 +342,12 @@ class UsuarioController {
 		}
 
 		try {
-			const { newAccessToken, newRefreshToken } = await UsuarioService.updateRefreshToken(refreshToken);
+			const { new_access_token, new_refresh_token } = await UsuarioService.updateRefreshToken(refreshToken);
 
 			return res.status(200).json({
 				message: 'Token de acceso renovado exitosamente.',
-				access_token: newAccessToken,
-				refresh_token: newRefreshToken,
+				access_token: new_access_token,
+				refresh_token: new_refresh_token,
 			});
 		} catch (err) {
 			if (err.message === 'El token no es valido.') {

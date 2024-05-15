@@ -474,8 +474,8 @@ class UsuarioService {
 			await UsuarioModel.updateRefreshToken(decodedToken.user_id, newRefreshToken, conn);
 
 			return {
-				accessToken: newAccessToken,
-				refreshToken: newRefreshToken,
+				new_access_token: newAccessToken,
+				new_refresh_token: newRefreshToken,
 			};
 		} catch (err) {
 			throw err;

@@ -193,19 +193,9 @@ class UsuarioModel {
 	 */
 	static async findByEmail(email, dbConn) {
 		const query =
-			'SELECT ' +
-			'   id, ' +
-			'   email, ' +
-			'	  password, ' +
-			'   nombre, ' +
-			'   primer_apellido, ' +
-			'   segundo_apellido, ' +
-			'   dni, ' +
-			'   rol_id ' +
-			'FROM ' +
-			'   usuario ' +
-			'WHERE ' +
-			'   email = ?';
+			'SELECT id, email, password, nombre, primer_apellido, segundo_apellido, dni, rol_id ' +
+			'FROM usuario ' +
+			'WHERE email = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [email]);

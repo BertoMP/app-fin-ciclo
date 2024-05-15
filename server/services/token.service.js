@@ -11,7 +11,6 @@ import { dbConn } from '../util/database/database.js';
 import pkg from 'jsonwebtoken';
 const { sign, verify } = pkg;
 
-
 /**
  * @class TokenService
  * @description Clase que contiene los métodos para interactuar con el modelo de Token.
@@ -33,7 +32,7 @@ class TokenService {
 		};
 
 		return sign(payload, process.env.JWT_SECRET_KEY, {
-			expiresIn: '1d',
+			expiresIn: '15m',
 		});
 	}
 
@@ -49,10 +48,11 @@ class TokenService {
 		const payload = {
 			user_id: user.usuario_id,
 			user_role: user.datos_rol.rol_id,
+			user_name: user.datos_personales.nombre
 		};
 
 		return sign(payload, process.env.JWT_REFRESH_SECRET_KEY, {
-			expiresIn: '7d',
+			expiresIn: '1d',
 		});
 	}
 
@@ -70,7 +70,7 @@ class TokenService {
 		};
 
 		return sign(payload, process.env.JWT_RESET_SECRET_KEY, {
-			expiresIn: '5h',
+			expiresIn: '1h',
 		});
 	}
 
