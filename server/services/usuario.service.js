@@ -449,6 +449,10 @@ class UsuarioService {
 	 */
 	static async updateRefreshToken(refreshToken, conn = dbConn) {
 		try {
+			if (!refreshToken) {
+				throw new Error('No se ha proporcionado un token de refresco.');
+			}
+
 			const decodedToken = TokenService.verifyRefreshToken(refreshToken);
 
 			if (!decodedToken) {

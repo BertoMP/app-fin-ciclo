@@ -399,7 +399,10 @@ class UsuarioModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async getRefreshTokenById(id, dbConn) {
-		const query = 'SELECT refresh_token FROM usuario WHERE id = ?';
+		const query =
+			'SELECT refresh_token ' +
+			'FROM usuario ' +
+			'WHERE id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);

@@ -273,7 +273,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line218">line 218</a>
+        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line300">line 300</a>
     </li></ul></dd>
     
 
@@ -360,7 +360,7 @@
     
 
     
-    <h4 class="name" id=".fetchAll"><span class="type-signature">(async, static) </span>fetchAll<span class="signature">(searchValues, dbConn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".fetchAll"><span class="type-signature">(async, static) </span>fetchAll<span class="signature">(searchValues, limit, dbConn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -421,6 +421,29 @@
             
 
             <td class="description last">Los valores de búsqueda.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El límite de especialidades a obtener.</td>
         </tr>
 
     
@@ -672,7 +695,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line69">line 69</a>
+        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line113">line 113</a>
     </li></ul></dd>
     
 
@@ -731,6 +754,194 @@
         
 <div class="param-desc">
     Un array de especialidades y sus especialistas.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Array></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".fetchAllListado"><span class="type-signature">(async, static) </span>fetchAllListado<span class="signature">(dbConn)</span><span class="type-signature"> &rarr; {Promise.&lt;Array>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método para obtener todas las especialidades en formato de listado.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dbConn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La conexión a la base de datos.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si ocurre un error durante la operación, se lanzará un error.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Un array de especialidades.
 </div>
 
 
@@ -883,7 +1094,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line131">line 131</a>
+        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line180">line 180</a>
     </li></ul></dd>
     
 
@@ -1094,7 +1305,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line162">line 162</a>
+        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line223">line 223</a>
     </li></ul></dd>
     
 
@@ -1305,7 +1516,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line193">line 193</a>
+        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line266">line 266</a>
     </li></ul></dd>
     
 
@@ -1539,7 +1750,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line239">line 239</a>
+        <a href="models_especialidad.model.js.html">models/especialidad.model.js</a>, <a href="models_especialidad.model.js.html#line326">line 326</a>
     </li></ul></dd>
     
 
@@ -1642,7 +1853,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

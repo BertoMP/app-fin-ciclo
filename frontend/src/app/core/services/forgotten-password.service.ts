@@ -9,8 +9,7 @@ import {ForgottenPassswordModel } from '../interfaces/forgotten-password.model';
 })
 export class ForgottenPasswordService {
 
-
-  private apiUrl = environment.apiUrl;
+  private apiUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -22,4 +21,5 @@ export class ForgottenPasswordService {
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage: string = errorRes.error.errors??'Ha ocurrido un error durante el proceso';
     return throwError(() => new Error(errorMessage));
-  }}
+  }
+}

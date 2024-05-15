@@ -139,7 +139,7 @@ export class AuthService {
   }
 
   refreshToken(): Observable<any> {
-    const refreshToken = this.getRefreshToken();
+    const refreshToken: string = this.getRefreshToken();
 
     if (refreshToken) {
       return this.http.post(
@@ -155,7 +155,8 @@ export class AuthService {
         );
     }
 
-    return throwError(() => new Error('No hay token de refresco almacenado'));
+    return throwError(() =>
+      new Error('No hay token de refresco almacenado'));
   }
 
   private handleError(errorRes: HttpErrorResponse) {

@@ -93,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line8">line 8</a>
+        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
@@ -157,10 +157,7 @@
 
 
 <div class="description">
-    Método asíncrono que crea una nueva cita en la base de datos.
-             Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
-             Si la cita ya existe, el especialista seleccionado no existe, o el especialista no trabaja en el horario seleccionado,
-             devuelve un error con el mensaje correspondiente.
+    Método asíncrono que crea una nueva cita en la base de datos.             Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.             Si la cita ya existe, el especialista seleccionado no existe, o el especialista no trabaja en el horario seleccionado,             devuelve un error con el mensaje correspondiente.
 </div>
 
 
@@ -276,7 +273,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line172">line 172</a>
+        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line173">line 173</a>
     </li></ul></dd>
     
 
@@ -371,9 +368,7 @@
 
 
 <div class="description">
-    Método asíncrono que elimina una cita específica de la base de datos utilizando su ID.
-             Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
-             Si la cita no existe o el usuario no tiene permiso para eliminarla, devuelve un error con el mensaje correspondiente.
+    Método asíncrono que elimina una cita específica de la base de datos utilizando su ID.             Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.             Si la cita no existe o el usuario no tiene permiso para eliminarla, devuelve un error con el mensaje correspondiente.
 </div>
 
 
@@ -489,7 +484,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line244">line 244</a>
+        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line226">line 226</a>
     </li></ul></dd>
     
 
@@ -584,9 +579,7 @@
 
 
 <div class="description">
-    Método asíncrono que obtiene una cita específica de la base de datos utilizando su ID.
-             Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de la cita.
-             Si la cita no existe o el usuario no tiene permiso para obtenerla, devuelve un error con el mensaje correspondiente.
+    Método asíncrono que obtiene una cita específica de la base de datos utilizando su ID.             Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de la cita.             Si la cita no existe o el usuario no tiene permiso para obtenerla, devuelve un error con el mensaje correspondiente.
 </div>
 
 
@@ -702,7 +695,218 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line98">line 98</a>
+        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line53">line 53</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    res - El objeto de respuesta de Express.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".getCitaPdf"><span class="type-signature">(async, static) </span>getCitaPdf<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método asíncrono que obtiene un archivo PDF de una cita específica de la base de datos utilizando su ID.						Devuelve un archivo PDF con los datos de la cita.						Si la cita no existe o el usuario no tiene permiso para obtenerla, devuelve un error con el mensaje correspondiente.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El objeto de solicitud de Express.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El objeto de respuesta de Express.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -797,10 +1001,7 @@
 
 
 <div class="description">
-    Método asíncrono que obtiene citas de la base de datos.
-             Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas anterior y siguiente,
-             la página actual, el total de páginas, el total de citas, el rango de resultados,
-             la fecha de inicio, la fecha de fin, los elementos por página y las citas.
+    Método asíncrono que obtiene citas de la base de datos.             Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas anterior y siguiente,             la página actual, el total de páginas, el total de citas, el rango de resultados,             la fecha de inicio, la fecha de fin, los elementos por página y las citas.
 </div>
 
 
@@ -916,7 +1117,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line13">line 13</a>
+        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -1011,9 +1212,7 @@
 
 
 <div class="description">
-    Método asíncrono que obtiene las citas de la agenda de un especialista específico de la base de datos utilizando su ID.
-             Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de las citas.
-             Si no hay citas disponibles, devuelve un error con el mensaje correspondiente.
+    Método asíncrono que obtiene las citas de la agenda de un especialista específico de la base de datos utilizando su ID.             Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de las citas.             Si no hay citas disponibles, devuelve un error con el mensaje correspondiente.
 </div>
 
 
@@ -1129,7 +1328,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line139">line 139</a>
+        <a href="controllers_cita.controller.js.html">controllers/cita.controller.js</a>, <a href="controllers_cita.controller.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -1232,7 +1431,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

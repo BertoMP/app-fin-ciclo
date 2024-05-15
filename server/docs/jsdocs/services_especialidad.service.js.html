@@ -31,6 +31,7 @@ import EspecialidadModel from '../models/especialidad.model.js';
 
 // Importación de utilidades necesarias
 import { dbConn } from '../util/database/database.js';
+import ObjectFactory from "../util/classes/objectFactory.js";
 
 /**
  * @class EspecialidadService
@@ -48,7 +49,75 @@ class EspecialidadService {
 	 * @returns {Promise&lt;Object>} Un array de especialidades.
 	 */
 	static async readEspecialidades(searchValues, conn = dbConn) {
-		return await EspecialidadModel.fetchAll(searchValues, conn);
+		try {
+			const page = searchValues.page;
+			const limit = searchValues.limit;
+			const search = searchValues.search;
+
+			const {
+				formattedRows: resultados,
+				total: cantidad_especialidades,
+				actualPage: pagina_actual,
+				totalPages: paginas_totales,
+			} = await EspecialidadModel.fetchAll(searchValues, limit, conn);
+
+			if (page > 1 &amp;&amp; page > paginas_totales) {
+				throw new Error('La página solicitada no existe.');
+			}
+
+			let query = '';
+
+			if (search) {
+				query += `&amp;search=${search}`;
+			}
+
+			const prev = page > 1 ? `/especialidad?page=${page - 1}&amp;limit=${limit}${query}` : null;
+			const next = page &lt; paginas_totales ? `/especialidad?page=${page + 1}&amp;limit=${limit}${query}` : null;
+			const result_min = (page - 1) * limit + 1;
+			const result_max =
+				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
+			const items_pagina = parseInt(limit);
+
+			return {
+				prev,
+				next,
+				pagina_actual,
+				paginas_totales,
+				cantidad_especialidades,
+				items_pagina,
+				result_min,
+				result_max,
+				resultados,
+			};
+		} catch (err) {
+			throw err;
+		}
+
+		return await EspecialidadModel.fetchAll(searchValues, limit, conn);
+	}
+
+	/**
+	 * @method readEspecialidadesListado
+	 * @description Método para leer todas las especialidades en formato de listado.
+	 * @static
+	 * @async
+	 * @memberof EspecialidadService
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise&lt;Array>} Un array de especialidades en formato de listado.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async readEspecialidadesListado(conn = dbConn) {
+		try {
+			const resultados = await EspecialidadModel.fetchAllListado(conn);
+
+			if (!resultados) {
+				throw new Error('No se encontraron especialidades.');
+			}
+
+			return resultados;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -62,21 +131,17 @@ class EspecialidadService {
 	 * @returns {Promise&lt;Object>} La especialidad.
 	 */
 	static async readEspecialidadById(id, conn = dbConn) {
-		return await EspecialidadModel.findById(id, conn);
-	}
+		try {
+			const especialidad = await EspecialidadModel.findById(id, conn);
 
-	/**
-	 * @method readEspecialidadByNombre
-	 * @description Método para leer una especialidad por su nombre.
-	 * @static
-	 * @async
-	 * @memberof EspecialidadService
-	 * @param {string} nombre - El nombre de la especialidad.
-	 * @param {Object} conn - La conexión a la base de datos.
-	 * @returns {Promise&lt;Object>} La especialidad.
-	 */
-	static async readEspecialidadByNombre(nombre, conn = dbConn) {
-		return await EspecialidadModel.findByNombre(nombre, conn);
+			if (!especialidad) {
+				throw new Error('Especialidad no encontrada.');
+			}
+
+			return especialidad;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -89,7 +154,17 @@ class EspecialidadService {
 	 * @returns {Promise&lt;Array>} Un array de especialidades y sus especialistas.
 	 */
 	static async readEspecialidesEspecialistas(conn = dbConn) {
-		return await EspecialidadModel.fetchAllEspecialidadesEspecialistas(conn);
+		try {
+			const especialidadesEspecialistas = await EspecialidadModel.fetchAllEspecialidadesEspecialistas(conn);
+
+			if (!especialidadesEspecialistas) {
+				throw new Error('No se encontraron especialidades con especialistas.');
+			}
+
+			return especialidadesEspecialistas;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -98,12 +173,24 @@ class EspecialidadService {
 	 * @static
 	 * @async
 	 * @memberof EspecialidadService
-	 * @param {Object} especialidad - El objeto de la nueva especialidad.
+	 * @param {Object} data - Los datos de la especialidad.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise&lt;Object>} La nueva especialidad creada.
 	 */
-	static async createEspecialidad(especialidad, conn = dbConn) {
-		return await EspecialidadModel.save(especialidad, conn);
+	static async createEspecialidad(data, conn = dbConn) {
+		const especialidad = ObjectFactory.createEspecialidadObject(data);
+
+		try {
+			const especialidadExists = await EspecialidadModel.findByNombre(especialidad.nombre, conn);
+
+			if (especialidadExists) {
+				throw new Error('Ya existe una especialidad con ese nombre.');
+			}
+
+			return await EspecialidadModel.save(especialidad, conn);
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -117,7 +204,17 @@ class EspecialidadService {
 	 * @returns {Promise&lt;Object>} El resultado de la operación de eliminación.
 	 */
 	static async deleteEspecialidad(id, conn = dbConn) {
-		return await EspecialidadModel.deleteById(id, conn);
+		try {
+			const idExistente = await EspecialidadModel.findById(id, conn);
+
+			if (!idExistente) {
+				throw new Error('Especialidad no encontrada.');
+			}
+
+			return await EspecialidadModel.deleteById(id, conn);
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	/**
@@ -127,12 +224,30 @@ class EspecialidadService {
 	 * @async
 	 * @memberof EspecialidadService
 	 * @param {number} id - El ID de la especialidad.
-	 * @param {Object} especialidad - El objeto de la especialidad con los datos actualizados.
+	 * @param {Object} data - Los datos de la especialidad.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise&lt;Object>} La especialidad actualizada.
 	 */
-	static async updateEspecialidad(id, especialidad, conn = dbConn) {
-		return await EspecialidadModel.updateById(id, especialidad, conn);
+	static async updateEspecialidad(id, data, conn = dbConn) {
+		const especialidad = ObjectFactory.createEspecialidadObject(data);
+
+		try {
+			const idExistente = await EspecialidadModel.findById(id, conn);
+
+			if (!idExistente) {
+				throw new Error('Especialidad no encontrada.');
+			}
+
+			const nombreExistente = await EspecialidadModel.findByNombre(especialidad.nombre, conn);
+
+			if (nombreExistente &amp;&amp; nombreExistente.id !== id) {
+				throw new Error('Ya existe una especialidad con ese nombre.');
+			}
+
+			return await EspecialidadModel.updateById(id, especialidad, conn);
+		} catch (err) {
+			throw err;
+		}
 	}
 }
 
@@ -154,7 +269,7 @@ export default EspecialidadService;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

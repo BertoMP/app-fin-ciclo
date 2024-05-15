@@ -10,7 +10,7 @@ import { RefreshPasswordModel } from '../interfaces/refresh-password.model';
 })
 export class RefreshPasswordService {
 
-  private apiUrl = environment.apiUrl;
+  private apiUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

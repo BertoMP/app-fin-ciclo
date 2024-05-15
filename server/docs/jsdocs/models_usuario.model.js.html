@@ -138,6 +138,77 @@ class UsuarioModel {
 	}
 
 	/**
+	 * @method getPasswordById
+	 * @description Método para obtener la contraseña de un usuario por su ID.
+	 * @static
+	 * @async
+	 * @memberof UsuarioModel
+	 * @param {number} id - El ID del usuario.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise&lt;Object>} La contraseña del usuario.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async getPasswordById(id, dbConn) {
+		const query =
+			'SELECT ' +
+			'		password ' +
+			'FROM ' +
+			'		usuario ' +
+			'WHERE ' +
+			'		id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				password: rows[0].password
+			}
+		} catch (err) {
+			throw new Error('Error al obtener la contraseña.');
+		}
+	}
+
+	/**
+	 * @method getRoleByUserId
+	 * @description Método para obtener el rol de un usuario por su ID.
+	 * @static
+	 * @async
+	 * @memberof UsuarioModel
+	 * @param {number} id - El ID del usuario.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise&lt;Object>} El rol del usuario.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async getRoleByUserId(id, dbConn) {
+		const query =
+			'SELECT ' +
+			'   rol_id ' +
+			'FROM ' +
+			'   usuario ' +
+			'WHERE ' +
+			'   id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				rol_id: rows[0].rol_id
+			}
+
+		} catch (err) {
+			throw new Error('Error al obtener el rol del usuario.');
+		}
+	}
+
+	/**
 	 * @method findByEmail
 	 * @description Método para obtener un usuario por su email.
 	 * @static
@@ -150,23 +221,31 @@ class UsuarioModel {
 	 */
 	static async findByEmail(email, dbConn) {
 		const query =
-			'SELECT ' +
-			'   id, ' +
-			'   email, ' +
-			'   password,' +
-			'   nombre, ' +
-			'   primer_apellido, ' +
-			'   segundo_apellido, ' +
-			'   dni, ' +
-			'   rol_id ' +
-			'FROM ' +
-			'   usuario ' +
-			'WHERE ' +
-			'   email = ?';
+			'SELECT id, email, password, nombre, primer_apellido, segundo_apellido, dni, rol_id ' +
+			'FROM usuario ' +
+			'WHERE email = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [email]);
-			return rows[0];
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				usuario_id: rows[0].id,
+				datos_personales: {
+					email: rows[0].email,
+					password: rows[0].password,
+					nombre: rows[0].nombre,
+					primer_apellido: rows[0].primer_apellido,
+					segundo_apellido: rows[0].segundo_apellido,
+					dni: rows[0].dni,
+				},
+				datos_rol: {
+					rol_id: rows[0].rol_id
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al obtener el usuario.');
 		}
@@ -200,7 +279,24 @@ class UsuarioModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [dni]);
-			return rows[0];
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				usuario_id: rows[0].id,
+				datos_personales: {
+					email: rows[0].email,
+					nombre: rows[0].nombre,
+					primer_apellido: rows[0].primer_apellido,
+					segundo_apellido: rows[0].segundo_apellido,
+					dni: rows[0].dni,
+				},
+				datos_rol: {
+					rol_id: rows[0].rol_id
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al obtener el usuario.');
 		}
@@ -243,7 +339,19 @@ class UsuarioModel {
 				rol_id,
 			]);
 
-			return user[0];
+			return {
+				usuario_id: user[0].insertId,
+				datos_personales: {
+					email: email,
+					nombre: nombre,
+					primer_apellido: primer_apellido,
+					segundo_apellido: segundo_apellido,
+					dni: dni,
+				},
+				datos_rol: {
+					rol_id: rol_id,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al crear el usuario.');
 		}
@@ -279,17 +387,63 @@ class UsuarioModel {
 	 * @memberof UsuarioModel
 	 * @param {number} id - El ID del usuario.
 	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise&lt;string>} El email del usuario.
+	 * @returns {Promise&lt;{email}>} El email del usuario.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async getEmailById(id, dbConn) {
-		const query = 'SELECT email FROM usuario WHERE id = ?';
+		const query = '' +
+			'SELECT ' +
+			'		email ' +
+			'FROM ' +
+			'   usuario ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
-			return rows[0].email;
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				email: rows[0].email
+			};
+
 		} catch (err) {
 			throw new Error('Error al obtener el email.');
+		}
+	}
+
+	/**
+	 * @method updateRefreshToken
+	 * @description Método para conseguir el token de refresco de un usuario.
+	 * @static
+	 * @async
+	 * @memberof UsuarioModel
+	 * @param {number} id - El ID del usuario.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise&lt;{refresh_token}>} El token de refresco.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async getRefreshTokenById(id, dbConn) {
+		const query =
+			'SELECT refresh_token ' +
+			'FROM usuario ' +
+			'WHERE id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				refresh_token: rows[0].refresh_token
+			};
+		} catch (err) {
+			throw new Error('Error al obtener el token de refresco.');
 		}
 	}
 
@@ -305,7 +459,12 @@ class UsuarioModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteUsuario(id, dbConn) {
-		const query = 'DELETE FROM usuario WHERE id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		usuario ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);
@@ -327,12 +486,38 @@ class UsuarioModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async updateRefreshToken(userId, refreshToken, dbConn) {
-		const query = 'UPDATE usuario SET refresh_token = ? WHERE id = ?';
+		const query =
+			'UPDATE ' +
+			'		usuario ' +
+			'SET ' +
+			'		refresh_token = ? ' +
+			'WHERE id = ?';
 
 		try {
 			return await dbConn.execute(query, [refreshToken, userId]);
 		} catch (err) {
 			throw new Error('Error al actualizar el token de refresco.');
+		}
+	}
+
+	/**
+	 * @method deleteRefreshToken
+	 * @description Método para eliminar el token de refresco de un usuario.
+	 * @static
+	 * @async
+	 * @memberof UsuarioModel
+	 * @param {number} userId - El ID del usuario.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise&lt;Object>} El resultado de la operación de eliminación.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async deleteRefreshToken(userId, dbConn) {
+		const query = 'UPDATE usuario SET refresh_token = NULL WHERE id = ?';
+
+		try {
+			return await dbConn.execute(query, [userId]);
+		} catch (err) {
+			throw new Error('Error al eliminar el token de refresco.');
 		}
 	}
 
@@ -387,7 +572,6 @@ class UsuarioModel {
 				}
 			};
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al obtener el usuario.');
 		}
 	}
@@ -409,7 +593,7 @@ class UsuarioModel {
 		const primer_apellido = usuario.primer_apellido;
 		const segundo_apellido = usuario.segundo_apellido;
 		const dni = usuario.dni;
-		const id = usuario.usuario_id;
+		const id = usuario.id;
 
 		const query =
 			'UPDATE ' +
@@ -424,43 +608,10 @@ class UsuarioModel {
 			'   id = ?';
 
 		try {
-			return await dbConn.execute(query, [email, nombre, primer_apellido, segundo_apellido, dni, id]);
+			return await dbConn.execute(query,
+				[email, nombre, primer_apellido, segundo_apellido, dni, id]);
 		} catch (err) {
 			throw new Error('Error al actualizar el usuario.');
-		}
-	}
-
-	static async countAll(searchValues, conn) {
-		const role_id = searchValues.role;
-
-		let query =
-			'SELECT ' +
-			'   COUNT(*) AS count ' +
-			'FROM ' +
-			'   usuario ' +
-			'INNER JOIN ' +
-			'   rol ON usuario.rol_id = rol.id ' +
-			'LEFT JOIN ' +
-			'   paciente ON usuario.id = paciente.usuario_id ' +
-			'LEFT JOIN ' +
-			'	 especialista ON usuario.id = especialista.usuario_id ' +
-			'WHERE ' +
-			'   rol_id &lt;> 1 AND ' +
-			'   (turno IS NULL OR turno &lt;> "no-trabajando")';
-
-		let countParams = [];
-
-		if (role_id) {
-			query += 'AND rol_id = ? ';
-			countParams.push(`${role_id}`);
-		}
-
-		try {
-			const [count] = await conn.execute(query, countParams);
-			return count[0].count;
-		} catch (err) {
-			console.log(err);
-			throw new Error('Error al obtener el conteo de usuarios.');
 		}
 	}
 }
@@ -483,7 +634,7 @@ export default UsuarioModel;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

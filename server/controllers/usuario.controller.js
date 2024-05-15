@@ -335,14 +335,9 @@ class UsuarioController {
 	static async postRefreshToken(req, res) {
 		const refreshToken = req.body.refresh_token;
 
-		if (!refreshToken) {
-			return res.status(403).json({
-				errors: ['No se proporcionó el token de actualización.'],
-			});
-		}
-
 		try {
-			const { new_access_token, new_refresh_token } = await UsuarioService.updateRefreshToken(refreshToken);
+			const { new_access_token, new_refresh_token }
+				= await UsuarioService.updateRefreshToken(refreshToken);
 
 			return res.status(200).json({
 				message: 'Token de acceso renovado exitosamente.',
@@ -353,6 +348,12 @@ class UsuarioController {
 			if (err.message === 'El token no es valido.') {
 				return res.status(403).json({
 					errors: ['Token de actualización inválido.'],
+				});
+			}
+
+			if (err.message === 'No se ha proporcionado un token de actualización.') {
+				return res.status(403).json({
+					errors: ['Token de actualización no proporcionado.'],
 				});
 			}
 
