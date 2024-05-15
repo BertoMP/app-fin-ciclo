@@ -80,13 +80,16 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(email, pass)
       .subscribe({
-        next: (response) => {
+        next: (response): void => {
           this.isLoading = false;
           this.loginForm.reset();
-          this.router.navigate(['/mediapp']).then(r => {});
+          this.router.navigate(['/mediapp'])
+            .then((r: boolean): void => {});
         },
         error: (error: HttpErrorResponse): void => {
-          this.error = error.error.errors[0].toString().replace(/Error: /g, '');
+          this.error = error.error.errors[0]
+            .toString()
+            .replace(/Error: /g, '');
           this.isLoading = false;
         }
       });

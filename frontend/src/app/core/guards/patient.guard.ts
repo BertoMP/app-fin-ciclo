@@ -8,14 +8,14 @@ export const patientGuard = () => {
     const authService: AuthService = inject(AuthService);
     let loggedInSubscription: Subscription;
     let isUserLoggedIn: boolean = false;
-    let comprobarAdmin=false;
-  
+    let comprobarPatient: boolean = false;
+
     loggedInSubscription = authService.isLoggedInUser.subscribe(
-        loggedIn => {
+        (loggedIn: boolean): void => {
           isUserLoggedIn = loggedIn;
           if (isUserLoggedIn) {
-           if (authService.getUserRole()==2){
-            comprobarAdmin=true;
+           if (authService.getUserRole() === 2){
+             comprobarPatient = true;
            }else{
             router.navigate(['/auth/login']).then(r => { });
            }
@@ -23,5 +23,5 @@ export const patientGuard = () => {
         }
     )
 
-    return comprobarAdmin;
+    return comprobarPatient;
 }

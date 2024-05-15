@@ -8,14 +8,14 @@ export const specialistGuard = () => {
     const authService: AuthService = inject(AuthService);
     let loggedInSubscription: Subscription;
     let isUserLoggedIn: boolean = false;
-    let comprobarAdmin=false;
-  
+    let comprobarSpecialist: boolean = false;
+
     loggedInSubscription = authService.isLoggedInUser.subscribe(
-        loggedIn => {
+      (loggedIn: boolean): void => {
           isUserLoggedIn = loggedIn;
           if (isUserLoggedIn) {
-           if (authService.getUserRole()==3){
-            comprobarAdmin=true;
+           if (authService.getUserRole() === 3){
+             comprobarSpecialist = true;
            }else{
             router.navigate(['/auth/login']).then(r => { });
            }
@@ -23,5 +23,5 @@ export const specialistGuard = () => {
         }
     )
 
-    return comprobarAdmin;
+    return comprobarSpecialist;
 }

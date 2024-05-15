@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {AuthService} from "../../../core/services/auth.service";
 import {NgForOf} from "@angular/common";
-import {PanelOptionModel} from "../../../core/interfaces/panel-option.model.js";
+import {PanelOptionModel} from "../../../core/interfaces/panel-option.model";
 
 @Component({
   selector: 'app-sidebar',

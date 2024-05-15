@@ -5,7 +5,7 @@ import {NgIf} from "@angular/common";
 import {Subscription} from "rxjs";
 import {filter} from "rxjs/operators";
 import {SidebarComponent} from "../../../../shared/components/sidebar/sidebar.component";
-import {PanelOptionModel} from "../../../../core/interfaces/panel-option.model.js";
+import {PanelOptionModel} from "../../../../core/interfaces/panel-option.model";
 
 @Component({
   selector: 'app-admin-panel',

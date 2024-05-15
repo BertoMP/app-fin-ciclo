@@ -3,7 +3,7 @@ import {NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {NgIf} from "@angular/common";
 import {SidebarComponent} from "../../../../shared/components/sidebar/sidebar.component";
 import {Subscription} from "rxjs";
-import {PanelOptionModel} from "../../../../core/interfaces/panel-option.model.js";
+import {PanelOptionModel} from "../../../../core/interfaces/panel-option.model";
 import {AuthService} from "../../../../core/services/auth.service";
 import {filter} from "rxjs/operators";
 

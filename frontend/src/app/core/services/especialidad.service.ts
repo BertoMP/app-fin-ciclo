@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EspecialidadModel } from '../interfaces/especialidad-Model';
+import { EspecialidadModel } from '../interfaces/especialidad.model';
 import { Observable, catchError, throwError } from 'rxjs';
 import { SpecialityListedModel } from '../interfaces/speciality-listed.model';
 import { environment } from '../../environments/environment';

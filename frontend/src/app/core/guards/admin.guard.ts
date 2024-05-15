@@ -8,14 +8,14 @@ export const adminGuard = () => {
     const authService: AuthService = inject(AuthService);
     let loggedInSubscription: Subscription;
     let isUserLoggedIn: boolean = false;
-    let comprobarAdmin=false;
-  
+    let comprobarAdmin: boolean = false;
+
     loggedInSubscription = authService.isLoggedInUser.subscribe(
-        loggedIn => {
+      (loggedIn: boolean): void => {
           isUserLoggedIn = loggedIn;
           if (isUserLoggedIn) {
-           if (authService.getUserRole()==1){
-            comprobarAdmin=true;
+           if (authService.getUserRole() === 1){
+            comprobarAdmin = true;
            }else{
             router.navigate(['/auth/login']).then(r => { });
            }

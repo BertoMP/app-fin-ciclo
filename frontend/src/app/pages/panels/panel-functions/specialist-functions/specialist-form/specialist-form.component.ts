@@ -22,7 +22,7 @@ import { FileUploadService } from '../../../../../core/services/file-uploader.se
 import { ProfessionalDataService } from '../../../../../core/services/professional-data.service';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { CustomValidators } from '../../../../../core/classes/CustomValidators';
-import { EspecialidadModel } from '../../../../../core/interfaces/especialidad-Model';
+import { EspecialidadModel } from '../../../../../core/interfaces/especialidad.model';
 
 
 @Component({
