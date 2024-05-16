@@ -68,6 +68,98 @@ router.get(
 
 /**
  * @swagger
+ * /cita/citas-disponibles:
+ *   get:
+ *     summary: Obtiene las citas disponibles
+ *     tags: [Cita]
+ *     security:
+ *       - bearerAuth: []
+ *     description: Método asíncrono que obtiene citas disponibles de la base de datos.
+ *     parameters:
+ *       - in: query
+ *         name: fechaCita
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: La fecha de la cita
+ *       - in: query
+ *         name: especialistaId
+ *         schema:
+ *           type: integer
+ *         description: El ID del especialista
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: La página de resultados
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: El límite de resultados
+ *     responses:
+ *       '200':
+ *         description: Operación exitosa
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 prev:
+ *                   type: string
+ *                   description: URL de la página anterior
+ *                 next:
+ *                   type: string
+ *                   description: URL de la próxima página
+ *                 pagina_actual:
+ *                   type: integer
+ *                   description: La página actual
+ *                 paginas_totales:
+ *                   type: integer
+ *                   description: El total de páginas
+ *                 cantidad_citas:
+ *                   type: integer
+ *                   description: El total de citas
+ *                 result_min:
+ *                   type: integer
+ *                   description: El resultado mínimo
+ *                 result_max:
+ *                   type: integer
+ *                   description: El resultado máximo
+ *                 items_pagina:
+ *                   type: integer
+ *                   description: Los elementos por página
+ *                 datos_agenda:
+ *                   type: object
+ *                   properties:
+ *                     fecha_cita:
+ *                       type: string
+ *                       format: string
+ *                       description: La fecha de la cita
+ *                     especialista_id:
+ *                       type: integer
+ *                       description: El ID del especialista
+ *                     citas_disponibles:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Las citas disponibles
+ *       '404':
+ *         description: El especialista seleccionado no existe
+ *       '500':
+ *         description: Error interno del servidor
+ */
+router.get(
+	'/cita/citas-disponibles',
+	verifyAccessToken,
+	verifyUserRole([2]),
+	verifyUserId,
+	validateQueryParams,
+	CitaController.getCitasDisponibles,
+);
+
+/**
+ * @swagger
  * /cita/pdf/{cita_id}:
  *   get:
  *     summary: Obtiene el PDF de una cita específica

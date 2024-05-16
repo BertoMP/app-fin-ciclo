@@ -52,6 +52,10 @@ class UsuarioController {
 				return res.status(404).json({ errors: [err.message] });
 			}
 
+			if (err.message === 'Especialista no encontrado.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
 			if (err.message === 'El usuario es un admin.') {
 				return res.status(409).json({ errors: [err.message] });
 			}

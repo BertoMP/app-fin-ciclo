@@ -41,8 +41,7 @@ class UsuarioModel {
 			'LEFT JOIN ' +
 			'	 especialista ON usuario.id = especialista.usuario_id ' +
 			'WHERE ' +
-			'   rol_id <> 1 AND ' +
-			'   (turno IS NULL OR turno <> "no-trabajando")';
+			'   rol_id <> 1 ';
 
 		let countQuery =
 			'SELECT ' +
@@ -56,8 +55,7 @@ class UsuarioModel {
 			'LEFT JOIN ' +
 			'		especialista ON usuario.id = especialista.usuario_id ' +
 			'WHERE ' +
-			'		rol_id <> 1 AND ' +
-			'		(turno IS NULL OR turno <> "no-trabajando")';
+			'		rol_id <> 1 ';
 
 		let queryParams = [];
 		let countParams = [];

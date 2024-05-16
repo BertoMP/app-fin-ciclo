@@ -45,5 +45,14 @@ export const getSearchValues = (req, type) => {
 				role: role_id,
 				search: search,
 			};
+		case 'medicalDate':
+			const fecha = req.query.fechaCita;
+			const especialistaId = req.query.especialistaId
+			return {
+				page: page,
+				limit: limit,
+				fechaCita: fecha,
+				especialistaId: especialistaId
+			}
 	}
 }

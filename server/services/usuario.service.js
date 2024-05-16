@@ -113,7 +113,7 @@ class UsuarioService {
 				case 2:
 					return await PacienteService.readPacienteByUserId(id, conn);
 				case 3:
-					return await EspecialistaService.readEspecialistaByUserId(id, conn);
+					return await EspecialistaService.readEspecialistaByUserId(id, true, conn);
 			}
 		} catch (err) {
 			throw err;

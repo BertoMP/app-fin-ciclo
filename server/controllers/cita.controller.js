@@ -92,6 +92,55 @@ class CitaController {
 	}
 
 	/**
+	 * @name getCitasDisponibles
+	 * @description Método asíncrono que obtiene citas disponibles de la base de datos.
+	 * 						  Devuelve un objeto JSON con la respuesta HTTP que incluye las URL de las páginas
+	 * 						  anterior y siguiente, la página actual, el total de páginas, el total de citas,
+	 * 						  el rango de resultados, la fecha de la cita, el ID del especialista y las citas disponibles.
+	 * @static
+	 * @async
+	 * @function
+	 * @param {Object} req - El objeto de solicitud de Express.
+	 * @param {Object} res - El objeto de respuesta de Express.
+	 * @returns {Object} res - El objeto de respuesta de Express.
+	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+	 * @memberof CitaController
+	 */
+	static async getCitasDisponibles(req, res) {
+		const searchValues = getSearchValues(req, 'medicalDate');
+
+		try {
+			const citasDisponibles = await CitaService.readCitasDisponibles(searchValues);
+
+			return res.status(200).json({
+				prev: citasDisponibles.prev,
+				next: citasDisponibles.next,
+				pagina_actual: citasDisponibles.pagina_actual,
+				paginas_totales: citasDisponibles.paginas_totales,
+				cantidad_citas: citasDisponibles.cantidad_citas,
+				result_min: citasDisponibles.result_min,
+				result_max: citasDisponibles.result_max,
+				items_pagina: citasDisponibles.items_pagina,
+				datos_agenda: {
+					fecha_cita: citasDisponibles.fecha_cita,
+					especialista_id: citasDisponibles.especialista_id,
+					citas_disponibles: citasDisponibles.resultados
+				}
+			});
+		} catch (err) {
+			if (err.message === 'El especialista seleccionado no existe.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
+			return res.status(500).json({
+				errors: [err.message],
+			});
+		}
+	}
+
+	/**
 	 * @name getCitaPdf
 	 * @description Método asíncrono que obtiene un archivo PDF de una cita específica de la base de datos utilizando su ID.
 	 * 						Devuelve un archivo PDF con los datos de la cita.
@@ -203,6 +252,12 @@ class CitaController {
 				return res.status(409).json({
 					errors: [err.message],
 				});
+			}
+
+			if (err.message === 'Ya tienes una cita asignada a esa hora con otro especialista.') {
+				return res.status(409).json({
+					errors: [err.message],
+				})
 			}
 
 			if (err.message === 'El especialista seleccionado no existe.') {
