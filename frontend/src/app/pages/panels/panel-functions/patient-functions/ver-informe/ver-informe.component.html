@@ -2,44 +2,71 @@
     <div class="d-flex justify-content-center align-items-center vh-100">
         <app-loading-spinner></app-loading-spinner>
     </div>
-} @else if (!cita) {
+} @else if (!informe) {
     <section class="no-results text-center mt-5">
         <p>No existe la cita indicada</p>
     </section>
 } @else {
     <div class="container mt-5">
-        <section class="header text-center mb-4">
-            <h2>{{persona.nombre}}, estos son los detalles de la cita seleccionada:</h2>
-        </section>
-        <div class="card shadow-lg mb-5 mx-auto" style="max-width: 800px;">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Detalles de la Cita</h5>
-            </div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <strong>Hora cita:</strong> {{ cita.datos_cita.hora }}
-                </div>
-                <div class="mb-3">
-                    <strong>Día de la cita:</strong> {{ cita.datos_cita.fecha }}
-                </div>
-                <div class="mb-3">
-                    <strong>Especialista encargado:</strong> {{cita.datos_especialista.nombre}} {{cita.datos_especialista.primer_apellido}} {{cita.datos_especialista.segundo_apellido}}
-                </div>
-                <div class="mb-3">
-                    <strong>Especialidad:</strong> {{cita.datos_especialista.datos_especialidad.especialidad_nombre}}
-                </div>
-                <div class="mb-3">
-                    <strong>Consulta:</strong> {{cita.datos_especialista.datos_consulta.consulta_nombre}}
-                </div>
-                <div class="d-flex justify-content-between mt-4">
-                    <button type="button" routerLink="/listado-de-especialistas/{{cita.datos_especialista.especialista_id}}" class="btn btn-primary">
-                        Consultar Información Especialista
-                    </button>
-                    <button type="button" routerLink="/listado-de-especialidades" class="btn btn-secondary">
-                        Consultar Especialidades
-                    </button>
-                </div>
-            </div>
+        <button type="button" (click)="descargarInforme()" class="btn btn-primary ml-8">Descargar informe</button>
+        <div class="text-center mb-4">
+            <h2>{{informe.datos_paciente.datos_personales.nombre}}, estos son los datos del informe seleccionado:</h2>
+        </div>
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th colspan="2" class="text-center">FECHA DEL INFORME: {{informe.datos_cita.fecha}} a las {{informe.datos_cita.hora}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>DATOS DEL PACIENTE</strong></td>
+                    <td><strong>DATOS DEL MÉDICO</strong></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p><strong>Nombre:</strong> {{informe.datos_paciente.datos_personales.nombre}}</p>
+                        <p><strong>Apellidos:</strong> {{informe.datos_paciente.datos_personales.primer_apellido}} {{informe.datos_paciente.datos_personales.segundo_apellido}}</p>
+                        <p><strong>DNI:</strong> {{informe.datos_paciente.datos_personales.dni}}</p>
+                        <p><strong>Dirección:</strong> {{informe.datos_paciente.datos_vivienda.tipo_via}} {{informe.datos_paciente.datos_vivienda.nombre_via}}, Nº {{informe.datos_paciente.datos_vivienda.numero}}, Piso {{informe.datos_paciente.datos_vivienda.piso}}, Puerta {{informe.datos_paciente.datos_vivienda.puerta}}, {{informe.datos_paciente.datos_vivienda.municipio}}, {{informe.datos_paciente.datos_vivienda.provincia}}, CP {{informe.datos_paciente.datos_vivienda.codigo_postal}}</p>
+                        <p><strong>Teléfono:</strong> {{informe.datos_paciente.telefonos.tel_movil}}</p>
+                    </td>
+                    <td>
+                        <p><strong>Médico de referencia:</strong> {{informe.datos_especialista.datos_personales.nombre}} {{informe.datos_especialista.datos_personales.primer_apellido}} {{informe.datos_especialista.datos_personales.segundo_apellido}}</p>
+                        <p><strong>Especialidad:</strong> {{informe.datos_especialista.especialidad}}</p>
+                        <p><strong>Número colegiado:</strong> {{informe.datos_especialista.num_colegiado}}</p>
+                        <p><strong>Correo contacto:</strong> {{informe.datos_especialista.datos_personales.email}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h5 class="mb-3"><strong>MOTIVO DEL INFORME:</strong></h5>
+                        <p>{{informe.datos_informe.motivo}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h5 class="mb-3"><strong>DIAGNÓSTICOS:</strong></h5>
+                        <p>Indique los diagnósticos (CIE-10) de las principales enfermedades, trastornos u otras condiciones de salud que afectan de manera significativa en las actividades de la vida diaria (AVDs)</p>
+                        <div class="mb-3">
+                            <strong>Contenido:</strong>
+                            <textarea class="form-control" rows="4" readonly>{{informe.datos_informe.contenido}}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Patologías:</strong>
+                            <ul class="list-group">
+                                <li class="list-group-item" *ngFor="let patologia of informe.datos_informe.patologias">
+                                    <p><strong>Nombre:</strong> {{patologia.nombre}}</p>
+                                    <p><strong>Descripción:</strong> {{patologia.descripcion}}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between mt-4">
+            <button type="button" (click)="volver()" class="btn btn-primary">Volver</button>
         </div>
     </div>
 }

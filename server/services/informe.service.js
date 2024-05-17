@@ -41,9 +41,8 @@ class InformeService {
 			if (userRole === 2 && paciente.paciente_id !== userId) {
 				throw new Error('No tienes permiso para realizar esta acción.');
 			}
-
 			const informe = await InformeModel.fetchById(id, conn);
-			console.log(informe);
+			console.log("Informe " + informe);
 
 			if (!informe) {
 				throw new Error('Informe no encontrado.');

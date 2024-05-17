@@ -7,7 +7,7 @@
   <form [formGroup]="registerForm"
         (ngSubmit)="onRegisterAttempt()"
   >
-    <h2 *ngIf="!isEditing; else isEditingH2">FORMULARIO DE REGISTRO</h2>
+    <h2 *ngIf="!isEditing && !isPatient; else isEditingH2">FORMULARIO DE REGISTRO</h2>
     <ng-template #isEditingH2>
       <h2>EDICIÓN DE USUARIO</h2>
     </ng-template>
@@ -69,7 +69,7 @@
                 }"
           >
         </article>
-        <article class="clinic-historial-field" *ngIf="isEditing">
+        <article class="clinic-historial-field" *ngIf="isEditing || isPatient">
           <label>Historia clínica</label>
           <input type="text" formControlName="clinic-historial">
         </article>
@@ -318,9 +318,9 @@
           <p class="error-message" *ngFor="let error of errores">{{ error }}</p>
       }
       <section class="btn-section">
-        <button type="submit" *ngIf="!isEditing; else isEditingBtn">Registrarse</button>
-        <ng-template #isEditingBtn>
-          <button type="submit">Editar</button>
+        <button type="submit" *ngIf="isEditing || isPatient; else isRegistering">Editar</button>
+        <ng-template #isRegistering>
+          <button type="submit">Registrarse</button>
         </ng-template>
         <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar
         </button>

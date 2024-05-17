@@ -25,6 +25,8 @@ import { ListadoMedicacionComponent } from './pages/panels/panel-functions/patie
 import { patientGuard } from './core/guards/patient.guard';
 import { ListadoCitasComponent } from './pages/panels/panel-functions/patient-functions/listado-citas/listado-citas.component';
 import { VerInformeComponent } from './pages/panels/panel-functions/patient-functions/ver-informe/ver-informe.component';
+import { VerCitaComponent } from './pages/panels/panel-functions/patient-functions/ver-cita/ver-cita.component';
+import { SolicitarCitaComponent } from './pages/panels/panel-functions/patient-functions/solicitar-cita/solicitar-cita.component';
 
 export const routes: Routes = [
   {
@@ -111,6 +113,21 @@ export const routes: Routes = [
       {
         path: 'ver-informe/:id',
         component: VerInformeComponent,
+        canActivate: [patientGuard]
+      },
+      {
+        path: 'ver-cita/:id',
+        component: VerCitaComponent,
+        canActivate: [patientGuard]
+      },
+      {
+        path: 'solicitar-cita',
+        component: SolicitarCitaComponent,
+        canActivate: [patientGuard]
+      },
+      {
+        path: 'editar-perfil',
+        component: RegisterComponent,
         canActivate: [patientGuard]
       }
     ]

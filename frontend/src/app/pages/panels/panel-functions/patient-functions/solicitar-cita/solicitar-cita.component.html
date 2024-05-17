@@ -1,0 +1,43 @@
+<!-- <section class="header">
+    <h2>Listado de citas disponibles</h2>
+  </section>
+  <section class="filter-buttons">
+    <article class="filters">
+      <article class="init-date-filter">
+        <label for="fechaInicio">Fecha inicio</label>
+        <input type="date" id="fechaInicio" [(ngModel)]="fechaInicio" (change)="updateFilters()">
+      </article>
+      <article class="end-date-filter">
+        <label for="fechaFin">Fecha fin</label>
+        <input type="date" id="fechaFin" [(ngModel)]="fechaFin" (change)="updateFilters()">
+      </article>
+      <article class="per-page-filter">
+        <label for="per-page">Items</label>
+        <select2 id="per-page" [data]="perPageOptions" [value]="10" [(ngModel)]="perPage" (update)="updateFilters()"></select2>
+      </article>
+    </article>
+    <article class="buttons">
+      <button type="button" class="btn btn-primary m-3"
+              routerLink="/mediapp/tomar-{{isGlucometria ? 'glucometria' : 'tension'}}"
+      >{{ isGlucometria ? 'Tomar glucometría' : 'Tomar tensión arterial' }}</button>
+    </article>
+  </section>
+@if (!dataLoaded) {
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <app-loading-spinner></app-loading-spinner>
+</div>
+} @else if (!cita) {
+<section class="no-results text-center mt-5">
+    <p>No existe la cita indicada</p>
+</section>
+} @else {
+<div class="container mt-5">
+    <section class="header text-center mb-4">
+        <h2>Estas son las citas disponibles actualmente:</h2>
+    </section>
+    <div class="card shadow-lg mb-5 mx-auto">
+
+    </div>
+</div>
+} -->
+<p>Hola</p>

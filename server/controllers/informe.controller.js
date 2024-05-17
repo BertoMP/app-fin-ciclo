@@ -26,6 +26,7 @@ class InformeController {
 		const user_id = req.user_id;
 		const user_role = req.user_role;
 		const informe_id = parseInt(req.params.informe_id);
+		console.log(informe_id);
 
 		try {
 			const informe = await InformeService.readInforme(informe_id, user_id, user_role);

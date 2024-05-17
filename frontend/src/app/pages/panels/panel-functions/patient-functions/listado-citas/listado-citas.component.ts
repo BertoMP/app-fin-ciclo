@@ -59,7 +59,7 @@ export class ListadoCitasComponent {
         this.citas = response.citas[0].citas;
         this.paciente = response.citas[0].datos_paciente;
 
-        console.log(this.citas);
+        console.log(response);
 
 
         this.dataLoaded = true;

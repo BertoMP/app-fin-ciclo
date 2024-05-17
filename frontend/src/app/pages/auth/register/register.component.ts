@@ -6,7 +6,7 @@ import {
   Validators
 } from "@angular/forms";
 import { CustomValidators } from "../../../core/classes/CustomValidators";
-import {CommonModule, Location, LowerCasePipe, NgClass} from "@angular/common";
+import { CommonModule, Location, LowerCasePipe, NgClass } from "@angular/common";
 import { ProvinceService } from "../../../core/services/province.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../../core/services/auth.service";
@@ -62,16 +62,17 @@ export class RegisterComponent implements OnInit {
 
   paciente: PatientModel;
 
+  isPatient: boolean = false;
   isEditing: boolean = false;
 
   constructor(private provinceService: ProvinceService,
-              private municipioService: MunicipioService,
-              private tipoViaService: TipoViaService,
-              private codigoPostalService: CodigoPostalService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private authService: AuthService,
-              private location: Location) {
+    private municipioService: MunicipioService,
+    private tipoViaService: TipoViaService,
+    private codigoPostalService: CodigoPostalService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService,
+    private location: Location) {
   }
   formatearFecha(fechaString: string) {
     const partesFecha = fechaString.split("-");
@@ -84,6 +85,11 @@ export class RegisterComponent implements OnInit {
 
       if (this.id) {
         this.isEditing = true;
+      } else {
+        if (this.authService.isLoggedIn() && this.authService.getUserRole()==2) {
+          this.isPatient=true;
+          this.id = this.authService.getUserId();
+        }
       }
 
       if (this.isEditing) {
@@ -97,40 +103,64 @@ export class RegisterComponent implements OnInit {
             this.errores = error.message.split(',');
           }
         });
+      } else if (this.isPatient) {
+        this.authService.getSelfPatient().subscribe({
+          next: (res: PatientModel) => {
+            this.paciente = res;
+
+            this.patchForm();
+          },
+          error: (error: HttpErrorResponse): void => {
+            this.errores = error.message.split(',');
+          }
+        });
       }
     });
 
     this.registerForm = new FormGroup<any>({
-      'nombre': new FormControl(
-        null,
+      'nombre': new FormControl({
+        value: null,
+        disabled: this.isPatient
+      },
         [
           Validators.required,
           CustomValidators.validName
         ]
       ),
-      'primer_apellido': new FormControl(
-        null,
+      'primer_apellido': new FormControl({
+        value: null,
+        disabled: this.isPatient
+      },
         [
           Validators.required,
           CustomValidators.validSurname
         ]
       ),
       'segundo_apellido': new FormControl(
-        null,
+        {
+          value: null,
+          disabled: this.isPatient
+        },
         [
           Validators.required,
           CustomValidators.validSurname
         ]
       ),
       'dni': new FormControl(
-        null,
+        {
+          value: null,
+          disabled: this.isPatient
+        },
         [
           Validators.required,
           CustomValidators.validDni
         ]
       ),
       'fecha_nacimiento': new FormControl(
-        null,
+        {
+          value: null,
+          disabled: this.isPatient
+        },
         [
           Validators.required,
           CustomValidators.validDateOfBirth
@@ -336,15 +366,27 @@ export class RegisterComponent implements OnInit {
     const newUser: PatientModel = this.generateUser();
 
     if (this.id != null) {
-      this.authService.updateUser(newUser)
-        .subscribe({
-          next: (response) => {
-            this.onSubmitted("editar")
-          },
-          error: (error: string[]): void => {
-            this.onSubmitError(error);
-          }
-        });
+      if (this.isPatient) {
+        this.authService.updateSelfPatient(newUser)
+          .subscribe({
+            next: (response) => {
+              this.onSubmitted("editar")
+            },
+            error: (error: string[]): void => {
+              this.onSubmitError(error);
+            }
+          });
+      } else {
+        this.authService.updateUser(newUser)
+          .subscribe({
+            next: (response) => {
+              this.onSubmitted("editar")
+            },
+            error: (error: string[]): void => {
+              this.onSubmitError(error);
+            }
+          });
+      }
     } else {
       this.authService.registerUser(newUser)
         .subscribe({
@@ -369,7 +411,7 @@ export class RegisterComponent implements OnInit {
     }).then(() => {
       Swal.close();
     }).catch(() => {
-        console.log('Se produjo un error.')
+      console.log('Se produjo un error.')
     });
   }
 

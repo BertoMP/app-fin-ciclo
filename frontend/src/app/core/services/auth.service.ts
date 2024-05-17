@@ -49,6 +49,15 @@ export class AuthService {
     return this.http.get(`${this.apiUrl}/usuario/${id}`).pipe(catchError(this.handleError));
   }
 
+  getSelfPatient(){
+    return this.http.get(`${this.apiUrl}/usuario`).pipe(catchError(this.handleError));
+  }
+
+  updateSelfPatient(newUser:PatientModel):Observable<any>{
+    return this.http.put(`${this.apiUrl}/usuario/actualizar-usuario`, newUser)
+    .pipe(catchError(this.handleError));
+  }
+
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/usuario/login`, {
       email: email,

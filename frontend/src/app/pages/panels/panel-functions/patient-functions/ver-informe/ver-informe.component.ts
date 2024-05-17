@@ -2,21 +2,23 @@ import { Component } from '@angular/core';
 import { Observable, Subject, Subscription, debounceTime } from 'rxjs';
 import { CitasService } from '../../../../../core/services/citas.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CitaSpecificDataModel } from '../../../../../core/interfaces/cita-specific-data.model';
 import { DatosPacienteModel } from '../../../../../core/interfaces/datos-paciente.model';
 import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
-import { informeService } from '../../../../../core/services/informe.service';
+import { InformeSpecificData } from '../../../../../core/interfaces/informe-specific-data.model';
+import { Location, NgFor } from '@angular/common';
+import { InformeService } from '../../../../../core/services/informe.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-ver-informe',
   standalone: true,
-  imports: [LoadingSpinnerComponent,RouterLink],
+  imports: [LoadingSpinnerComponent, RouterLink, NgFor],
   templateUrl: './ver-informe.component.html',
   styleUrl: './ver-informe.component.scss'
 })
 export class VerInformeComponent {
-  cita: CitaSpecificDataModel;
-  persona:DatosPacienteModel;
+  informe: InformeSpecificData;
+  persona: DatosPacienteModel;
 
   initialLoad: boolean = false;
   dataLoaded: boolean = false;
@@ -27,7 +29,7 @@ export class VerInformeComponent {
   id: number;
   private getMedsSubject: Subject<void> = new Subject<void>();
 
-  constructor(private informeService:informeService, private citasService: CitasService, private activatedRoute: ActivatedRoute,) { }
+  constructor(private informeService: InformeService, private citasService: CitasService, private activatedRoute: ActivatedRoute, private location: Location) { }
 
 
   errores: string[];
@@ -42,7 +44,7 @@ export class VerInformeComponent {
         )
         .subscribe({
           next: () => {
-            this.getCita(this.id);
+            this.getInforme(this.id);
           },
           error: (error: string[]) => {
             this.errores = error;
@@ -53,34 +55,30 @@ export class VerInformeComponent {
     });
   }
 
-  getCita(id:number) {
-    console.log(id);
-    let request: Observable<CitaSpecificDataModel> = this.citasService.getCita(id);
+  volver() {
+    this.location.back();
+  }
+
+  getInforme(id: number) {
+    let request: Observable<InformeSpecificData> = this.informeService.getInforme(id);
 
     request.subscribe({
-      next: (response: CitaSpecificDataModel) => {
-        this.cita=response;
-        this.persona=response.datos_paciente;
-        // this.getInforme(this.cita.informe_id);
-        console.log(this.cita);
+      next: (response: InformeSpecificData) => {
+        console.log(response);
         this.dataLoaded = true;
+        this.informe = response;
       },
       error: (error: string[]) => {
+        console.log(error);
         this.errores = error;
       },
     });
   }
 
-  getInforme(id:number){
-    let request: Observable<Object> = this.informeService.getInforme(id);
-
-    request.subscribe({
-      next: (response: Object) => {
-        console.log(response);
-      },
-      error: (error: string[]) => {
-        this.errores = error;
-      },
+  descargarInforme() {
+    this.informeService.getDownloadInforme(this.informe.datos_informe.id).subscribe((response: any) => {
+      const blob = new Blob([response]);
+      saveAs(blob, `cita_${this.informe.datos_paciente.datos_personales.nombre}_${this.informe.datos_paciente.datos_personales.primer_apellido}_${this.informe.datos_paciente.datos_personales.segundo_apellido}.pdf`);
     });
   }
 }

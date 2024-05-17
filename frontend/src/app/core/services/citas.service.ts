@@ -25,4 +25,8 @@ export class CitasService {
     return this.http.get<CitaSpecificDataModel>(`${this.baseUrl}/cita/${cita_id}`)
   }
 
+  getCitaEspecialista(especialista_id: number): Observable<Object> {
+    return this.http.get<Object>(`${this.baseUrl}/cita/agenda`);
+  }
+
 }

@@ -39,7 +39,7 @@
                             @if(comprobarFecha(cita.datos_cita.hora,cita.datos_cita.fecha)){
                             <button type="button" class="btn btn-danger" (click)="confirmarCancelar(cita.datos_cita.id)">Cancelar</button>
                             }@else{
-                                <button type="button" class="btn btn-primary" routerLink="../ver-informe/{{cita.datos_cita.id}}">Ver informe</button>
+                                <button type="button" class="btn btn-primary" routerLink="../ver-cita/{{cita.datos_cita.id}}">Ver Cita</button>
                             }
                         </td>
 

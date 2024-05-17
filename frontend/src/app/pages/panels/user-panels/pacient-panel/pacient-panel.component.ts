@@ -70,6 +70,12 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
           path: '/mediapp/listado-citas',
           method: 'onOptionSelected',
         },
+        {
+          name: 'Solicitar citas',
+          icon: 'bi bi-calendar-event',
+          path: '/mediapp/solicitar-cita',
+          method: 'onOptionSelected',
+        },
       ],
     },
   ];
@@ -79,6 +85,7 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
       name: 'Editar perfil',
       icon: 'bi bi-pencil-fill',
       path: '/mediapp/editar-perfil',
+      method: 'onOptionSelected',
     },
     {
       name: 'Cerrar Sesión',

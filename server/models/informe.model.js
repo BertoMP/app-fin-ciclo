@@ -132,8 +132,8 @@ class InformeModel {
 					},
 					especialidad: rows[0].especialidad_nombre,
 					datos_consulta: {
-						id: row[0].consulta_id,
-						nombre: row[0].consulta_nombre,
+						id: rows[0].consulta_id,
+						nombre: rows[0].consulta_nombre,
 					}
 				},
 				datos_informe: {
