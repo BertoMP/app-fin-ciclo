@@ -273,7 +273,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line326">line 326</a>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line414">line 414</a>
     </li></ul></dd>
     
 
@@ -484,7 +484,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line364">line 364</a>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line452">line 452</a>
     </li></ul></dd>
     
 
@@ -695,7 +695,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line417">line 417</a>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line505">line 505</a>
     </li></ul></dd>
     
 
@@ -906,7 +906,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line281">line 281</a>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line369">line 369</a>
     </li></ul></dd>
     
 
@@ -993,7 +993,218 @@
     
 
     
-    <h4 class="name" id=".fetchAll"><span class="type-signature">(async, static) </span>fetchAll<span class="signature">(userId, searchValues, limit, dbConn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".fetchAgendaDisponible"><span class="type-signature">(async, static) </span>fetchAgendaDisponible<span class="signature">(searchValues, dbConn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método para obtener las horas disponibles de un especialista en una fecha específica.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>searchValues</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Los valores de búsqueda. Contiene la fecha de la cita, el ID del especialista, la página de resultados y el límite de resultados.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dbConn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La conexión a la base de datos.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line137">line 137</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si ocurre un error durante la operación, se lanzará un error.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Un objeto que contiene las horas disponibles, el total de horas disponibles, la página actual y el total de páginas.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".fetchAll"><span class="type-signature">(async, static) </span>fetchAll<span class="signature">(userId, searchValues, dbConn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1077,29 +1288,6 @@
             
 
             <td class="description last">Los valores de búsqueda. Contiene el ID del paciente, la fecha de inicio y fin del rango de fechas, y la página de resultados.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>limit</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">El límite de resultados por página.</td>
         </tr>
 
     
@@ -1374,7 +1562,213 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line252">line 252</a>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line301">line 301</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si ocurre un error durante la operación, se lanzará un error.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    La cita que coincide con los datos de búsqueda.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".fetchByDataPaciente"><span class="type-signature">(async, static) </span>fetchByDataPaciente<span class="signature">(data, dbConn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método para obtener una cita por su fecha, hora y ID del paciente.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Los datos de búsqueda. Contiene la fecha, la hora y el ID del paciente.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dbConn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La conexión a la base de datos.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line335">line 335</a>
     </li></ul></dd>
     
 
@@ -1585,7 +1979,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line137">line 137</a>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line186">line 186</a>
     </li></ul></dd>
     
 
@@ -1796,7 +2190,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line225">line 225</a>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line274">line 274</a>
     </li></ul></dd>
     
 
@@ -2007,7 +2401,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line443">line 443</a>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line531">line 531</a>
     </li></ul></dd>
     
 
@@ -2218,7 +2612,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line389">line 389</a>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line477">line 477</a>
     </li></ul></dd>
     
 
@@ -2452,7 +2846,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line478">line 478</a>
+        <a href="models_cita.model.js.html">models/cita.model.js</a>, <a href="models_cita.model.js.html#line566">line 566</a>
     </li></ul></dd>
     
 
@@ -2555,7 +2949,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 17 2024 20:55:42 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

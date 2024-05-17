@@ -487,7 +487,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line97">line 97</a>
+        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line115">line 115</a>
     </li></ul></dd>
     
 
@@ -665,7 +665,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line55">line 55</a>
+        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line73">line 73</a>
     </li></ul></dd>
     
 
@@ -847,7 +847,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line69">line 69</a>
+        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line87">line 87</a>
     </li></ul></dd>
     
 
@@ -1029,7 +1029,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line41">line 41</a>
+        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line59">line 59</a>
     </li></ul></dd>
     
 
@@ -1052,6 +1052,294 @@
 
 
 
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    El especialista.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".readEspecialistaByUserId"><span class="type-signature">(async, static) </span>readEspecialistaByUserId<span class="signature">(usuario_id, includeNotWorking, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método para leer un especialista por su ID de usuario.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>usuario_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID de usuario del especialista.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>includeNotWorking</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Si se incluye a los especialistas que no están trabajando.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>conn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La conexión a la base de datos.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+<ul>
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si el especialista no se encuentra, se lanzará un error.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si el especialista no está trabajando y no se incluyen los que no están trabajando, se lanzará un error.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si ocurre un error durante la operación, se lanzará un error.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    </ul>
 
 
 <h5>Returns:</h5>
@@ -1211,7 +1499,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line111">line 111</a>
+        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line129">line 129</a>
     </li></ul></dd>
     
 
@@ -1393,7 +1681,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line83">line 83</a>
+        <a href="services_especialista.service.js.html">services/especialista.service.js</a>, <a href="services_especialista.service.js.html#line101">line 101</a>
     </li></ul></dd>
     
 
@@ -1467,7 +1755,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 17 2024 20:55:42 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>
