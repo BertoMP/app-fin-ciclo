@@ -24,11 +24,29 @@ class EspecialistaService {
 		return await EspecialistaModel.create(especialista, conn);
 	}
 
-	static async readEspecialistaByUserId(usuario_id, conn = dbConn) {
+	/**
+	 * @method readEspecialistaByUserId
+	 * @description Método para leer un especialista por su ID de usuario.
+	 * @static
+	 * @async
+	 * @memberOf EspecialistaService
+	 * @param {number} usuario_id - El ID de usuario del especialista.
+	 * @param {boolean} includeNotWorking - Si se incluye a los especialistas que no están trabajando.
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} El especialista.
+	 * @throws {Error} Si el especialista no se encuentra, se lanzará un error.
+	 * @throws {Error} Si el especialista no está trabajando y no se incluyen los que no están trabajando, se lanzará un error.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async readEspecialistaByUserId(usuario_id, includeNotWorking = false, conn = dbConn) {
 		try {
 			const especialista = await EspecialistaModel.findByUserId(usuario_id, conn);
 
-			if (!especialista || especialista.turno === 'no-trabajando') {
+			if (!especialista) {
+				throw new Error('Especialista no encontrado.');
+			}
+
+			if (!includeNotWorking && especialista.datos_especialista.turno === 'no-trabajando') {
 				throw new Error('Especialista no encontrado.');
 			}
 

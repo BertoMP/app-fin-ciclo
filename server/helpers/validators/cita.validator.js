@@ -55,7 +55,7 @@ export const validateCita = [
 		.isString()
 		.withMessage('La hora debe ser un texto')
 		.custom((value) => {
-			const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]:00$/;
+			const regex = /^([01]?[0-9]|2[0-3]):00:00$/;
 			if (!regex.test(value)) {
 				throw new Error('La hora debe ser un formato HH:mm:ss');
 			}

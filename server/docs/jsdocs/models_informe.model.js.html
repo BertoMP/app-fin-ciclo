@@ -56,12 +56,27 @@ class InformeModel {
 			'    cita.hora,' +
 			'    paciente.usuario_id AS paciente_id,' +
 			'    paciente.num_historia_clinica,' +
+			'    tipo_via.nombre AS nombre_tipo_via,' +
+			'    paciente.nombre_via AS paciente_nombre_via,' +
+			'    paciente.numero AS paciente_numero,' +
+			'    paciente.piso AS paciente_piso,' +
+			'    paciente.puerta AS paciente_puerta,' +
+			'    municipio.nombre AS paciente_municipio,' +
+			'    provincia.nombre AS paciente_provincia,' +
+			'    paciente.codigo_postal AS paciente_codigo_postal,' +
+			'    paciente.tel_fijo AS paciente_tel_fijo,' +
+			'    paciente.tel_movil AS paciente_tel_movil,' +
+			'		 usuario_paciente.email AS paciente_email,' +
 			'    usuario_paciente.nombre AS paciente_nombre,' +
-			'    usuario_paciente.primer_apellido AS paciente_primer_apellido, ' +
+			'    usuario_paciente.primer_apellido AS paciente_primer_apellido,' +
 			'    usuario_paciente.segundo_apellido AS paciente_segundo_apellido,' +
+			'    usuario_paciente.dni AS paciente_dni,' +
 			'    especialista.usuario_id AS especialista_id,' +
 			'    especialista.num_colegiado,' +
 			'    especialidad.nombre AS especialidad_nombre,' +
+			'		 consulta.id AS consulta_id,' +
+			'		 consulta.nombre AS consulta_nombre,' +
+			'		 usuario_especialista.email AS especialista_email, ' +
 			'    usuario_especialista.nombre AS especialista_nombre, ' +
 			'    usuario_especialista.primer_apellido AS especialista_primer_apellido, ' +
 			'    usuario_especialista.segundo_apellido AS especialista_segundo_apellido, ' +
@@ -75,11 +90,19 @@ class InformeModel {
 			'INNER JOIN ' +
 			'    paciente ON cita.paciente_id = paciente.usuario_id ' +
 			'INNER JOIN ' +
+			'    tipo_via ON paciente.tipo_via = tipo_via.id ' +
+			'INNER JOIN ' +
+			'    municipio ON paciente.municipio = municipio.id ' +
+			'INNER JOIN ' +
+			'    provincia ON municipio.provincia_id = provincia.id ' +
+			'INNER JOIN ' +
 			'    usuario AS usuario_paciente ON paciente.usuario_id = usuario_paciente.id ' +
 			'INNER JOIN ' +
 			'    especialista ON cita.especialista_id = especialista.usuario_id ' +
 			'INNER JOIN ' +
 			'    usuario AS usuario_especialista ON especialista.usuario_id = usuario_especialista.id ' +
+			'INNER JOIN ' +
+			'    consulta ON especialista.consulta_id = consulta.id ' +
 			'INNER JOIN ' +
 			'    especialidad ON especialista.especialidad_id = especialidad.id ' +
 			'INNER JOIN ' +
@@ -90,48 +113,70 @@ class InformeModel {
 			'    informe.id = ?';
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
-			const informe = rows[0];
 
-			if (informe) {
-				const fecha = format(new Date(informe.fecha), 'dd-MM-yyyy');
-
-				return {
-					datos_cita: {
-						id: informe.cita_id,
-						fecha: fecha,
-						hora: informe.hora,
-					},
-					datos_paciente: {
-						usuario_id: informe.paciente_id,
-						num_historia_clinica: informe.num_historia_clinica,
-						nombre: informe.paciente_nombre,
-						primer_apellido: informe.paciente_primer_apellido,
-						segundo_apellido: informe.paciente_segundo_apellido,
-					},
-					datos_especialista: {
-						usuario_id: informe.especialista_id,
-						num_colegiado: informe.num_colegiado,
-						especialidad: informe.especialidad_nombre,
-						nombre: informe.especialista_nombre,
-						primer_apellido: informe.especialista_primer_apellido,
-						segundo_apellido: informe.especialista_segundo_apellido,
-					},
-					datos_informe: {
-						id: informe.informe_id,
-						motivo: informe.motivo,
-						contenido: informe.contenido,
-						patologias: rows.map((patologia) => {
-							return {
-								id: patologia.patologia_id,
-								nombre: patologia.patologia_nombre,
-								descripcion: patologia.patologia_descripcion,
-							};
-						}),
-					},
-				};
+			if (rows.length === 0) {
+				return null;
 			}
 
-			return informe;
+			return {
+				datos_cita: {
+					id: rows[0].cita_id,
+					fecha: format(new Date(rows[0].fecha), 'dd-MM-yyyy'),
+					hora: rows[0].hora,
+				},
+				datos_paciente: {
+					usuario_id: rows[0].paciente_id,
+					num_historia_clinica: rows[0].num_historia_clinica,
+					datos_personales: {
+						email: rows[0].paciente_email,
+						nombre: rows[0].paciente_nombre,
+						primer_apellido: rows[0].paciente_primer_apellido,
+						segundo_apellido: rows[0].paciente_segundo_apellido,
+						dni: rows[0].paciente_dni,
+					},
+					datos_vivienda: {
+						tipo_via: rows[0].nombre_tipo_via,
+						nombre_via: rows[0].paciente_nombre_via,
+						numero: rows[0].paciente_numero,
+						piso: rows[0].paciente_piso,
+						puerta: rows[0].paciente_puerta,
+						municipio: rows[0].paciente_municipio,
+						codigo_postal: rows[0].paciente_codigo_postal,
+						provincia: rows[0].paciente_provincia,
+					},
+					telefonos: {
+						tel_fijo: rows[0].paciente_tel_fijo,
+						tel_movil: rows[0].paciente_tel_movil,
+					},
+				},
+				datos_especialista: {
+					usuario_id: rows[0].especialista_id,
+					num_colegiado: rows[0].num_colegiado,
+					datos_personales: {
+						email: rows[0].especialista_email,
+						nombre: rows[0].especialista_nombre,
+						primer_apellido: rows[0].especialista_primer_apellido,
+						segundo_apellido: rows[0].especialista_segundo_apellido,
+					},
+					especialidad: rows[0].especialidad_nombre,
+					datos_consulta: {
+						id: row[0].consulta_id,
+						nombre: row[0].consulta_nombre,
+					}
+				},
+				datos_informe: {
+					id: rows[0].informe_id,
+					motivo: rows[0].motivo,
+					contenido: rows[0].contenido,
+					patologias: rows.map((patologia) => {
+						return {
+							id: patologia.patologia_id,
+							nombre: patologia.patologia_nombre,
+							descripcion: patologia.patologia_descripcion,
+						};
+					}),
+				},
+			};
 		} catch (err) {
 			throw new Error('Error al obtener el informe.');
 		}
@@ -152,12 +197,20 @@ class InformeModel {
 		const motivo = informe.motivo;
 		const contenido = informe.contenido;
 
-		const query = 'INSERT INTO informe (motivo, contenido) VALUES (?, ?)';
+		const query =
+			'INSERT INTO informe (motivo, contenido) ' +
+			'		VALUES (?, ?)';
 
 		try {
 			const informe = await dbConn.execute(query, [motivo, contenido]);
 
-			return informe[0];
+			return {
+				id: informe[0].insertId,
+				datos_informe: {
+					motivo: motivo,
+					contenido: contenido,
+				},
+			};
 		} catch (err) {
 			throw new Error('Error al crear el informe.');
 		}
@@ -175,7 +228,12 @@ class InformeModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteInforme(informeId, dbConn) {
-		const query = 'DELETE FROM informe WHERE id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		informe ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
 			return await dbConn.execute(query, [informeId]);
@@ -203,7 +261,7 @@ export default InformeModel;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

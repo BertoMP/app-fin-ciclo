@@ -672,10 +672,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para una especialidad.
-             Valida 'nombre', 'descripcion' e 'imagen'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para una especialidad.             Valida 'nombre', 'descripcion' e 'imagen'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -1036,192 +1033,6 @@
     
 
     
-    <h4 class="name" id=".validateEspecialistaUpdate"><span class="type-signature">(static) </span>validateEspecialistaUpdate<span class="signature">(req, res, next)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Middleware que valida el cuerpo de la solicitud para la actualización de un especialista.
-             Valida 'num_colegiado', 'descripcion', 'turno', 'especialidad_id', 'consulta_id' e 'imagen'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>req</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">El objeto de solicitud de Express.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>res</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">El objeto de respuesta de Express.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>next</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">La función de callback para pasar al siguiente middleware o ruta.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_validators_especialistaUpdate.validator.js.html">helpers/validators/especialistaUpdate.validator.js</a>, <a href="helpers_validators_especialistaUpdate.validator.js.html#line4">line 4</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
     <h4 class="name" id=".validateGlucometria"><span class="type-signature">(static) </span>validateGlucometria<span class="signature">(req, res, next)</span><span class="type-signature"></span></h4>
     
 
@@ -1230,10 +1041,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para una glucometría.
-             Valida 'medicion' que debe ser un valor numérico entre 2 y 3 dígitos y no puede ser un valor negativo.
-             Si 'medicion' no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si 'medicion' es válido, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para una glucometría.             Valida 'medicion' que debe ser un valor numérico entre 2 y 3 dígitos y no puede ser un valor negativo.             Si 'medicion' no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si 'medicion' es válido, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -1416,10 +1224,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para un informe.
-             Valida 'cita_id', 'motivo', 'patologias', 'patologias.*' y 'contenido'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para un informe.             Valida 'cita_id', 'motivo', 'patologias', 'patologias.*' y 'contenido'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -1927,7 +1732,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_validators_pacienteRegistro.validador.js.html">helpers/validators/pacienteRegistro.validador.js</a>, <a href="helpers_validators_pacienteRegistro.validador.js.html#line7">line 7</a>
+        <a href="helpers_validators_pacienteRegistro.validador.js.html">helpers/validators/pacienteRegistro.validador.js</a>, <a href="helpers_validators_pacienteRegistro.validador.js.html#line8">line 8</a>
     </li></ul></dd>
     
 
@@ -2114,192 +1919,6 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="helpers_validators_pacienteTomaMedicamento.validator.js.html">helpers/validators/pacienteTomaMedicamento.validator.js</a>, <a href="helpers_validators_pacienteTomaMedicamento.validator.js.html#line4">line 4</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".validatePacienteUpdate"><span class="type-signature">(static) </span>validatePacienteUpdate<span class="signature">(req, res, next)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Middleware que valida el cuerpo de la solicitud para la actualización de un paciente.
-             Valida 'tipo_via', 'nombre_via', 'numero', 'piso', 'puerta', 'codigo_postal', 'municipio', 'tel_fijo', 'tel_movil', y 'fecha_nacimiento'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>req</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">El objeto de solicitud de Express.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>res</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">El objeto de respuesta de Express.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>next</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">La función de callback para pasar al siguiente middleware o ruta.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="helpers_validators_pacienteUpdate.validator.js.html">helpers/validators/pacienteUpdate.validator.js</a>, <a href="helpers_validators_pacienteUpdate.validator.js.html#line4">line 4</a>
     </li></ul></dd>
     
 
@@ -2529,10 +2148,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para una medición de tensión arterial.
-             Valida 'sistolica', 'diastolica' y 'pulsaciones'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para una medición de tensión arterial.             Valida 'sistolica', 'diastolica' y 'pulsaciones'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -3076,6 +2692,189 @@
     
 
     
+    <h4 class="name" id=".validateUserPasswordForgot"><span class="type-signature">(static) </span>validateUserPasswordForgot<span class="signature">(req, res, next)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Middleware que valida el cuerpo de la solicitud para la recuperación de contraseña de un usuario.						Valida 'email'.						Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.						Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El objeto de solicitud de Express.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El objeto de respuesta de Express.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>next</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La función de callback para pasar al siguiente middleware o ruta.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="helpers_validators_queryParams_usuarioPasswordForgot.validator.js.html">helpers/validators/queryParams/usuarioPasswordForgot.validator.js</a>, <a href="helpers_validators_queryParams_usuarioPasswordForgot.validator.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id=".validateUserRegister"><span class="type-signature">(static) </span>validateUserRegister<span class="signature">(req, res, next)</span><span class="type-signature"></span></h4>
     
 
@@ -3277,7 +3076,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

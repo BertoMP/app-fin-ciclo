@@ -29,6 +29,7 @@
             <pre class="prettyprint source linenums"><code>// Importación de los servicios necesarios
 import EspecialidadService from '../services/especialidad.service.js';
 import {getSearchValues} from "../util/functions/getSearchValues.js";
+import ObjectFactory from "../util/classes/objectFactory.js";
 
 /**
  * @class EspecialidadController
@@ -54,49 +55,54 @@ class EspecialidadController {
 	static async getEspecialidades(req, res) {
 		try {
 			const searchValues = getSearchValues(req, 'search');
-
-			const page = searchValues.page;
-			const limit = searchValues.limit;
-			const search = searchValues.search;
-
-			const {
-				rows: resultados,
-				total: cantidad_especialidades,
-				actualPage: pagina_actual,
-				totalPages: paginas_totales,
-			} = await EspecialidadService.readEspecialidades(searchValues);
-
-			if (page > 1 &amp;&amp; page > paginas_totales) {
-				return res.status(404).json({
-					errors: ['La página de especialidades solicitada no existe.'],
-				});
-			}
-
-			let query = '';
-
-			if (search) {
-				query += `&amp;search=${search}`;
-			}
-
-			const prev = page > 1 ? `/especialidad?page=${page - 1}&amp;limit=${limit}${query}` : null;
-			const next = page &lt; paginas_totales ? `/especialidad?page=${page + 1}&amp;limit=${limit}${query}` : null;
-			const result_min = (page - 1) * limit + 1;
-			const result_max =
-				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
-			const items_pagina = parseInt(limit);
+			const especialidades = await EspecialidadService.readEspecialidades(searchValues);
 
 			return res.status(200).json({
-				prev,
-				next,
-				pagina_actual,
-				paginas_totales,
-				cantidad_especialidades,
-				items_pagina,
-				result_min,
-				result_max,
-				resultados,
+				prev: especialidades.prev,
+				next: especialidades.next,
+				pagina_actual: especialidades.pagina_actual,
+				paginas_totales: especialidades.paginas_totales,
+				cantidad_especialidades: especialidades.cantidad_especialidades,
+				items_pagina: especialidades.items_pagina,
+				result_min: especialidades.result_min,
+				result_max: especialidades.result_max,
+				resultados: especialidades.resultados,
 			});
 		} catch (err) {
+			if (err.message === 'La página solicitada no existe.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
+			return res.status(500).json({
+				errors: [err.message],
+			});
+		}
+	}
+
+	/**
+	 * @name getEspecialidadesListado
+	 * @description Método asíncrono que obtiene todas las especialidades en formato de listado de la base de datos.
+	 * 						  Devuelve un objeto JSON con la respuesta HTTP que incluye las especialidades.
+	 * 						  Si no hay especialidades, devuelve un error con el mensaje correspondiente.
+	 * @static
+	 * @async
+	 * @function
+	 * @param {Object} req - El objeto de solicitud de Express.
+	 * @param {Object} res - El objeto de respuesta de Express.
+	 * @returns {Object} res - El objeto de respuesta de Express.
+	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+	 * @memberof EspecialidadController
+	 */
+	static async getEspecialidadesListado(req, res) {
+		try {
+			const especialidades = await EspecialidadService.readEspecialidadesListado();
+
+			return res.status(200).json(especialidades);
+		} catch (err) {
+			if (err.message === 'No se encontraron especialidades.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -123,14 +129,12 @@ class EspecialidadController {
 		try {
 			const especialidad = await EspecialidadService.readEspecialidadById(id);
 
-			if (!especialidad) {
-				return res.status(404).json({
-					errors: ['Especialidad no encontrada.'],
-				});
-			}
-
 			return res.status(200).json(especialidad);
 		} catch (err) {
+			if (err.message === 'Especialidad no encontrada.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -155,14 +159,12 @@ class EspecialidadController {
 		try {
 			const especialidades = await EspecialidadService.readEspecialidesEspecialistas();
 
-			if (!especialidades || especialidades.length === 0) {
-				return res.status(404).json({
-					errors: ['No se encontraron especialidades con especialistas.'],
-				});
-			}
-
 			return res.status(200).json(especialidades);
 		} catch (err) {
+			if (err.message === 'No se encontraron especialidades con especialistas.') {
+				return res.status(404).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -184,33 +186,16 @@ class EspecialidadController {
 	 * @memberof EspecialidadController
 	 */
 	static async createEspecialidad(req, res) {
-		let descripcion = req.body.descripcion;
-		descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '&lt;br>');
-
 		try {
-			const especialidad = {
-				nombre: req.body.nombre,
-				descripcion: descripcion,
-				imagen: req.body.imagen,
-			};
-
-			const especialidadExists = await EspecialidadService.readEspecialidadByNombre(
-				especialidad.nombre,
-			);
-
-			if (especialidadExists) {
-				return res.status(409).json({
-					errors: ['Ya existe una especialidad con ese nombre.'],
-				});
-			}
-
-			await EspecialidadService.createEspecialidad(especialidad);
+			await EspecialidadService.createEspecialidad(req.body);
 
 			return res.status(200).json({ message: 'Especialidad creada exitosamente.' });
 		} catch (err) {
-			return res.status(500).json({
-				errors: [err.message],
-			});
+			if (err.message === 'Ya existe una especialidad con ese nombre.') {
+				return res.status(409).json({ errors: [err.message] });
+			}
+
+			return res.status(500).json({ errors: [err.message] });
 		}
 	}
 
@@ -230,30 +215,20 @@ class EspecialidadController {
 	 */
 	static async updateEspecialidad(req, res) {
 		const id = parseInt(req.params.especialidad_id);
-		let descripcion = req.body.descripcion;
-		descripcion = descripcion.replace(/(\r\n|\n|\r)/g, '&lt;br>');
 
 		try {
-			const currentEspecialidad = await EspecialidadService.readEspecialidadById(id);
+			await EspecialidadService.updateEspecialidad(id, req.body);
 
-			if (!currentEspecialidad) {
-				return res.status(404).json({
-					errors: ['Especialidad no encontrada.'],
-				});
+			return res.status(200).json({ message: 'Especialidad actualizada exitosamente.' });
+		} catch (err) {
+			if (err.message === 'Especialidad no encontrada.') {
+				return res.status(404).json({ errors: [err.message] });
 			}
 
-			const especialidad = {
-				nombre: req.body.nombre,
-				descripcion: descripcion,
-				imagen: req.body.imagen,
-			};
+			if (err.message === 'Ya existe una especialidad con ese nombre.') {
+				return res.status(409).json({ errors: [err.message] });
+			}
 
-			await EspecialidadService.updateEspecialidad(id, especialidad);
-
-			return res.status(200).json({
-				message: 'Especialidad actualizada exitosamente.',
-			});
-		} catch (err) {
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -278,20 +253,18 @@ class EspecialidadController {
 		const id = parseInt(req.params.especialidad_id);
 
 		try {
-			const currentEspecialidad = await EspecialidadService.readEspecialidadById(id);
-
-			if (!currentEspecialidad) {
-				return res.status(404).json({
-					errors: ['Especialidad no encontrada.'],
-				});
-			}
-
 			await EspecialidadService.deleteEspecialidad(id);
 
 			return res.status(200).json({
 				message: 'Especialidad eliminada exitosamente.',
 			});
 		} catch (err) {
+			if (err.message === 'Especialidad no encontrada.') {
+				return res.status(404).json({
+					errors: [err.message],
+				});
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});
@@ -317,7 +290,7 @@ export default EspecialidadController;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

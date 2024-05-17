@@ -93,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line13">line 13</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -305,7 +305,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line107">line 107</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line202">line 202</a>
     </li></ul></dd>
     
 
@@ -392,7 +392,7 @@
     
 
     
-    <h4 class="name" id=".deleteCita"><span class="type-signature">(async, static) </span>deleteCita<span class="signature">(id, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".deleteCita"><span class="type-signature">(async, static) </span>deleteCita<span class="signature">(id, userId, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -459,6 +459,29 @@
 
         <tr>
             
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID del usuario.</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>conn</code></td>
             
 
@@ -516,7 +539,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line174">line 174</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line298">line 298</a>
     </li></ul></dd>
     
 
@@ -698,7 +721,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line160">line 160</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line284">line 284</a>
     </li></ul></dd>
     
 
@@ -728,6 +751,240 @@
         
 <div class="param-desc">
     Un objeto que representa las citas eliminadas.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".printCitaPDF"><span class="type-signature">(async, static) </span>printCitaPDF<span class="signature">(userId, citaId, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método para imprimir una cita en formato PDF.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID del usuario.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>citaId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID de la cita.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>conn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La conexión a la base de datos.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line344">line 344</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si ocurre algún error durante el proceso, lanza un error.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Un objeto que representa el PDF de la cita.
 </div>
 
 
@@ -880,7 +1137,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line65">line 65</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -938,7 +1195,7 @@
     
 
     
-    <h4 class="name" id=".readCitaById"><span class="type-signature">(async, static) </span>readCitaById<span class="signature">(id, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".readCitaById"><span class="type-signature">(async, static) </span>readCitaById<span class="signature">(id, userId, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1005,6 +1262,29 @@
 
         <tr>
             
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID del usuario.</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>conn</code></td>
             
 
@@ -1062,7 +1342,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line51">line 51</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line121">line 121</a>
     </li></ul></dd>
     
 
@@ -1120,7 +1400,7 @@
     
 
     
-    <h4 class="name" id=".readCitas"><span class="type-signature">(async, static) </span>readCitas<span class="signature">(searchValues, limit, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".readCitas"><span class="type-signature">(async, static) </span>readCitas<span class="signature">(userId, searchValues, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1164,6 +1444,29 @@
 
         <tr>
             
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID del usuario.</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>searchValues</code></td>
             
 
@@ -1181,29 +1484,6 @@
             
 
             <td class="description last">Los valores de búsqueda.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>limit</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">El límite de resultados.</td>
         </tr>
 
     
@@ -1267,7 +1547,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line18">line 18</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -1449,7 +1729,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line79">line 79</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line164">line 164</a>
     </li></ul></dd>
     
 
@@ -1490,6 +1770,188 @@
     <dd>
         
 <span class="param-type">Promise.&lt;Array></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".readCitasByUserId"><span class="type-signature">(async, static) </span>readCitasByUserId<span class="signature">(userId, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método para leer citas por el ID del usuario.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID del usuario.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>conn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La conexión a la base de datos.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line93">line 93</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Un array de citas.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
 
 
     </dd>
@@ -1631,7 +2093,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line37">line 37</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line107">line 107</a>
     </li></ul></dd>
     
 
@@ -1689,7 +2151,7 @@
     
 
     
-    <h4 class="name" id=".readPacienteIdByInformeId"><span class="type-signature">(async, static) </span>readPacienteIdByInformeId<span class="signature">(informe_id, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;number>}</span></h4>
+    <h4 class="name" id=".readPacienteIdByInformeId"><span class="type-signature">(async, static) </span>readPacienteIdByInformeId<span class="signature">(informe_id, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;{paciente_id: *}>}</span></h4>
     
 
     
@@ -1813,7 +2275,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line93">line 93</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line188">line 188</a>
     </li></ul></dd>
     
 
@@ -1853,7 +2315,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;number></span>
+<span class="param-type">Promise.&lt;{paciente_id: *}></span>
 
 
     </dd>
@@ -2018,7 +2480,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line188">line 188</a>
+        <a href="services_cita.service.js.html">services/cita.service.js</a>, <a href="services_cita.service.js.html#line329">line 329</a>
     </li></ul></dd>
     
 
@@ -2092,7 +2554,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -66,9 +66,11 @@ class EmailService {
 	 */
 	static async sendPasswordResetEmail(to, user, resetToken) {
 		const transporter = EmailService.#createTransporter();
-		const compiledTemplate = EmailService.#compileTemplate('reset-password.handlebars', {
+		const compiledTemplate = EmailService.#compileTemplate(
+			'reset-password.handlebars', {
 			user,
-			resetLink: `${process.env.ANGULAR_HOST}:${process.env.ANGULAR_PORT}/auth/reset-password/${resetToken}`,
+			resetLink:
+				`${process.env.ANGULAR_HOST}:${process.env.ANGULAR_PORT}/auth/reset-password/${resetToken}`,
 		});
 
 		const mailDetails = EmailService.#createMailDetails(

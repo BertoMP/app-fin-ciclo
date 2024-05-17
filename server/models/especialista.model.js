@@ -147,7 +147,7 @@ class EspecialistaModel {
 
 			return rows[0];
 		} catch (err) {
-			throw new Error('Error al obtener el turno del especialista.');
+			throw new Error('Error al obtener el especialista.');
 		}
 	}
 

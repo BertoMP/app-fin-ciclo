@@ -48,6 +48,10 @@
 
 
 
+<div class="description">
+    Clase que contiene los métodos para la gestión de informes.
+</div>
+
 
 
 
@@ -145,7 +149,7 @@
     
 
     
-    <h4 class="name" id=".createInforme"><span class="type-signature">(async, static) </span>createInforme<span class="signature">(informe, conn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".createInforme"><span class="type-signature">(async, static) </span>createInforme<span class="signature">(data, conn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -193,7 +197,7 @@
 
         <tr>
             
-                <td class="name"><code>informe</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
@@ -301,7 +305,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line30">line 30</a>
+        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line81">line 81</a>
     </li></ul></dd>
     
 
@@ -512,7 +516,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line85">line 85</a>
+        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line137">line 137</a>
     </li></ul></dd>
     
 
@@ -570,7 +574,264 @@
     
 
     
-    <h4 class="name" id=".readInforme"><span class="type-signature">(async, static) </span>readInforme<span class="signature">(id, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".printInformePDF"><span class="type-signature">(async, static) </span>printInformePDF<span class="signature">(informeId, userId, userRole, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método para imprimir un informe en formato PDF.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>informeId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID del informe.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID del usuario que realiza la solicitud.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>userRole</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El rol del usuario que realiza la solicitud.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>conn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La conexión a la base de datos.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line58">line 58</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si ocurre un error durante el proceso, captura el error y lo lanza.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    La ruta del archivo PDF generado.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;string></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".readInforme"><span class="type-signature">(async, static) </span>readInforme<span class="signature">(id, userId, userRole, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -637,6 +898,52 @@
 
         <tr>
             
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID del usuario que realiza la solicitud.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>userRole</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El rol del usuario que realiza la solicitud.</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>conn</code></td>
             
 
@@ -694,7 +1001,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line16">line 16</a>
+        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -768,7 +1075,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

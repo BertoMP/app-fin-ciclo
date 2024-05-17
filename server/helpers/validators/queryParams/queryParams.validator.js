@@ -53,6 +53,28 @@ export const validateQueryParams = [
 
 			return true;
 		}),
+	query('fechaCita')
+		.optional()
+		.isDate()
+		.withMessage('La fecha de cita debe ser una fecha válida.')
+		.custom((value) => {
+			if (value < new Date().toISOString().split('T')[0]) {
+				throw new Error('La fecha de cita no puede ser menor a la fecha actual.');
+			}
+
+			return true;
+		}),
+	query('especialistaId')
+		.optional()
+		.isNumeric()
+		.withMessage('El id debe ser un número.')
+		.custom((value) => {
+			if (value <= 0) {
+				throw new Error('El id debe ser un número positivo.');
+			}
+
+			return true;
+		}),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

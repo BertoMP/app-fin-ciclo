@@ -113,7 +113,7 @@ class UsuarioService {
 				case 2:
 					return await PacienteService.readPacienteByUserId(id, conn);
 				case 3:
-					return await EspecialistaService.readEspecialistaByUserId(id, conn);
+					return await EspecialistaService.readEspecialistaByUserId(id, true, conn);
 			}
 		} catch (err) {
 			throw err;
@@ -449,6 +449,10 @@ class UsuarioService {
 	 */
 	static async updateRefreshToken(refreshToken, conn = dbConn) {
 		try {
+			if (!refreshToken) {
+				throw new Error('No se ha proporcionado un token de refresco.');
+			}
+
 			const decodedToken = TokenService.verifyRefreshToken(refreshToken);
 
 			if (!decodedToken) {

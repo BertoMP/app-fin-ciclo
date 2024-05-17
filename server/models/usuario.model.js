@@ -41,8 +41,7 @@ class UsuarioModel {
 			'LEFT JOIN ' +
 			'	 especialista ON usuario.id = especialista.usuario_id ' +
 			'WHERE ' +
-			'   rol_id <> 1 AND ' +
-			'   (turno IS NULL OR turno <> "no-trabajando")';
+			'   rol_id <> 1 ';
 
 		let countQuery =
 			'SELECT ' +
@@ -56,8 +55,7 @@ class UsuarioModel {
 			'LEFT JOIN ' +
 			'		especialista ON usuario.id = especialista.usuario_id ' +
 			'WHERE ' +
-			'		rol_id <> 1 AND ' +
-			'		(turno IS NULL OR turno <> "no-trabajando")';
+			'		rol_id <> 1 ';
 
 		let queryParams = [];
 		let countParams = [];
@@ -399,7 +397,10 @@ class UsuarioModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async getRefreshTokenById(id, dbConn) {
-		const query = 'SELECT refresh_token FROM usuario WHERE id = ?';
+		const query =
+			'SELECT refresh_token ' +
+			'FROM usuario ' +
+			'WHERE id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);

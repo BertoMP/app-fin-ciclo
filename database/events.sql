@@ -20,9 +20,8 @@ CREATE EVENT limpiar_tabla_tokens_event
 DELIMITER ;
 
 
-DELIMITER //
-
 -- Evento para eliminar las tomas vencidas de la tabla toma y de paciente_toma_medicamento
+DELIMITER //
 CREATE EVENT eliminar_tomas_vencidas_event
     ON SCHEDULE EVERY 1 DAY
         STARTS CONCAT(CURRENT_DATE, ' 02:00:00')

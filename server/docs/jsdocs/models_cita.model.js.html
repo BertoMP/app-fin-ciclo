@@ -40,15 +40,15 @@ class CitaModel {
 	 * @static
 	 * @async
 	 * @memberof CitaModel
+	 * @param {number} userId - El ID del usuario.
 	 * @param {Object} searchValues - Los valores de búsqueda. Contiene el ID del paciente, la fecha de inicio y fin del rango de fechas, y la página de resultados.
 	 * @param {number} limit - El límite de resultados por página.
 	 * @param {Object} dbConn - La conexión a la base de datos.
 	 * @returns {Promise&lt;Object>} Un objeto que contiene los datos del paciente, un array de citas, el total de citas, la página actual y el total de páginas.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async fetchAll(searchValues, limit, dbConn) {
+	static async fetchAll(userId, searchValues, limit, dbConn) {
 		const page = searchValues.page;
-		const paciente_id = searchValues.paciente_id;
 		const fechaInicio = searchValues.fechaInicio;
 		const fechaFin = searchValues.fechaFin;
 		const offset = (page - 1) * limit;
@@ -95,7 +95,7 @@ class CitaModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [
-				paciente_id,
+				userId,
 				fechaInicio,
 				fechaFin,
 				`${limit}`,
@@ -109,7 +109,7 @@ class CitaModel {
 					'WHERE ' +
 					'   paciente_id = ? AND ' +
 					'   fecha BETWEEN ? AND ?',
-				[paciente_id, fechaInicio, fechaFin],
+				[userId, fechaInicio, fechaFin],
 			);
 			const total = count[0].count;
 			const actualPage = page;
@@ -121,7 +121,7 @@ class CitaModel {
 
 					if (!acumulador.datos_paciente) {
 						acumulador.datos_paciente = {
-							paciente_id: cita.paciente_id,
+							id: cita.paciente_id,
 							nombre: cita.paciente_nombre,
 							primer_apellido: cita.paciente_primer_apellido,
 							segundo_apellido: cita.paciente_segundo_apellido,
@@ -213,45 +213,54 @@ class CitaModel {
 			const [rows] = await dbConn.execute(query, [id]);
 			const cita = rows[0];
 
-			if (cita) {
-				const fecha = format(new Date(cita.fecha), 'dd-MM-yyyy');
-
-				return {
-					datos_paciente: {
-						paciente_id: cita.paciente_id,
-						nombre: cita.paciente_nombre,
-						primer_apellido: cita.paciente_primer_apellido,
-						segundo_apellido: cita.paciente_segundo_apellido,
-					},
-					datos_cita: {
-						id: cita.id,
-						fecha: fecha,
-						hora: cita.hora
-					},
-					datos_especialista: {
-						especialista_id: cita.especialista_id,
-						nombre: cita.especialista_nombre,
-						primer_apellido: cita.especialista_primer_apellido,
-						segundo_apellido: cita.especialista_segundo_apellido,
-						datos_especialidad: {
-							especialidad_id: cita.especialidad_id,
-							especialidad_nombre: cita.especialidad_nombre,
-						},
-						datos_consulta: {
-							consulta_id: cita.consulta_id,
-							consulta_nombre: cita.consulta_nombre,
-						},
-					},
-					informe_id: cita.informe_id,
-				};
+			if (!cita) {
+				return null;
 			}
 
-			return cita;
+			return {
+				datos_paciente: {
+					paciente_id: cita.paciente_id,
+					nombre: cita.paciente_nombre,
+					primer_apellido: cita.paciente_primer_apellido,
+					segundo_apellido: cita.paciente_segundo_apellido,
+				},
+				datos_cita: {
+					id: cita.id,
+					fecha: format(new Date(cita.fecha), 'dd-MM-yyyy'),
+					hora: cita.hora
+				},
+				datos_especialista: {
+					especialista_id: cita.especialista_id,
+					nombre: cita.especialista_nombre,
+					primer_apellido: cita.especialista_primer_apellido,
+					segundo_apellido: cita.especialista_segundo_apellido,
+					datos_especialidad: {
+						especialidad_id: cita.especialidad_id,
+						especialidad_nombre: cita.especialidad_nombre,
+					},
+					datos_consulta: {
+						consulta_id: cita.consulta_id,
+						consulta_nombre: cita.consulta_nombre,
+					},
+				},
+				informe_id: cita.informe_id,
+			};
 		} catch (err) {
 			throw new Error('Error al obtener la cita.');
 		}
 	}
 
+	/**
+	 * @method fetchByPacienteId
+	 * @description Método para obtener las citas de un especialista por su ID.
+	 * @static
+	 * @async
+	 * @memberof CitaModel
+	 * @param {number} especialista_id - El ID del especialista.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise&lt;Array>} Un array de citas del especialista.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
 	static async fetchByEspecialistaId(especialista_id, dbConn) {
 		const query =
 			'SELECT * ' +
@@ -331,6 +340,11 @@ class CitaModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [especialista_id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
 			return rows;
 		} catch (err) {
 			throw new Error('Error al obtener la agenda.');
@@ -345,7 +359,7 @@ class CitaModel {
 	 * @memberof CitaModel
 	 * @param {Object} cita - El objeto de la nueva cita.
 	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise&lt;number>} El ID de la nueva cita creada.
+	 * @returns {Promise&lt;{datos_cita: {fecha: string, hora: *, paciente_id: *, especialista_id: *}, id: number}>} El ID de la nueva cita creada.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async createCita(cita, dbConn) {
@@ -355,12 +369,21 @@ class CitaModel {
 		const especialista_id = cita.especialista_id;
 
 		const query =
-			'INSERT INTO cita (fecha, hora, paciente_id, especialista_id) VALUES (?, ?, ?, ?)';
+			'INSERT INTO cita (fecha, hora, paciente_id, especialista_id) ' +
+			'		VALUES (?, ?, ?, ?)';
 
 		try {
 			const [rows] = await dbConn.execute(query, [fecha, hora, paciente_id, especialista_id]);
 
-			return rows.insertId;
+			return {
+				id: rows.insertId,
+				datos_cita: {
+					paciente_id: paciente_id,
+					especialista_id: especialista_id,
+					fecha: format(new Date(fecha), 'dd-MM-yyyy'),
+					hora: hora,
+				}
+			};
 		} catch (err) {
 			throw new Error('Error al crear la cita.');
 		}
@@ -378,7 +401,11 @@ class CitaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteCita(id, dbConn) {
-		const query = 'DELETE FROM cita WHERE id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		cita ' +
+			'WHERE id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);
@@ -399,7 +426,13 @@ class CitaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async getInformesByUserId(paciente_id, dbConn) {
-		const query = 'SELECT informe_id FROM cita WHERE paciente_id = ?';
+		const query =
+			'SELECT ' +
+			'		informe_id ' +
+			'FROM ' +
+			'		cita ' +
+			'WHERE ' +
+			'		paciente_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [paciente_id]);
@@ -421,7 +454,12 @@ class CitaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteCitasByUserId(paciente_id, dbConn) {
-		const query = 'DELETE FROM cita WHERE paciente_id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		cita ' +
+			'WHERE ' +
+			'		paciente_id = ?';
 
 		try {
 			return await dbConn.execute(query, [paciente_id]);
@@ -438,11 +476,17 @@ class CitaModel {
 	 * @memberof CitaModel
 	 * @param {number} informe_id - El ID del informe.
 	 * @param {Object} dbConn - La conexión a la base de datos.
-	 * @returns {Promise&lt;number|null>} El ID del paciente o null si no se encuentra.
+	 * @returns {Promise&lt;{paciente_id: *}>} El ID del paciente o null si no se encuentra.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async fetchPacienteIdByInformeId(informe_id, dbConn) {
-		const query = 'SELECT paciente_id FROM cita WHERE informe_id = ?';
+		const query =
+			'SELECT ' +
+			'		paciente_id ' +
+			'FROM ' +
+			'		cita ' +
+			'WHERE ' +
+			'		informe_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [informe_id]);
@@ -451,9 +495,10 @@ class CitaModel {
 				return null;
 			}
 
-			return rows[0].paciente_id;
+			return {
+				paciente_id: rows[0].paciente_id
+			}
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al obtener el ID del paciente.');
 		}
 	}
@@ -471,7 +516,13 @@ class CitaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async updateInformeId(cita_id, informe_id, dbConn) {
-		const query = 'UPDATE cita SET informe_id = ? WHERE id = ?';
+		const query =
+			'UPDATE ' +
+			'		cita ' +
+			'SET ' +
+			'		informe_id = ? ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
 			return await dbConn.execute(query, [informe_id, cita_id]);
@@ -499,7 +550,7 @@ export default CitaModel;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 03 2024 23:47:53 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed May 15 2024 21:38:48 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>
