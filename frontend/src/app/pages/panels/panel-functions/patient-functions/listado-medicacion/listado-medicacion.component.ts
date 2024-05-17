@@ -76,11 +76,19 @@ export class ListadoMedicacionComponent implements OnInit {
     });
   }
 
-  downloadPrescripcion() {
-
-    this.medicacionesService.getDownloadMedicacion().subscribe((response: any) => {
-      const blob = new Blob([response]);
-     saveAs(blob,`prescripcion_${this.userData.nombre}_${this.userData.primer_apellido}_${this.userData.segundo_apellido}.pdf`);
+  downloadPrescripcion(): void {
+    this.medicacionesService
+      .getDownloadMedicacion()
+      .subscribe({
+        next: (response: any): void => {
+          const blob: Blob = new Blob([response])
+          saveAs(
+            blob,
+            `prescripcion_${this.userData.nombre}_${this.userData.primer_apellido}_${this.userData.segundo_apellido}.pdf`);
+        },
+        error: (error: string[]): void => {
+          this.errores = error;
+        }
     });
   }
 
