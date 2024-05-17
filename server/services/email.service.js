@@ -36,7 +36,8 @@ class EmailService {
 	 */
 	static async sendWelcomeEmail(to, name) {
 		const transporter = EmailService.#createTransporter();
-		const compiledTemplate = EmailService.#compileTemplate('welcome.handlebars', { name });
+		const compiledTemplate = EmailService.#compileTemplate(
+			'welcome.handlebars', { name });
 
 		const mailDetails = EmailService.#createMailDetails(
 			process.env.EMAIL_ACCOUNT,

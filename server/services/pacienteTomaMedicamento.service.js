@@ -21,7 +21,7 @@ class PacienteTomaMedicamentoService {
 	 * @async
 	 * @memberof PacienteTomaMedicamentoService
 	 * @param {number} pacienteId - El ID del paciente.
-	 * @param {Array} prescripciones - Un array de objetos de prescripción.
+	 * @param {Array} data - Un array de objetos de prescripción.
 	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
 	 * @returns {Promise<Object>} Un objeto que representa la prescripción creada.
 	 * @throws {Error} Si ocurre un error durante la creación de la prescripción, se lanza un error.
@@ -254,16 +254,27 @@ class PacienteTomaMedicamentoService {
 		}
 	}
 
+	/**
+	 * @method printPrescripcionPdf
+	 * @description Método para generar un archivo PDF de la receta de un paciente.
+	 * @static
+	 * @async
+	 * @memberof PacienteTomaMedicamentoService
+	 * @param {number} pacienteId - El ID del paciente.
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<String>} - La ruta del archivo PDF generado.
+	 * @throws {Error} Si ocurre un error durante la generación del archivo PDF, se lanza un error.
+	 */
 	static async printPrescripcionPdf(pacienteId, conn = dbConn) {
 		try {
-			const prescripcionesPaciente = await PacienteTomaMedicamentoModel.findPrescripciones(pacienteId, conn);
+			const prescripcionesPaciente =
+				await PacienteTomaMedicamentoModel.findPrescripciones(pacienteId, conn);
 
 			if (prescripcionesPaciente.prescripciones.length === 0) {
 				throw new Error('No hay recetas para este paciente.');
 			}
 
 			return await PdfService.generateReceta(prescripcionesPaciente);
-
 		} catch (err) {
 			throw err;
 		}

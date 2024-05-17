@@ -69,8 +69,10 @@ class InformeController {
 		const user_role = req.user_role;
 		const informe_id = parseInt(req.params.informe_id);
 
+		let file;
+
 		try {
-			const file = await InformeService.printInformePDF(informe_id, req.user_id, user_role);
+			file = await InformeService.printInformePDF(informe_id, req.user_id, user_role);
 
 			res.status(200).download(file, async (err) => {
 				await PdfService.destroyPDF(file);
@@ -79,6 +81,10 @@ class InformeController {
 				}
 			});
 		} catch (err) {
+			if (file) {
+				await PdfService.destroyPDF(file);
+			}
+
 			return res.status(500).json({
 				errors: [err.message],
 			});

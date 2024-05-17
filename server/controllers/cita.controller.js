@@ -158,8 +158,10 @@ class CitaController {
 		const citaId = req.params.cita_id;
 		const userId = req.user_id;
 
+		let file;
+
 		try {
-			const file = await CitaService.printCitaPDF(userId, citaId);
+			file = await CitaService.printCitaPDF(userId, citaId);
 
 			res.status(200).download(file, async (err) => {
 				await PdfService.destroyPDF(file);
@@ -168,6 +170,10 @@ class CitaController {
 				}
 			});
 		} catch (err) {
+			if (file) {
+				await PdfService.destroyPDF(file);
+			}
+
 			if (err.message === 'La cita que intenta obtener no existe.') {
 				return res.status(404).json({
 					errors: [err.message],

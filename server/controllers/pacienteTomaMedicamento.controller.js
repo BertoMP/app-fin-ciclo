@@ -201,9 +201,10 @@ class PacienteTomaMedicamentoController {
 		}
 
 		paciente_id = parseInt(paciente_id);
+		let file;
 
 		try {
-			const file = await PacienteTomaMedicamentoService.printPrescripcionPdf(paciente_id);
+			file = await PacienteTomaMedicamentoService.printPrescripcionPdf(paciente_id);
 
 			res.status(200).download(file, async (err) => {
 				await PdfService.destroyPDF(file);
@@ -212,6 +213,10 @@ class PacienteTomaMedicamentoController {
 				}
 			});
 		} catch (error) {
+			if (file) {
+				await PdfService.destroyPDF(file);
+			}
+
 			if (error.message === 'No hay recetas para este paciente.') {
 				return res.status(404).json({
 					errors: [error.message],
