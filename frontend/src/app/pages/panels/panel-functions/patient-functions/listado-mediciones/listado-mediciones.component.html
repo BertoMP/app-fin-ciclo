@@ -60,7 +60,8 @@
             <tr>
               <td>{{medicion.hora}}</td>
               <td>{{medicion.fecha}}</td>
-              <td *ngFor="let propiedad of campos" [ngClass]="getDangerClass(medicion.datos_toma[propiedad], propiedad)">{{ medicion.datos_toma[propiedad]}}</td>            </tr>
+              <td *ngFor="let propiedad of campos" [ngClass]="getDangerClass(medicion.datos_toma[propiedad], propiedad)">{{ medicion.datos_toma[propiedad]}}</td>
+            </tr>
           </ng-container>
         </tbody>
       </table>
