@@ -47,11 +47,12 @@ export const getSearchValues = (req, type) => {
 			};
 		case 'medicalDateList':
 			const fechaInicioCita = req.query.fechaInicioCita
-				? tz(req.query.fechaInicio, 'Europe/Madrid').format('YYYY-MM-DD')
+				? tz(req.query.fechaInicioCita, 'Europe/Madrid').format('YYYY-MM-DD')
 				: tz().startOf('year').format('YYYY-MM-DD');
 			const fechaFinCita = req.query.fechaFinCita
-				? tz(req.query.fechaFin, 'Europe/Madrid').format('YYYY-MM-DD')
+				? tz(req.query.fechaFinCita, 'Europe/Madrid').format('YYYY-MM-DD')
 				: tz().add(3, 'year').format('YYYY-MM-DD');
+
 			return {
 				page: page,
 				limit: limit,
