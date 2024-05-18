@@ -57,11 +57,11 @@ class CitaService {
 
 			const prev =
 				page > 1
-					? `/cita/${paciente_id}?page=${page - 1}&limit=${limit}${query}`
+					? `/cita/${userId}?page=${page - 1}&limit=${limit}${query}`
 					: null;
 			const next =
 				page < paginas_totales
-					? `/cita/${paciente_id}?page=${page + 1}&limit=${limit}${query}`
+					? `/cita/${userId}?page=${page + 1}&limit=${limit}${query}`
 					: null;
 			const result_min = (page - 1) * limit + 1;
 			const result_max =

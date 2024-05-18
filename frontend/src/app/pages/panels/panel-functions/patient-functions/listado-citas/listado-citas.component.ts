@@ -3,17 +3,28 @@ import { CitasListModel } from '../../../../../core/interfaces/citas-list.model'
 import { Observable, Subject, debounceTime } from 'rxjs';
 import { CitasService } from '../../../../../core/services/citas.service';
 import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgForOf, NgIf } from '@angular/common';
 import { DatosPacienteModel } from '../../../../../core/interfaces/datos-paciente.model';
-import { CitasListedModel } from '../../../../../core/interfaces/citas-listed.model';
 import { CitasDataModel } from '../../../../../core/interfaces/citas-data.model';
 import Swal from 'sweetalert2';
 import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { Select2Data, Select2Module } from 'ng-select2-component';
 
 @Component({
   selector: 'app-listado-citas',
   standalone: true,
-  imports: [LoadingSpinnerComponent, NgFor, NgIf,RouterLink],
+  imports: [ 
+    NgxPaginationModule,
+    NgFor,
+    NgForOf,
+    NgIf,
+    FormsModule,
+    RouterLink,
+    LoadingSpinnerComponent,
+    Select2Module],
   templateUrl: './listado-citas.component.html',
   styleUrl: './listado-citas.component.scss'
 })
@@ -26,51 +37,98 @@ export class ListadoCitasComponent {
 
   isUserLoggedIn: boolean = false;
   userId: number;
-  private getMedsSubject: Subject<void> = new Subject<void>();
+
+  fechaFin: string;
+  fechaInicio: string;
+
+  rutaActual: string;
+  nextPageUrl: string;
+  previousPageUrl: string;
+  actualPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
+  errores: string[];
+  datos: string[];
+  rango: number;
+  resultMin:number;
+  resultMax:number;
+
+  perPage: string = "10";
+
+  perPageOptions: Select2Data = [
+    {
+      value: 5,
+      label: '5'
+    },
+    {
+      value: 10,
+      label: '10'
+    },
+    {
+      value: 15,
+      label: '15'
+    },
+    {
+      value: 20,
+      label: '20'
+    }
+  ];
+
+  private getCitasSubject: Subject<void> = new Subject<void>();
 
   constructor(private citasService: CitasService) { }
 
-
-  errores: string[];
-
   ngOnInit(): void {
+    this.actualPage = 1;
+    this.citas = [];
+    this.errores = [];
 
-    this.getMedsSubject
+    this.getCitasSubject
       .pipe(
         debounceTime(500)
       )
       .subscribe({
         next: () => {
-          this.getMedicaciones();
+          this.getCitas();
         },
-        error: (error: string[]) => {
+        error: (error) => {
           this.errores = error;
         }
       });
     this.initialLoad = true;
-    this.getMedsSubject.next();
+    this.getCitasSubject.next();
   }
 
-  getMedicaciones() {
-    let request: Observable<CitasListModel> = this.citasService.getCitas();
+  getCitas() {
+    this.citas = [];
+    this.errores = [];
+
+    let request: Observable<CitasListModel> = this.citasService.getCitas(
+      this.fechaInicio,
+      this.fechaFin,
+      parseInt(this.perPage),
+      this.actualPage,
+    );
 
     request.subscribe({
       next: (response: CitasListModel) => {
-        this.citas = response.citas[0].citas;
-        this.paciente = response.citas[0].datos_paciente;
-
-        console.log(response);
-
-
+        this.#showResults(response);
         this.dataLoaded = true;
       },
-      error: (error: string[]) => {
-        this.errores = error;
-      },
+      error: (error: HttpErrorResponse) => {
+        this.dataLoaded = true;
+
+        if (error.error.errors) {
+          this.errores = error.error.errors;
+        } else {
+          this.errores = ['Ha ocurrido un error durante el proceso'];
+        }
+      }
     });
   }
 
-  cancelarCita(idCita:number) {
+  cancelarCita(idCita: number) {
     let request: Observable<CitasListModel> = this.citasService.cancelarCita(idCita);
 
     request.subscribe({
@@ -81,8 +139,8 @@ export class ListadoCitasComponent {
           text: 'Has conseguido eliminar la especialidad correctamente',
           icon: 'success',
           width: '50%'
-        }).then(()=>{
-          this.getMedicaciones();
+        }).then(() => {
+          this.getCitas();
         })
       },
       error: (error: string[]) => {
@@ -91,7 +149,7 @@ export class ListadoCitasComponent {
     });
   }
 
-  confirmarCancelar(idCita:number){
+  confirmarCancelar(idCita: number) {
     Swal.fire({
       text: '¿Estás seguro que quieres cancelar esta cita?',
       confirmButtonText: 'Confirmar',
@@ -108,8 +166,8 @@ export class ListadoCitasComponent {
 
   comprobarFecha(hora: string, fecha: string) {
     let fechaActual = new Date();
-    let fechaConsulta=this.convertirFecha(fecha,hora);
-    
+    let fechaConsulta = this.convertirFecha(fecha, hora);
+
     if (fechaActual > fechaConsulta)
       return false;
     else
@@ -130,5 +188,37 @@ export class ListadoCitasComponent {
 
     return new Date(year, month, day, hour, minute, second);
   }
+
+  updateFilters():void {
+    if (this.initialLoad) {
+      this.dataLoaded = false;
+      this.actualPage = 1;
+      this.getCitasSubject.next();
+    }
+  }
+
+  changePage(page: number) {
+    console.log(page);
+    if (this.initialLoad) {
+      this.dataLoaded = false;
+      this.actualPage = page;
+      this.getCitasSubject.next();
+    }
+  }
+
+  #showResults(data) {
+    console.log(data);
+    this.nextPageUrl = data.next;
+    this.previousPageUrl = data.prev;
+    this.totalPages = data.paginas_totales;
+    this.resultMin = data.result_min;
+    this.resultMax = data.result_max;
+    this.totalItems = data.cantidad_citas;
+    this.itemsPerPage = data.items_pagina;
+    this.actualPage = data.pagina_actual;
+    this.citas = data.citas[0].citas;
+    this.paciente = data.citas[0].datos_paciente;
+  }
+
 
 }

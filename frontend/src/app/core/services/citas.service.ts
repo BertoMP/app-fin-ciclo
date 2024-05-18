@@ -13,8 +13,22 @@ export class CitasService {
 
   constructor(private http: HttpClient) { }
 
-  getCitas(): Observable<CitasListModel> {
-    return this.http.get<CitasListModel>(`${this.baseUrl}/cita`);
+  getCitas(fechaInicio: string, fechaFin: string, perPage: number, page: number) {
+    let query: string = `?page=${page}`;
+
+    if (fechaInicio) {
+      query += `&fechaInicio=${fechaInicio}`;
+    }
+
+    if (fechaFin) {
+      query += `&fechaFin=${fechaFin}`;
+    }
+
+    if (perPage) {
+      query += `&limit=${perPage}`;
+    }
+
+    return this.http.get<CitasListModel>(`${this.baseUrl}/cita${query}`);
   }
 
   cancelarCita(cita_id: number): Observable<CitasListModel> {

@@ -37,10 +37,11 @@ class CitaController {
 				pagina_actual: citas.pagina_actual,
 				paginas_totales: citas.paginas_totales,
 				cantidad_citas: citas.cantidad_citas,
-				rango: citas.rango,
-				fechaInicio: citas.fechaInicio,
-				fechaFin: citas.fechaFin,
-				limit: citas.limit,
+				result_min: citas.result_min,
+				result_max:citas.result_max,
+				fecha_inicio: citas.fecha_inicio,
+				fecha_fin: citas.fecha_fin,
+				items_pagina: citas.items_pagina,
 				citas: citas.resultados,
 			});
 		} catch (err) {
