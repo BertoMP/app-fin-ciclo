@@ -45,6 +45,48 @@ class EspecialistaModel {
 	}
 
 	/**
+	 * @method findByEspecialidadId
+	 * @description Método para obtener los especialistas por su ID de especialidad.
+	 * @static
+	 * @async
+	 * @memberof EspecialistaModel
+	 * @param {number} especialidad_id - El ID de especialidad del especialista.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} Los especialistas.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async findByEspecialidadId(especialidad_id, dbConn) {
+		const query =
+			'SELECT ' +
+			'   usuario.id, ' +
+			'   usuario.nombre AS usuario_nombre, ' +
+			'   primer_apellido, ' +
+			'   segundo_apellido, ' +
+			'   turno ' +
+			'FROM ' +
+			'   especialista ' +
+			'INNER JOIN ' +
+			'   usuario ON especialista.usuario_id = usuario.id ' +
+			'WHERE ' +
+			'   especialidad_id = ? ' +
+			'   AND turno <> "no-trabajando"' +
+			'ORDER BY ' +
+			'   usuario.nombre ASC';
+
+		try {
+			const [rows] = await dbConn.execute(query, [especialidad_id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return rows;
+		} catch (err) {
+			throw new Error('Error al obtener los especialistas.');
+		}
+	}
+
+	/**
 	 * @method findByNumColegiado
 	 * @description Método para obtener un especialista por su número de colegiado.
 	 * @static

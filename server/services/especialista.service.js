@@ -25,6 +25,32 @@ class EspecialistaService {
 	}
 
 	/**
+	 * @method readEspecialistasByEspecialidad
+	 * @description Método para leer los especialistas por su ID de especialidad.
+	 * @static
+	 * @async
+	 * @memberOf EspecialistaService
+	 * @param {number} especialidad_id - El ID de la especialidad.
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} Los especialistas.
+	 * @throws {Error} Si no se encuentran especialistas, se lanzará un error.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async readEspecialistasByEspecialidad(especialidad_id, conn = dbConn) {
+		try {
+			const especialistas = await EspecialistaModel.findByEspecialidadId(especialidad_id, conn);
+
+			if (!especialistas) {
+				throw new Error('Especialistas no encontrados.');
+			}
+
+			return especialistas;
+		} catch (err) {
+			throw err;
+		}
+	}
+
+	/**
 	 * @method readEspecialistaByUserId
 	 * @description Método para leer un especialista por su ID de usuario.
 	 * @static
