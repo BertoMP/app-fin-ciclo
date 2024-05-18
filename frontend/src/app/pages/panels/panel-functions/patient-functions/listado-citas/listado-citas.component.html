@@ -24,9 +24,18 @@
       <p>{{ errores[0] }}</p>
     </section>
 } @else if (!citas.length) {
-<section class="no-results">
-    <p>Actualmente no has acudido a ninguna cita.</p>
-</section>
+  @if (fechaInicio || fechaFin) {
+    <section class="no-results">
+        <p>No se encontraron resultados con esos criterios de búsqueda.</p>
+        <figure>
+            <img src="assets/img/search-not-found.png" alt="No se encontraron resultados">
+        </figure>
+    </section>
+  } @else {
+    <section class="no-results">
+        <p>No se encontraron citas registradas.</p>
+    </section>
+  }
 } @else {
 <section class="name-download">
     <p>Estas son tus citas, {{paciente.nombre}}</p>
@@ -34,42 +43,42 @@
 <section class="medication-table">
     <div class="info">
         <small>Mostrando {{ resultMin }} - {{ resultMax }} de {{ totalItems }} citas.</small>
-      </div>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Hora</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Consulta</th>
-                    <th scope="col">Especialista</th>
-                    <th scope="col">Especialidad</th>
-                    <th scope="col">Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngFor="let cita of (citas | paginate: { id: 'citasListPagination', itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems })">
-                    <tr>
-                        <td>{{cita.datos_cita.hora}}</td>
-                        <td>{{cita.datos_cita.fecha}}</td>
-                        <td>{{cita.datos_cita.datos_consulta.consulta_nombre}}</td>
-                        <td>{{cita.datos_cita.datos_especialista.nombre}}
-                            {{cita.datos_cita.datos_especialista.primer_apellido}}
-                            {{cita.datos_cita.datos_especialista.segundo_apellido}}</td>
-                        <td>{{cita.datos_cita.datos_especialista.datos_especialidad.especialidad_nombre}}</td>
-                        <td>
-                            @if(comprobarFecha(cita.datos_cita.hora,cita.datos_cita.fecha)){
-                            <button type="button" class="btn btn-danger"
-                                (click)="confirmarCancelar(cita.datos_cita.id)">Cancelar</button>
-                            }@else{
-                            <button type="button" class="btn btn-primary"
-                                routerLink="../ver-cita/{{cita.datos_cita.id}}">Ver Cita</button>
-                            }
-                        </td>
-                    </tr>
-                </ng-container>
-            </tbody>
-        </table>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr>
+          <th scope="col">Hora</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Consulta</th>
+          <th scope="col">Especialista</th>
+          <th scope="col">Especialidad</th>
+          <th scope="col">Acción</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let cita of (citas | paginate: { id: 'citasListPagination', itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems })">
+          <tr>
+            <td>{{cita.datos_cita.hora}}</td>
+            <td>{{cita.datos_cita.fecha}}</td>
+            <td>{{cita.datos_cita.datos_consulta.consulta_nombre}}</td>
+            <td>{{cita.datos_cita.datos_especialista.nombre}}
+              {{cita.datos_cita.datos_especialista.primer_apellido}}
+              {{cita.datos_cita.datos_especialista.segundo_apellido}}</td>
+            <td>{{cita.datos_cita.datos_especialista.datos_especialidad.especialidad_nombre}}</td>
+            <td>
+              @if(comprobarFecha(cita.datos_cita.hora,cita.datos_cita.fecha)){
+                <button type="button" class="btn btn-danger"
+                        (click)="confirmarCancelar(cita.datos_cita.id)">Cancelar</button>
+              }@else{
+                <button type="button" class="btn btn-primary"
+                        routerLink="../ver-cita/{{cita.datos_cita.id}}">Ver Cita</button>
+              }
+            </td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
     </div>
     @if (previousPageUrl || nextPageUrl) {
         <div class="pagination">

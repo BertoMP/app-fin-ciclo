@@ -78,7 +78,7 @@ export class VerInformeComponent {
   descargarInforme() {
     this.informeService.getDownloadInforme(this.informe.datos_informe.id).subscribe((response: any) => {
       const blob = new Blob([response]);
-      saveAs(blob, `cita_${this.informe.datos_paciente.datos_personales.nombre}_${this.informe.datos_paciente.datos_personales.primer_apellido}_${this.informe.datos_paciente.datos_personales.segundo_apellido}.pdf`);
+      saveAs(blob, `informe_${this.informe.datos_paciente.datos_personales.nombre}_${this.informe.datos_paciente.datos_personales.primer_apellido}_${this.informe.datos_paciente.datos_personales.segundo_apellido}.pdf`);
     });
   }
 }

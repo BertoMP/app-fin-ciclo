@@ -36,15 +36,22 @@
             <div class="d-flex justify-content-between mt-4">
                 <button type="button" routerLink="/listado-de-especialistas/{{cita.datos_especialista.especialista_id}}"
                     class="btn btn-primary">
-                    Consultar Información Especialista
+                    Ver especialista
                 </button>
                 @if(cita.informe_id){
-                <button type="button" routerLink="../../ver-informe/{{cita.informe_id}}" class="btn btn-secondary">
+                <button type="button" routerLink="../../ver-informe/{{cita.informe_id}}" class="btn btn-primary">
                     Consultar Informe
+                </button>
+                } @else {
+                <button type="button" class="btn btn-primary" (click)="downloadCita()">
+                  <i class="bi bi-file-pdf-fill"></i> Descargar comprobante
                 </button>
                 }
             </div>
         </div>
     </div>
+  <section>
+    <button type="button" class="btn btn-primary" (click)="goBack()">Volver</button>
+  </section>
 </div>
 }

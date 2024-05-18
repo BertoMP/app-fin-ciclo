@@ -1,0 +1,26 @@
+@import "bootstrap-icons";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+
+  i {
+    color: red;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .medico-sm {
+    display: none;
+  }
+}

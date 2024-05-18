@@ -5,6 +5,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CitaSpecificDataModel } from '../../../../../core/interfaces/cita-specific-data.model';
 import { DatosPacienteModel } from '../../../../../core/interfaces/datos-paciente.model';
 import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
+import {Location} from "@angular/common";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: 'app-ver-cita',
@@ -26,7 +28,9 @@ export class VerCitaComponent {
   id: number;
   private getMedsSubject: Subject<void> = new Subject<void>();
 
-  constructor(private citasService: CitasService, private activatedRoute: ActivatedRoute,) { }
+  constructor(private citasService: CitasService,
+              private activatedRoute: ActivatedRoute,
+              private location: Location) { }
 
 
   errores: string[];
@@ -68,4 +72,23 @@ export class VerCitaComponent {
     });
   }
 
+  downloadCita(): void {
+    this.citasService
+      .downloadCita(this.id)
+      .subscribe({
+        next: (response: any): void => {
+          const blob: Blob = new Blob([response])
+          saveAs(
+            blob,
+            `comprobante_cita.pdf`);
+        },
+        error: (error: string[]): void => {
+          this.errores = error;
+        }
+      });
+  }
+
+  goBack() {
+    this.location.back();
+  }
 }

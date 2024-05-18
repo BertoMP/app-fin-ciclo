@@ -46,4 +46,7 @@ export class CitasService {
     return this.http.get<Object>(`${this.baseUrl}/cita/agenda`);
   }
 
+  downloadCita(cita_id: number): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/cita/pdf/${cita_id}`, { responseType: 'blob' });
+  }
 }
