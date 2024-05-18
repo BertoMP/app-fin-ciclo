@@ -30,7 +30,7 @@ import {
   styleUrl: './refresh-password.component.scss'
 })
 export class RefreshPasswordComponent implements OnInit, OnDestroy {
-  contactForm: FormGroup;
+  refreshPassForm: FormGroup;
   sendedAttempt: boolean = false;
   contrasenasIguales: boolean = false;
   errores: string[] = [];
@@ -48,7 +48,7 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
       this.token = params['token'] || null;
     });
 
-    this.contactForm = new FormGroup<any>({
+    this.refreshPassForm = new FormGroup<any>({
       'password': new FormControl(
         null,
         [
@@ -74,7 +74,7 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
     this.sendedAttempt = true;
     this.checkPasswordRecover();
 
-    if (this.contactForm.invalid || !this.contrasenasIguales) {
+    if (this.refreshPassForm.invalid || !this.contrasenasIguales) {
       Swal.fire({
         title: 'Error',
         text: 'No se cumple con los requisitos especificados',
@@ -113,15 +113,15 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
   }
 
   checkPasswordRecover(): void {
-    const password = this.contactForm.get('password').value;
-    const check_password = this.contactForm.get('checkPassword').value;
+    const password = this.refreshPassForm.get('password').value;
+    const check_password = this.refreshPassForm.get('checkPassword').value;
     this.contrasenasIguales = (password === check_password && password != null && check_password != null) ? true : false;
   }
 
   private generatePassword(): RefreshPasswordModel {
     return {
-      password: this.contactForm.get('password').value,
-      confirm_password: this.contactForm.get('checkPassword').value,
+      password: this.refreshPassForm.get('password').value,
+      confirm_password: this.refreshPassForm.get('checkPassword').value,
       token: this.token
     }
   }
