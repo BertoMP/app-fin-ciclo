@@ -482,7 +482,13 @@ class UsuarioModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteRefreshToken(userId, dbConn) {
-		const query = 'UPDATE usuario SET refresh_token = NULL WHERE id = ?';
+		const query =
+			'UPDATE ' +
+			'		usuario ' +
+			'SET ' +
+			'		refresh_token = NULL ' +
+			'WHERE ' +
+			'		id = ?';
 
 		try {
 			return await dbConn.execute(query, [userId]);

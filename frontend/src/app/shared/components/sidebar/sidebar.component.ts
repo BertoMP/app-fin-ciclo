@@ -45,12 +45,12 @@ export class SidebarComponent {
     this.closeSidebar.emit();
   }
 
-  onLogout() {
+  onLogout(): void {
     this.auth.logout().subscribe({
-      next: () => {
+      next: (): void => {
         this.router.navigate(['/'])
-          .then(() => {})
-          .catch(() => {});
+          .then((): void => {})
+          .catch((): void => {});
       },
       error: (error) => {
         console.error(error);
