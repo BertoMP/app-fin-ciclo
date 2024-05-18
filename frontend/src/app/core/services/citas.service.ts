@@ -13,15 +13,15 @@ export class CitasService {
 
   constructor(private http: HttpClient) { }
 
-  getCitas(fechaInicio: string, fechaFin: string, perPage: number, page: number) {
+  getCitas(fechaInicioCita: string, fechaFinCita: string, perPage: number, page: number) {
     let query: string = `?page=${page}`;
 
-    if (fechaInicio) {
-      query += `&fechaInicio=${fechaInicio}`;
+    if (fechaInicioCita) {
+      query += `&fechaInicioCita=${fechaInicioCita}`;
     }
 
-    if (fechaFin) {
-      query += `&fechaFin=${fechaFin}`;
+    if (fechaFinCita) {
+      query += `&fechaFinCita=${fechaFinCita}`;
     }
 
     if (perPage) {

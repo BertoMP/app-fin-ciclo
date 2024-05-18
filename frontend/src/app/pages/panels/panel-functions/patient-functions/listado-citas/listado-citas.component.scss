@@ -1,3 +1,122 @@
 th,td{
     text-align: center;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    pagination-controls{
+      margin-top: 1rem;
+      margin-bottom: 0;
+    }
+
+    ::ng-deep .ngx-pagination {
+      .current {
+        background-color: lightblue;
+        color: black;
+        font-size: 1.2rem;
+        border-radius: 50%;
+      }
+    }}
+    section {
+        width: 100%;
+    
+        &.filter-buttons {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+    
+          @media all and (max-width: 1300px) {
+            flex-direction: column;
+          }
+        }
+    
+        article {
+          padding: 1rem;
+    
+          @media all and (max-width: 500px) {
+            padding: 0.5rem;
+          }
+    
+          label {
+            font-size: 1.2rem;
+            font-weight: 500;
+            display: block;
+    
+            @media all and (max-width: 1000px) {
+              font-size: 1rem;
+              text-align: center;
+            }
+          }
+    
+          input {
+            width: 100%;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.2rem;
+          }
+    
+          &.filters {
+            display: flex;
+            align-items: center;
+            width: 70%;
+    
+            @media all and (max-width: 1300px) {
+              width: 100%;
+            }
+    
+            @media all and (max-width: 1000px) {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              grid-template-areas:
+               "init end"
+               "items .";
+            }
+    
+            @media all and (max-width: 500px) {
+              display: grid;
+              grid-template-columns: 1fr;
+              padding: 0;
+              grid-template-areas:
+                "init"
+                "end"
+                "items";
+            }
+    
+            .init-date-filter, .end-date-filter {
+              width: 100%;
+            }
+    
+            .init-date-filter {
+              grid-area: init;
+            }
+    
+            .end-date-filter {
+              grid-area: end;
+            }
+    
+            .per-page-filter {
+              width: 100%;
+    
+              @media all and (max-width: 1000px) {
+                grid-area: items;
+              }
+            }
+    
+            ::ng-deep .select2-selection--single {
+              font-size: 1.2rem;
+              width: 100%;
+              border-radius: 5px;
+              padding: 20px;
+              text-align: center;
+              align-items: center;
+            }
+    
+            #per-page {
+              --select2-selection-border-color: #ccc;
+            }
+          }
+        }}    
