@@ -20,8 +20,8 @@ class CitaModel {
 	 */
 	static async fetchAll(userId, searchValues, dbConn) {
 		const page = searchValues.page;
-		const fechaInicio = searchValues.fechaInicio;
-		const fechaFin = searchValues.fechaFin;
+		const fechaInicioCita = searchValues.fechaInicioCita;
+		const fechaFinCita = searchValues.fechaFinCita;
 		const limit = searchValues.limit;
 		const offset = (page - 1) * limit;
 
@@ -68,8 +68,8 @@ class CitaModel {
 		try {
 			const [rows] = await dbConn.execute(query, [
 				userId,
-				fechaInicio,
-				fechaFin,
+				fechaInicioCita,
+				fechaFinCita,
 				`${limit}`,
 				`${offset}`,
 			]);
@@ -81,7 +81,7 @@ class CitaModel {
 					'WHERE ' +
 					'   paciente_id = ? AND ' +
 					'   fecha BETWEEN ? AND ?',
-				[userId, fechaInicio, fechaFin],
+				[userId, fechaInicioCita, fechaFinCita],
 			);
 			const total = count[0].count;
 			const actualPage = page;

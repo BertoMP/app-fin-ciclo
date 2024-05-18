@@ -32,8 +32,8 @@ class CitaService {
 	static async readCitas(userId, searchValues, conn = dbConn) {
 		try {
 			const page = searchValues.page;
-			const fechaInicio = searchValues.fechaInicio;
-			const fechaFin = searchValues.fechaFin;
+			const fechaInicioCita = searchValues.fechaInicioCita;
+			const fechaFinCita = searchValues.fechaFinCita;
 			const limit = searchValues.limit;
 
 			const {
@@ -49,12 +49,12 @@ class CitaService {
 
 			let query = '';
 
-			if (fechaInicio) {
-				query += `&fechaInicio=${fechaInicio}`;
+			if (fechaInicioCita) {
+				query += `&fechaInicio=${fechaInicioCita}`;
 			}
 
-			if (fechaFin) {
-				query += `&fechaFin=${fechaFin}`;
+			if (fechaFinCita) {
+				query += `&fechaFin=${fechaFinCita}`;
 			}
 
 			const prev =
@@ -70,8 +70,8 @@ class CitaService {
 				resultados[0].citas.length === limit
 					? page * limit
 					: (page - 1) * limit + resultados[0].citas.length;
-			const fecha_inicio = tz(fechaInicio).format('DD-MM-YYYY');
-			const fecha_fin = tz(fechaFin).format('DD-MM-YYYY');
+			const fecha_inicio = tz(fechaInicioCita, 'Europe/Madrid').format('DD-MM-YYYY');
+			const fecha_fin = tz(fechaFinCita, 'Europe/Madrid').format('DD-MM-YYYY');
 			const items_pagina = parseInt(limit);
 
 			return {

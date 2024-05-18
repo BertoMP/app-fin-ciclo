@@ -45,6 +45,19 @@ export const getSearchValues = (req, type) => {
 				role: role_id,
 				search: search,
 			};
+		case 'medicalDateList':
+			const fechaInicioCita = req.query.fechaInicioCita
+				? tz(req.query.fechaInicio, 'Europe/Madrid').format('YYYY-MM-DD')
+				: tz().startOf('year').format('YYYY-MM-DD');
+			const fechaFinCita = req.query.fechaFinCita
+				? tz(req.query.fechaFin, 'Europe/Madrid').format('YYYY-MM-DD')
+				: tz().add(3, 'year').format('YYYY-MM-DD');
+			return {
+				page: page,
+				limit: limit,
+				fechaInicioCita: fechaInicioCita,
+				fechaFinCita: fechaFinCita
+			};
 		case 'medicalDate':
 			const fecha = req.query.fechaCita;
 			const especialistaId = req.query.especialistaId

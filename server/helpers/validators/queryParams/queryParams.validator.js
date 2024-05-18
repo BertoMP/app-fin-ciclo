@@ -53,10 +53,32 @@ export const validateQueryParams = [
 
 			return true;
 		}),
+	query('fechaInicioCita')
+		.optional()
+		.isDate()
+		.withMessage('La fecha de inicio debe ser una fecha válida.'),
+	query('fechaFinCita')
+		.optional()
+		.isDate()
+		.withMessage('La fecha de fin debe ser una fecha válida.')
+		.custom((value, { req }) => {
+			if (value < req.query.fechaInicioCita) {
+				throw new Error('La fecha de fin no puede ser menor a la fecha de inicio.');
+			}
+
+			return true;
+		}),
 	query('fechaCita')
 		.optional()
 		.isDate()
-		.withMessage('La fecha de cita debe ser una fecha válida.'),
+		.withMessage('La fecha de cita debe ser una fecha válida.')
+		.custom((value) => {
+			if (value < new Date().toISOString().split('T')[0]) {
+				throw new Error('La fecha de cita no puede ser menor a la fecha actual.');
+			}
+
+			return true;
+		}),
 	query('especialistaId')
 		.optional()
 		.isNumeric()
