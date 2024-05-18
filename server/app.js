@@ -15,6 +15,9 @@ import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import apiRoutes from './routes/api.js';
+import morgan from 'morgan';
+import rfs from 'rotating-file-stream';
+import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,12 +29,24 @@ const corsOptions = {
 	allowedHeaders: process.env.CORS_ALLOWED_HEADERS,
 };
 
+// Crear un stream rotativo
+const accessLogStream = rfs.createStream('access.log', {
+	interval: '1d',
+	path: path.join(__dirname, 'log'),
+});
+
 // Creación la aplicación Express
 export const app = express();
 
 // Configuración del middleware de Express para analizar el cuerpo de las solicitudes
 app.use(json({ limit: '50mb' }));
 app.use(urlencoded({ limit: '50mb', extended: true }));
+
+// Configurar morgan para usar el stream rotativo que registra las solicitudes HTTP
+app.use(morgan('combined', { stream: accessLogStream }));
+
+// Configurar morgan para usar la consola
+app.use(morgan('combined'));
 
 // Configuración de Swagger UI para servir la documentación de la API
 app.use('/api-docs', serve, setup(swaggerDocument));

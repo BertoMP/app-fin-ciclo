@@ -100,10 +100,12 @@ JWT.
 - _mocha_: Framework de pruebas para Node.js.
 - _moment-timezone_: Librería que permite trabajar con fechas y horas en diferentes
 zonas horarias.
+- _morgan_: Middleware de Express.js que permite la generación de logs de peticiones HTTP.
 - _mysql2_: Librería que permite la conexión a bases de datos MySQL.
 - _nodemailer_: Librería que permite enviar correos electrónicos desde Node.js.
 - _puppeteer_: Librería que permite la generación de PDFs a partir de páginas web.
 - _qrcode_: Librería que permite la generación de códigos QR.
+- _rotating-file-stream_: Librería que permite la rotación de archivos de logs.
 - _supertest_: Librería que permite realizar pruebas de integración en Node.js.
 - _swagger-jsdoc_: Librería que permite la generación de documentación Swagger.
 - _swagger-ui-express_: Middleware de Express.js que permite la visualización de 

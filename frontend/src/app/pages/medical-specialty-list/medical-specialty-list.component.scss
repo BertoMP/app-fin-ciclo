@@ -18,3 +18,55 @@ h2 {
   gap: 2rem;
   justify-content: center;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  pagination-controls{
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  ::ng-deep .ngx-pagination {
+    .current {
+      background-color: lightblue;
+      color: black;
+      font-size: 1.2rem;
+      border-radius: 50%;
+
+      @media all and (max-width: 600px) {
+        font-size: 1rem;
+      }
+    }
+
+    li {
+      a {
+        font-size: 1rem;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        @media all and (max-width: 600px) {
+          font-size: 0.8rem;
+        }
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
+
+      &.pagination-next,
+      &.pagination-previous{
+        &:hover {
+          a {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+  }
+}

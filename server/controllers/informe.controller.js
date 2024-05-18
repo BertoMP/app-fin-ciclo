@@ -2,12 +2,47 @@
 import InformeService from '../services/informe.service.js';
 import CitaService from '../services/cita.service.js';
 import PdfService from '../services/pdf.service.js';
+import {getSearchValues} from "../util/functions/getSearchValues.js";
 
 /**
  * @class InformeController
  * @description Clase estática que implementa la lógica de los informes de la aplicación.
  */
 class InformeController {
+	static async getInformes(req, res) {
+		let user_id = 0;
+
+		if (req.user_role === 2) {
+			user_id = req.user_id;
+		} else if (req.user_role === 3) {
+			user_id = req.param.usuario_id;
+		}
+
+		try {
+			const searchParams = getSearchValues(req, 'date');
+
+			const informes = await InformeService.readInformes(user_id, searchParams);
+
+			return res.status(200).json({
+				prev: informes.prev,
+				next: informes.next,
+				pagina_actual: informes.pagina_actual,
+				paginas_totales: informes.paginas_totales,
+				cantidad_informes: informes.cantidad_informes,
+				result_min: informes.result_min,
+				result_max: informes.result_max,
+				items_pagina: informes.items_pagina,
+				fecha_inicio: informes.fecha_inicio,
+				fecha_fin: informes.fecha_fin,
+				resultados: informes.resultados,
+			});
+		} catch (err) {
+			return res.status(500).json({
+				errors: [err.message],
+			});
+		}
+	}
+
 	/**
 	 * @name getInforme
 	 * @description Método asíncrono que obtiene un informe específico de la base de datos utilizando su ID.
@@ -26,7 +61,6 @@ class InformeController {
 		const user_id = req.user_id;
 		const user_role = req.user_role;
 		const informe_id = parseInt(req.params.informe_id);
-		console.log(informe_id);
 
 		try {
 			const informe = await InformeService.readInforme(informe_id, user_id, user_role);

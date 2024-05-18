@@ -14,9 +14,6 @@ export class CitasService {
   constructor(private http: HttpClient) { }
 
   getCitas(fechaInicioCita: string, fechaFinCita: string, perPage: number, page: number) {
-    console.log(fechaInicioCita);
-    console.log(fechaFinCita);
-
     let query: string = `?page=${page}`;
 
     if (fechaInicioCita) {

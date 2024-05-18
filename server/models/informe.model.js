@@ -7,6 +7,82 @@ import { format } from 'date-fns';
  */
 class InformeModel {
 	/**
+	 * @method fetchAll
+	 * @description Método para obtener todos los informes de un usuario.
+	 * @static
+	 * @async
+	 * @memberof InformeModel
+	 * @param {number} userId - El ID del usuario.
+	 * @param {Object} searchValues - Los valores de búsqueda.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} Un objeto que representa los informes.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async fetchAll(userId, searchValues, dbConn) {
+		const page = searchValues.page;
+		const fechaInicio = searchValues.fechaInicio;
+		const fechaFin = searchValues.fechaFin;
+		const limit = searchValues.limit;
+		const offset = (page - 1) * limit;
+
+		const query =
+			'SELECT' +
+			'    informe.id AS informe_id,' +
+			'    cita.fecha,' +
+			'    especialidad.nombre AS especialidad_nombre ' +
+			'FROM' +
+			'    informe ' +
+			'INNER JOIN' +
+			'    cita ON informe.id = cita.informe_id ' +
+			'INNER JOIN' +
+			'    especialista ON cita.especialista_id = especialista.usuario_id ' +
+			'INNER JOIN' +
+			'    especialidad ON especialista.especialidad_id = especialidad.id ' +
+			'WHERE' +
+			'    cita.paciente_id = ? ' +
+			'    AND cita.fecha BETWEEN ? AND ? ' +
+			'ORDER BY' +
+			'    cita.fecha DESC ' +
+			'LIMIT ? OFFSET ?';
+
+		const countQuery =
+			'SELECT' +
+			'		COUNT(*) AS total ' +
+			'FROM ' +
+			'		informe ' +
+			'INNER JOIN ' +
+			'		cita ON informe.id = cita.informe_id ' +
+			'INNER JOIN ' +
+			'		especialista ON cita.especialista_id = especialista.usuario_id ' +
+			'INNER JOIN ' +
+			'		especialidad ON especialista.especialidad_id = especialidad.id ' +
+			'WHERE ' +
+			'		cita.paciente_id = ? ' +
+			'		AND cita.fecha BETWEEN ? AND ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [userId, fechaInicio, fechaFin, `${limit}`, `${offset}`]);
+			const [total] = await dbConn.execute(countQuery, [userId, fechaInicio, fechaFin]);
+			const totalInformes = total[0].total;
+			const totalPages = Math.ceil(totalInformes / limit);
+			const actualPage = page;
+
+			rows.forEach((informe) => {
+				informe.fecha = format(new Date(informe.fecha), 'dd-MM-yyyy');
+			});
+
+			return {
+				rows,
+				total: totalInformes,
+				totalPages,
+				actualPage,
+			};
+		} catch (err) {
+			throw new Error('Error al obtener los informes.');
+		}
+	}
+
+	/**
 	 * @method fetchById
 	 * @description Método para obtener un informe por su ID.
 	 * @static
