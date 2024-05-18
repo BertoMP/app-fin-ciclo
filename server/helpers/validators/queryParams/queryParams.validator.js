@@ -56,14 +56,7 @@ export const validateQueryParams = [
 	query('fechaCita')
 		.optional()
 		.isDate()
-		.withMessage('La fecha de cita debe ser una fecha válida.')
-		.custom((value) => {
-			if (value < new Date().toISOString().split('T')[0]) {
-				throw new Error('La fecha de cita no puede ser menor a la fecha actual.');
-			}
-
-			return true;
-		}),
+		.withMessage('La fecha de cita debe ser una fecha válida.'),
 	query('especialistaId')
 		.optional()
 		.isNumeric()

@@ -5,11 +5,13 @@ import CitaModel from '../models/cita.model.js';
 import UsuarioService from './usuario.service.js';
 import PdfService from './pdf.service.js';
 import EmailService from './email.service.js';
+import EspecialistaService from "./especialista.service.js";
 
 // Importación de utilidades necesarias
 import { dbConn } from '../util/database/database.js';
 import { generateQRCode } from '../util/functions/createQr.js';
-import EspecialistaService from "./especialista.service.js";
+import pkg from 'moment-timezone';
+const { tz } = pkg;
 
 /**
  * @class CitaService
@@ -68,8 +70,8 @@ class CitaService {
 				resultados[0].citas.length === limit
 					? page * limit
 					: (page - 1) * limit + resultados[0].citas.length;
-			const fecha_inicio = fechaInicio;
-			const fecha_fin = fechaFin;
+			const fecha_inicio = tz(fechaInicio).format('DD-MM-YYYY');
+			const fecha_fin = tz(fechaFin).format('DD-MM-YYYY');
 			const items_pagina = parseInt(limit);
 
 			return {
@@ -149,7 +151,7 @@ class CitaService {
 			resultados.length === limit
 				? page * limit
 				: (page - 1) * limit + resultados.length;
-		const fecha_cita = fechaCita;
+		const fecha_cita = tz(fechaCita).format('DD-MM-YYYY');
 		const especialista_id = especialistaId;
 		const items_pagina = parseInt(limit);
 

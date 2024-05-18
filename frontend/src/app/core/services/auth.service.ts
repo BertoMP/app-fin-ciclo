@@ -16,6 +16,7 @@ export class AuthService {
   private jwtHelper: JwtHelperService = new JwtHelperService();
 
   loggedInUser: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  userRoleSubject: BehaviorSubject<UserRole> = new BehaviorSubject<UserRole>(this.getUserRole());
 
   constructor(private http: HttpClient) {
     this.loggedInUser.next(this.isLoggedIn());
@@ -23,6 +24,10 @@ export class AuthService {
 
   get isLoggedInUser(): Observable<boolean> {
     return this.loggedInUser.asObservable();
+  }
+
+  get userRole(): Observable<UserRole> {
+    return this.userRoleSubject.asObservable();
   }
 
   registerUser(newUser: PatientModel): Observable<any> {

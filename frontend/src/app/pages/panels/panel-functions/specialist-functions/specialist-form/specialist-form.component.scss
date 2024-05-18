@@ -1,3 +1,5 @@
+$form-shadow: 0 0 20px rgba(0,0,0,0.3);
+
 :host {
   padding: .8rem;
   border-radius: 1.6rem;
@@ -36,6 +38,7 @@
           grid-template-areas:
             "personal-data"
             "account-data";
+          gap: 0;
         }
       }
 
@@ -148,6 +151,8 @@
         border-radius: 5px;
         padding: 10px;
         margin-bottom: 10px;
+        background-color: rgba(202, 227, 239, 0.7);
+        box-shadow: $form-shadow;
 
         &.form-personal-data {
           grid-area: personal-data;
@@ -210,6 +215,8 @@
           display: block;
           width: 100%;
           float: none;
+          background-color: #c0dff1;
+          box-shadow: $form-shadow;
         }
 
         label {

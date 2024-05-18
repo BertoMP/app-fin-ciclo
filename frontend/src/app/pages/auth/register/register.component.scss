@@ -164,6 +164,9 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
       padding: 10px;
       margin-bottom: 10px;
 
+      background-color: rgba(202, 227, 239, 0.7);
+      box-shadow: $form-shadow;
+
       &.form-personal-data {
         grid-area: personal-data;
         display: grid;
@@ -200,6 +203,8 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
         display: block;
         width: 100%;
         float: none;
+        background-color: #c0dff1;
+        box-shadow: $form-shadow;
       }
 
       label {
@@ -251,7 +256,7 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
   }
 }
 
-@media all and (max-width: 1100px) {
+@media all and (max-width: 1450px) {
   :host {
     width: 100%;
 
@@ -262,6 +267,7 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
           grid-template-areas:
           "personal-data"
           "account-data";
+          gap: 0;
         }
         fieldset {
           &.form-account-data {

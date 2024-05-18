@@ -119,6 +119,7 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
       '/mediapp/tomar-glucometria',
       '/mediapp/tomar-tension',
       '/mediapp/listado-citas',
+      '/mediapp/editar-perfil'
     ];
     if (options.includes(this.router.url)) {
       this.optionSelected = true;

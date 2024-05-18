@@ -83,6 +83,7 @@ export class LoginComponent implements OnInit {
         next: (response): void => {
           this.isLoading = false;
           this.loginForm.reset();
+          this.authService.userRoleSubject.next(this.authService.getUserRole());
           this.router.navigate(['/mediapp'])
             .then((r: boolean): void => {});
         },
