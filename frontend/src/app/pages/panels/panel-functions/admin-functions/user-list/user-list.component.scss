@@ -243,6 +243,14 @@
               border-bottom: 1px solid #ccc;
               transition: background-color 0.3s;
 
+              &.no-working {
+                background-color: #f5b8b8;
+
+                &:hover {
+                  background-color: #f5b8b8;
+                }
+              }
+
               &:hover {
                 background-color: lightblue;
               }

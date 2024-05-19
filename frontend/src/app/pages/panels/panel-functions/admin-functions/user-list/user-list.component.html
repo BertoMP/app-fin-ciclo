@@ -47,7 +47,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let user of (users | paginate: { id: 'userListPagination', itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems })">
+        <tr
+          *ngFor="let user of (users | paginate: { id: 'userListPagination', itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems })"
+          [ngClass]="user.datos_turno === 'no-trabajando' ? 'no-working' : ''"
+        >
           <td>{{ user.datos_personales.nombre }} {{ user.datos_personales.primer_apellido }} {{ user.datos_personales.segundo_apellido }}</td>
           <td>{{ user.datos_personales.email }}</td>
           <td>{{ user.datos_personales.dni }}</td>
@@ -66,7 +69,7 @@
                     <i class="bi bi-pencil"></i> <span>Editar</span>
                   </button>
                 </ng-template>
-                <button class="dropdown-item delete-btn" type="button" (click)="confirmarCancelacion(user.usuario_id)">
+                <button *ngIf="user.datos_turno !== 'no-trabajando'" class="dropdown-item delete-btn" type="button" (click)="confirmarCancelacion(user.usuario_id)">
                   <i class="bi bi-trash3"></i> <span>Eliminar</span>
                 </button>
               </div>
