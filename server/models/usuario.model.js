@@ -31,7 +31,8 @@ class UsuarioModel {
 			'   segundo_apellido,' +
 			'   dni,' +
 			'   rol_id,' +
-			'   rol.nombre AS nombre_rol ' +
+			'   rol.nombre AS nombre_rol, ' +
+			'   turno ' +
 			'FROM ' +
 			'   usuario ' +
 			'INNER JOIN ' +
@@ -39,7 +40,7 @@ class UsuarioModel {
 			'LEFT JOIN ' +
 			'   paciente ON usuario.id = paciente.usuario_id ' +
 			'LEFT JOIN ' +
-			'	 especialista ON usuario.id = especialista.usuario_id ' +
+			'		especialista ON usuario.id = especialista.usuario_id ' +
 			'WHERE ' +
 			'   rol_id <> 1 ';
 
@@ -97,7 +98,8 @@ class UsuarioModel {
 					datos_rol: {
 						rol_id: row.rol_id,
 						nombre_rol: row.nombre_rol,
-					}
+					},
+					datos_turno: row.turno ?? null
 				};
 			});
 
@@ -191,7 +193,15 @@ class UsuarioModel {
 	 */
 	static async findByEmail(email, dbConn) {
 		const query =
-			'SELECT id, email, password, nombre, primer_apellido, segundo_apellido, dni, rol_id ' +
+			'SELECT ' +
+			'		id, ' +
+			'		email, ' +
+			'		password, ' +
+			'		nombre, ' +
+			'		primer_apellido, ' +
+			'		segundo_apellido, ' +
+			'		dni, ' +
+			'		rol_id ' +
 			'FROM usuario ' +
 			'WHERE email = ?';
 

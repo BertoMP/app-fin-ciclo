@@ -24,7 +24,7 @@ import {
 // Rutas GET
 /**
  * @swagger
- * /usuarios:
+ * /usuario/listado:
  *   get:
  *     summary: Obtiene una lista de todos los usuarios
  *     tags: [Usuario]

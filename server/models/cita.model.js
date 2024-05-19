@@ -292,6 +292,11 @@ class CitaModel {
 
 		try {
 			const [rows] = await dbConn.execute(query, [especialista_id]);
+
+			rows.forEach((row) => {
+				row.fecha = format(new Date(row.fecha), 'dd-MM-yyyy');
+			});
+
 			return rows;
 		} catch (err) {
 			throw new Error('Error al obtener las citas.');
