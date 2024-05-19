@@ -4,7 +4,7 @@
 <section class="filter-buttons">
   <article class="fecha">
     <label for="fecha">Fecha</label>
-    <input type="date" id="fecha" class="form-control" [(ngModel)]="fecha" (change)="checkFecha()">
+    <input type="date" id="fecha" class="form-control" [(ngModel)]="fecha" (blur)="checkFecha()">
   </article>
   <article class="especialidad">
     <label for="especialidad">Especialidad</label>
