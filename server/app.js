@@ -18,6 +18,7 @@ import apiRoutes from './routes/api.js';
 import morgan from 'morgan';
 import rfs from 'rotating-file-stream';
 import path from 'path';
+import { generateLogFileName } from './util/functions/logger.js';
 
 // Definición de las variables __filename y __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -31,7 +32,7 @@ const corsOptions = {
 };
 
 // Crear un stream rotativo para registrar las solicitudes HTTP
-const accessLogStream = rfs.createStream('access.log', {
+const accessLogStream = rfs.createStream(generateLogFileName, {
 	interval: '1d',
 	path: path.join(__dirname, 'logs'),
 });
