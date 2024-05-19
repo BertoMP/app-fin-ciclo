@@ -93,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line15">line 15</a>
+        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line17">line 17</a>
     </li></ul></dd>
     
 
@@ -305,7 +305,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line80">line 80</a>
+        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line153">line 153</a>
     </li></ul></dd>
     
 
@@ -516,7 +516,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line136">line 136</a>
+        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line209">line 209</a>
     </li></ul></dd>
     
 
@@ -744,7 +744,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line57">line 57</a>
+        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line130">line 130</a>
     </li></ul></dd>
     
 
@@ -1001,7 +1001,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line20">line 20</a>
+        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -1054,6 +1054,240 @@
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id=".readInformes"><span class="type-signature">(async, static) </span>readInformes<span class="signature">(userId, searchValues, conn)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método para leer todos los informes de un usuario.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El ID del usuario.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>searchValues</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Los valores de búsqueda.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>conn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">La conexión a la base de datos.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_informe.service.js.html">services/informe.service.js</a>, <a href="services_informe.service.js.html#line22">line 22</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si ocurre un error durante el proceso, captura el error y lo lanza.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Un objeto que representa los informes.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
@@ -1075,7 +1309,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat May 18 2024 00:40:15 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun May 19 2024 20:31:23 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>
