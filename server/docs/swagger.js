@@ -763,6 +763,89 @@ const options = {
 						},
 					},
 				},
+				InformeList: {
+					type: 'object',
+					properties: {
+						prev: {
+							type: 'string',
+							description: 'URL de la página anterior de informes',
+						},
+						next: {
+							type: 'string',
+							description: 'URL de la próxima página de informes',
+						},
+						pagina_actual: {
+							type: 'integer',
+							description: 'Número de la página actual',
+						},
+						paginas_totales: {
+							type: 'integer',
+							description: 'Número total de páginas',
+						},
+						cantidad_informes: {
+							type: 'integer',
+							description: 'Número total de informes',
+						},
+						result_min: {
+							type: 'integer',
+							description: 'Índice del primer informe en la página actual',
+						},
+						result_max: {
+							type: 'integer',
+							description: 'Índice del último informe en la página actual',
+						},
+						items_pagina: {
+							type: 'integer',
+							description: 'Número de informes por página',
+						},
+						fecha_inicio: {
+							type: 'string',
+							format: 'date',
+							description: 'Fecha de inicio del rango de búsqueda',
+						},
+						fecha_fin: {
+							type: 'string',
+							format: 'date',
+							description: 'Fecha de fin del rango de búsqueda',
+						},
+						resultados: {
+							type: 'array',
+							items: {
+								$ref: '#/components/schemas/InformeListado',
+							},
+						},
+					},
+					required: [
+						'prev',
+						'next',
+						'pagina_actual',
+						'paginas_totales',
+						'cantidad_informes',
+						'result_min',
+						'result_max',
+						'items_pagina',
+						'fecha_inicio',
+						'fecha_fin',
+						'resultados',
+					],
+				},
+				InformeListado: {
+					type: 'object',
+					properties: {
+						informe_id: {
+							type: 'integer',
+							description: 'El ID del informe',
+						},
+						especialidad_nombre: {
+							type: 'string',
+							description: 'El nombre de la especialidad',
+						},
+						fecha: {
+							type: 'string',
+							description: 'La fecha del informe',
+						},
+					},
+				},
 				IncorrectPasswordOrEmailError: {
 					type: 'object',
 					properties: {

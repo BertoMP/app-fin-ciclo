@@ -1,11 +1,13 @@
-<h2>ESPECIALIDADES MÉDICAS</h2>
+<h2 class="page-title">ESPECIALIDADES MÉDICAS</h2>
 @if (specialties) {
-  <pagination-controls (pageChange)="actualPage = $event; getSpecialties(actualPage)"
-                       maxSize="5"
-                       directionLinks="true"
-                       previousLabel="Anterior"
-                       nextLabel="Siguiente"
-  ></pagination-controls>
+  <section class="pagination">
+    <pagination-controls (pageChange)="actualPage = $event; getSpecialties(actualPage)"
+                         maxSize="5"
+                         directionLinks="true"
+                         previousLabel="Anterior"
+                         nextLabel="Siguiente"
+    ></pagination-controls>
+  </section>
   <section class="card-container">
     <div *ngFor="let specialty of specialties | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
       <app-vertical-card [info]="specialty"

@@ -3,6 +3,7 @@ import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {AuthService} from "../../../core/services/auth.service";
 import {NgForOf} from "@angular/common";
 import {PanelOptionModel} from "../../../core/interfaces/panel-option.model";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-sidebar',
@@ -35,6 +36,9 @@ export class SidebarComponent {
       case 'onLogout':
         this.onLogout();
         break;
+      case 'onDeleteAccount':
+        this.onDeleteAccount();
+        break;
       default:
         console.error(`Method ${methodName} not found`);
     }
@@ -43,6 +47,37 @@ export class SidebarComponent {
   onOptionSelected(): void {
     this.optionSelected = true;
     this.closeSidebar.emit();
+  }
+
+  onDeleteAccount(): void {
+    Swal.fire({
+      text: '¿Estás seguro que quieres eliminar tu cuenta de usuario?',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.auth.deleteAccount().subscribe({
+          next: (): void => {
+            this.router.navigate(['/'])
+              .then((): void => {
+                Swal.fire({
+                  title: 'Enhorabuena',
+                  text: 'Has conseguido eliminar al usuario correctamente',
+                  icon: 'success',
+                  width: '50%'
+                });
+              })
+              .catch((): void => {});
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        console.log("Usuario canceló la eliminación");
+      }
+    });
   }
 
   onLogout(): void {

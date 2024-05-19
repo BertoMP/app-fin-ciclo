@@ -40,7 +40,7 @@
       <p *ngFor="let option of secondaryOptions" class="secondary"
          (click)="executeMethod(option.method)"
          [routerLink]="(option.path) ? option.path : ''"
-         [routerLinkActive]="(option.path) ? 'active' : ''"
+         [routerLinkActive]="(option.path && option.path !== '/mediapp') ? 'active' : ''"
       >
         <i class="{{ option.icon }}"></i><span>{{ option.name }}</span>
       </p>

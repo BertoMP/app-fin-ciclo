@@ -61,7 +61,8 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
           method: 'onOptionSelected',
         },
       ],
-    },{
+    },
+    {
       name: 'Citas',
       options: [
         {
@@ -78,6 +79,17 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
         },
       ],
     },
+    {
+      name: 'Informes',
+      options: [
+        {
+          name: 'Listado informes',
+          icon: 'bi bi-file-earmark-text',
+          path: '/mediapp/listado-informes',
+          method: 'onOptionSelected',
+        },
+      ],
+    }
   ];
 
   sidebarOptionsBottom: PanelOptionModel[] = [
@@ -86,6 +98,12 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
       icon: 'bi bi-pencil-fill',
       path: '/mediapp/editar-perfil',
       method: 'onOptionSelected',
+    },
+    {
+      name: 'Borrar cuenta',
+      icon: 'bi bi-person-dash',
+      path: '/mediapp',
+      method: 'onDeleteAccount',
     },
     {
       name: 'Cerrar Sesión',
@@ -119,6 +137,7 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
       '/mediapp/tomar-glucometria',
       '/mediapp/tomar-tension',
       '/mediapp/listado-citas',
+      '/mediapp/listado-informes',
       '/mediapp/editar-perfil'
     ];
     if (options.includes(this.router.url)) {

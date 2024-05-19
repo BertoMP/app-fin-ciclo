@@ -16,7 +16,7 @@ import { Select2Data, Select2Module } from 'ng-select2-component';
 @Component({
   selector: 'app-listado-citas',
   standalone: true,
-  imports: [ 
+  imports: [
     NgxPaginationModule,
     NgFor,
     NgForOf,
@@ -136,7 +136,7 @@ export class ListadoCitasComponent {
         this.dataLoaded = true;
         Swal.fire({
           title: 'Enhorabuena',
-          text: 'Has conseguido eliminar la especialidad correctamente',
+          text: 'Has conseguido eliminar la cita correctamente',
           icon: 'success',
           width: '50%'
         }).then(() => {
@@ -176,15 +176,15 @@ export class ListadoCitasComponent {
   }
 
   convertirFecha(fecha: string, hora: string) {
-    var dateParts = fecha.split("-");
-    var day = parseInt(dateParts[0], 10);
-    var month = parseInt(dateParts[1], 10) - 1;
-    var year = parseInt(dateParts[2], 10);
+    const dateParts = fecha.split("-");
+    const day = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10) - 1;
+    const year = parseInt(dateParts[2], 10);
 
-    var timeParts = hora.split(":");
-    var hour = parseInt(timeParts[0], 10);
-    var minute = parseInt(timeParts[1], 10);
-    var second = parseInt(timeParts[2], 10);
+    const timeParts = hora.split(":");
+    const hour = parseInt(timeParts[0], 10);
+    const minute = parseInt(timeParts[1], 10);
+    const second = parseInt(timeParts[2], 10);
 
     return new Date(year, month, day, hour, minute, second);
   }

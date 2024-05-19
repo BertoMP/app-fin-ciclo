@@ -27,6 +27,9 @@ import { ListadoCitasComponent } from './pages/panels/panel-functions/patient-fu
 import { VerInformeComponent } from './pages/panels/panel-functions/patient-functions/ver-informe/ver-informe.component';
 import { VerCitaComponent } from './pages/panels/panel-functions/patient-functions/ver-cita/ver-cita.component';
 import { SolicitarCitaComponent } from './pages/panels/panel-functions/patient-functions/solicitar-cita/solicitar-cita.component';
+import {
+  ListadoInformesComponent
+} from "./pages/panels/panel-functions/patient-functions/listado-informes/listado-informes.component";
 
 export const routes: Routes = [
   {
@@ -108,6 +111,11 @@ export const routes: Routes = [
       {
         path: 'listado-citas',
         component: ListadoCitasComponent,
+        canActivate: [patientGuard]
+      },
+      {
+        path: 'listado-informes',
+        component: ListadoInformesComponent,
         canActivate: [patientGuard]
       },
       {
