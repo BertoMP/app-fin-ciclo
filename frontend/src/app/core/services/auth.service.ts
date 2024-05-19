@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
 import {environment} from "../../environments/environment";
-import {UserModel} from "../interfaces/user.model";
-import {JwtHelperService} from "@auth0/angular-jwt"
+import {JwtHelperService} from "@auth0/angular-jwt";
 import {UserRole} from "../enum/user-role.enum";
 import { EspecialistModel } from '../interfaces/especialist.model';
 import { PatientModel } from '../interfaces/patient.model';
@@ -39,7 +38,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/usuario/registro-especialista`, newUser)
       .pipe(catchError(this.handleError));
   }
-
+  
   updateSpecialist(newUser: EspecialistModel): Observable<any> {
     return this.http.put(`${this.apiUrl}/usuario/actualizar-especialista/${newUser.usuario_id}`, newUser)
       .pipe(catchError(this.handleError));

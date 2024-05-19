@@ -104,7 +104,7 @@ router.get(
  *               $ref: '#/components/schemas/ServerError'
  */
 router.get(
-	'/especialista/:especialidad_id',
+	'/especialistas/:especialidad_id',
 	verifyAccessToken,
 	verifyUserRole([2]),
 	verifyUserId,

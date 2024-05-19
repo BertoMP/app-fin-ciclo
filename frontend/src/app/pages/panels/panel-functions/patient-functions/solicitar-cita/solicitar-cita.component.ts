@@ -1,93 +1,77 @@
 import { Component, OnInit } from '@angular/core';
-import { CitasService } from '../../../../../core/services/citas.service';
-import { Observable, Subject, debounceTime } from 'rxjs';
+import { EspecialidadService } from '../../../../../core/services/especialidad.service';
+import { Select2Data, Select2Module } from 'ng-select2-component';
+import { EspecialidadModel } from '../../../../../core/interfaces/especialidad.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MedicalSpecialistListService } from '../../../../../core/services/medical-specialist-list.service';
+import { EspecialistaCitaModel } from '../../../../../core/interfaces/especialista-cita.model';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-solicitar-cita',
   standalone: true,
-  imports: [],
+  imports: [Select2Module,NgIf],
   templateUrl: './solicitar-cita.component.html',
   styleUrl: './solicitar-cita.component.scss'
 })
 export class SolicitarCitaComponent implements OnInit {
-  citas: Object;
-  rutaActual: string;
-  nextPageUrl: string;
-  previousPageUrl: string;
-  actualPage: number;
-  totalPages: number;
-  totalItems: number;
-  itemsPerPage: number;
-  errores: string[];
-  campos: string[];
-  datos: string[];
-  resultMin: number;
-  resultMax: number;
+  especialidades: Select2Data;
+  especialistas: Select2Data;
 
-  fechaInicio: string;
-  fechaFin: string;
+  especialidad_id: number;
+  especialista_id: number;
+  fecha:string;
 
-  initialLoad: boolean = false;
-  dataLoaded: boolean = false;
-  private getMedicionesSubject: Subject<void> = new Subject<void>();
+  constructor(private especialidadService: EspecialidadService, private medicalEspecialistService:MedicalSpecialistListService) {}
 
-  constructor(private citasService: CitasService) { }
-
-  ngOnInit(): void {
-    this.actualPage = 1;
-    this.citas = [];
-    this.errores = [];
-
-
-    this.getMedicionesSubject
-      .pipe(
-        debounceTime(500)
-      )
+  buscarEspecialidades() {
+    this.especialidadService.getEspecialidad()
       .subscribe({
-        next: () => {
-          this.getCitas();
+        next: (especialidad: EspecialidadModel[]) => {
+          this.especialidades = especialidad.map((especialidad: EspecialidadModel) => {
+            return {
+              value: especialidad.id,
+              label: especialidad.nombre
+            }
+          });
+
+          console.log(this.especialidades);
+
         },
-        error: (error) => {
-          this.errores = error;
+        error: (error: HttpErrorResponse) => {
+          console.error('Error fetching especialidades', error.error);
         }
-      });
-
-    this.initialLoad = true;
-    this.getMedicionesSubject.next();
+      })
   }
 
-  #showResults(data) {
-    console.log(data);
-  }
+  buscarEspecialistas() {
+    if(this.especialidad_id!=undefined){
+      this.medicalEspecialistService.getSpecialist(this.especialidad_id)
+      .subscribe({
+        next: (especialistas: EspecialistaCitaModel[]) => {
+          console.log(especialistas);
+  
+          this.especialistas = especialistas.map((especialista: EspecialistaCitaModel) => {
+            return {
+              value: especialista.id,
+              label: especialista.usuario_nombre
+            }
+          });
 
-  getCitas() {
-
-    let request: Observable<Object>;
-
-    request = this.citasService.getCitaEspecialista(6);
-    // type,
-    // this.authService.getUserId(),
-    // this.fechaInicio,
-    // this.fechaFin,
-    // parseInt(this.perPage),
-    // this.actualPage
-
-    request.subscribe({
-      next: (response) => {
-        this.#showResults(response);
-        this.dataLoaded = true;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.dataLoaded = true;
-
-        if (error.error.errors) {
-          this.errores = error.error.errors;
-        } else {
-          this.errores = ['Ha ocurrido un error durante el proceso'];
+          console.log(this.especialistas);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.especialistas=null;
+          console.error('Error fetching especialistas', error.error);
         }
-      }
-    });
-
+      })
+    }
+    
+  }
+  buscarCitas(){
+    
+  }
+  ngOnInit(): void {
+    this.buscarEspecialidades();
   }
 }

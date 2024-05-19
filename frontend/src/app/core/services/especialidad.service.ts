@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { EspecialidadModel } from '../interfaces/especialidad.model';
 import { Observable, catchError, throwError } from 'rxjs';
 import { SpecialityListedModel } from '../interfaces/speciality-listed.model';
-import { environment } from '../../environments/environment';
+import { EspecialistaCitaModel } from '../interfaces/especialista-cita.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,7 @@ export class EspecialidadService {
   getEspecialidadId(id: number): Observable<SpecialityListedModel> {
     return this.http.get<SpecialityListedModel>(`${this.baseUrl}/especialidad/${id}`);
   }
+  
   registerEspecialidad(especialidad: SpecialityListedModel): Observable<any> {
     return this.http.post(`${this.baseUrl}/especialidad`, especialidad)
       .pipe(catchError(this.handleError));

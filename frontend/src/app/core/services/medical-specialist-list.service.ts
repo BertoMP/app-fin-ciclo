@@ -5,6 +5,7 @@ import {
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { EspecialistaCitaModel } from '../interfaces/especialista-cita.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +17,9 @@ export class MedicalSpecialistListService {
 
   getMedicalSpecialistList():Observable<MedicalSpecialistListModel[]>{
     return this.http.get<MedicalSpecialistListModel[]>(`${this.baseUrl}/especialidad/especialista`);
+  }
+
+  getSpecialist(especialidad_id:number):Observable<EspecialistaCitaModel[]>{
+    return this.http.get<EspecialistaCitaModel[]>(`${this.baseUrl}/especialistas/${especialidad_id}`);
   }
 }
