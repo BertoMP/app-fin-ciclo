@@ -248,11 +248,6 @@ class CitaController {
 			hora: req.body.hora,
 		};
 
-		console.log("Paciente:" + cita.paciente_id);
-		console.log("Especialista:"+ cita.especialista_id);
-		console.log("Fecha:" + cita.fecha);
-		console.log("Hora:" +  cita.hora);
-
 		try {
 			await CitaService.createCita(cita);
 

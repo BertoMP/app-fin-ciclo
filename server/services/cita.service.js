@@ -411,7 +411,6 @@ class CitaService {
 
 			return cita;
 		} catch (err) {
-			console.log(err);
 			throw err;
 		}
 	}

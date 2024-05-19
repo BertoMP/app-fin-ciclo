@@ -352,7 +352,7 @@ class CitaModel {
 		const query =
 			'SELECT * ' +
 			'FROM ' +
-			'		cita' +
+			'		cita ' +
 			'WHERE ' +
 			'		fecha = ? ' +
 			'   AND hora = ? ' +
