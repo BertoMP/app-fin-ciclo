@@ -60,8 +60,10 @@ export const getSearchValues = (req, type) => {
 				fechaFinCita: fechaFinCita
 			};
 		case 'medicalDate':
-			const fecha = req.query.fechaCita;
-			const especialistaId = req.query.especialistaId
+			const fecha = req.query.fechaCita? tz(req.query.fechaCita, 'Europe/Madrid').format('YYYY-MM-DD')
+			: tz().startOf('year').format('YYYY-MM-DD');
+			const especialistaId = req.query.especialistaId;
+
 			return {
 				page: page,
 				limit: limit,

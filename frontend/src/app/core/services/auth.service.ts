@@ -52,6 +52,9 @@ export class AuthService {
   getPatient(id:number){
     return this.http.get(`${this.apiUrl}/usuario/${id}`).pipe(catchError(this.handleError));
   }
+  getEspecialista(id:number){
+    return this.http.get(`${this.apiUrl}/especialista/${id}`).pipe(catchError(this.handleError));
+  }
 
   getSelfPatient(){
     return this.http.get(`${this.apiUrl}/usuario`).pipe(catchError(this.handleError));

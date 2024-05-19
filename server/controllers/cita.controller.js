@@ -3,7 +3,7 @@ import CitaService from '../services/cita.service.js';
 import EspecialistaService from '../services/especialista.service.js';
 
 // Importación de las funciones necesarias
-import {getSearchValues} from "../util/functions/getSearchValues.js";
+import { getSearchValues } from "../util/functions/getSearchValues.js";
 import PdfService from "../services/pdf.service.js";
 
 /**
@@ -38,7 +38,7 @@ class CitaController {
 				paginas_totales: citas.paginas_totales,
 				cantidad_citas: citas.cantidad_citas,
 				result_min: citas.result_min,
-				result_max:citas.result_max,
+				result_max: citas.result_max,
 				fecha_inicio: citas.fecha_inicio,
 				fecha_fin: citas.fecha_fin,
 				items_pagina: citas.items_pagina,
@@ -247,6 +247,11 @@ class CitaController {
 			fecha: req.body.fecha,
 			hora: req.body.hora,
 		};
+
+		console.log("Paciente:" + cita.paciente_id);
+		console.log("Especialista:"+ cita.especialista_id);
+		console.log("Fecha:" + cita.fecha);
+		console.log("Hora:" +  cita.hora);
 
 		try {
 			await CitaService.createCita(cita);

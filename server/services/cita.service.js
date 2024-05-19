@@ -151,7 +151,7 @@ class CitaService {
 			resultados.length === limit
 				? page * limit
 				: (page - 1) * limit + resultados.length;
-		const fecha_cita = tz(fechaCita).format('DD-MM-YYYY');
+		const fecha_cita = tz(fechaCita, 'Europe/Madrid').format('YYYY-MM-DD');
 		const especialista_id = especialistaId;
 		const items_pagina = parseInt(limit);
 

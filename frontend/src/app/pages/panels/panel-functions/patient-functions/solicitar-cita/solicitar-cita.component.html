@@ -1,12 +1,81 @@
-<select2 id="especialidad" [data]="especialidades" [(ngModel)]="especialidad_id" placeholder="Elige una opcion"
-    (update)="buscarEspecialistas()">
-</select2>
-<article class="date-filter">
-    <label for="fecha">Fecha</label>
-    <input type="date" id="fecha" [(ngModel)]="fecha">
-  </article>
-<p>{{especialidad_id}}</p>
-@if(especialistas!=null){
-    <select2 id="especialista" [data]="especialistas" [(ngModel)]="especialista_id" placeholder="Elige una opcion"></select2>
-    <button type="button" (click)="buscarCitas()">Buscar citas Disponibles</button>
-}
+<section class="header">
+    <h2>Listado de Citas Disponibles</h2>
+</section>
+<section class="filter-buttons">
+    <div class="container">
+        <div class="row align-items-end date">
+            <div class="col-md-3 mb-3">
+                <label for="fecha">Fecha</label>
+                <input type="date" id="fecha" class="form-control" [(ngModel)]="fecha">
+            </div>
+            <div class="col-md-3 mb-3 especialidad" >
+                <label for="especialidad">Especialidad</label>
+                <select2 id="especialidad" [data]="especialidades" [(ngModel)]="especialidad_id"
+                    placeholder="Elige una opcion" (update)="buscarEspecialistas()"></select2>
+            </div>
+            <div *ngIf="especialistas != null" class="col-md-3 mb-3 especialista">
+                <label for="especialista">Especialista</label>
+                <select2 id="especialista" [data]="especialistas" [(ngModel)]="especialista_id" 
+                    placeholder="Elige una opcion"></select2>
+            </div>
+            <div class="col-md-3 mb-3 buscar" >
+                <button type="button" class="btn btn-primary w-100" (click)="buscarCitas()">Buscar citas</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div *ngIf="errores.length > 0" class="error-message mt-4 bg-danger text-white p-3 rounded">
+    <p>{{ errores[0] }}</p>
+</div>
+<div *ngIf="citaBuscada" class="medication-table mt-4">
+    @if(!dataLoaded){
+    <app-loading-spinner></app-loading-spinner>
+    }@else{
+    @if(!citas_disponibles.length && citaBuscada){
+    <p>No hay citas disponibles.</p>
+    }@else{
+    <div class="info mb-3">
+        <small>Mostrando {{ resultMin }} - {{ resultMax }} de {{ totalItems }} citas disponibles.</small>
+    </div>
+    <div class="info mb-3">
+        <h5>{{paciente_nombre}}, estas son las citas disponibles para el especialista
+            {{especialista.datos_personales.nombre}} {{especialista.datos_personales.primer_apellido}}
+            {{especialista.datos_personales.segundo_apellido}} para el día {{fecha | dateFormat }}</h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Hora</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Especialista</th>
+                    <th scope="col">Consulta</th>
+                    <th scope="col">Turno</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container
+                    *ngFor="let cita of (citas_disponibles | paginate: { id: 'citasListPagination', itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems })">
+                    <tr>
+                        <td>{{cita}}</td>
+                        <td>{{citas.fecha_cita | dateFormat}}</td>
+                        <td>{{especialista.datos_personales.nombre}} {{especialista.datos_personales.primer_apellido}}
+                            {{especialista.datos_personales.segundo_apellido}}</td>
+                        <td>{{especialista.datos_especialista.consulta.consulta_nombre}}</td>
+                        <td>{{especialista.datos_especialista.turno}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" (click)="confirmarCita(cita)">Solicitar Cita</button>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="previousPageUrl || nextPageUrl" class="pagination">
+        <pagination-controls (pageChange)="actualPage = $event; changePage(actualPage)" id="citasListPagination"
+            maxSize="5" directionLinks="true" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+    </div>
+    }}
+</div>

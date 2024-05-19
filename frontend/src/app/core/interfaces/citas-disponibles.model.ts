@@ -1,4 +1,6 @@
-export interface CitaSpecificDataModel {
+import { AgendaDataModel } from "./agenda-data.model"
+
+export interface CitasDisponiblesModel {
     prev:string,
     next:string,
     pagina_actual:number,
@@ -7,9 +9,5 @@ export interface CitaSpecificDataModel {
     result_min:number,
     result_max:number,
     items_pagina:number
-    datos_agenda:{
-        fecha_cita:string,
-        especialista_id:string,
-        citas_disponibles:string;
-    }
+    datos_agenda:AgendaDataModel
 }
