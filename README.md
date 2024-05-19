@@ -22,6 +22,7 @@ de Desarrollo de Aplicaciones Web en el IES Luis Braille de Coslada (Madrid).
   - [Paquetes y librerías utilizadas](#paquetes-y-librerías-utilizadas)
 - [Requisitos para Instalar y Ejecutar el Proyecto](#requisitos-para-instalar-y-ejecutar-el-proyecto)
   - [Cómo Instalar y Ejecutar el Proyecto](#cómo-instalar-y-ejecutar-el-proyecto)
+- [Capturas de pantalla](#capturas-de-pantalla)
 - [Licencia](#licencia)
 
 ## Descripción
@@ -186,8 +187,7 @@ del cliente:
 10. Para acceder a la documentación Swagger UI de la API REST, navega a `http://localhost:3000/api-docs`.
 11. Para acceder a la documentación JSDoc, navega a `http://localhost:3000/docs`.
 
-## Screenshots
-
+## Capturas de pantalla
 ![Especialidades](./screenshots/especialidades.png)
 ![Login](./screenshots/login.png)
 ![Listado de usuarios](./screenshots/listado-usuarios.png)
