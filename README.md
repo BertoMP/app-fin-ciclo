@@ -195,6 +195,8 @@ del cliente:
 ![Listado de citas](./screenshots/listado-citas.png)
 ![Listado de glucometrías](./screenshots/listado-glucometrias.png)
 ![Modal](./screenshots/modal.png)
+![Swagger](./screenshots/swagger.png)
+![JSDoc](./screenshots/jsdoc.png)
 
 ## Licencia
 
