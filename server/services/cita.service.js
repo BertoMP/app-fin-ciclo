@@ -394,11 +394,10 @@ class CitaService {
 	 * @async
 	 * @memberOf CitaService
 	 * @param {number} id - El ID de la cita.
-	 * @param {number} userId - El ID del usuario.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto que representa la cita eliminada.
 	 */
-	static async deleteCita(id, userId, conn = dbConn) {
+	static async deleteCita(id, conn = dbConn) {
 		try {
 			const cita = await CitaModel.fetchById(id, conn);
 
@@ -406,14 +405,13 @@ class CitaService {
 				throw new Error('La cita que intenta eliminar no existe.');
 			}
 
-			if (cita.datos_paciente.paciente_id !== userId) {
-				throw new Error('No tiene permiso para eliminar esta cita.');
-			}
-
 			await CitaModel.deleteCita(id, conn);
+			const userMail = (await UsuarioService.readEmailByUserId(cita.datos_paciente.paciente_id, conn)).email;
+			await EmailService.sendEmailCitaEliminada(cita, userMail);
 
 			return cita;
 		} catch (err) {
+			console.log(err);
 			throw err;
 		}
 	}

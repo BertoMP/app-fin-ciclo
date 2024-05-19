@@ -300,10 +300,9 @@ class CitaController {
 	 */
 	static async deleteCita(req, res) {
 		const citaId = req.params.cita_id;
-		const userId = req.user_id;
 
 		try {
-			await CitaService.deleteCita(citaId, userId);
+			await CitaService.deleteCita(citaId);
 
 			return res.status(200).json({
 				message: 'Cita eliminada correctamente.',
@@ -311,12 +310,6 @@ class CitaController {
 		} catch (err) {
 			if (err.message === 'La cita que intenta eliminar no existe.') {
 				return res.status(404).json({
-					errors: [err.message],
-				});
-			}
-
-			if (err.message === 'No tienes permiso para eliminar esta cita.') {
-				return res.status(403).json({
 					errors: [err.message],
 				});
 			}

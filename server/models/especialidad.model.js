@@ -111,6 +111,43 @@ class EspecialidadModel {
 	}
 
 	/**
+	 * @method getEspecialidadByEspecialistaId
+	 * @description Método para obtener la especialidad de un especialista por su ID.
+	 * @static
+	 * @async
+	 * @memberof EspecialidadModel
+	 * @param {number} id - El ID del especialista.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} La especialidad del especialista.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async getEspecialidadByEspecialistaId(id, dbConn) {
+		const query =
+			'SELECT ' +
+			'    especialidad.nombre AS especialidad_nombre ' +
+			'FROM ' +
+			'   especialidad ' +
+			'INNER JOIN ' +
+			'   especialista ON especialidad.id = especialista.especialidad_id ' +
+			'WHERE ' +
+			'   especialista.usuario_id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return {
+				nombre: rows[0].especialidad_nombre,
+			};
+		} catch (err) {
+			throw new Error('Error al obtener la especialidad.');
+		}
+	}
+
+	/**
 	 * @method fetchAllEspecialidadesEspecialistas
 	 * @description Método para obtener todas las especialidades y sus especialistas.
 	 * @static

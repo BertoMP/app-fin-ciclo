@@ -117,6 +117,24 @@ class EmailService {
 		}
 	}
 
+	static async sendEmailCitaEliminada(cita, emailPaciente) {
+		const transporter = EmailService.#createTransporter();
+		const compiledTemplate = EmailService.#compileTemplate('citaCancelada.handlebars', { cita });
+
+		const mailDetails = EmailService.#createMailDetails(
+			process.env.EMAIL_ACCOUNT,
+			emailPaciente,
+			'Cancelación de cita',
+			compiledTemplate,
+		);
+
+		try {
+			return await transporter.sendMail(mailDetails);
+		} catch (err) {
+			throw err;
+		}
+	}
+
 	/**
 	 * @method sendPdfCita
 	 * @description Método para enviar un correo electrónico con un PDF de cita adjunto.

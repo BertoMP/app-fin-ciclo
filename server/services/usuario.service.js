@@ -5,14 +5,16 @@ import UsuarioModel from '../models/usuario.model.js';
 import PacienteService from './paciente.service.js';
 import EspecialistaService from './especialista.service.js';
 import EmailService from "./email.service.js";
+import CitaService from "./cita.service.js";
+import TokenService from "./token.service.js";
 
 // Importación de las utilidades necesarias
 import { dbConn } from '../util/database/database.js';
 import ObjectFactory from "../util/classes/objectFactory.js";
 import pkg from 'bcryptjs';
-import TokenService from "./token.service.js";
 import {createEncryptedPassword} from "../util/functions/createEncryptedPassword.js";
-import CitaService from "./cita.service.js";
+import EspecialidadService from "./especialidad.service.js";
+
 const { compare } = pkg;
 
 /**
@@ -526,9 +528,14 @@ class UsuarioService {
 					break;
 				case 3:
 					const especialistaCita = await CitaService.readCitasByEspecialistaId(id, conn);
-
 					if (especialistaCita.length > 0) {
 						await EspecialistaService.setNoTrabajando(id, conn);
+
+						for (const cita of especialistaCita) {
+							if (!cita.informe_id) {
+								await CitaService.deleteCita(cita.id, conn);
+							}
+						}
 					} else {
 						await EspecialistaService.deleteEspecialista(id, conn);
 						await UsuarioModel.deleteUsuario(id, conn);

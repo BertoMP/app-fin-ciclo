@@ -140,6 +140,30 @@ class EspecialidadService {
 	}
 
 	/**
+	 * @method readEspecialidadByEspecialistaId
+	 * @description Método para leer una especialidad por el ID de un especialista.
+	 * @static
+	 * @async
+	 * @memberof EspecialidadService
+	 * @param {number} id - El ID del especialista.
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} La especialidad.
+	 */
+	static async readEspecialidadByEspecialistaId(id, conn = dbConn) {
+		try {
+			const especialidad = await EspecialidadModel.getEspecialidadByEspecialistaId(id, conn);
+
+			if (!especialidad) {
+				throw new Error('Especialidad no encontrada.');
+			}
+
+			return especialidad;
+		} catch (err) {
+			throw err;
+		}
+	}
+
+	/**
 	 * @method createEspecialidad
 	 * @description Método para crear una nueva especialidad.
 	 * @static
