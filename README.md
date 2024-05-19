@@ -159,6 +159,15 @@ del cliente: `cd ./client`.
 del cliente.
 8. Ejecuta `ng serve -o` para iniciar la aplicación.
 
+## Screenshots
+![Especialidades](./screenshots/especialidades.png)
+![Login](./screenshots/login.png)
+![Listado de usuarios](./screenshots/listado-usuarios.png)
+![Toma de tensión arterial](./screenshots/toma-tension.png)
+![Listado de citas](./screenshots/listado-citas.png)
+![Listado de glucometrías](./screenshots/listado-glucometrias.png)
+![Modal](./screenshots/modal.png)
+
 ## Licencia
 
 Este proyecto está licenciado bajo los términos de la licencia GNU GPLv3.
