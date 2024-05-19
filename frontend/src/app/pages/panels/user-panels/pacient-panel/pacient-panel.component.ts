@@ -100,6 +100,12 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
       method: 'onOptionSelected',
     },
     {
+      name: 'Borrar cuenta',
+      icon: 'bi bi-person-dash',
+      path: '/mediapp',
+      method: 'onDeleteAccount',
+    },
+    {
       name: 'Cerrar Sesión',
       icon: 'bi bi-box-arrow-right',
       method: 'onLogout'

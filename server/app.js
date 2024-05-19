@@ -19,6 +19,7 @@ import morgan from 'morgan';
 import rfs from 'rotating-file-stream';
 import path from 'path';
 
+// Definición de las variables __filename y __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -29,10 +30,10 @@ const corsOptions = {
 	allowedHeaders: process.env.CORS_ALLOWED_HEADERS,
 };
 
-// Crear un stream rotativo
+// Crear un stream rotativo para registrar las solicitudes HTTP
 const accessLogStream = rfs.createStream('access.log', {
 	interval: '1d',
-	path: path.join(__dirname, 'log'),
+	path: path.join(__dirname, 'logs'),
 });
 
 // Creación la aplicación Express
@@ -44,9 +45,6 @@ app.use(urlencoded({ limit: '50mb', extended: true }));
 
 // Configurar morgan para usar el stream rotativo que registra las solicitudes HTTP
 app.use(morgan('combined', { stream: accessLogStream }));
-
-// Configurar morgan para usar la consola
-app.use(morgan('combined'));
 
 // Configuración de Swagger UI para servir la documentación de la API
 app.use('/api-docs', serve, setup(swaggerDocument));

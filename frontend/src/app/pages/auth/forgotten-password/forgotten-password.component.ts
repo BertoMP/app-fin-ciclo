@@ -54,7 +54,7 @@ export class ForgottenPasswordComponent {
         next: (response) => {
           Swal.fire({
             title: 'Enhorabuena',
-            text: 'Se ha enviado un enlace a su email, porfavor pinche en él para renovar su contraseña',
+            text: 'Se ha enviado un enlace a su email, por favor siga las instrucciones para renovar su contraseña',
             icon: 'success',
             width: '50%'
           })

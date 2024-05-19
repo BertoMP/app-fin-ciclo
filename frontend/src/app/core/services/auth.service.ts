@@ -173,6 +173,17 @@ export class AuthService {
       new Error('No hay token de refresco almacenado'));
   }
 
+  deleteAccount(): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/usuario/borrar-usuario`)
+      .pipe(
+        tap(() => {
+          this.removeTokens();
+          this.loggedInUser.next(false);
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage: string[] = errorRes.error.errors??['Ha ocurrido un error durante el proceso'];
 
