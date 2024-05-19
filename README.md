@@ -22,6 +22,7 @@ de Desarrollo de Aplicaciones Web en el IES Luis Braille de Coslada (Madrid).
   - [Paquetes y librerías utilizadas](#paquetes-y-librerías-utilizadas)
 - [Requisitos para Instalar y Ejecutar el Proyecto](#requisitos-para-instalar-y-ejecutar-el-proyecto)
   - [Cómo Instalar y Ejecutar el Proyecto](#cómo-instalar-y-ejecutar-el-proyecto)
+- [Capturas de pantalla](#capturas-de-pantalla)
 - [Licencia](#licencia)
 
 ## Descripción
@@ -148,18 +149,16 @@ Además, necesitarás tener una copia del código fuente. Puedes obtenerla clona
 1. Clona el repositorio a tu máquina local.
 2. Abre MySQL Workbench y ejecuta los diferentes scripts .sql del directorio
 `/database` para crear la base de datos.
-3. Una vez en el directorio principal, utilizar una terminal para navegar hasta el directorio del 
-servidor: `cd ./server`.
-4. Ejecuta `npm install` para instalar las dependencias del proyecto en el lado
-del servidor.
-5. Ejecuta `npm start` para iniciar el servidor.
-6. Abre una nueva terminal en el directorio raíz y navega hasta el directorio 
+4. Una vez en el directorio principal, utilizar una terminal para navegar hasta el
+directorio del servidor: `cd ./server`.
+5. Ejecuta `npm install` para instalar las dependencias del proyecto en el lado del servidor.
+6. Ejecuta `npm start` para iniciar el servidor.
+7. Abre una nueva terminal en el directorio raíz y navega hasta el directorio
 del cliente: `cd ./client`.
-7. Ejecuta `npm install` para instalar las dependencias del proyecto en el lado
-del cliente.
-8. Ejecuta `ng serve -o` para iniciar la aplicación.
+8. Ejecuta `npm install` para instalar las dependencias del proyecto en el lado del cliente.
+9. Ejecuta `ng serve -o` para iniciar la aplicación.
 
-## Screenshots
+## Capturas de pantalla
 ![Especialidades](./screenshots/especialidades.png)
 ![Login](./screenshots/login.png)
 ![Listado de usuarios](./screenshots/listado-usuarios.png)
