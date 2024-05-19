@@ -66,15 +66,24 @@
               {{cita.datos_cita.datos_especialista.primer_apellido}}
               {{cita.datos_cita.datos_especialista.segundo_apellido}}</td>
             <td>{{cita.datos_cita.datos_especialista.datos_especialidad.especialidad_nombre}}</td>
-            <td>
-              @if(comprobarFecha(cita.datos_cita.hora,cita.datos_cita.fecha)){
-                <button type="button" class="btn btn-danger"
-                        (click)="confirmarCancelar(cita.datos_cita.id)">Cancelar</button>
-              }@else{
+            @if (comprobarFecha(cita.datos_cita.hora, cita.datos_cita.fecha)) {
+              <td class="btn-container">
+                <div class="dropdown">
+                  <button class="btn btn-link" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li class="dropdown-item" href="#" (click)="confirmarCancelar(cita.datos_cita.id)"><i class="bi bi-calendar2-x-fill"></i> <span>Cancelar</span></li>
+                    <li class="dropdown-item" href="#" routerLink="../ver-cita/{{cita.datos_cita.id}}"><i class="bi bi-calendar2-heart-fill"></i> <span>Ver cita</span></li>
+                  </div>
+                </div>
+              </td>
+            } @else {
+              <td>
                 <button type="button" class="btn btn-primary"
-                        routerLink="../ver-cita/{{cita.datos_cita.id}}">Ver Cita</button>
-              }
-            </td>
+                        routerLink="../ver-cita/{{cita.datos_cita.id}}">Ver cita</button>
+              </td>
+            }
           </tr>
         </ng-container>
         </tbody>

@@ -138,7 +138,8 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
       '/mediapp/tomar-tension',
       '/mediapp/listado-citas',
       '/mediapp/listado-informes',
-      '/mediapp/editar-perfil'
+      '/mediapp/editar-perfil',
+      '/mediapp/solicitar-cita',
     ];
     if (options.includes(this.router.url)) {
       this.optionSelected = true;

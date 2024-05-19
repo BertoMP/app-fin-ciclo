@@ -77,7 +77,7 @@ class EspecialistaModel {
 			const [rows] = await dbConn.execute(query, [especialidad_id]);
 
 			if (rows.length === 0) {
-				return null;
+				return [];
 			}
 
 			return rows;

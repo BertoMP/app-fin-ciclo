@@ -67,7 +67,11 @@ export class SolicitarCitaComponent implements OnInit {
 
   private getCitasSubject: Subject<void> = new Subject<void>();
 
-  constructor(private router: Router,private authService: AuthService, private especialidadService: EspecialidadService, private medicalEspecialistService: MedicalSpecialistListService, private citasService: CitasService) { }
+  constructor(private router: Router,
+              private authService: AuthService,
+              private especialidadService: EspecialidadService,
+              private medicalEspecialistService: MedicalSpecialistListService,
+              private citasService: CitasService) { }
 
   buscarEspecialidades() {
     this.especialidadService.getEspecialidad()
@@ -95,20 +99,32 @@ export class SolicitarCitaComponent implements OnInit {
   }
 
   buscarEspecialistas() {
-    if (this.especialidad_id != undefined) {
+    this.especialista_id = null;
+    this.citas_disponibles = [];
+    if (this.especialidad_id) {
       this.medicalEspecialistService.getSpecialist(this.especialidad_id)
         .subscribe({
           next: (especialistas: EspecialistaCitaModel[]) => {
-            console.log(especialistas);
-
-            this.especialistas = especialistas.map((especialista: EspecialistaCitaModel) => {
-              return {
-                value: especialista.id,
-                label: especialista.usuario_nombre
-              }
-            });
-
-            console.log(this.especialistas);
+            if (especialistas.length === 0) {
+              Swal.fire({
+                title: 'No hay especialistas',
+                text: `No hay especialistas disponibles para la especialidad seleccionada`,
+                icon: 'error',
+                width: '50%'
+              })
+                .then(() => {
+                  Swal.close();
+                  this.especialistas = null;
+                  this.especialista_id = null;
+                })
+            } else {
+              this.especialistas = especialistas.map((especialista: EspecialistaCitaModel) => {
+                return {
+                  value: especialista.id,
+                  label: `${especialista.usuario_nombre} ${especialista.primer_apellido} ${especialista.segundo_apellido}`
+                }
+              });
+            }
           },
           error: (error: HttpErrorResponse) => {
             this.citas_disponibles=[];
@@ -118,10 +134,39 @@ export class SolicitarCitaComponent implements OnInit {
           }
         })
     }
-
   }
+
+  checkFecha() {
+    if (this.fecha) {
+      this.fecha = this.fecha.split('T')[0];
+
+      if (this.fecha < new Date().toISOString().split('T')[0]) {
+        Swal.fire({
+          title: 'Fecha incorrecta',
+          text: `La fecha no puede ser anterior a la fecha actual`,
+          icon: 'error',
+          width: '50%'
+        })
+          .then(() => {
+            Swal.close();
+            this.fecha = null;
+          })
+      } else if (this.especialista_id) {
+        this.buscarCitas();
+      }
+    }
+  }
+
+  checkEspecialista() {
+    if (this.especialista_id) {
+      if (this.fecha) {
+        this.buscarCitas();
+      }
+    }
+  }
+
   buscarCitas() {
-    if (this.especialista_id != null && this.fecha != null) {
+    if (this.especialista_id && this.fecha) {
       this.citasService.getCitaDisponible(this.especialista_id, this.fecha).subscribe({
         next: (citas: CitasDisponiblesModel) => {
           this.#showResults(citas);
@@ -131,26 +176,11 @@ export class SolicitarCitaComponent implements OnInit {
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching citas', error.error);
         }
-      })
-    } else {
-      this.imprimirMensaje();
+      });
     }
   }
 
-  imprimirMensaje(){
-    Swal.fire({
-      title: 'Elige una fecha y un especialista',
-      text: `Elige una fecha y un especialista para poder buscar citas disponibles`,
-      icon: 'info',
-      width: '50%'
-    })
-      .then(() => {
-        Swal.close();
-      })
-  }
-
   buscarEspecialista() {
-
     this.authService.getEspecialista(this.especialista_id).subscribe({
       next: (especialista: EspecialistModel) => {
         this.especialista = especialista;
