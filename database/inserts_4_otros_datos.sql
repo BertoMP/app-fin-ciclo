@@ -1,11 +1,7 @@
 -- Inserción de datos en la tabla informe
 INSERT INTO informe (motivo, contenido)
 VALUES
-    ('Dolor en el pecho', 'El paciente presenta dolor en el pecho y palpitaciones. Se recomienda realizar un electrocardiograma para evaluar la presencia de arritmias.'),
-    ('Erupción cutánea',  'El paciente presenta una erupción cutánea en el brazo derecho. Se recomienda aplicar una crema hidratante y evitar el contacto con sustancias irritantes.'),
-    ('Fatiga y aumento de peso',  'El paciente presenta fatiga, aumento de peso y piel seca. Se recomienda realizar un análisis de sangre para evaluar la función tiroidea.'),
-    ('Dolor abdominal','El paciente presenta dolor abdominal y acidez estomacal. Se recomienda realizar una endoscopia para evaluar la presencia de gastritis.'),
-    ('Anemia y fatiga',  'El paciente presenta anemia y fatiga. Se recomienda realizar un análisis de sangre para evaluar los niveles de hierro y hemoglobina.');
+    ('Dolor en el pecho', 'El paciente presenta dolor en el pecho y palpitaciones. Se recomienda realizar un electrocardiograma para evaluar la presencia de arritmias.');
 
 -- Inserción de datos en la tabla patologia
 INSERT INTO patologia (nombre, descripcion) 
@@ -34,11 +30,7 @@ VALUES
 -- Inserción de datos en la tabla cita
 INSERT INTO cita (fecha, hora, especialista_id, paciente_id, informe_id)
 VALUES
-    ('2024-04-21', '08:00:00', 3, 11, 1),
-    ('2024-04-21', '14:30:00', 6, 11, 2),
-    ('2024-04-21', '08:30:00', 7, 11, 3),
-    ('2024-04-21', '15:00:00', 9, 11, 4),
-    ('2024-04-21', '09:00:00', 10, 11, 5);
+    ('2024-04-21', '08:00:00', 3, 11, 1);
 
 -- Inserción de datos en la tabla medicamento
 INSERT INTO medicamento (nombre, descripcion)
