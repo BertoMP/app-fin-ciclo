@@ -22,6 +22,7 @@ de Desarrollo de Aplicaciones Web en el IES Luis Braille de Coslada (Madrid).
   - [Paquetes y librerías utilizadas](#paquetes-y-librerías-utilizadas)
 - [Requisitos para Instalar y Ejecutar el Proyecto](#requisitos-para-instalar-y-ejecutar-el-proyecto)
   - [Cómo Instalar y Ejecutar el Proyecto](#cómo-instalar-y-ejecutar-el-proyecto)
+- [Capturas de pantalla](#capturas-de-pantalla)
 - [Licencia](#licencia)
 
 ## Descripción
@@ -137,7 +138,10 @@ de JavaScript V8 de Chrome. Puedes descargarlo [aquí](https://nodejs.org/es/dow
 Se instala junto con Node.js.
 - __Angular CLI__: Es una herramienta de línea de comandos que te 
 permite crear y gestionar aplicaciones Angular. Puedes instalarlo 
-globalmente en tu máquina con el comando `npm install -g @angular/cli`.
+globalmente en tu máquina con el comando:  
+
+      npm install -g @angular/cli
+
 - __MySQL__: Es un sistema de gestión de bases de datos relacional. Puedes 
 descargarlo [aquí](https://dev.mysql.com/downloads/installer/).
 
@@ -149,15 +153,50 @@ Además, necesitarás tener una copia del código fuente. Puedes obtenerla clona
 2. Abre MySQL Workbench y ejecuta los diferentes scripts .sql del directorio
 `/database` para crear la base de datos.
 3. Una vez en el directorio principal, utilizar una terminal para navegar hasta el directorio del 
-servidor: `cd ./server`.
-4. Ejecuta `npm install` para instalar las dependencias del proyecto en el lado
-del servidor.
-5. Ejecuta `npm start` para iniciar el servidor.
+servidor:
+
+       cd ./server
+
+4. Para instalar las dependencias del proyecto en el lado del servidor ejecuta.
+
+       npm install
+
+5. A continuación iniciar el servidor en modo producción.
+
+       npm run start
+
 6. Abre una nueva terminal en el directorio raíz y navega hasta el directorio 
-del cliente: `cd ./client`.
-7. Ejecuta `npm install` para instalar las dependencias del proyecto en el lado
-del cliente.
-8. Ejecuta `ng serve -o` para iniciar la aplicación.
+del cliente:
+
+       cd ./frontend
+
+7. Para instalar las dependencias del proyecto en el lado del cliente.
+
+       npm install
+
+8. Ejecuta el servidor del cliente para iniciar la aplicación.
+
+       ng serve --port 4200
+
+   **Advertencia**: En caso de utilizar otro puerto para el servidor del cliente, el servidor del
+   backend no podrá comunicarse con el cliente ya que ocurrirá un error de CORS. Para solucionar
+   este problema, se debe modificar el archivo `.env` en el directorio `server` y cambiar la 
+   configuración de CORS para que permita comunicación el puerto de tu elección.
+
+9. Abre un navegador web y navega a `http://localhost:4200/` para ver la aplicación.
+10. Para acceder a la documentación Swagger UI de la API REST, navega a `http://localhost:3000/api-docs`.
+11. Para acceder a la documentación JSDoc, navega a `http://localhost:3000/docs`.
+
+## Capturas de pantalla
+![Especialidades](./screenshots/especialidades.png)
+![Login](./screenshots/login.png)
+![Listado de usuarios](./screenshots/listado-usuarios.png)
+![Toma de tensión arterial](./screenshots/toma-tension.png)
+![Listado de citas](./screenshots/listado-citas.png)
+![Listado de glucometrías](./screenshots/listado-glucometrias.png)
+![Modal](./screenshots/modal.png)
+![Swagger](./screenshots/swagger.png)
+![JSDoc](./screenshots/jsdoc.png)
 
 ## Licencia
 

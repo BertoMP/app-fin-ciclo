@@ -41,7 +41,7 @@ VALUES
     ('carmenlopez@example.com', '$2a$10$Se0xTl6HVLjumMsuzyUWDOH9HVnlsZHJP5mcOwpoLkRarVlN5mNmy', 'Carmen', 'Lopez', 'Cano', '12345685H', 2), -- Password_8
     ('franciscotorres@example.com', '$2a$10$w0rtDkkgct4xnLZuqsjcrOcqjqLAnqrxMS9BKOnHaivCE6.pVFYX2', 'Francisco', 'Torres', 'Romero', '12345686I', 3), -- Password_9
     ('patriciamedina@example.com', '$2a$10$ZLfC3hOHt3vko2kr8hseQOSkweAjcp.2fuNwqQ94AJEe07YAzoF8e', 'Patricia', 'Medina', 'Navarro', '12345687J', 3), -- Password_10
-    ('alberto.martinezp1990@gmail.com', '$2a$10$Myo7jf8Snf5ueV0dv62NPeYVt/dpKUqHfDmjoRlJjYAJGeyLX612C', 'Alberto', 'Martinez', 'Perez', '47234226T', 2); -- Waypo_1990
+    ('alberto.martinezp1990@gmail.com', '$2a$10$ZY67ggZXT3a6LvhbplPGaOGfhYS8UiRYj8x7rnRLcf5RnUHMVwz8S', 'Alberto', 'Martinez', 'Perez', '47234226T', 2); -- Password_11
 
 -- Inserción de datos en la tabla paciente
 INSERT INTO paciente (usuario_id, fecha_nacimiento,  num_historia_clinica, tipo_via, nombre_via, numero, piso, puerta, municipio, codigo_postal, tel_movil, tel_fijo)
