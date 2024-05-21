@@ -11,6 +11,7 @@ import { MedicionesService } from '../../../../../core/services/mediciones.servi
 import { CustomValidators } from '../../../../../core/classes/CustomValidators';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { TensionArterialDataModel } from '../../../../../core/interfaces/tension-arterial-data.model';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -44,7 +45,8 @@ export class TensionFormComponent implements OnInit {
   constructor(
     private authService:AuthService,
     private medicionesService: MedicionesService,
-    private location: Location) {
+    private location: Location,
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -106,7 +108,8 @@ export class TensionFormComponent implements OnInit {
 
   onSubmitted(): void {
     this.isLoading = false;
-    this.location.back();
+    this.router.navigate(['/mediapp/listado-tension'])
+      .then(() => {});
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido registrar una toma de tensión correctamente`,

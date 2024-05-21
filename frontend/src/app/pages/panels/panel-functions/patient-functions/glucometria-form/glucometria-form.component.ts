@@ -11,6 +11,7 @@ import { MedicionesService } from '../../../../../core/services/mediciones.servi
 import { CustomValidators } from '../../../../../core/classes/CustomValidators';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { GlucometriaDataModel } from '../../../../../core/interfaces/glucometria-data.model';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-glucometria-form',
@@ -44,7 +45,8 @@ export class GlucometriaFormComponent implements OnInit {
   constructor(
     private authService:AuthService,
     private medicionesService: MedicionesService,
-    private location: Location) {
+    private location: Location,
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -92,7 +94,8 @@ export class GlucometriaFormComponent implements OnInit {
 
   onSubmitted(): void {
     this.isLoading = false;
-    this.location.back();
+    this.router.navigate(['/mediapp/listado-glucometria'])
+      .then(() => {});
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido registrar una toma de glucosa correctamente`,
