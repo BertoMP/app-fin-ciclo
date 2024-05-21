@@ -73,7 +73,7 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
         },
         {
           name: 'Solicitar citas',
-          icon: 'bi bi-calendar-event',
+          icon: 'bi bi-calendar-plus',
           path: '/mediapp/solicitar-cita',
           method: 'onOptionSelected',
         },
