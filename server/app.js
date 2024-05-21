@@ -5,6 +5,7 @@ dotenv.config();
 // Definición de las variables de entorno
 const SERV_HOST = process.env.SERV_HOST;
 const SERV_PORT = process.env.SERV_PORT;
+const SERV_IP   = process.env.SERV_IP;
 
 // Importación las dependencias necesarias
 import { serve, setup } from 'swagger-ui-express';
@@ -58,7 +59,7 @@ app.use('/api', cors(corsOptions), apiRoutes);
 
 // Inicialización del servidor
 const server = app.listen(SERV_PORT, SERV_HOST, () => {
-	console.log(`NodeJS Server listening on http:\\${SERV_HOST}:${SERV_PORT}`);
+	console.log(`NodeJS Server listening on http:\\${SERV_IP}:${SERV_PORT}`);
 });
 
 // Exportación de la aplicación Express
