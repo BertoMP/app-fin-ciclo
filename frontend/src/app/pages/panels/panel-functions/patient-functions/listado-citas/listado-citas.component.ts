@@ -81,8 +81,6 @@ export class ListadoCitasComponent {
 
   ngOnInit(): void {
     this.actualPage = 1;
-    this.citas = [];
-    this.errores = [];
 
     this.getCitasSubject
       .pipe(
