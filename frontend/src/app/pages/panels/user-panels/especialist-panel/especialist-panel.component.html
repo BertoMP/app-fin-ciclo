@@ -1,1 +1,22 @@
-<h1>Panel de doctor.</h1>
+<button class="menu-button" (click)="toggleSidebar($event)" *ngIf="!sidebarOpen">
+    <i class="bi bi-list"></i>
+</button>
+<section>
+    <aside class="sidebar" [class.open]="sidebarOpen">
+        <app-sidebar [mainOptions]="sidebarOptionsTop" [secondaryOptions]="sidebarOptionsBottom"
+            title="Panel de especialista" (closeSidebar)="sidebarOpen = false"></app-sidebar>
+    </aside>
+    <article class="main">
+        @if (!optionSelected) {
+        <section class="welcome">
+            <h3>¡Bienvenido/a, {{ userName }}!</h3>
+            <p class="welcome-p">Selecciona una opción del menú lateral para comenzar</p>
+            <figure>
+                <img src="assets/img/specialist.png" alt="Bienvenido/a">
+            </figure>
+        </section>
+        } @else {
+        <router-outlet></router-outlet>
+        }
+    </article>
+</section>

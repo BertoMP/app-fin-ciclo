@@ -6,6 +6,7 @@ import { CitasListModel } from '../interfaces/citas-list.model';
 import { CitaSpecificDataModel } from '../interfaces/cita-specific-data.model';
 import { CitaUploadModel } from '../interfaces/cita-upload.model';
 import { CitasDisponiblesModel } from '../interfaces/citas-disponibles.model';
+import { CitasEspecialistaListModel } from '../interfaces/citas-especialista-list.model';
 
 @Injectable({
   providedIn: 'root'
@@ -45,8 +46,8 @@ export class CitasService {
     return this.http.get<CitaSpecificDataModel>(`${this.baseUrl}/cita/${cita_id}`)
   }
 
-  getCitaEspecialista(especialista_id: number): Observable<Object> {
-    return this.http.get<Object>(`${this.baseUrl}/cita/agenda`);
+  getCitaEspecialista(): Observable<CitasEspecialistaListModel[]> {
+    return this.http.get<CitasEspecialistaListModel[]>(`${this.baseUrl}/cita/agenda`);
   }
 
   getCitaDisponible(especialista_id: number,fecha:string): Observable<CitasDisponiblesModel> {

@@ -1,0 +1,53 @@
+<section class="header">
+  <h2>Mi agenda</h2>
+</section>
+@if (!dataLoaded) {
+<app-loading-spinner></app-loading-spinner>
+}@else if (errores.length > 0) {
+<section class="error-message mt-4 bg-danger text-white p-3 rounded">
+  <p>{{ errores[0] }}</p>
+</section>
+} @else if (!citas.length) {
+<section class="no-results">
+  <p>No se encontraron citas registradas.</p>
+</section>
+} @else {
+<section class="name-download">
+  <p>Estas son tus citas para el día de hoy, {{ nombre_especialista}}</p>
+</section>
+<section class="medication-table">
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Hora</th>
+          <th scope="col">Paciente</th>
+          <th scope="col">Nº historia clínica</th>
+          <th scope="col">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let cita of citas">
+          <tr>
+            <td>{{cita.hora}}</td>
+            <td>{{cita.paciente_nombre}} {{cita.paciente_primer_apellido}} {{cita.paciente_segundo_apellido}}</td>
+            <td>{{cita.paciente_historia_clinica}}</td>
+            <td class="btn-container">
+              <div class="dropdown">
+                <button class="btn btn-link" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li class="dropdown-item" href="#" routerLink="../ver-cita/{{cita.id}}"><i class="bi bi-calendar2-event"></i> <span>Ver cita</span></li>
+                  <li class="dropdown-item" href="#"><i class="bi  bi-file-earmark-plus"></i> <span>Generar Informe</span></li>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</section>
+}

@@ -30,6 +30,9 @@ import { SolicitarCitaComponent } from './pages/panels/panel-functions/patient-f
 import {
   ListadoInformesComponent
 } from "./pages/panels/panel-functions/patient-functions/listado-informes/listado-informes.component";
+import { ListadoAgendaComponent } from './pages/panels/panel-functions/specialist-functions/listado-agenda/listado-agenda.component';
+import { specialistGuard } from './core/guards/specialist.guard';
+import { patientSpecialistGuard } from './core/guards/patientSpecialist.guard';
 
 export const routes: Routes = [
   {
@@ -126,7 +129,7 @@ export const routes: Routes = [
       {
         path: 'ver-cita/:id',
         component: VerCitaComponent,
-        canActivate: [patientGuard]
+        canActivate: [patientSpecialistGuard]
       },
       {
         path: 'solicitar-cita',
@@ -137,6 +140,11 @@ export const routes: Routes = [
         path: 'editar-perfil',
         component: RegisterComponent,
         canActivate: [patientGuard]
+      },
+      {
+        path: 'listado-agenda',
+        component: ListadoAgendaComponent,
+        canActivate: [specialistGuard]
       }
     ]
   },
