@@ -74,7 +74,7 @@ class CitaController {
 
 			return res.status(200).json(cita);
 		} catch (err) {
-			if (err.message === 'No tienes permiso para acceder a esta cita.') {
+			if (err.message === 'No tiene permiso para obtener a esta cita.') {
 				return res.status(403).json({
 					errors: [err.message],
 				});

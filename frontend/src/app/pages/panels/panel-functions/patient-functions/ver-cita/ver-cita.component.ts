@@ -7,6 +7,7 @@ import { DatosPacienteModel } from '../../../../../core/interfaces/datos-pacient
 import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
 import {Location} from "@angular/common";
 import {saveAs} from "file-saver";
+import {AuthService} from "../../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-ver-cita',
@@ -16,6 +17,7 @@ import {saveAs} from "file-saver";
   styleUrl: './ver-cita.component.scss'
 })
 export class VerCitaComponent {
+  username: string;
   cita: CitaSpecificDataModel;
   persona: DatosPacienteModel;
 
@@ -30,12 +32,15 @@ export class VerCitaComponent {
 
   constructor(private citasService: CitasService,
               private activatedRoute: ActivatedRoute,
-              private location: Location) { }
+              private location: Location,
+              private authService: AuthService) { }
 
 
   errores: string[];
 
   ngOnInit(): void {
+    this.username = this.authService.getUserName();
+
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
 
