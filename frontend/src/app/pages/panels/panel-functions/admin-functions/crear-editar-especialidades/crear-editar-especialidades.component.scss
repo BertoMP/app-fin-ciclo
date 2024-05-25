@@ -76,6 +76,24 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
 
           &.description-field {
             grid-area: description;
+
+            .description-data {
+              display: flex;
+              flex-flow: row nowrap;
+              justify-content: space-between;
+
+              p {
+                margin-bottom: 0;
+                padding-right: 0.8rem;
+
+                span {
+                  &.description-overlimit {
+                    color: red;
+                    font-weight: bold;
+                  }
+                }
+              }
+            }
           }
         }
 

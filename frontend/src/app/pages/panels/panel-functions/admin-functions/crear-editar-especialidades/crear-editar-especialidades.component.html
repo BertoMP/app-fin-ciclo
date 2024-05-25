@@ -27,10 +27,15 @@
         <img [src]="imageToShow" *ngIf="imageBase64" class="preview-image" alt="Especialidad" />
       </article>
       <article class="description-field">
-        <label for="description">Descripción</label>
-        <textarea formControlName="descripcion" id="description" [ngClass]="{ 'invalid':
-               registerForm.get('descripcion').invalid &&
-               sendedAttempt }"></textarea>
+        <section class="description-data">
+          <label for="description">Descripción</label>
+          <p><span [class.description-overlimit]="descriptionLength > maxLength">{{descriptionLength}}</span>/{{maxLength}} caracteres</p>
+        </section>
+        <textarea formControlName="descripcion"
+                  [maxlength]="maxLength"
+                  id="description"
+                  [ngClass]="{ 'invalid': registerForm.get('descripcion').invalid && sendedAttempt }"
+        ></textarea>
       </article>
     </fieldset>
   </section>
@@ -47,7 +52,7 @@
 
       @if (registerForm.get('descripcion').invalid) {
       <li>
-          <strong>Descripción:</strong> Debe de tener una descripcion.
+          <strong>Descripción:</strong> Debe de tener una descripción y no superar los 120 caracteres.
       </li>
       }
 

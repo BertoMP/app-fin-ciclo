@@ -32,6 +32,7 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
   isLoading: boolean = false;
   errores: string[] = [];
   imageBase64: string;
+  maxLength: number = 120;
 
   suscripcionRuta: Subscription;
   especialidad: SpecialityListedModel;
@@ -88,10 +89,16 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
       'descripcion': new FormControl(
         null,
         [
-          Validators.required
+          Validators.required,
+          Validators.maxLength(this.maxLength)
         ]
       )
     });
+  }
+
+  get descriptionLength(): number {
+    const description = this.registerForm.get('descripcion');
+    return description && description.value ? description.value.length : 0;
   }
 
   patchForm(): void {
