@@ -44,7 +44,9 @@
               <td class="dosis">{{ toma.dosis }}</td>
               <td class="fecha-inicio">{{ toma.fecha_inicio }}</td>
               <td class="fecha-fin">{{ toma.fecha_fin }}</td>
-              <td [innerHTML]="sanitizeHtml(toma.observaciones)" [title]="sanitizeHtml(toma.observaciones)"></td>
+              <td class="observaciones"
+                  [innerHTML]="toma.observaciones ? sanitizeHtml(toma.observaciones) : ''"
+                  [title]="toma.observaciones ? sanitizeHtml(toma.observaciones) : ''"></td>
             </tr>
           </ng-container>
         </ng-container>
