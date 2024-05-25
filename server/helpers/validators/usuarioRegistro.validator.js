@@ -42,25 +42,29 @@ export const validateUserRegister = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	body('datos_personales.nombre')
 		.trim()
 		.notEmpty()
 		.withMessage('El nombre es requerido.')
 		.isString()
-		.withMessage('El nombre debe ser una cadena de texto.'),
+		.withMessage('El nombre debe ser una cadena de texto.')
+		.escape(),
 	body('datos_personales.primer_apellido')
 		.trim()
 		.notEmpty()
 		.withMessage('El primer apellido es requerido.')
 		.isString()
-		.withMessage('El primer apellido debe ser una cadena de texto.'),
+		.withMessage('El primer apellido debe ser una cadena de texto.')
+		.escape(),
 	body('datos_personales.segundo_apellido')
 		.trim()
 		.notEmpty()
 		.withMessage('El segundo apellido es requerido.')
 		.isString()
-		.withMessage('El segundo apellido debe ser una cadena de texto.'),
+		.withMessage('El segundo apellido debe ser una cadena de texto.')
+		.escape(),
 	body('datos_personales.dni')
 		.trim()
 		.notEmpty()
@@ -75,5 +79,6 @@ export const validateUserRegister = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 ];

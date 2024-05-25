@@ -19,7 +19,8 @@ export const validatePatologia = [
 		.notEmpty()
 		.withMessage('El nombre es obligatorio')
 		.isString()
-		.withMessage('El nombre debe ser una cadena de texto'),
+		.withMessage('El nombre debe ser una cadena de texto')
+		.escape(),
 	body('descripcion')
 		.trim()
 		.notEmpty()

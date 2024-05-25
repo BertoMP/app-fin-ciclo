@@ -1,5 +1,7 @@
 // Importación de los servicios necesarios
 import MedicamentoService from '../services/medicamento.service.js';
+
+// Importación de las librerías necesarias
 import {getSearchValues} from "../util/functions/getSearchValues.js";
 
 /**

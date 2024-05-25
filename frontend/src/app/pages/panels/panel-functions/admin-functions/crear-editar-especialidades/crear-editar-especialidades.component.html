@@ -31,11 +31,13 @@
           <label for="description">Descripción</label>
           <p><span [class.description-overlimit]="descriptionLength > maxLength">{{descriptionLength}}</span>/{{maxLength}} caracteres</p>
         </section>
-        <textarea formControlName="descripcion"
-                  [maxlength]="maxLength"
-                  id="description"
-                  [ngClass]="{ 'invalid': registerForm.get('descripcion').invalid && sendedAttempt }"
-        ></textarea>
+        <quill-editor
+          formControlName="descripcion"
+          id="description"
+          placeholder="Introduce una descripción..."
+          [modules]="quillConfig"
+          [ngClass]="{ 'invalid': registerForm.get('descripcion').invalid && sendedAttempt }"
+        ></quill-editor>
       </article>
     </fieldset>
   </section>

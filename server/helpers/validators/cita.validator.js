@@ -19,13 +19,15 @@ export const validateCita = [
 		.notEmpty()
 		.withMessage('El paciente es requerido')
 		.isNumeric()
-		.withMessage('El paciente debe ser un número'),
+		.withMessage('El paciente debe ser un número')
+		.escape(),
 	body('especialista_id')
 		.trim()
 		.notEmpty()
 		.withMessage('El especialista es requerido')
 		.isNumeric()
-		.withMessage('El especialista debe ser un número'),
+		.withMessage('El especialista debe ser un número')
+		.escape(),
 	body('fecha')
 		.trim()
 		.notEmpty()
@@ -47,7 +49,8 @@ export const validateCita = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	body('hora')
 		.trim()
 		.notEmpty()
@@ -60,7 +63,8 @@ export const validateCita = [
 				throw new Error('La hora debe ser un formato HH:mm:ss');
 			}
 			return true;
-		}),
+		})
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

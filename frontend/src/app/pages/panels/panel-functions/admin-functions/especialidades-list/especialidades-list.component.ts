@@ -13,6 +13,7 @@ import { AdminPanelService } from '../../../../../core/services/admin-panel.serv
 import {SpecialityDataModel} from "../../../../../core/interfaces/speciality-data.model";
 import {SpecialityListedModel} from "../../../../../core/interfaces/speciality-listed.model";
 import {RemoveBrPipe} from "../../../../../shared/pipes/remove-br.pipe";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-especialidades-list',
@@ -68,7 +69,8 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
 
   private getSpecialtiesSubject: Subject<void> = new Subject<void>();
 
-  constructor(private adminPanelService: AdminPanelService) { }
+  constructor(private adminPanelService: AdminPanelService,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.specialties = [];
@@ -91,6 +93,10 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.getSpecialtiesSubject.unsubscribe();
+  }
+
+  sanitizeHtml(inputHtml: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(inputHtml);
   }
 
   changePage(page: number) {

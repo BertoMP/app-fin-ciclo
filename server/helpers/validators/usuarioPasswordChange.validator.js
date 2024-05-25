@@ -26,7 +26,8 @@ export const validateUserPasswordChange = [
 		})
 		.withMessage(
 			'La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número.',
-		),
+		)
+		.escape(),
 	body('confirm_password')
 		.trim()
 		.notEmpty()
@@ -36,7 +37,8 @@ export const validateUserPasswordChange = [
 		.custom((value, { req }) => {
 			return value === req.body.password;
 		})
-		.withMessage('Las contraseñas no coinciden.'),
+		.withMessage('Las contraseñas no coinciden.')
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

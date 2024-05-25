@@ -19,20 +19,23 @@ export const validateInforme = [
 		.notEmpty()
 		.withMessage('La cita es requerida.')
 		.isNumeric()
-		.withMessage('La cita debe ser un número.'),
+		.withMessage('La cita debe ser un número.')
+		.escape(),
 	body('motivo')
 		.trim()
 		.notEmpty()
 		.withMessage('El motivo es requerido.')
 		.isString()
-		.withMessage('El motivo debe ser un texto.'),
+		.withMessage('El motivo debe ser un texto.')
+		.escape(),
 	body('patologias').isArray().withMessage('Las patologías deben ser un arreglo de texto.'),
 	body('patologias.*')
 		.trim()
 		.notEmpty()
 		.withMessage('El id de la patología es requerido.')
 		.isNumeric()
-		.withMessage('El id de la patología debe ser un número.'),
+		.withMessage('El id de la patología debe ser un número.')
+		.escape(),
 	body('contenido')
 		.trim()
 		.notEmpty()

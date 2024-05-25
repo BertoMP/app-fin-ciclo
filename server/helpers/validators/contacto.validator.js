@@ -19,13 +19,15 @@ export const validateContacto = [
 		.notEmpty()
 		.withMessage('El nombre no puede estar vacío.')
 		.isString()
-		.withMessage('El nombre debe ser una cadena de texto.'),
+		.withMessage('El nombre debe ser una cadena de texto.')
+		.escape(),
 	body('descripcion')
 		.trim()
 		.notEmpty()
 		.withMessage('La descripción no puede estar vacía.')
 		.isString()
-		.withMessage('La descripción debe ser una cadena de texto.'),
+		.withMessage('La descripción debe ser una cadena de texto.')
+		.escape(),
 	body('email')
 		.trim()
 		.notEmpty()
@@ -40,7 +42,8 @@ export const validateContacto = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	body('telefono')
 		.trim()
 		.notEmpty()
@@ -55,7 +58,8 @@ export const validateContacto = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	body('mensaje')
 		.trim()
 		.notEmpty()

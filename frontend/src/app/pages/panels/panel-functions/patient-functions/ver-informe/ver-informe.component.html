@@ -54,19 +54,25 @@
                         <h5 class="mb-3"><strong>DIAGNÓSTICOS:</strong></h5>
                         <p>Indique los diagnósticos (CIE-10) de las principales enfermedades, trastornos u otras condiciones de salud que afectan de manera significativa en las actividades de la vida diaria (AVDs)</p>
                         <div class="mb-3">
-                            <strong>Contenido:</strong>
-                            <textarea class="form-control" rows="4" readonly>{{informe.datos_informe.contenido}}</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Patologías:</strong>
                             <ul class="list-group">
                                 <li class="list-group-item" *ngFor="let patologia of informe.datos_informe.patologias">
                                     <p><strong>Nombre:</strong> {{patologia.nombre}}</p>
-                                    <p><strong>Descripción:</strong> {{patologia.descripcion}}</p>
+                                    <p [innerHTML]="sanitizeHtml(patologia.descripcion)"></p>
                                 </li>
                             </ul>
                         </div>
                     </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="mb-3">
+                      <h5 class="mb-3"><strong>CONTENIDO DEL INFORME:</strong></h5>
+                      <textarea class="form-control"
+                                rows="4"
+                                readonly
+                                [innerHTML]="sanitizeHtml(informe.datos_informe.contenido)"></textarea>
+                    </div>
+                  </td>
                 </tr>
             </tbody>
         </table>

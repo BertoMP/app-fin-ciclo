@@ -1,7 +1,8 @@
 // Importación de los servicios necesarios
 import EspecialidadService from '../services/especialidad.service.js';
+
+// Importación de las librerías necesarias
 import {getSearchValues} from "../util/functions/getSearchValues.js";
-import ObjectFactory from "../util/classes/objectFactory.js";
 
 /**
  * @class EspecialidadController

@@ -3,6 +3,7 @@ import { createEncryptedPassword } from "../functions/createEncryptedPassword.js
 
 // Importación de librerías
 import pkg from 'moment-timezone';
+import {sanitizeInput} from "../functions/sanitizeInput.js";
 const { tz } = pkg;
 
 class ObjectFactory {
@@ -37,7 +38,7 @@ class ObjectFactory {
 	static createEspecialistaObject(data) {
 		return {
 			num_colegiado: data.datos_especialista.num_colegiado,
-			descripcion: data.datos_especialista.descripcion.replace(/(\r\n|\n|\r)/g, '<br>'),
+			descripcion: sanitizeInput(data.datos_especialista.descripcion),
 			imagen: data.datos_especialista.imagen,
 			turno: data.datos_especialista.turno,
 			especialidad_id: data.datos_especialista.especialidad.especialidad_id,
@@ -77,7 +78,7 @@ class ObjectFactory {
 		return {
 			id: data.usuario_id,
 			num_colegiado: data.datos_especialista.num_colegiado,
-			descripcion: data.datos_especialista.descripcion.replace(/(\r\n|\n|\r)/g, '<br>'),
+			descripcion: sanitizeInput(data.datos_especialista.descripcion),
 			imagen: data.datos_especialista.imagen,
 			turno: data.datos_especialista.turno,
 			especialidad_id: data.datos_especialista.especialidad.especialidad_id,
@@ -88,8 +89,7 @@ class ObjectFactory {
 	static createEspecialidadObject(data) {
 		return {
 			nombre: data.datos_especialidad.nombre,
-			descripcion: data.datos_especialidad.descripcion
-				.replace(/(\r\n|\n|\r)/g, '<br>'),
+			descripcion: sanitizeInput(data.datos_especialidad.descripcion),
 			imagen: data.datos_especialidad.imagen,
 		};
 	}
@@ -100,7 +100,7 @@ class ObjectFactory {
 			descripcion: data.descripcion,
 			email: data.email,
 			telefono: data.telefono,
-			mensaje: data.mensaje.replace(/(\r\n|\n|\r)/g, '<br>'),
+			mensaje: sanitizeInput(data.mensaje),
 		};
 	}
 
@@ -125,14 +125,14 @@ class ObjectFactory {
 	static createMedicamentoObject(data) {
 		return {
 			nombre: data.datos_medicamento.nombre,
-			descripcion: data.datos_medicamento.descripcion.replace(/(\r\n|\n|\r)/g, '<br>'),
+			descripcion: sanitizeInput(data.datos_medicamento.descripcion),
 		};
 	}
 
 	static createInformeObject(data) {
 		return {
 			motivo: data.motivo,
-			contenido: data.contenido.replace(/(\r\n|\n|\r)/g, '<br>'),
+			contenido: sanitizeInput(data.contenido),
 			cita_id: data.cita_id,
 			patologias: data.patologias,
 		};
@@ -141,7 +141,7 @@ class ObjectFactory {
 	static createPatologiaObject(data) {
 		return {
 			nombre: data.nombre,
-			descripcion: data.descripcion.replace(/(\r\n|\n|\r)/g, '<br>'),
+			descripcion: sanitizeInput(data.descripcion),
 		};
 	}
 
@@ -152,7 +152,7 @@ class ObjectFactory {
 			hora: data.hora,
 			fecha_inicio: data.fecha_inicio,
 			fecha_fin: data.fecha_fin,
-			observaciones: data.observaciones,
+			observaciones: sanitizeInput(data.observaciones),
 		};
 	}
 }

@@ -19,7 +19,8 @@ export const validateMedicamento = [
 		.notEmpty()
 		.withMessage('El nombre del medicamento es requerido')
 		.isString()
-		.withMessage('El nombre del medicamento debe ser una cadena de texto'),
+		.withMessage('El nombre del medicamento debe ser una cadena de texto')
+		.escape(),
 	body('datos_medicamento.descripcion')
 		.trim()
 		.notEmpty()

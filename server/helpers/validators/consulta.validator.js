@@ -32,7 +32,8 @@ export const validateConsulta = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

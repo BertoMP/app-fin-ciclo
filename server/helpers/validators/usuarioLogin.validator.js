@@ -32,7 +32,8 @@ export const validateUserLogin = [
 		.notEmpty()
 		.withMessage('La contraseña es requerida.')
 		.isString()
-		.withMessage('La contraseña debe ser una cadena de texto.'),
+		.withMessage('La contraseña debe ser una cadena de texto.')
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

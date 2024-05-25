@@ -36,7 +36,8 @@ export const validateEspecialistaRegister = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	body('datos_especialista.descripcion')
 		.trim()
 		.notEmpty()
@@ -48,25 +49,33 @@ export const validateEspecialistaRegister = [
 		.notEmpty()
 		.withMessage('El turno es requerido.')
 		.isString()
-		.withMessage('El turno debe ser una cadena de texto.'),
+		.withMessage('El turno debe ser una cadena de texto.')
+		.escape(),
 	body('datos_especialista.especialidad.especialidad_id')
 		.trim()
 		.notEmpty()
 		.withMessage('La especialidad es requerida.')
 		.isNumeric()
-		.withMessage('La especialidad debe ser un valor numérico.'),
+		.withMessage('La especialidad debe ser un valor numérico.')
+		.escape(),
 	body('datos_especialista.consulta.consulta_id')
 		.trim()
 		.notEmpty()
 		.withMessage('La consulta es requerida.')
 		.isNumeric()
-		.withMessage('La consulta debe ser un valor numérico.'),
+		.withMessage('La consulta debe ser un valor numérico.')
+		.escape(),
 	body('datos_especialista.imagen')
 		.trim()
 		.notEmpty()
 		.withMessage('La imagen del especialista no puede estar vacía.')
-		.isString()
-		.withMessage('La imagen del especialista es requerida.'),
+		.custom((value) => {
+			const base64regex = /^data:image\/[a-zA-Z]*;base64,([^\\"]*)$/;
+			if (!base64regex.test(value)) {
+				throw new Error('La imagen del especialista debe tener un formato válido.');
+			}
+			return true;
+		}),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

@@ -15,6 +15,7 @@ import { param, validationResult } from 'express-validator';
  */
 export const validateInformeIdParam = [
 	param('informe_id')
+		.trim()
 		.isNumeric()
 		.withMessage('El ID del informe debe ser un valor numérico.')
 		.custom((value) => {
@@ -23,7 +24,8 @@ export const validateInformeIdParam = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

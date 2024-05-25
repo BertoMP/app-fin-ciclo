@@ -88,12 +88,19 @@
             <article class="preview-image">
                 <img *ngIf="imageBase64" [src]="imageBase64" alt="Imagen de perfil">
             </article>
-            <article class="description-field">
-                <label for="descripcion">Descripción</label>
-                <textarea formControlName="descripcion" id="descripcion" [ngClass]="{ 'invalid':
-                 registerForm.get('descripcion').invalid &&
-                 sendedAttempt }"></textarea>
-            </article>
+          <article class="description-field">
+            <section class="description-data">
+              <label for="description">Descripción</label>
+              <p><span [class.description-overlimit]="descriptionLength > maxLength">{{descriptionLength}}</span>/{{maxLength}} caracteres</p>
+            </section>
+            <quill-editor
+              formControlName="descripcion"
+              id="description"
+              placeholder="Introduce una descripción..."
+              [modules]="quillConfig"
+              [ngClass]="{ 'invalid': registerForm.get('descripcion').invalid && sendedAttempt }"
+            ></quill-editor>
+          </article>
         </fieldset>
         @if (registerForm.invalid && sendedAttempt) {
         <section class="error-message">

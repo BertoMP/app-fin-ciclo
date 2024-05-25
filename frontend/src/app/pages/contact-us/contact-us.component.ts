@@ -4,11 +4,11 @@ import { FormControl, FormGroup, ReactiveFormsModule,Validators } from '@angular
 import { ContactoModel } from '../../core/interfaces/contacto.model';
 import { CustomValidators } from '../../core/classes/CustomValidators';
 import { ContactoService } from '../../core/services/contacto.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import {
   LoadingSpinnerComponent
 } from "../../shared/components/loading-spinner/loading-spinner.component";
+import {QuillEditorComponent} from "ngx-quill";
 
 @Component({
   selector: 'app-contact-us',
@@ -16,7 +16,8 @@ import {
   imports: [
     ReactiveFormsModule,
     CommonModule,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    QuillEditorComponent
   ],
   templateUrl: './contact-us.component.html',
   styleUrl: './contact-us.component.scss'
@@ -31,6 +32,23 @@ export class ContactUsComponent implements OnInit {
   staticEmail: string = 'clinicamedicacoslada@gmail.com';
   staticUbication: string = 'Calle Coslada 4º 1ºB';
   staticTelef: string = '642 111 111';
+
+
+  public quillConfig = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+
+      [{ 'header': 1 }, { 'header': 2 }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],
+
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+      ['link']
+    ]
+  };
 
   constructor(private contactoService: ContactoService) {
   }
@@ -85,8 +103,6 @@ export class ContactUsComponent implements OnInit {
       this.isSendingEmail = false;
       return;
     }
-
-
 
     const newCorreo: ContactoModel = this.generateContacto();
     this.contactoService.mandarCorreo(newCorreo)

@@ -4,7 +4,7 @@
   </figure>
   <section class="contenido">
     <h3>{{ info.datos_especialidad.nombre }}</h3>
-    <p>{{ info.datos_especialidad.descripcion }}</p>
+    <p [innerHTML]="sanitizeHtml(info.datos_especialidad.descripcion)"></p>
     <article>
       <button [routerLink]="routerLink" [fragment]="fragment"
       >Ver especialistas</button>

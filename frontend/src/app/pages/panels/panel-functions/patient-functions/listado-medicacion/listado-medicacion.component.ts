@@ -9,6 +9,7 @@ import { LoadingSpinnerComponent } from '../../../../../shared/components/loadin
 import { saveAs } from 'file-saver';
 import { MedicamentoDataModel } from "../../../../../core/interfaces/medicamento-data.model";
 import { DatosPacienteModel } from "../../../../../core/interfaces/datos-paciente.model";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-listado-medicacion',
@@ -39,7 +40,8 @@ export class ListadoMedicacionComponent implements OnInit {
 
   errores: string[];
 
-  constructor(private medicacionesService: MedicacionesService) { }
+  constructor(private medicacionesService: MedicacionesService,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.meds = [];
@@ -58,6 +60,10 @@ export class ListadoMedicacionComponent implements OnInit {
       });
     this.initialLoad = true;
     this.getMedsSubject.next();
+  }
+
+  sanitizeHtml(inputHtml: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(inputHtml);
   }
 
   getMedicaciones() {

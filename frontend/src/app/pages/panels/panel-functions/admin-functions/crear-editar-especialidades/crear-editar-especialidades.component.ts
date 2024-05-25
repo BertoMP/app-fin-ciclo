@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomValidators } from '../../../../../core/classes/CustomValidators';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FileUploadService } from '../../../../../core/services/file-uploader.service';
 import Swal from 'sweetalert2';
 import { SpecialityListedModel } from '../../../../../core/interfaces/speciality-listed.model';
@@ -12,6 +12,7 @@ import { PasswordInputComponent } from '../../../../../shared/components/passwor
 import { Subscription } from 'rxjs';
 import { EspecialidadService } from '../../../../../core/services/especialidad.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import {QuillEditorComponent} from 'ngx-quill';
 
 @Component({
   selector: 'app-crear-editar-especialidades',
@@ -22,7 +23,9 @@ import { HttpErrorResponse } from '@angular/common/http';
     LoadingSpinnerComponent,
     Select2Module,
     CommonModule,
-    PasswordInputComponent],
+    PasswordInputComponent,
+    QuillEditorComponent,
+  ],
   templateUrl: './crear-editar-especialidades.component.html',
   styleUrl: './crear-editar-especialidades.component.scss'
 })
@@ -44,6 +47,22 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
 
   isEditing: boolean = false;
 
+  public quillConfig = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+
+      [{ 'header': 1 }, { 'header': 2 }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],
+
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+      ['link']
+    ]
+  };
+
   constructor(private fileUploadService: FileUploadService,
               private activatedRoute: ActivatedRoute,
               private especialidadService: EspecialidadService,
@@ -51,7 +70,6 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
 
@@ -98,7 +116,18 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
 
   get descriptionLength(): number {
     const description = this.registerForm.get('descripcion');
-    return description && description.value ? description.value.length : 0;
+    return description && description.value ? this.countCharacters(description.value) : 0;
+  }
+
+  stripHtml(html: string) {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  }
+
+  countCharacters(input: string) {
+    const strippedInput = this.stripHtml(input);
+    return strippedInput.length;
   }
 
   patchForm(): void {

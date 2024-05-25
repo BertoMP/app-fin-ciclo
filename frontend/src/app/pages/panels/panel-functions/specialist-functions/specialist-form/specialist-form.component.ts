@@ -23,6 +23,7 @@ import { ProfessionalDataService } from '../../../../../core/services/profession
 import { AuthService } from '../../../../../core/services/auth.service';
 import { CustomValidators } from '../../../../../core/classes/CustomValidators';
 import { EspecialidadModel } from '../../../../../core/interfaces/especialidad.model';
+import {QuillEditorComponent} from "ngx-quill";
 
 
 @Component({
@@ -34,7 +35,9 @@ import { EspecialidadModel } from '../../../../../core/interfaces/especialidad.m
     LoadingSpinnerComponent,
     Select2Module,
     CommonModule,
-    PasswordInputComponent,],
+    PasswordInputComponent,
+    QuillEditorComponent,
+  ],
   templateUrl: './specialist-form.component.html',
   styleUrl: './specialist-form.component.scss'
 })
@@ -46,6 +49,7 @@ export class SpecialistFormComponent implements OnInit {
   imageBase64: string;
   imageToShow: string;
   isEditing: boolean = false;
+  maxLength: number = 300;
 
   especialidad: Select2Data;
   turno: Select2Data;
@@ -54,6 +58,23 @@ export class SpecialistFormComponent implements OnInit {
   especialista: EspecialistModel;
 
   id: number;
+
+
+  public quillConfig = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+
+      [{ 'header': 1 }, { 'header': 2 }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],
+
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+      ['link']
+    ]
+  };
 
   constructor(private turnoService: TurnoService,
               private especialidadService: EspecialidadService,
@@ -197,6 +218,22 @@ export class SpecialistFormComponent implements OnInit {
       });
 
     this.turno = this.turnoService.getTurno();
+  }
+
+  get descriptionLength(): number {
+    const description = this.registerForm.get('descripcion');
+    return description && description.value ? this.countCharacters(description.value) : 0;
+  }
+
+  stripHtml(html: string) {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  }
+
+  countCharacters(input: string) {
+    const strippedInput = this.stripHtml(input);
+    return strippedInput.length;
   }
 
   patchForm(): void {

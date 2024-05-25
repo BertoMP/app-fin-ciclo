@@ -48,7 +48,7 @@ class EspecialidadModel {
 
 		query +=
 			'ORDER BY ' +
-			'   id ASC ' +
+			'   nombre ASC ' +
 			'LIMIT ? OFFSET ?';
 
 		queryParams.push(`${limit}`, `${offset}`);

@@ -15,6 +15,7 @@ import { param, validationResult } from 'express-validator';
  */
 export const validateMedicamentoIdParam = [
 	param('medicamento_id')
+		.trim()
 		.isNumeric()
 		.withMessage('El ID del medicamento debe ser un valor numérico.')
 		.custom((value) => {
@@ -23,7 +24,8 @@ export const validateMedicamentoIdParam = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

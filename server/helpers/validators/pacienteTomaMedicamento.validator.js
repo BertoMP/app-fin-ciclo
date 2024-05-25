@@ -19,7 +19,8 @@ export const validatePacienteTomaMedicamento = [
 		.notEmpty()
 		.withMessage('El paciente es requerido.')
 		.isNumeric()
-		.withMessage('El paciente debe ser un valor numérico.'),
+		.withMessage('El paciente debe ser un valor numérico.')
+		.escape(),
 	body('prescripcion')
 		.isArray()
 		.withMessage('La prescripción de medicamentos debe ser un arreglo de objetos.'),
@@ -28,19 +29,23 @@ export const validatePacienteTomaMedicamento = [
 		.notEmpty()
 		.withMessage('El medicamento es requerido.')
 		.isNumeric()
-		.withMessage('El medicamento debe ser un valor numérico.'),
+		.withMessage('El medicamento debe ser un valor numérico.')
+		.escape(),
 	body('prescripcion.*.tomas')
 		.isArray()
 		.withMessage('Las tomas del medicamento deben ser un arreglo de objetos.'),
 	body('prescripcion.*.tomas.*.toma_id')
+		.trim()
 		.custom((value) => value === null || typeof value === 'number')
-		.withMessage('El identificador de la toma debe ser null o un valor numérico.'),
+		.withMessage('El identificador de la toma debe ser null o un valor numérico.')
+		.escape(),
 	body('prescripcion.*.tomas.*.dosis')
 		.trim()
 		.notEmpty()
 		.withMessage('La dosis es requerida.')
 		.isNumeric()
-		.withMessage('La dosis debe ser un valor numérico.'),
+		.withMessage('La dosis debe ser un valor numérico.')
+		.escape(),
 	body('prescripcion.*.tomas.*.hora')
 		.trim()
 		.notEmpty()
@@ -54,7 +59,8 @@ export const validatePacienteTomaMedicamento = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	body('prescripcion.*.tomas.*.fecha_inicio')
 		.trim()
 		.notEmpty()
@@ -76,7 +82,8 @@ export const validatePacienteTomaMedicamento = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	body('prescripcion.*.tomas.*.fecha_fin')
 		.trim()
 		.optional()
@@ -112,7 +119,8 @@ export const validatePacienteTomaMedicamento = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	body('prescripcion.*.tomas.*.observaciones')
 		.trim()
 		.optional()

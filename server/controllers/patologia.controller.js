@@ -3,6 +3,7 @@ import PatologiaService from '../services/patologia.service.js';
 
 // Importación de las funciones necesarias
 import { getSearchValues } from "../util/functions/getSearchValues.js";
+import {sanitizeInput} from "../util/functions/sanitizeInput.js";
 
 /**
  * @class PatologiaController

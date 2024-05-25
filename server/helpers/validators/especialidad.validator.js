@@ -19,7 +19,8 @@ export const validateEspecialidad = [
 		.notEmpty()
 		.withMessage('El nombre de la especialidad no puede estar vacío.')
 		.isString()
-		.withMessage('El nombre de la especialidad debe ser una cadena de texto'),
+		.withMessage('El nombre de la especialidad debe ser una cadena de texto')
+		.escape(),
 	body('datos_especialidad.descripcion')
 		.trim()
 		.notEmpty()
@@ -30,8 +31,13 @@ export const validateEspecialidad = [
 		.trim()
 		.notEmpty()
 		.withMessage('La imagen de la especialidad no puede estar vacía.')
-		.isString()
-		.withMessage('La imagen de la especialidad es requerida.'),
+		.custom((value) => {
+			const base64regex = /^data:image\/[a-zA-Z]*;base64,([^\\"]*)$/;
+			if (!base64regex.test(value)) {
+				throw new Error('La imagen de la especialidad debe tener un formato válido.');
+			}
+			return true;
+		}),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

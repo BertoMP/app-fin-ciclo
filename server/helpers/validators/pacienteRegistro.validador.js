@@ -24,13 +24,15 @@ export const validatePacienteRegister = [
 		.notEmpty()
 		.withMessage('El tipo de vía es requerido.')
 		.isNumeric()
-		.withMessage('El tipo de vía ha de ser un valor numérico'),
+		.withMessage('El tipo de vía ha de ser un valor numérico')
+		.escape(),
 	body('datos_paciente.datos_vivienda.nombre_via')
 		.trim()
 		.notEmpty()
 		.withMessage('El nombre de la vía es requerido.')
 		.isString()
-		.withMessage('El nombre de la vía debe ser una cadena de texto.'),
+		.withMessage('El nombre de la vía debe ser una cadena de texto.')
+		.escape(),
 	body('datos_paciente.datos_vivienda.numero')
 		.trim()
 		.notEmpty()
@@ -42,7 +44,8 @@ export const validatePacienteRegister = [
 				throw new Error('El número no puede ser 0 o negativo.');
 			}
 			return true;
-		}),
+		})
+		.escape(),
 	body('datos_paciente.datos_vivienda.piso')
 		.trim()
 		.notEmpty()
@@ -54,7 +57,8 @@ export const validatePacienteRegister = [
 				throw new Error('El piso no puede ser 0 o negativo.');
 			}
 			return true;
-		}),
+		})
+		.escape(),
 	body('datos_paciente.datos_vivienda.puerta')
 		.trim()
 		.isString()
@@ -68,7 +72,8 @@ export const validatePacienteRegister = [
 				throw new Error('La puerta debe ser una letra mayúscula.');
 			}
 			return true;
-		}),
+		})
+		.escape(),
 	body('datos_paciente.datos_vivienda.municipio.codigo_postal')
 		.trim()
 		.notEmpty()
@@ -82,7 +87,8 @@ export const validatePacienteRegister = [
 				throw new Error('El código postal debe tener 5 dígitos.');
 			}
 			return true;
-		}),
+		})
+		.escape(),
 	body('datos_paciente.datos_vivienda.municipio.id')
 		.trim()
 		.notEmpty()
@@ -102,7 +108,8 @@ export const validatePacienteRegister = [
 				throw new Error('El teléfono fijo debe tener 9 dígitos.');
 			}
 			return true;
-		}),
+		})
+		.escape(),
 	body('datos_paciente.datos_contacto.tel_movil')
 		.trim()
 		.notEmpty()
@@ -116,7 +123,8 @@ export const validatePacienteRegister = [
 				throw new Error('El teléfono móvil debe tener 9 dígitos.');
 			}
 			return true;
-		}),
+		})
+		.escape(),
 	body('datos_paciente.fecha_nacimiento')
 		.trim()
 		.notEmpty()
@@ -140,7 +148,8 @@ export const validatePacienteRegister = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

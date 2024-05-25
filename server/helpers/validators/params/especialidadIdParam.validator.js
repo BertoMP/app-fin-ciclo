@@ -15,6 +15,7 @@ import { param, validationResult } from 'express-validator';
  */
 export const validateEspecialidadIdParam = [
 	param('especialidad_id')
+		.trim()
 		.isNumeric()
 		.withMessage('El ID de la especialidad debe ser un valor numérico.')
 		.custom((value) => {
@@ -23,7 +24,8 @@ export const validateEspecialidadIdParam = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

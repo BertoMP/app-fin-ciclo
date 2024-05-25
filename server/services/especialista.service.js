@@ -3,7 +3,6 @@ import EspecialistaModel from '../models/especialista.model.js';
 
 // Importación de utilidades necesarias
 import { dbConn } from '../util/database/database.js';
-import UsuarioService from "./usuario.service.js";
 
 /**
  * @class EspecialistaService

@@ -8,6 +8,7 @@ import { InformeSpecificData } from '../../../../../core/interfaces/informe-spec
 import { Location, NgFor } from '@angular/common';
 import { InformeService } from '../../../../../core/services/informe.service';
 import { saveAs } from 'file-saver';
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-ver-informe',
@@ -29,7 +30,10 @@ export class VerInformeComponent {
   id: number;
   private getMedsSubject: Subject<void> = new Subject<void>();
 
-  constructor(private informeService: InformeService, private citasService: CitasService, private activatedRoute: ActivatedRoute, private location: Location) { }
+  constructor(private informeService: InformeService,
+              private activatedRoute: ActivatedRoute,
+              private location: Location,
+              private sanitizer: DomSanitizer) { }
 
 
   errores: string[];
@@ -57,6 +61,10 @@ export class VerInformeComponent {
 
   volver() {
     this.location.back();
+  }
+
+  sanitizeHtml(inputHtml: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(inputHtml);
   }
 
   getInforme(id: number) {

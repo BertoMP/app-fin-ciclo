@@ -1,7 +1,8 @@
 // Importación de los servicios necesarios
 import InformeService from '../services/informe.service.js';
-import CitaService from '../services/cita.service.js';
 import PdfService from '../services/pdf.service.js';
+
+// Importación de las librerías necesarias
 import {getSearchValues} from "../util/functions/getSearchValues.js";
 
 /**

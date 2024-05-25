@@ -31,7 +31,8 @@ export const validateTensionArterial = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	body('tomas.diastolica')
 		.trim()
 		.notEmpty()
@@ -49,7 +50,8 @@ export const validateTensionArterial = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	body('tomas.pulsaciones_minuto')
 		.trim()
 		.notEmpty()
@@ -67,7 +69,8 @@ export const validateTensionArterial = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

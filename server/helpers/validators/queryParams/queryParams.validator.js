@@ -12,22 +12,31 @@ import { query, validationResult } from 'express-validator';
  */
 export const validateQueryParams = [
 	query('role')
+		.trim()
 		.optional()
 		.isNumeric()
-		.withMessage('El rol debe ser un valor numérico.'),
+		.withMessage('El rol debe ser un valor numérico.')
+		.escape(),
 	query('page')
+		.trim()
 		.optional()
 		.isNumeric()
-		.withMessage('El número de página debe ser un valor numérico.'),
+		.withMessage('El número de página debe ser un valor numérico.')
+		.escape(),
 	query('limit')
+		.trim()
 		.optional()
 		.isNumeric()
-		.withMessage('El límite de elementos por página debe ser un valor numérico.'),
+		.withMessage('El límite de elementos por página debe ser un valor numérico.')
+		.escape(),
 	query('search')
+		.trim()
 		.optional()
 		.isString()
-		.withMessage('El término de búsqueda debe ser una cadena de texto.'),
+		.withMessage('El término de búsqueda debe ser una cadena de texto.')
+		.escape(),
 	query('fechaInicio')
+		.trim()
 		.optional()
 		.isDate()
 		.withMessage('La fecha de inicio debe ser una fecha válida.')
@@ -37,8 +46,10 @@ export const validateQueryParams = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	query('fechaFin')
+		.trim()
 		.optional()
 		.isDate()
 		.withMessage('La fecha de fin debe ser una fecha válida.')
@@ -52,12 +63,16 @@ export const validateQueryParams = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	query('fechaInicioCita')
+		.trim()
 		.optional()
 		.isDate()
-		.withMessage('La fecha de inicio debe ser una fecha válida.'),
+		.withMessage('La fecha de inicio debe ser una fecha válida.')
+		.escape(),
 	query('fechaFinCita')
+		.trim()
 		.optional()
 		.isDate()
 		.withMessage('La fecha de fin debe ser una fecha válida.')
@@ -67,8 +82,10 @@ export const validateQueryParams = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	query('fechaCita')
+		.trim()
 		.optional()
 		.isDate()
 		.withMessage('La fecha de cita debe ser una fecha válida.')
@@ -78,8 +95,10 @@ export const validateQueryParams = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 	query('especialistaId')
+		.trim()
 		.optional()
 		.isNumeric()
 		.withMessage('El id debe ser un número.')
@@ -89,7 +108,8 @@ export const validateQueryParams = [
 			}
 
 			return true;
-		}),
+		})
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

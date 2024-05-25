@@ -15,6 +15,7 @@ import { param, validationResult } from 'express-validator';
  */
 export const validateProvinciaIdParam = [
 	param('provincia_id')
+		.trim()
 		.isNumeric()
 		.withMessage('El ID de la provincia debe ser un valor numérico.')
 		.custom((value) => {
@@ -23,7 +24,8 @@ export const validateProvinciaIdParam = [
 			}
 
 			return true;
-		}),
+		})
+		.escape,
 
 	(req, res, next) => {
 		const errors = validationResult(req);

@@ -3,11 +3,11 @@ import PacienteTomaMedicamentoModel from '../models/pacienteTomaMedicamento.mode
 
 // Importación de servicios auxiliares
 import TomaService from './toma.service.js';
+import PdfService from "./pdf.service.js";
 
 // Importación de las utilidades necesarias
 import {dbConn} from '../util/database/database.js';
 import ObjectFactory from "../util/classes/objectFactory.js";
-import PdfService from "./pdf.service.js";
 
 /**
  * @class PacienteTomaMedicamentoService
@@ -51,12 +51,6 @@ class PacienteTomaMedicamentoService {
 				}
 
 				for (const toma of tomas) {
-					let observaciones = toma.observaciones;
-
-					if (observaciones) {
-						observaciones = observaciones.replace(/(\r\n|\n|\r)/g, '<br>');
-					}
-
 					const prescripcion = ObjectFactory.createPrescripcion(toma);
 
 					if (prescripcion.id) {
