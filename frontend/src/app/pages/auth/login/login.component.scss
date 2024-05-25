@@ -9,16 +9,11 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
 $warning-text: #ff0000;
 
 :host {
-  background-color: $bg-color-primary;
-  padding: 2rem;
-  border-radius: 1.6rem;
-  width: 100%;
-  max-width: 400px;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  box-shadow: $form-shadow;
+  width: 100%;
 
   h2 {
     font-size: 1.5rem;
@@ -27,6 +22,11 @@ $warning-text: #ff0000;
   }
 
   form {
+    padding: 2rem;
+    border-radius: 1.6rem;
+    max-width: 400px;
+    background-color: $bg-color-primary;
+    box-shadow: $form-shadow;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -1,5 +1,4 @@
 @if (isLoading) {
-  <h2>Intentando login...</h2>
   <app-loading-spinner></app-loading-spinner>
 } @else {
   <form [formGroup]="loginForm" (ngSubmit)="onLoginAttempt()">
@@ -35,13 +34,13 @@
               [disabled]="loginForm.invalid">Iniciar sesión
       </button>
     </section>
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+    <section>
+      <p>¿No tienes cuenta?
+        <button routerLink="/auth/register">Registrate</button>
+      </p>
+    </section>
   </form>
-  @if (error) {
-    <p class="error">{{ error }}</p>
-  }
-  <section>
-    <p>¿No tienes cuenta?
-      <button routerLink="/auth/register">Registrate</button>
-    </p>
-  </section>
 }
