@@ -1,3 +1,11 @@
+:host {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 h1 {
   text-align: center;
   margin-bottom: 2%;
@@ -30,6 +38,7 @@ p {
 
 .mision, .contenido, .historia, .parte_historia, .beneficios, .caracteristicas, .informacion {
   display: flex;
+  width: 100%;
 }
 
 .contenido, .historia, .parte_historia, .beneficios, .informacion {
@@ -106,17 +115,19 @@ p {
 }
 
 .beneficios h2 {
-  margin-top: 0px;
+  margin-top: 0;
   margin-bottom: 3%;
 }
 
 .caracteristicas {
-  flex-flow: row;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
 }
 
 .informacion {
-  width: 20%;
+  flex: 1 0 20%;
   padding: 1%;
   align-items: center;
   border-radius: 1rem;
@@ -137,7 +148,13 @@ p {
 
 .informacion p {
   padding: 10px;
-  font-size: max(1.1vw, 12px);
+}
+
+@media all and (max-width: 1000px) {
+  .caracteristicas {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+  }
 }
 
 @media all and (max-width: 1250px) {
@@ -145,7 +162,7 @@ p {
     align-self: center;
   }
 
-  .historia, .beneficios {
+  .historia {
     width: 100%;
   }
 
@@ -153,22 +170,9 @@ p {
     width: 70%;
     margin-inline: 0;
   }
-
-  .informacion h3 {
-    font-size: 1.7vw;
-  }
-
-  .informacion p {
-    word-break: keep-all;
-    text-align: center;
-  }
 }
 
 @media all and (max-width: 1500px) {
-  p {
-    font-size: max(1.8vw, 20px);
-  }
-
   .mision * {
     width: 100%;
   }

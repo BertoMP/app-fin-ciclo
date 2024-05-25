@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import { NgxPaginationModule } from "ngx-pagination";
 import {LowerCasePipe, NgForOf, NgIf, UpperCasePipe} from '@angular/common';
 import Swal from 'sweetalert2';
-import {debounceTime, Observable, Subject, throttleTime} from 'rxjs';
+import {debounceTime, Observable, Subject} from 'rxjs';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RouterLink, RouterOutlet } from '@angular/router';
 import {Select2Data, Select2Module} from "ng-select2-component";
@@ -18,7 +18,8 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 @Component({
   selector: 'app-especialidades-list',
   standalone: true,
-  imports: [VerticalCardComponent,
+  imports: [
+    VerticalCardComponent,
     LowerCasePipe,
     RemoveAccentsPipe,
     LoadingSpinnerComponent,
@@ -27,7 +28,12 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
     NgIf,
     FormsModule,
     RouterLink,
-    RouterOutlet, ReactiveFormsModule, Select2Module, UpperCasePipe, RemoveBrPipe],
+    RouterOutlet,
+    ReactiveFormsModule,
+    Select2Module,
+    UpperCasePipe,
+    RemoveBrPipe
+  ],
   templateUrl: './especialidades-list.component.html',
   styleUrl: './especialidades-list.component.scss'
 })
