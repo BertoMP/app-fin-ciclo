@@ -77,7 +77,6 @@ __Frontend__:
 - _bootstrap-icons_: Librería que proporciona iconos de Bootstrap.
 - _file-saver_: Librería que permite la descarga de archivos desde el navegador.
 - _jquery_: Librería de JavaScript que permite la manipulación del DOM.
-- _ngprime_: Librería de componentes de Angular.
 - _ng-select2-component_: Componente de Angular que permite la integración de
 la librería Select2 para la creación de elementos select con barra de búsqueda.
 - _ngx-pagination_: Componente de Angular que permite la paginación de elementos.
