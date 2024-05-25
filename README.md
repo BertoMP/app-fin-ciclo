@@ -1,18 +1,12 @@
 # MediAPP
 
-Este es un proyecto de fin de ciclo desarrollado por 
-[Alberto Martínez Pérez](https://github.com/BertoMP)
-y [Rafael Romero Roibu](https://github.com/romraf) utilizando las tecnologías
-Angular 17.3.5 para el _frontend_, Node.js (v. 20.13.1) para el _backend_ 
-y MySQL para la base de datos.
+Este es un proyecto de fin de ciclo desarrollado por [Alberto Martínez Pérez](https://github.com/BertoMP) y [Rafael Romero Roibu](https://github.com/romraf) utilizando las tecnologías
+Angular 17.3.5 para el _frontend_, Node.js (v. 20.13.1) para el _backend_ y MySQL para la base de datos.
 
-Nuestro _frontend_ se encarga de la interfaz de usuario y la comunicación con el 
-_backend_ a través de peticiones HTTP. El _backend_ por su parte es el encargado 
-de llevar a cabo toda la lógica de negocio así como la comunicación con la base 
-de datos comportándose como una API REST.
+Nuestro _frontend_ se encarga de la interfaz de usuario y la comunicación con el _backend_ a través de peticiones HTTP. El _backend_ por su parte es el encargado 
+de llevar a cabo toda la lógica de negocio así como la comunicación con la base de datos comportándose como una API REST.
 
-El proyecto ha sido desarrollado en el marco del Ciclo Formativo de Grado Superior
-de Desarrollo de Aplicaciones Web en el IES Luis Braille de Coslada (Madrid).
+El proyecto ha sido desarrollado en el marco del Ciclo Formativo de Grado Superior de Desarrollo de Aplicaciones Web en el IES Luis Braille de Coslada (Madrid).
 
 ## Tabla de Contenidos
 
@@ -27,15 +21,11 @@ de Desarrollo de Aplicaciones Web en el IES Luis Braille de Coslada (Madrid).
 
 ## Descripción
 
-MediAPP se trata de una aplicación web de gestión de historiales clínicos
-para pacientes y especialistas médicos. La aplicación está dividida en tres
-roles: pacientes, especialistas y administradores. Cada uno de ellos tiene
-diferentes funcionalidades y permisos en la aplicación.
+MediAPP se trata de una aplicación web de gestión de historiales clínicos para pacientes y especialistas médicos. La aplicación está dividida en tres
+roles: pacientes, especialistas y administradores. Cada uno de ellos tiene diferentes funcionalidades y permisos en la aplicación.
 
-El propósito principal de la aplicación es ayudar a los especialistas médicos 
-a gestionar sus pacientes y sus historiales clínicos, así como para permitir a los
-pacientes acceder a sus historiales clínicos y guardar un registro de las
-mediciones de glucosa y tensión arterial que se realicen en su domicilio.
+El propósito principal de la aplicación es ayudar a los especialistas médicos a gestionar sus pacientes y sus historiales clínicos, así como para permitir a los
+pacientes acceder a sus historiales clínicos y guardar un registro de las mediciones de glucosa y tensión arterial que se realicen en su domicilio.
 
 ## Tecnologías Utilizadas
 
@@ -77,9 +67,9 @@ __Frontend__:
 - _bootstrap-icons_: Librería que proporciona iconos de Bootstrap.
 - _file-saver_: Librería que permite la descarga de archivos desde el navegador.
 - _jquery_: Librería de JavaScript que permite la manipulación del DOM.
-- _ng-select2-component_: Componente de Angular que permite la integración de
-la librería Select2 para la creación de elementos select con barra de búsqueda.
+- _ng-select2-component_: Componente de Angular que permite la integración de la librería Select2 para la creación de elementos select con barra de búsqueda.
 - _ngx-pagination_: Componente de Angular que permite la paginación de elementos.
+- _ngx-quill_: Componente de Angular que permite la integración del editor de texto Quill.
 - _sweetalert2_: Librería que permite la creación de alertas personalizadas.
 
 __Backend__:
@@ -88,18 +78,15 @@ __Backend__:
 - _cors_: Middleware de Express.js que permite habilitar CORS 
 (_Cross-Origin Resource Sharing_) con varias opciones.
 - _date-fns_: Librería que permite trabajar con fechas en JavaScript.
-- _dotenv_: Librería que permite cargar variables de entorno desde un 
-archivo `.env`. 
+- _dotenv_: Librería que permite cargar variables de entorno desde un archivo `.env`. 
 - _express_: Framework de Node.js que permite crear aplicaciones web y APIs.
-- _express-validator_: Middleware de Express.js que permite validar y limpiar
-datos de entrada.
+- _express-validator_: Middleware de Express.js que permite validar y limpiar datos de entrada.
 - _handlebars_: Motor de plantillas que permite la generación de HTML dinámico.
+- _html-sanitizer_: Librería que permite la limpieza de código HTML.
 - _jsdoc_: Herramienta que permite la generación de documentación JSDoc.
-- _jsonwebtoken_: Librería que permite la generación y verificación de tokens 
-JWT.
+- _jsonwebtoken_: Librería que permite la generación y verificación de tokens JWT.
 - _mocha_: Framework de pruebas para Node.js.
-- _moment-timezone_: Librería que permite trabajar con fechas y horas en diferentes
-zonas horarias.
+- _moment-timezone_: Librería que permite trabajar con fechas y horas en diferentes zonas horarias.
 - _morgan_: Middleware de Express.js que permite la generación de logs de peticiones HTTP.
 - _mysql2_: Librería que permite la conexión a bases de datos MySQL.
 - _nodemailer_: Librería que permite enviar correos electrónicos desde Node.js.
@@ -108,41 +95,29 @@ zonas horarias.
 - _rotating-file-stream_: Librería que permite la rotación de archivos de logs.
 - _supertest_: Librería que permite realizar pruebas de integración en Node.js.
 - _swagger-jsdoc_: Librería que permite la generación de documentación Swagger.
-- _swagger-ui-express_: Middleware de Express.js que permite la visualización de 
-documentación Swagger en una interfaz de usuario.
+- _swagger-ui-express_: Middleware de Express.js que permite la visualización de documentación Swagger en una interfaz de usuario.
 
 ## Características principales
 
-- __Pacientes__: Los pacientes pueden registrarse, iniciar sesión, 
-restablecer su contraseña y actualizar su contraseña. También pueden solicitar 
-cita con los especialistas, ver su historial clínico y añadir mediciones de
-glucosa y tensión arterial.
-- __Especialistas__: Los especialistas pueden iniciar sesión, restablecer su
-contraseña y actualizar su contraseña. Además, pueden ver las citas que tienen
-pendientes, ver los pacientes que tienen asignados y ver los historiales clínicos
-de los pacientes.
-- __Administradores__: Los administradores pueden iniciar sesión, restablecer su
-contraseña y actualizar su contraseña. Así mismo, pueden ver los especialistas y
-pacientes registrados en la aplicación, así como las especialidades médicas
-que se encuentran disponibles. Pueden realizar tareas de administración de los
+- __Pacientes__: Los pacientes pueden registrarse, iniciar sesión, restablecer su contraseña y actualizar su contraseña. También pueden solicitar 
+cita con los especialistas, ver su historial clínico y añadir mediciones de glucosa y tensión arterial.
+- __Especialistas__: Los especialistas pueden iniciar sesión, restablecer su contraseña y actualizar su contraseña. Además, pueden ver las citas que tienen
+pendientes, ver los pacientes que tienen asignados y ver los historiales clínicos de los pacientes.
+- __Administradores__: Los administradores pueden iniciar sesión, restablecer su contraseña y actualizar su contraseña. Así mismo, pueden ver los especialistas y
+pacientes registrados en la aplicación, así como las especialidades médicas que se encuentran disponibles. Pueden realizar tareas de administración de los
 diferentes tipos de usuarios y de las especialidades médicas.
 
 ## Requisitos para Instalar y Ejecutar el Proyecto
 
 Para ejecutar este proyecto, necesitarás tener instalado lo siguiente en tu máquina:
 
-- __Node.js__: Es un entorno de ejecución para JavaScript construido con el motor 
-de JavaScript V8 de Chrome. Puedes descargarlo [aquí](https://nodejs.org/es/download/).
-- __NPM__: Es el administrador de paquetes por defecto para Node.js. 
-Se instala junto con Node.js.
-- __Angular CLI__: Es una herramienta de línea de comandos que te 
-permite crear y gestionar aplicaciones Angular. Puedes instalarlo 
-globalmente en tu máquina con el comando:  
+- __Node.js__: Es un entorno de ejecución para JavaScript construido con el motor de JavaScript V8 de Chrome. Puedes descargarlo [aquí](https://nodejs.org/es/download/).
+- __NPM__: Es el administrador de paquetes por defecto para Node.js. Se instala junto con Node.js.
+- __Angular CLI__: Es una herramienta de línea de comandos que te permite crear y gestionar aplicaciones Angular. Puedes instalarlo globalmente en tu máquina con el comando:  
 
       npm install -g @angular/cli
 
-- __MySQL__: Es un sistema de gestión de bases de datos relacional. Puedes 
-descargarlo [aquí](https://dev.mysql.com/downloads/installer/).
+- __MySQL__: Es un sistema de gestión de bases de datos relacional. Puedes descargarlo [aquí](https://dev.mysql.com/downloads/installer/).
 
 Además, necesitarás tener una copia del código fuente. Puedes obtenerla clonando este repositorio de GitHub.
 
