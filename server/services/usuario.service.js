@@ -351,10 +351,11 @@ class UsuarioService {
 	 * @memberof UsuarioService
 	 * @param {number} usuario_id - El ID del usuario.
 	 * @param data - Los datos del usuario a actualizar.
+	 * @param {boolean} isAdmin - Si el usuario es un administrador.
 	 * @param {Object} [conn=null] - La conexión a la base de datos. Si no se proporciona, se creará una nueva.
 	 * @returns {Promise<void>} No devuelve nada. Si la operación es exitosa, se habrá actualizado el usuario y el paciente o especialista asociado en la base de datos.
 	 */
-	static async updateUsuario(usuario_id, data, conn = null) {
+	static async updateUsuario(usuario_id, isAdmin, data, conn = null) {
 		const isConnProvided = !!conn;
 
 		if (!isConnProvided) {
@@ -366,13 +367,15 @@ class UsuarioService {
 				await conn.beginTransaction();
 			}
 
-			const password = data.datos_personales.password;
-			const realPassword = await UsuarioModel.getPasswordById(usuario_id, conn);
+			if (!isAdmin) {
+				const password = data.datos_personales.password;
+				const realPassword = await UsuarioModel.getPasswordById(usuario_id, conn);
 
-			const validPassword = await compare(password, realPassword.password);
+				const validPassword = await compare(password, realPassword.password);
 
-			if (!validPassword) {
-				throw new Error('La contraseña actual no es correcta.');
+				if (!validPassword) {
+					throw new Error('La contraseña actual no es correcta.');
+				}
 			}
 
 			const emailExists = await UsuarioModel.findByEmail(data.datos_personales.email, conn);

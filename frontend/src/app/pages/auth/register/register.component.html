@@ -86,16 +86,18 @@
                sendedAttempt }"
           >
         </article>
-        <article class="form-field">
-          <label for="password" *ngIf="!isEditing; else isEditingPass">Contraseña</label>
-          <ng-template #isEditingPass>
-            <label for="password">Contraseña actual</label>
-          </ng-template>
-          <app-password-input id="password"
-                              formControlName="password"
-                              [ngClass]="{ 'invalid': registerForm.get('password').invalid && sendedAttempt }">
-          </app-password-input>
-        </article>
+        @if (!isAdmin) {
+          <article class="form-field">
+            <label for="password" *ngIf="!isEditing; else isEditingPass">Contraseña</label>
+            <ng-template #isEditingPass>
+              <label for="password">Contraseña actual</label>
+            </ng-template>
+            <app-password-input id="password"
+                                formControlName="password"
+                                [ngClass]="{ 'invalid': registerForm.get('password').invalid && sendedAttempt }">
+            </app-password-input>
+          </article>
+        }
       </fieldset>
     </section>
     <section class="form-second-row">
@@ -238,7 +240,7 @@
               </li>
             }
 
-            @if (registerForm.get('password').invalid) {
+            @if (!this.isAdmin && registerForm.get('password').invalid) {
               <li>
                 <strong>Contraseña:</strong> Debe tener al menos 8 caracteres,
                 una mayúscula, una minúscula, un número y un carácter especial.

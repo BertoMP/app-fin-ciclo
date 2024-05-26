@@ -20,6 +20,7 @@ import { validateQueryParams } from "../../helpers/validators/queryParams/queryP
 import {
 	validateUserPasswordForgot
 } from "../../helpers/validators/queryParams/usuarioPasswordForgot.validator.js";
+import {validatePacienteUpdate} from "../../helpers/validators/pacienteUpdate.validador.js";
 
 // Rutas GET
 /**
@@ -756,7 +757,7 @@ router.put(
 	verifyAccessToken,
 	verifyUserRole([1]),
 	validateUsuarioIdParam,
-	validatePacienteRegister,
+	validatePacienteUpdate,
 	UsuarioController.putUsuario,
 );
 

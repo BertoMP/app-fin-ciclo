@@ -30,6 +30,7 @@ import {
 } from "../../../shared/components/password-input/password-input.component";
 import { Subscription } from 'rxjs';
 import { PatientModel } from '../../../core/interfaces/patient.model';
+import {UserRole} from "../../../core/enum/user-role.enum";
 
 @Component({
   selector: 'app-register',
@@ -64,6 +65,7 @@ export class RegisterComponent implements OnInit {
 
   isPatient: boolean = false;
   isEditing: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(private provinceService: ProvinceService,
     private municipioService: MunicipioService,
@@ -82,17 +84,19 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
+      this.isAdmin = UserRole.ADMIN === this.authService.getUserRole();
 
       if (this.id) {
         this.isEditing = true;
       } else {
-        if (this.authService.isLoggedIn() && this.authService.getUserRole()==2) {
+        if (this.authService.isLoggedIn() && UserRole.PACIENT == this.authService.getUserRole()) {
           this.isPatient=true;
           this.id = this.authService.getUserId();
+          this.isEditing = true;
         }
       }
 
-      if (this.isEditing) {
+      if (this.isAdmin) {
         this.authService.getPatient(this.id).subscribe({
           next: (res: PatientModel) => {
             this.paciente = res;
@@ -173,13 +177,6 @@ export class RegisterComponent implements OnInit {
           CustomValidators.validEmail
         ]
       ),
-      'password': new FormControl(
-        null,
-        [
-          Validators.required,
-          CustomValidators.validPassword
-        ]
-      ),
       'clinic-historial': new FormControl({
         value: null,
         disabled: true
@@ -252,6 +249,16 @@ export class RegisterComponent implements OnInit {
         ]
       ),
     });
+
+    if (!this.isAdmin) {
+      this.registerForm.addControl('password', new FormControl(
+        null,
+        [
+          Validators.required,
+          CustomValidators.validPassword
+        ]
+      ));
+    }
 
     this.tipoViaService.getTipoVia()
       .subscribe({
@@ -426,16 +433,21 @@ export class RegisterComponent implements OnInit {
   }
 
   private generateUser(): PatientModel {
+    let datos_personales = {
+      nombre: this.registerForm.get('nombre').value,
+      primer_apellido: this.registerForm.get('primer_apellido').value,
+      segundo_apellido: this.registerForm.get('segundo_apellido').value,
+      dni: this.registerForm.get('dni').value,
+      email: this.registerForm.get('email').value,
+    };
+
+    if (!this.isAdmin) {
+      datos_personales['password'] = this.registerForm.get('password').value;
+    }
+
     return {
       usuario_id: this.id ?? null,
-      datos_personales: {
-        nombre: this.registerForm.get('nombre').value,
-        primer_apellido: this.registerForm.get('primer_apellido').value,
-        segundo_apellido: this.registerForm.get('segundo_apellido').value,
-        dni: this.registerForm.get('dni').value,
-        email: this.registerForm.get('email').value,
-        password: this.registerForm.get('password').value,
-      },
+      datos_personales: datos_personales,
       datos_paciente: {
         fecha_nacimiento: this.registerForm.get('fecha_nacimiento').value,
         num_historia_clinica: (this.isEditing) ? this.paciente.datos_paciente.num_historia_clinica : null,

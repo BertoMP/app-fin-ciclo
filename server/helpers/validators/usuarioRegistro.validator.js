@@ -4,7 +4,7 @@ import { body } from 'express-validator';
 /**
  * @name validateUserRegister
  * @description Middleware que valida el cuerpo de la solicitud para el registro de un usuario.
- *              Valida 'email', 'password', 'nombre', 'primer_apellido', 'segundo_apellido' y 'dni'.
+ *              Valida 'email', 'nombre', 'primer_apellido', 'segundo_apellido' y 'dni'.
  *              Si alguno de estos campos no es válido, se lanza un error con el mensaje correspondiente.
  * @memberof Helpers-Validators-Body
  * @function

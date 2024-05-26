@@ -25,7 +25,7 @@ export const validateProvinciaIdParam = [
 
 			return true;
 		})
-		.escape,
+		.escape(),
 
 	(req, res, next) => {
 		const errors = validationResult(req);

@@ -416,17 +416,19 @@ class UsuarioController {
 	static async putUsuario(req, res) {
 		const errors = [];
 		let usuario_id = 0;
+		let isAdmin = false;
 
 		if (req.user_role === 2) {
 			usuario_id = req.user_id;
 		} else if (req.user_role === 1) {
 			usuario_id = req.params.usuario_id;
+			isAdmin = true;
 		}
 
 		usuario_id = parseInt(usuario_id);
 
 		try {
-			await UsuarioService.updateUsuario(usuario_id, req.body);
+			await UsuarioService.updateUsuario(usuario_id, isAdmin, req.body);
 
 			return res.status(200).json({ message: 'Usuario actualizado exitosamente.' });
 		} catch (err) {

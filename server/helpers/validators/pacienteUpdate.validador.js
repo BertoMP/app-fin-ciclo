@@ -5,9 +5,9 @@ import { body, validationResult } from 'express-validator';
 import { validateUserRegister } from './usuarioRegistro.validator.js';
 
 /**
- * @name validatePacienteRegister
- * @description Middleware que valida el cuerpo de la solicitud para el registro de un paciente.
- *              Valida 'password', 'tipo_via', 'nombre_via', 'numero', 'piso', 'puerta', 'codigo_postal', 'municipio', 'tel_fijo', 'tel_movil', y 'fecha_nacimiento'.
+ * @name validatePacienteUpdate
+ * @description Middleware que valida el cuerpo de la solicitud para la actualización de un paciente.
+ *              Valida 'tipo_via', 'nombre_via', 'numero', 'piso', 'puerta', 'codigo_postal', 'municipio', 'tel_fijo', 'tel_movil', y 'fecha_nacimiento'.
  *              Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
  *              Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
  * @memberof Helpers-Validators-Body
@@ -16,26 +16,8 @@ import { validateUserRegister } from './usuarioRegistro.validator.js';
  * @param {Object} res - El objeto de respuesta de Express.
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
-export const validatePacienteRegister = [
+export const validatePacienteUpdate = [
 	validateUserRegister,
-	body('datos_personales.password')
-		.trim()
-		.notEmpty()
-		.withMessage('La contraseña es requerida.')
-		.isString()
-		.withMessage('La contraseña debe ser una cadena de texto.')
-		.custom((value) => {
-			const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+=\[\]{}|;:,.<>?\/]).{8,}$/;
-
-			if (!regex.test(value)) {
-				throw new Error(
-					'La contraseña debe tener al menos 8 caracteres: una letra mayúscula, una letra minúscula, un carácter especial y un número.',
-				);
-			}
-
-			return true;
-		})
-		.escape(),
 	body('datos_paciente.datos_vivienda.tipo_via.id')
 		.trim()
 		.notEmpty()
