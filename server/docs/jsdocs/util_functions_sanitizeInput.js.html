@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: util/middleware/verifyUserRole.js</title>
+    <title>JSDoc: Source: util/functions/sanitizeInput.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: util/middleware/verifyUserRole.js</h1>
+    <h1 class="page-title">Source: util/functions/sanitizeInput.js</h1>
 
     
 
@@ -26,29 +26,49 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @name verifyUserRole
- * @description Middleware que verifica si el rol del usuario está presente en
- *              el objeto de solicitud (req) y si está incluido en los roles
- *              permitidos.
- *              Si el rol del usuario no está presente o no está permitido,
- *              se envía una respuesta con el estado 403 y un mensaje de error.
- *              Si el rol del usuario está presente y permitido, se llama a la
- *              función next() para pasar al siguiente middleware o ruta.
- * @param {Array} roles - Arreglo con los roles de usuario permitidos para acceder.
- * @memberof Util-Middleware
+            <pre class="prettyprint source linenums"><code>import sanitizeHtml from 'sanitize-html';
+
+/**
+ * @name sanitizeInput
+ * @description Sanitiza el contenido HTML de una cadena de texto.
+ * @memberof Util-Functions
  * @function
+ * @param {string} input - Cadena de texto con contenido HTML.
+ * @returns {string} - Cadena de texto con contenido HTML sanitizado.
  */
-export const verifyUserRole = (roles) => {
-	return (req, res, next) => {
-		if (!req.user_role || !roles.includes(req.user_role)) {
-			return res.status(403).json({
-				errors: ['No tienes permiso para realizar esta acción.'],
-			});
+export const sanitizeInput = (input) => {
+	return sanitizeHtml(input, {
+		allowedTags: [
+			'p',
+			'br',
+			'a',
+			'b',
+			'strong',
+			'i',
+			'em',
+			'u',
+			's',
+			'ol',
+			'ul',
+			'li',
+			'h1',
+			'h2',
+			'h3',
+			'h4',
+			'h5',
+			'h6',
+			'blockquote',
+			'code',
+			'pre',
+			'sub',
+			'sup',
+			'small',
+		],
+		allowedAttributes: {
+			a: [ 'href' ]
 		}
-		next();
-	};
-};
+	});
+}
 </code></pre>
         </article>
     </section>
