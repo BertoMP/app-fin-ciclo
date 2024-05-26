@@ -258,23 +258,25 @@ class UsuarioController {
 	 * @memberof UsuarioController
 	 */
 	static async postUpdatePassword(req, res) {
-		const email = req.body.email;
-		const password = req.body.password;
 		const id = req.user_id;
 
 		try {
-			await UsuarioService.updatePassword(id, email, password);
+			await UsuarioService.updatePassword(id, req.body);
 
 			return res.status(200).json({
 				message: 'Contraseña actualizada exitosamente.',
 			});
 		} catch (err) {
-			if (err.message === 'Correo no encontrado.') {
+			if (err.message === 'Usuario no encontrado.') {
 				return res.status(404).json({ errors: [err.message] });
 			}
 
-			if (err.message === 'No tienes permiso para realizar esta acción.') {
+			if (err.message === 'La contraseña actual no es correcta') {
 				return res.status(403).json({ errors: [err.message] });
+			}
+
+			if (err.message === 'La contraseña nueva no puede ser igual a la actual.') {
+				return res.status(409).json({ errors: [err.message] });
 			}
 
 			return res.status(500).json({
