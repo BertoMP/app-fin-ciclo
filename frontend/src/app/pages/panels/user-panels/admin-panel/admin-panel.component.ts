@@ -69,6 +69,17 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         }
       ],
     },
+    {
+      name: 'Logs',
+      options: [
+        {
+          name: 'Logs error DB',
+          icon: 'bi bi-database-exclamation',
+          path: '/mediapp/logs-error-db',
+          method: 'onOptionSelected',
+        }
+      ]
+    }
   ];
 
   sidebarOptionsBottom: PanelOptionModel[] = [
@@ -108,7 +119,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       '/mediapp/crear-paciente',
       '/mediapp/crear-especialista',
       '/mediapp/crear-especialidad',
-      '/mediapp/actualizar-password'
+      '/mediapp/actualizar-password',
+      '/mediapp/logs-error-db'
     ];
     if (options.includes(this.router.url)) {
       this.optionSelected = true;

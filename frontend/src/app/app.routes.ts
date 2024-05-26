@@ -37,6 +37,7 @@ import {
   PatientListComponent
 } from "./pages/panels/panel-functions/specialist-functions/patient-list/patient-list.component";
 import {UpdatePasswordComponent} from "./pages/auth/update-password/update-password.component";
+import {LogListComponent} from "./pages/panels/panel-functions/admin-functions/log-list/log-list.component";
 
 export const routes: Routes = [
   {
@@ -93,6 +94,11 @@ export const routes: Routes = [
       {
         path: 'editar-especialidad/:id',
         component: CrearEditarEspecialidadesComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'logs-error-db',
+        component: LogListComponent,
         canActivate: [adminGuard]
       },
       {

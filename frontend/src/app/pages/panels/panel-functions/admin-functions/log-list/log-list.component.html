@@ -1,0 +1,80 @@
+<section class="header">
+  <h2>Listado de logs</h2>
+</section>
+<section class="filter-buttons">
+  <article class="filters">
+    <article class="init-date-filter">
+      <label for="fechaInicio">Fecha inicio</label>
+      <input type="date" id="fechaInicio" [(ngModel)]="fechaInicio" (change)="updateFilters()">
+    </article>
+    <article class="end-date-filter">
+      <label for="fechaFin">Fecha fin</label>
+      <input type="date" id="fechaFin" [(ngModel)]="fechaFin" (change)="updateFilters()">
+    </article>
+    <article class="per-page-filter">
+      <label for="per-page">Items</label>
+      <select2 id="per-page" [data]="perPageOptions" [value]="10" [(ngModel)]="perPage" (update)="updateFilters()"></select2>
+    </article>
+  </article>
+</section>
+@if (!dataLoaded) {
+  <app-loading-spinner></app-loading-spinner>
+}@else if (errores.length > 0) {
+  <section class="error-message mt-4 bg-danger text-white p-3 rounded">
+    <p>{{ errores[0] }}</p>
+  </section>
+} @else if (!logs.length) {
+  @if (fechaInicio || fechaFin) {
+    <section class="no-results">
+      <p>No se encontraron resultados con esos criterios de búsqueda.</p>
+      <figure>
+        <img src="assets/img/search-not-found.png" alt="No se encontraron resultados">
+      </figure>
+    </section>
+  } @else {
+    <section class="no-results">
+      <p>No se encontraron logs registrados.</p>
+    </section>
+  }
+} @else {
+  <section class="logs-table">
+    <div class="info">
+      <small>Mostrando {{ resultMin }} - {{ resultMax }} de {{ totalItems }} logs.</small>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr>
+          <th scope="col">Hora</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Número</th>
+          <th scope="col">Mensaje</th>
+          <th scope="col">Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let log of (logs | paginate: { id: 'logListPagination', itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems })">
+          <tr>
+            <td>{{log.hora}}</td>
+            <td>{{log.fecha}}</td>
+            <td>{{log.numero_error}}</td>
+            <td>{{log.message}}</td>
+            <td>{{log.sql_state}}</td>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+    @if (previousPageUrl || nextPageUrl) {
+      <div class="pagination">
+        <pagination-controls
+          (pageChange)="actualPage = $event; changePage(actualPage)"
+          id="logListPagination"
+          maxSize="5"
+          directionLinks="true"
+          previousLabel="Anterior"
+          nextLabel="Siguiente"
+        ></pagination-controls>
+      </div>
+    }
+  </section>
+}
