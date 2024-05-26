@@ -260,6 +260,7 @@ export class SpecialistFormComponent implements OnInit {
 
     this.isLoading = true;
     const newEspecialist: EspecialistModel = this.generateEspecialist();
+    this.registerForm.get('imagen').setValue('');
 
     if (this.id != null) {
       this.authService.updateSpecialist(newEspecialist)
