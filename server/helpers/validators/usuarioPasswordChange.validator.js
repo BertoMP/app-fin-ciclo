@@ -48,9 +48,6 @@ export const validateUserPasswordChange = [
 		.escape(),
 
 	(req, res, next) => {
-
-		console.log(req.body);
-
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			const errorMessages = errors.array().map((error) => error.msg);
