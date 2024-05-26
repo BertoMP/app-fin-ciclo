@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ConsultaModel } from '../interfaces/consulta.model';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsultaService {
-
-  baseUrl: string = 'http://localhost:3000/api';
+  baseUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
