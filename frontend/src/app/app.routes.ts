@@ -33,6 +33,9 @@ import {
 import { ListadoAgendaComponent } from './pages/panels/panel-functions/specialist-functions/listado-agenda/listado-agenda.component';
 import { specialistGuard } from './core/guards/specialist.guard';
 import { patientSpecialistGuard } from './core/guards/patientSpecialist.guard';
+import {
+  PatientListComponent
+} from "./pages/panels/panel-functions/specialist-functions/patient-list/patient-list.component";
 
 export const routes: Routes = [
   {
@@ -92,14 +95,29 @@ export const routes: Routes = [
         canActivate: [patientGuard]
       },
       {
+        path: 'listado-medicacion/:id',
+        component: ListadoMedicacionComponent,
+        canActivate: [specialistGuard]
+      },
+      {
         path: 'listado-glucometria',
         component: ListadoMedicionesComponent,
         canActivate: [patientGuard]
       },
       {
+        path: 'listado-glucometrias/:id',
+        component: ListadoMedicionesComponent,
+        canActivate: [specialistGuard]
+      },
+      {
         path: 'listado-tension',
         component: ListadoMedicionesComponent,
         canActivate: [patientGuard]
+      },
+      {
+        path: 'listado-tensiometrias/:id',
+        component: ListadoMedicionesComponent,
+        canActivate: [specialistGuard]
       },
       {
         path: 'tomar-glucometria',
@@ -122,9 +140,14 @@ export const routes: Routes = [
         canActivate: [patientGuard]
       },
       {
+        path: 'listado-informes/:id',
+        component: ListadoInformesComponent,
+        canActivate: [specialistGuard]
+      },
+      {
         path: 'ver-informe/:id',
         component: VerInformeComponent,
-        canActivate: [patientGuard]
+        canActivate: [patientSpecialistGuard]
       },
       {
         path: 'ver-cita/:id',
@@ -144,6 +167,11 @@ export const routes: Routes = [
       {
         path: 'listado-agenda',
         component: ListadoAgendaComponent,
+        canActivate: [specialistGuard]
+      },
+      {
+        path: 'listado-pacientes',
+        component: PatientListComponent,
         canActivate: [specialistGuard]
       }
     ]

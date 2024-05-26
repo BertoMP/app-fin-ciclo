@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {LoadingSpinnerComponent} from "../../../../../shared/components/loading-spinner/loading-spinner.component";
 import {NgForOf} from "@angular/common";
 import {NgxPaginationModule} from "ngx-pagination";
-import {RouterLink} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {Select2Data, Select2Module} from "ng-select2-component";
 import {debounceTime, Observable, Subject} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -10,6 +10,7 @@ import {InformesDataModel} from "../../../../../core/interfaces/informes-data.mo
 import {InformesListModel} from "../../../../../core/interfaces/informes-list.model";
 import {InformeService} from "../../../../../core/services/informe.service";
 import {AuthService} from "../../../../../core/services/auth.service";
+import {UserRole} from "../../../../../core/enum/user-role.enum";
 
 @Component({
   selector: 'app-listado-informes',
@@ -27,6 +28,7 @@ import {AuthService} from "../../../../../core/services/auth.service";
 export class ListadoInformesComponent {
   informes: InformesDataModel[];
   paciente: string;
+  isPatient: boolean = false;
 
   initialLoad: boolean = false;
   dataLoaded: boolean = false;
@@ -73,9 +75,11 @@ export class ListadoInformesComponent {
   private getInformesSubject: Subject<void> = new Subject<void>();
 
   constructor(private informeService: InformeService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private activeRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.isPatient = UserRole.PACIENT === this.authService.getUserRole();
     this.actualPage = 1;
     this.informes = [];
     this.errores = [];
@@ -102,12 +106,26 @@ export class ListadoInformesComponent {
     this.informes = [];
     this.errores = [];
 
-    let request: Observable<InformesListModel> = this.informeService.getInformes(
-      this.fechaInicio,
-      this.fechaFin,
-      parseInt(this.perPage),
-      this.actualPage,
-    );
+    let request: Observable<InformesListModel>;
+
+    if (UserRole.PACIENT === this.authService.getUserRole()) {
+      request = this.informeService.getInformes(
+        this.fechaInicio,
+        this.fechaFin,
+        parseInt(this.perPage),
+        this.actualPage,
+      );
+    } else {
+      const id = this.activeRoute.snapshot.params.id;
+
+      request = this.informeService.getInformesByPacienteId(
+        id,
+        this.fechaInicio,
+        this.fechaFin,
+        parseInt(this.perPage),
+        this.actualPage,
+      );
+    }
 
     request.subscribe({
       next: (response: InformesListModel) => {

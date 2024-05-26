@@ -9,6 +9,7 @@ import { Location, NgFor } from '@angular/common';
 import { InformeService } from '../../../../../core/services/informe.service';
 import { saveAs } from 'file-saver';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {AuthService} from "../../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-ver-informe',
@@ -20,6 +21,7 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 export class VerInformeComponent {
   informe: InformeSpecificData;
   persona: DatosPacienteModel;
+  username: string;
 
   initialLoad: boolean = false;
   dataLoaded: boolean = false;
@@ -33,12 +35,15 @@ export class VerInformeComponent {
   constructor(private informeService: InformeService,
               private activatedRoute: ActivatedRoute,
               private location: Location,
-              private sanitizer: DomSanitizer) { }
+              private sanitizer: DomSanitizer,
+              private authService: AuthService) { }
 
 
   errores: string[];
 
   ngOnInit(): void {
+    this.username = this.authService.getUserName();
+
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
 

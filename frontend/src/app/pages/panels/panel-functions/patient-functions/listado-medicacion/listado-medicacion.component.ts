@@ -1,7 +1,7 @@
 import {NgClass, NgFor, NgIf} from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {debounceTime, Observable, Subject, Subscription} from 'rxjs';
 import { MedicacionesService } from '../../../../../core/services/medicaciones.service';
 import { MedicacionListModel } from '../../../../../core/interfaces/medicacion-list.model';
@@ -10,6 +10,8 @@ import { saveAs } from 'file-saver';
 import { MedicamentoDataModel } from "../../../../../core/interfaces/medicamento-data.model";
 import { DatosPacienteModel } from "../../../../../core/interfaces/datos-paciente.model";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {UserRole} from "../../../../../core/enum/user-role.enum";
+import {AuthService} from "../../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-listado-medicacion',
@@ -28,7 +30,7 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 export class ListadoMedicacionComponent implements OnInit {
   meds: MedicamentoDataModel[];
   userData: DatosPacienteModel;
-
+  isPatient: boolean = false;
 
   initialLoad: boolean = false;
   dataLoaded: boolean = false;
@@ -41,10 +43,13 @@ export class ListadoMedicacionComponent implements OnInit {
   errores: string[];
 
   constructor(private medicacionesService: MedicacionesService,
-              private sanitizer: DomSanitizer) { }
+              private sanitizer: DomSanitizer,
+              private authService: AuthService,
+              private activeRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.meds = [];
+    this.isPatient = UserRole.PACIENT === this.authService.getUserRole();
 
     this.getMedsSubject
       .pipe(
@@ -67,7 +72,15 @@ export class ListadoMedicacionComponent implements OnInit {
   }
 
   getMedicaciones() {
-    let request: Observable<MedicacionListModel> = this.medicacionesService.getMedicaciones();
+    let request: Observable<MedicacionListModel>;
+
+    if (UserRole.PACIENT === this.authService.getUserRole()) {
+      request = this.medicacionesService.getMedicaciones();
+    } else {
+      const id = this.activeRoute.snapshot.params.id;
+
+      request = this.medicacionesService.getMedicacionesByPacienteId(id);
+    }
 
     request.subscribe({
       next: (response: MedicacionListModel) => {
@@ -83,18 +96,25 @@ export class ListadoMedicacionComponent implements OnInit {
   }
 
   downloadPrescripcion(): void {
-    this.medicacionesService
-      .getDownloadMedicacion()
-      .subscribe({
-        next: (response: any): void => {
-          const blob: Blob = new Blob([response])
-          saveAs(
-            blob,
-            `prescripcion_${this.userData.nombre}_${this.userData.primer_apellido}_${this.userData.segundo_apellido}.pdf`);
-        },
-        error: (error: string[]): void => {
-          this.errores = error;
-        }
+    let request: Observable<Blob>;
+
+    if (UserRole.PACIENT === this.authService.getUserRole()) {
+      request = this.medicacionesService.getDownloadMedicacion();
+    } else {
+      const id = this.activeRoute.snapshot.params.id;
+
+      request = this.medicacionesService.getDownloadMedicacionByPacienteId(id);
+    }
+
+    request.subscribe({
+      next: (response: Blob) => {
+        saveAs(
+          response,
+          `prescripcion_${this.userData.nombre}_${this.userData.primer_apellido}_${this.userData.segundo_apellido}.pdf`);
+      },
+      error: (error: string[]) => {
+        this.errores = error;
+      }
     });
   }
 

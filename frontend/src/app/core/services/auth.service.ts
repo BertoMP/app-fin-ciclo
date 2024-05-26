@@ -38,7 +38,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/usuario/registro-especialista`, newUser)
       .pipe(catchError(this.handleError));
   }
-  
+
   updateSpecialist(newUser: EspecialistModel): Observable<any> {
     return this.http.put(`${this.apiUrl}/usuario/actualizar-especialista/${newUser.usuario_id}`, newUser)
       .pipe(catchError(this.handleError));
@@ -52,6 +52,7 @@ export class AuthService {
   getPatient(id:number){
     return this.http.get(`${this.apiUrl}/usuario/${id}`).pipe(catchError(this.handleError));
   }
+
   getEspecialista(id:number){
     return this.http.get(`${this.apiUrl}/especialista/${id}`).pipe(catchError(this.handleError));
   }

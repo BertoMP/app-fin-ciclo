@@ -16,7 +16,6 @@ export class InformeService {
                 private descargarPDF: FileDownloadService) { }
 
     getInformes(fechaInicio: string, fechaFin: string, perPage: number, page: number) {
-
         let query: string = `?page=${page}`;
 
         if (fechaInicio) {
@@ -32,6 +31,24 @@ export class InformeService {
         }
 
         return this.http.get<InformesListModel>(`${this.baseUrl}/informe/listado-informes${query}`);
+    }
+
+    getInformesByPacienteId(paciente_id: number, fechaInicio: string, fechaFin: string, perPage: number, page: number) {
+      let query: string = `?page=${page}`;
+
+      if (fechaInicio) {
+        query += `&fechaInicio=${fechaInicio}`;
+      }
+
+      if (fechaFin) {
+        query += `&fechaFin=${fechaFin}`;
+      }
+
+      if (perPage) {
+        query += `&limit=${perPage}`;
+      }
+
+      return this.http.get<InformesListModel>(`${this.baseUrl}/informe/listado-informes/${paciente_id}${query}`);
     }
 
     getInforme(informe_id: number): Observable<InformeSpecificData> {

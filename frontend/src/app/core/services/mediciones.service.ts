@@ -15,7 +15,7 @@ export class MedicionesService {
 
   constructor(private http: HttpClient) { }
 
-  getMedicion(type: string, userId: number, fechaInicio: string, fechaFin: string, perPage: number, page: number) {
+  getMedicion(type: string, userId: number, fechaInicio: string, fechaFin: string, perPage: number, page: number, isSpecialist = false) {
     let typeUrl: string = type === 'glucometria' ? 'glucometria' : 'tension-arterial';
     let query: string = `?user_id=${userId}`;
 
@@ -33,6 +33,10 @@ export class MedicionesService {
 
     if (perPage) {
       query += `&limit=${perPage}`;
+    }
+
+    if (isSpecialist) {
+      return this.http.get<MedicionListModel>(`${this.apiUrl}/${typeUrl}/${userId}${query}`);
     }
 
     return this.http.get<MedicionListModel>(`${this.apiUrl}/${typeUrl}${query}`);

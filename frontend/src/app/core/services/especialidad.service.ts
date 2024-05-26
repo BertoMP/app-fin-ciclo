@@ -17,10 +17,11 @@ export class EspecialidadService {
   getEspecialidad(): Observable<EspecialidadModel[]> {
     return this.http.get<EspecialidadModel[]>(`${this.baseUrl}/especialidad/listado`);
   }
+
   getEspecialidadId(id: number): Observable<SpecialityListedModel> {
     return this.http.get<SpecialityListedModel>(`${this.baseUrl}/especialidad/${id}`);
   }
-  
+
   registerEspecialidad(especialidad: SpecialityListedModel): Observable<any> {
     return this.http.post(`${this.baseUrl}/especialidad`, especialidad)
       .pipe(catchError(this.handleError));

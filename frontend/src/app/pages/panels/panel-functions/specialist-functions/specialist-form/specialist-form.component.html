@@ -41,15 +41,6 @@
                  registerForm.get('email').invalid &&
                  sendedAttempt }">
             </article>
-            <article class="form-field">
-              <label for="password" *ngIf="!isEditing; else isEditingPass">Contraseña</label>
-              <ng-template #isEditingPass>
-                  <label for="password">Contraseña actual</label>
-              </ng-template>
-              <app-password-input id="password" formControlName="password"
-                                  [ngClass]="{ 'invalid': registerForm.get('password').invalid && sendedAttempt }">
-              </app-password-input>
-            </article>
         </fieldset>
     </section>
     <section class="form-second-row">

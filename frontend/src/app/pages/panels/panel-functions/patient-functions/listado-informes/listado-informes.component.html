@@ -38,7 +38,11 @@
   }
 } @else {
   <section class="name-download">
-    <p>Estos son tus informes, {{paciente}}</p>
+    @if (isPatient) {
+      <p>Estos son tus informes, {{paciente}}</p>
+    } @else {
+      <p>Estos son los informes de {{paciente}}</p>
+    }
   </section>
   <section class="informes-table">
     <div class="info">

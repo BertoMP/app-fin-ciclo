@@ -157,6 +157,95 @@ router.get(
 
 /**
  * @swagger
+ * /informe/listado-informes/{usuario_id}:
+ *   get:
+ *     summary: Obtiene una lista de informes para un usuario específico
+ *     tags: [Informe]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: usuario_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: El ID del usuario
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: Número de página
+ *       - in: query
+ *         name: fechaInicio
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: false
+ *         description: Fecha de inicio para filtrar informes
+ *       - in: query
+ *         name: fechaFin
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: false
+ *         description: Fecha de fin para filtrar informes
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: Límite de informes por página
+ *     responses:
+ *       200:
+ *         description: Lista de informes del usuario
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/InformeList'
+ *       400:
+ *         description: Error de validación
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
+ *       401:
+ *         description: No autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenExpiredError'
+ *       403:
+ *         description: Token inválido o no proporcionado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenInvalidError'
+ *       404:
+ *         description: Usuario no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NotFoundError'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ */
+router.get(
+	'/informe/listado-informes/:usuario_id',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	verifyUserId,
+	validateUsuarioIdParam,
+	validateQueryParams,
+	InformeController.getInformes
+);
+
+/**
+ * @swagger
  * /informe/{informe_id}:
  *   get:
  *     summary: Obtiene un informe por su ID

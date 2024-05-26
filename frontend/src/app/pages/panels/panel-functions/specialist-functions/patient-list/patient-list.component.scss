@@ -1,0 +1,47 @@
+@import "bootstrap-icons";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+
+  ::ng-deep .select2-selection--single {
+    font-size: 1.2rem;
+    width: 100%;
+    border-radius: 5px;
+    padding: 18px;
+    text-align: left;
+    align-items: center;
+  }
+
+  #pacientes {
+    --select2-selection-border-color: #ccc;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+
+    &.card-container {
+      display: grid;
+      align-content: center;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      width: 100%;
+    }
+
+    article {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+    }
+  }
+}

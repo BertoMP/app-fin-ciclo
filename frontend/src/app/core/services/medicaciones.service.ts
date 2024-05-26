@@ -17,11 +17,19 @@ export class MedicacionesService {
   getMedicaciones() {
     return this.http.get<MedicacionListModel>(`${this.apiUrl}/prescripcion`);
   }
-  
+
+  getMedicacionesByPacienteId(id: number) {
+    return this.http.get<MedicacionListModel>(`${this.apiUrl}/prescripcion/${id}`);
+  }
+
   getDownloadMedicacion() {
     return this.descargarPDF.downloadFile(`${this.apiUrl}/prescripcion/pdf`);
- }
-  
+  }
+
+  getDownloadMedicacionByPacienteId(id: number) {
+    return this.descargarPDF.downloadFile(`${this.apiUrl}/prescripcion/pdf/${id}`);
+  }
+
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage: string[] = errorRes.error.errors ?? ['Ha ocurrido un error durante el proceso'];
 

@@ -1,0 +1,64 @@
+@import "bootstrap-icons";
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  section {
+    width: 300px;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    text-align: center;
+
+    &.glucometria {
+      background-color: #F8D7DA;
+    }
+
+    &.tensiometria {
+      background-color: #D1ECF1;
+    }
+
+    &.informes {
+      background-color: #D4EDDA;
+    }
+
+    &.medicacion {
+      background-color: #FFF3CD;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    figure {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .card-image {
+        width: 50%;
+        height: auto;
+        filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+      }
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 1.2rem 0;
+    }
+
+    button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+    }
+  }
+}
+

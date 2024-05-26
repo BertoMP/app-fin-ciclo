@@ -28,7 +28,9 @@ class PacienteModel {
 			'FROM ' +
 			'   paciente ' +
 			'INNER JOIN ' +
-			'   usuario ON paciente.usuario_id = usuario.id';
+			'   usuario ON paciente.usuario_id = usuario.id ' +
+			'ORDER BY ' +
+			'   usuario.primer_apellido ASC';
 
 		try {
 			const [rows] = await dbConn.execute(query);

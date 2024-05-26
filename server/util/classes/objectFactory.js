@@ -10,7 +10,7 @@ class ObjectFactory {
 	static async createUserObject(data) {
 		return {
 			email: data.datos_personales.email,
-			password: await createEncryptedPassword(data.datos_personales.password),
+			password: (data.datos_paciente) ? await createEncryptedPassword(data.datos_personales.password) : await generateEncryptedPassword(),
 			nombre: data.datos_personales.nombre,
 			primer_apellido: data.datos_personales.primer_apellido,
 			segundo_apellido: data.datos_personales.segundo_apellido,

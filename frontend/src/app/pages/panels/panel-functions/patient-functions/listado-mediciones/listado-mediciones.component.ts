@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MedicionesService } from '../../../../../core/services/mediciones.service';
 import {debounceTime, Observable, Subject, Subscription} from 'rxjs';
-import { Router, RouterLink } from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import {NgClass, NgFor, NgForOf, NgIf} from '@angular/common';
@@ -11,6 +11,7 @@ import {LoadingSpinnerComponent} from "../../../../../shared/components/loading-
 import {Select2Data, Select2Module} from "ng-select2-component";
 import {AuthService} from "../../../../../core/services/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {UserRole} from "../../../../../core/enum/user-role.enum";
 
 @Component({
   selector: 'app-listado-mediciones',
@@ -32,6 +33,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 export class ListadoMedicionesComponent implements OnInit {
   isUserLoggedIn: boolean = false;
   isGlucometria: boolean = false;
+  isPatient: boolean = false;
 
   fields: string[] = ['SYS', 'DIA', 'Pulso'];
 
@@ -82,7 +84,8 @@ export class ListadoMedicionesComponent implements OnInit {
 
   constructor(private medicionesService: MedicionesService,
               private router: Router,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private activeRoute: ActivatedRoute) { }
 
 
   ngOnInit(): void {
@@ -90,6 +93,7 @@ export class ListadoMedicionesComponent implements OnInit {
     this.mediciones = [];
     this.errores = [];
     this.rutaActual = this.router.url;
+    this.isPatient = UserRole.PACIENT === this.authService.getUserRole();
 
     if (this.rutaActual.includes('listado-glucometria')) {
       this.isGlucometria = true;
@@ -154,15 +158,25 @@ export class ListadoMedicionesComponent implements OnInit {
     this.errores = [];
 
     let request: Observable<MedicionListModel>;
+    let id: number;
     const type: string = this.isGlucometria ? 'glucometria' : 'tension';
+    let isSpecialist: boolean = false;
+
+    if (this.isPatient) {
+      id = this.authService.getUserId();
+    } else {
+      id = this.activeRoute.snapshot.params.id;
+      isSpecialist = true;
+    }
 
     request = this.medicionesService.getMedicion(
       type,
-      this.authService.getUserId(),
+      id,
       this.fechaInicio,
       this.fechaFin,
       parseInt(this.perPage),
-      this.actualPage
+      this.actualPage,
+      isSpecialist
     );
 
     request.subscribe({

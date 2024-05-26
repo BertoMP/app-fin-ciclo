@@ -144,13 +144,6 @@ export class SpecialistFormComponent implements OnInit {
           CustomValidators.validEmail
         ]
       ),
-      'password': new FormControl(
-        null,
-        [
-          Validators.required,
-          CustomValidators.validPassword
-        ]
-      ),
       'consulta': new FormControl(
         null,
         [
@@ -343,7 +336,6 @@ export class SpecialistFormComponent implements OnInit {
         segundo_apellido: this.registerForm.get('segundo_apellido').value,
         dni: this.registerForm.get('dni').value,
         email: this.registerForm.get('email').value,
-        password: this.registerForm.get('password').value,
       },
       datos_especialista: {
         consulta: {

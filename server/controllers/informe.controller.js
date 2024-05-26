@@ -16,12 +16,11 @@ class InformeController {
 		if (req.user_role === 2) {
 			user_id = req.user_id;
 		} else if (req.user_role === 3) {
-			user_id = req.param.usuario_id;
+			user_id = req.params.usuario_id;
 		}
 
 		try {
 			const searchParams = getSearchValues(req, 'date');
-
 			const informes = await InformeService.readInformes(user_id, searchParams);
 
 			return res.status(200).json({

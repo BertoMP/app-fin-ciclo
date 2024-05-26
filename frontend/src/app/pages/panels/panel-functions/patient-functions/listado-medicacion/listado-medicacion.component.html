@@ -9,11 +9,22 @@
   </section>
 } @else {
   <section class="name-download">
-    <p>Estas son tus medicaciones, {{ userData.nombre }}</p>
+    @if (isPatient) {
+      <p>Estas son tus medicaciones, {{ userData.nombre }}</p>
+    } @else {
+      <p>Estas son las medicaciones de {{ userData.nombre }}</p>
+    }
+    <article class="buttons">
+    @if (!isPatient) {
+      <button type="button">
+        <i class="bi bi-plus-lg"></i><span>Añadir medicación</span>
+      </button>
+    }
     <button type="button"
             (click)="downloadPrescripcion()">
       <i class="bi bi-file-earmark-pdf-fill"></i><span>Descargar en PDF</span>
     </button>
+    </article>
   </section>
   <section class="medication-table">
     <div class="table-container">

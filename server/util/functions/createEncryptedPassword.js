@@ -16,3 +16,7 @@ export const createEncryptedPassword = async (password) => {
 	const salt = await genSalt(10);
 	return await hash(password, salt);
 };
+
+export const generateRandomEncryptedPassword = async () => {
+
+}

@@ -1,0 +1,33 @@
+<section class="header">
+  <h2>Buscador historias clínicas</h2>
+</section>
+<section class="filter-buttons">
+  <article class="filters">
+    <article class="search-filter">
+      <select2 id="pacientes"
+               [data]="pacientes"
+               placeholder="Elige un paciente"
+               (update)="onPatientSelected($event)"
+      ></select2>
+    </article>
+  </article>
+</section>
+<section class="options">
+  <article>
+    @if (!id) {
+      <p>Para comenzar, selecciona un paciente para ver sus datos.</p>
+    } @else {
+      <h4>Número de historia clínica: {{ num_historia_clinica }}</h4>
+      <section class="card-container">
+        <app-menu-option *ngFor="let option of options"
+                         [title]="option.title"
+                         [icon]="option.icon"
+                         [description]="option.description"
+                         [route]="option.route"
+                         [routeName]="option.routeName"
+                         [class]="option.class"
+        ></app-menu-option>
+      </section>
+    }
+  </article>
+</section>

@@ -39,7 +39,7 @@ export class EspecialistPanelComponent {
         {
           name: 'Listado pacientes',
           icon: 'bi bi-people',
-          path: '',
+          path: '/mediapp/listado-pacientes',
           method: 'onOptionSelected',
         },
       ]
@@ -73,7 +73,9 @@ export class EspecialistPanelComponent {
     this.userName = this.auth.getUserName();
 
     const options: string[] = [
-      '/mediapp/listado-agenda'];
+      '/mediapp/listado-agenda',
+      '/mediapp/listado-pacientes'
+    ];
     if (options.includes(this.router.url)) {
       this.optionSelected = true;
     }
