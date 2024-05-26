@@ -4,13 +4,13 @@ import { EspecialidadModel } from '../interfaces/especialidad.model';
 import { Observable, catchError, throwError } from 'rxjs';
 import { SpecialityListedModel } from '../interfaces/speciality-listed.model';
 import { EspecialistaCitaModel } from '../interfaces/especialista-cita.model';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class EspecialidadService {
-  baseUrl: string = 'http://localhost:3000/api';
-
+  baseUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

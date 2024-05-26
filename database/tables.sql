@@ -138,6 +138,7 @@ CREATE TABLE token
     id          INT AUTO_INCREMENT,
     reset_token VARCHAR(255),
     usuario_id  INT,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pk_tokens
         PRIMARY KEY (id),
     CONSTRAINT fk_tokens_usuario

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { TipoViaModel } from "../interfaces/tipo-via.model";
 import { Observable } from "rxjs";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TipoViaService {
-  baseUrl: string = 'http://localhost:3000/api';
+  baseUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

@@ -21,7 +21,7 @@ export const validateUserPasswordChange = [
 		.isString()
 		.withMessage('La contraseña debe ser una cadena de texto.')
 		.custom((value) => {
-			const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+=\[\]{}|;:,.<>?\/]).{8,}$/;
+			const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_+=\[\]{}|;:,.<>?\/]).{8,}$/;
 
 			if (!regex.test(value)) {
 				throw new Error(
@@ -32,16 +32,19 @@ export const validateUserPasswordChange = [
 			return regex.test(value);
 		})
 		.escape(),
-	body('confirm_password')
+	body('checkPassword')
 		.trim()
 		.notEmpty()
 		.withMessage('La confirmación de la contraseña es requerida.')
 		.isString()
 		.withMessage('La confirmación de la contraseña debe ser una cadena de texto.')
 		.custom((value, { req }) => {
-			return value === req.body.password;
+			if (value !== req.body.password) {
+				throw new Error('Las contraseñas no coinciden.');
+			}
+
+			return true;
 		})
-		.withMessage('Las contraseñas no coinciden.')
 		.escape(),
 
 	(req, res, next) => {

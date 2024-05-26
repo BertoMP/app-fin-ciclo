@@ -21,6 +21,7 @@ import {
 	validateUserPasswordForgot
 } from "../../helpers/validators/queryParams/usuarioPasswordForgot.validator.js";
 import {validatePacienteUpdate} from "../../helpers/validators/pacienteUpdate.validador.js";
+import {validateUserPasswordUpdate} from "../../helpers/validators/usuarioPasswordUpdate.js";
 
 // Rutas GET
 /**
@@ -607,7 +608,7 @@ router.put(
 	'/usuario/actualizar-password',
 	verifyAccessToken,
 	verifyUserId,
-	validateUserPasswordChange,
+	validateUserPasswordUpdate,
 	UsuarioController.postUpdatePassword,
 );
 

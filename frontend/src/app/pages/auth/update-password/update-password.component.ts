@@ -24,7 +24,7 @@ import {Router} from "@angular/router";
 export class UpdatePasswordComponent implements OnInit {
   updatePassForm: FormGroup;
   sendedAttempt: boolean = false;
-  contrasenasIguales: boolean = false;
+  contrasenasIguales: boolean = true;
   errores: string[] = [];
 
   constructor(private authService: AuthService,
@@ -53,6 +53,14 @@ export class UpdatePasswordComponent implements OnInit {
           CustomValidators.validPassword,
         ]
       )
+    });
+
+    this.updatePassForm.get('password').valueChanges.subscribe(() => {
+      this.checkPasswords();
+    });
+
+    this.updatePassForm.get('checkPassword').valueChanges.subscribe(() => {
+      this.checkPasswords();
     });
   }
 

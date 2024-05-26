@@ -882,6 +882,79 @@ const options = {
 					},
 					required: ['motivo', 'patologias', 'contenido', 'cita_id'],
 				},
+				LogPaginado: {
+					type: 'object',
+					properties: {
+						prev: {
+							type: 'string',
+							description: 'La URL de la página anterior de logs.',
+						},
+						next: {
+							type: 'string',
+							description: 'La URL de la próxima página de logs.',
+						},
+						pagina_actual: {
+							type: 'integer',
+							description: 'La página actual de logs.',
+						},
+						paginas_totales: {
+							type: 'integer',
+							description: 'El número total de páginas de logs.',
+						},
+						cantidad_logs: {
+							type: 'integer',
+							description: 'La cantidad total de logs.',
+						},
+						result_min: {
+							type: 'integer',
+							description: 'El número del primer log en la página actual.',
+						},
+						result_max: {
+							type: 'integer',
+							description: 'El número del último log en la página actual.',
+						},
+						items_pagina: {
+							type: 'integer',
+							description: 'El número de logs mostrados por página.',
+						},
+						fecha_inicio: {
+							type: 'string',
+							description: 'La fecha de inicio para filtrar los logs.',
+						},
+						fecha_fin: {
+							type: 'string',
+							description: 'La fecha de fin para filtrar los logs.',
+						},
+						resultados: {
+							type: 'array',
+							items: {
+								type: 'object',
+								properties: {
+									numero_error: {
+										type: 'integer',
+										description: 'El número de error del log.',
+									},
+									sql_state: {
+										type: 'string',
+										description: 'El estado SQL del log.',
+									},
+									message: {
+										type: 'string',
+										description: 'El mensaje del log.',
+									},
+									hora: {
+										type: 'string',
+										description: 'La hora del log.',
+									},
+									fecha: {
+										type: 'string',
+										description: 'La fecha del log.',
+									},
+								},
+							},
+						},
+					},
+				},
 				MedicamentoArray: {
 					type: 'array',
 					items: {

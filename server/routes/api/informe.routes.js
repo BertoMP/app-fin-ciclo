@@ -13,8 +13,8 @@ import { verifyUserId } from '../../util/middleware/verifyUserId.js';
 // Importación de middlewares para la validación de datos
 import { validateInforme } from '../../helpers/validators/informe.validator.js';
 import { validateInformeIdParam } from '../../helpers/validators/params/informeIdParam.validator.js';
-import {validateQueryParams} from "../../helpers/validators/queryParams/queryParams.validator.js";
-import {validateUsuarioIdParam} from "../../helpers/validators/params/usuarioIdParam.validator.js";
+import { validateQueryParams } from "../../helpers/validators/queryParams/queryParams.validator.js";
+import { validateUsuarioIdParam } from "../../helpers/validators/params/usuarioIdParam.validator.js";
 
 // Rutas GET
 /**

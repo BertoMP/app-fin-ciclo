@@ -173,3 +173,17 @@ VALUES
     (11, 10, 4),
     (11, 11, 5),
     (11, 12, 6);
+    
+-- Inserción de datos en error_log
+INSERT INTO error_log (errno, sql_state, error_text)
+VALUES
+	(1062, '23000', 'Duplicate entry \'1\' for key \'PRIMARY\''),
+	(1146, '42S02', 'Table \'clinica.non_existent_table\' doesn\'t exist'),
+	(1048, '23000', 'Column \'name\' cannot be null'),
+	(1054, '42S22', 'Unknown column \'non_existent_column\' in \'field list\''),
+	(1216, '23000', 'Cannot add or update a child row: a foreign key constraint fails'),
+	(1217, '23000', 'Cannot delete or update a parent row: a foreign key constraint fails'),
+	(1364, 'HY000', 'Field \'name\' doesn\'t have a default value'),
+	(1451, '23000', 'Cannot delete or update a parent row: a foreign key constraint fails'),
+	(1452, '23000', 'Cannot add or update a child row: a foreign key constraint fails'),
+	(2002, 'HY000', 'Can\'t connect to local MySQL server through socket \'/var/run/mysqld/mysqld.sock\' (2)');

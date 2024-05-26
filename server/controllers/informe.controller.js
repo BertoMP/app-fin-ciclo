@@ -10,6 +10,20 @@ import {getSearchValues} from "../util/functions/getSearchValues.js";
  * @description Clase estática que implementa la lógica de los informes de la aplicación.
  */
 class InformeController {
+	/**
+	 * @name getInformes
+	 * @description Método asíncrono que obtiene todos los informes de la base de datos.
+	 * 						Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de los informes.
+	 * 						Si ocurre algún error durante el proceso, devuelve un error con el mensaje correspondiente.
+	 * @static
+	 * @async
+	 * @function
+	 * @param req - El objeto de solicitud de Express.
+	 * @param res - El objeto de respuesta de Express.
+	 * @returns {Object} res - El objeto de respuesta de Express.
+	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+	 * @memberof InformeController
+	 */
 	static async getInformes(req, res) {
 		let user_id = 0;
 

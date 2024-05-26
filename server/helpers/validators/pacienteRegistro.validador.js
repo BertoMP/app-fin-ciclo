@@ -25,7 +25,7 @@ export const validatePacienteRegister = [
 		.isString()
 		.withMessage('La contraseña debe ser una cadena de texto.')
 		.custom((value) => {
-			const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+=\[\]{}|;:,.<>?\/]).{8,}$/;
+			const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_+=\[\]{}|;:,.<>?\/]).{8,}$/;
 
 			if (!regex.test(value)) {
 				throw new Error(

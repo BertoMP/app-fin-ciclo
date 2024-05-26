@@ -318,26 +318,35 @@ class UsuarioService {
 	 * @async
 	 * @memberof UsuarioService
 	 * @param {number} userId - El ID del usuario.
-	 * @param {string} email - El correo electrónico del usuario.
-	 * @param {string} password - La nueva contraseña del usuario.
+	 * @param {Object} data - Los datos del usuario.
 	 * @param {Object} conn - La conexión a la base de datos.
 	 * @returns {Promise<void>} No devuelve nada. Si la operación es exitosa, se habrá actualizado la contraseña del usuario en la base de datos.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async updatePassword(userId, email, password, conn = dbConn) {
+	static async updatePassword(userId, data, conn = dbConn) {
 		try {
-			const user = await UsuarioModel.findByEmail(email, conn);
+			const userPassword = await UsuarioModel.getPasswordById(userId, conn);
 
-			if (!user) {
-				throw new Error('Correo no encontrado.');
+			if (!userPassword) {
+				throw new Error('Usuario no encontrado.');
 			}
 
-			if (user.usuario_id !== userId) {
-				throw new Error('No tienes permiso para realizar esta acción.');
+			const correctPassword = await compare(data.oldPassword, userPassword.password);
+
+			if (!correctPassword) {
+				throw new Error('La contraseña actual no es correcta.');
 			}
 
-			const encryptedPassword = await createEncryptedPassword(password);
-			await UsuarioModel.updatePassword(email, encryptedPassword, conn);
+			const samePassword = await compare(data.password, userPassword.password);
+
+			if (samePassword) {
+				throw new Error('La nueva contraseña no puede ser igual a la actual.');
+			}
+
+			const user = await UsuarioModel.findById(userId, conn);
+
+			const encryptedPassword = await createEncryptedPassword(data.password);
+			await UsuarioModel.updatePassword(user.datos_personales.email, encryptedPassword, conn);
 		} catch (err) {
 			throw err;
 		}
