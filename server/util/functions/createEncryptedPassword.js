@@ -17,6 +17,13 @@ export const createEncryptedPassword = async (password) => {
 	return await hash(password, salt);
 };
 
+/**
+ * @name generateRandomPassword
+ * @description Método que genera una contraseña aleatoria de 8 caracteres de longitud.
+ * @function
+ * @memberof Util-Functions
+ * @returns {string} La contraseña aleatoria generada.
+ */
 export const generateRandomPassword = () => {
 	const length = 8;
 	const digits = "0123456789";
