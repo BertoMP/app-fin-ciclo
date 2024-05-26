@@ -48,7 +48,6 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
-            console.log(error);
 
             if (error.status === 404) {
               this.router.navigate(['/404'])

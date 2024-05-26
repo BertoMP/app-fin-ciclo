@@ -84,8 +84,6 @@ export class SolicitarCitaComponent implements OnInit {
             }
           });
 
-          console.log(this.especialidades);
-
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching especialidades', error.error);
@@ -184,7 +182,6 @@ export class SolicitarCitaComponent implements OnInit {
     this.authService.getEspecialista(this.especialista_id).subscribe({
       next: (especialista: EspecialistModel) => {
         this.especialista = especialista;
-        console.log(this.especialista);
         this.dataLoaded = true;
       },
       error: (error: HttpErrorResponse) => {
@@ -203,7 +200,6 @@ export class SolicitarCitaComponent implements OnInit {
   }
 
   changePage(page: number) {
-    console.log(page);
     if (this.initialLoad) {
       this.dataLoaded = false;
       this.actualPage = page;
@@ -212,7 +208,6 @@ export class SolicitarCitaComponent implements OnInit {
   }
 
   #showResults(data) {
-    console.log(data);
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;
     this.totalPages = data.paginas_totales;
@@ -223,7 +218,6 @@ export class SolicitarCitaComponent implements OnInit {
     this.actualPage = data.pagina_actual;
     this.citas = data.datos_agenda;
     this.citas_disponibles = this.citas.citas_disponibles;
-    console.log(this.citas.fecha_cita);
 
   }
 

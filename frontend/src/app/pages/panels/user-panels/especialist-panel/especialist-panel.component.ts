@@ -48,6 +48,11 @@ export class EspecialistPanelComponent {
 
   sidebarOptionsBottom: PanelOptionModel[] = [
     {
+      name: 'Actualizar Contraseña',
+      icon: 'bi bi-key-fill',
+      path: '/mediapp/actualizar-password',
+    },
+    {
       name: 'Cerrar Sesión',
       icon: 'bi bi-box-arrow-right',
       method: 'onLogout'
@@ -74,7 +79,8 @@ export class EspecialistPanelComponent {
 
     const options: string[] = [
       '/mediapp/listado-agenda',
-      '/mediapp/listado-pacientes'
+      '/mediapp/listado-pacientes',
+      '/mediapp/actualizar-password'
     ];
     if (options.includes(this.router.url)) {
       this.optionSelected = true;

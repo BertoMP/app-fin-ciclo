@@ -40,7 +40,7 @@ export class ListadoAgendaComponent {
   // totalPages: number;
   // totalItems: number;
   // itemsPerPage: number;
-  // 
+  //
   // datos: string[];
   // rango: number;
   // resultMin:number;
@@ -95,8 +95,6 @@ export class ListadoAgendaComponent {
     this.citas = [];
     this.errores = [];
 
-    console.log(this.authService.getUserId());
-
     let request: Observable<CitasEspecialistaListModel[]> = this.citasService.getCitaEspecialista(
     );
 
@@ -109,7 +107,6 @@ export class ListadoAgendaComponent {
         this.dataLoaded = true;
 
         if (error.error.errors) {
-          console.log(error.error.errors);
           this.errores = error.error.errors;
         } else {
           this.errores = ['Ha ocurrido un error durante el proceso'];

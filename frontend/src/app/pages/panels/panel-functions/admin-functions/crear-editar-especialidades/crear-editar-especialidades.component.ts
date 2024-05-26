@@ -151,7 +151,6 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
 
     this.isLoading = true;
     const newEspeciality: SpecialityListedModel = this.generateEspeciality();
-    console.log(newEspeciality);
 
     if (this.id != null) {
       this.especialidadService.updateEspecialidad(newEspeciality)

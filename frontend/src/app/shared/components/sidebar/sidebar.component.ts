@@ -39,8 +39,6 @@ export class SidebarComponent {
       case 'onDeleteAccount':
         this.onDeleteAccount();
         break;
-      default:
-        console.error(`Method ${methodName} not found`);
     }
   }
 

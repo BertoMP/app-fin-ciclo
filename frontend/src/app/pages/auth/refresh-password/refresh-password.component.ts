@@ -109,7 +109,6 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
           this.errores = error.message.split(',');
         }
       });
-
   }
 
   checkPasswordRecover(): void {
@@ -121,7 +120,7 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
   private generatePassword(): RefreshPasswordModel {
     return {
       password: this.refreshPassForm.get('password').value,
-      confirm_password: this.refreshPassForm.get('checkPassword').value,
+      checkPassword: this.refreshPassForm.get('checkPassword').value,
       token: this.token
     }
   }

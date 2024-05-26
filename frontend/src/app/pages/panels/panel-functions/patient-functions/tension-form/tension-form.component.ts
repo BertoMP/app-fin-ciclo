@@ -93,7 +93,6 @@ export class TensionFormComponent implements OnInit {
 
     this.isLoading = true;
     const newTension: TensionArterialDataModel = this.generateTension();
-    console.log(newTension);
 
     this.medicionesService.uploadTension(this.id, newTension)
       .subscribe({

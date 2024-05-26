@@ -62,13 +62,11 @@ export class VerCitaComponent {
   }
 
   getCita(id: number) {
-    console.log(id);
     let request: Observable<CitaSpecificDataModel> = this.citasService.getCita(id);
 
     request.subscribe({
       next: (response: CitaSpecificDataModel) => {
         this.cita=response;
-        console.log(this.cita);
         this.dataLoaded=true;
       },
       error: (error: string[]) => {

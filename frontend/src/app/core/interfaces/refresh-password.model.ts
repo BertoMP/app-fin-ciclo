@@ -1,6 +1,5 @@
 export interface RefreshPasswordModel {
     password: string,
-    confirm_password:string
+    checkPassword:string
     token:string
   }
-  

@@ -73,6 +73,11 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   sidebarOptionsBottom: PanelOptionModel[] = [
     {
+      name: 'Actualizar Contraseña',
+      icon: 'bi bi-key-fill',
+      path: '/mediapp/actualizar-password',
+    },
+    {
       name: 'Cerrar Sesión',
       icon: 'bi bi-box-arrow-right',
       method: 'onLogout'
@@ -102,7 +107,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       '/mediapp/especialidades',
       '/mediapp/crear-paciente',
       '/mediapp/crear-especialista',
-      '/mediapp/crear-especialidad'
+      '/mediapp/crear-especialidad',
+      '/mediapp/actualizar-password'
     ];
     if (options.includes(this.router.url)) {
       this.optionSelected = true;

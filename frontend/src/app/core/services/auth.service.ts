@@ -6,6 +6,7 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 import {UserRole} from "../enum/user-role.enum";
 import { EspecialistModel } from '../interfaces/especialist.model';
 import { PatientModel } from '../interfaces/patient.model';
+import {UpdatePasswordModel} from "../interfaces/update-password.model";
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,11 @@ export class AuthService {
 
   updateUser(newUser: PatientModel): Observable<any> {
     return this.http.put(`${this.apiUrl}/usuario/actualizar-paciente/${newUser.usuario_id}`, newUser)
+      .pipe(catchError(this.handleError));
+  }
+
+  updatePassword(newPassword: UpdatePasswordModel): Observable<any> {
+    return this.http.put(`${this.apiUrl}/usuario/actualizar-password`, newPassword)
       .pipe(catchError(this.handleError));
   }
 

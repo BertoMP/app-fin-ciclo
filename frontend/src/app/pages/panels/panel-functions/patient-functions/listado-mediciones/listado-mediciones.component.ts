@@ -213,7 +213,6 @@ export class ListadoMedicionesComponent implements OnInit {
   }
 
   #showResults(data) {
-    console.log(data);
     this.mediciones = data.mediciones;
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;

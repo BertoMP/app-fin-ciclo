@@ -196,7 +196,6 @@ export class ListadoCitasComponent {
   }
 
   changePage(page: number) {
-    console.log(page);
     if (this.initialLoad) {
       this.dataLoaded = false;
       this.actualPage = page;
@@ -205,7 +204,6 @@ export class ListadoCitasComponent {
   }
 
   #showResults(data) {
-    console.log(data);
     this.nextPageUrl = data.next;
     this.previousPageUrl = data.prev;
     this.totalPages = data.paginas_totales;

@@ -77,12 +77,10 @@ export class VerInformeComponent {
 
     request.subscribe({
       next: (response: InformeSpecificData) => {
-        console.log(response);
         this.dataLoaded = true;
         this.informe = response;
       },
       error: (error: string[]) => {
-        console.log(error);
         this.errores = error;
       },
     });

@@ -36,6 +36,7 @@ import { patientSpecialistGuard } from './core/guards/patientSpecialist.guard';
 import {
   PatientListComponent
 } from "./pages/panels/panel-functions/specialist-functions/patient-list/patient-list.component";
+import {UpdatePasswordComponent} from "./pages/auth/update-password/update-password.component";
 
 export const routes: Routes = [
   {
@@ -49,6 +50,11 @@ export const routes: Routes = [
     component: PanelComponent,
     canActivate: [loginGuard],
     children: [
+      {
+        path: 'actualizar-password',
+        component: UpdatePasswordComponent,
+        canActivate: [loginGuard]
+      },
       {
         path: 'usuarios',
         component: UserListComponent,

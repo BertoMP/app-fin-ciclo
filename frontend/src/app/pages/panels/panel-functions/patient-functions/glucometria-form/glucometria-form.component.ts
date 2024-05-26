@@ -79,7 +79,6 @@ export class GlucometriaFormComponent implements OnInit {
 
     this.isLoading = true;
     const newGlucometria: GlucometriaDataModel = this.generateGlucometria();
-    console.log(newGlucometria);
 
     this.medicionesService.uploadGlucometria(this.id, newGlucometria)
       .subscribe({

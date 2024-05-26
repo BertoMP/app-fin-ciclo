@@ -153,7 +153,6 @@ export class ListadoInformesComponent {
   }
 
   changePage(page: number) {
-    console.log(page);
     if (this.initialLoad) {
       this.dataLoaded = false;
       this.actualPage = page;
@@ -171,7 +170,5 @@ export class ListadoInformesComponent {
     this.itemsPerPage = data.items_pagina;
     this.actualPage = data.pagina_actual;
     this.informes = data.resultados;
-
-    console.log(this.informes);
   }
 }

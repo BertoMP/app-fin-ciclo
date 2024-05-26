@@ -71,7 +71,7 @@ export class CustomValidators {
     const value = control.value;
 
     const regex =
-      new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\\-+=\\[\\]{}|;:,.<>?\\/]).{8,}$');
+      new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\\-_+=\\[\\]{}|;:,.<>?\\/]).{8,}$');
 
 
     if (!regex.test(value)) {

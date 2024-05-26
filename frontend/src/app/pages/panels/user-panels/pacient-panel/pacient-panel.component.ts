@@ -100,6 +100,11 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
       method: 'onOptionSelected',
     },
     {
+      name: 'Actualizar Contraseña',
+      icon: 'bi bi-key-fill',
+      path: '/mediapp/actualizar-password',
+    },
+    {
       name: 'Borrar cuenta',
       icon: 'bi bi-person-dash',
       path: '/mediapp',
@@ -140,6 +145,7 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
       '/mediapp/listado-informes',
       '/mediapp/editar-perfil',
       '/mediapp/solicitar-cita',
+      '/mediapp/actualizar-password',
     ];
     if (options.includes(this.router.url)) {
       this.optionSelected = true;
