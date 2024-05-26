@@ -37,6 +37,10 @@ import {
   PatientListComponent
 } from "./pages/panels/panel-functions/specialist-functions/patient-list/patient-list.component";
 import {UpdatePasswordComponent} from "./pages/auth/update-password/update-password.component";
+import { ListadoMedicamentosComponent } from './pages/panels/panel-functions/specialist-functions/medicamentos/listado-medicamentos/listado-medicamentos.component';
+import { ListadoPatologiasComponent } from './pages/panels/panel-functions/specialist-functions/patologias/listado-patologias/listado-patologias.component';
+import { CrearEditarMedicamentosComponent } from './pages/panels/panel-functions/specialist-functions/medicamentos/crear-editar-medicamentos/crear-editar-medicamentos.component';
+import { CrearEditarPatologiasComponent } from './pages/panels/panel-functions/specialist-functions/patologias/crear-editar-patologias/crear-editar-patologias.component';
 
 export const routes: Routes = [
   {
@@ -179,7 +183,37 @@ export const routes: Routes = [
         path: 'listado-pacientes',
         component: PatientListComponent,
         canActivate: [specialistGuard]
-      }
+      },
+      {
+        path: 'listado-medicamentos',
+        component: ListadoMedicamentosComponent,
+        canActivate: [specialistGuard]
+      },
+      {
+        path: 'listado-patologias',
+        component: ListadoPatologiasComponent,
+        canActivate: [specialistGuard]
+      },
+      {
+        path: 'crear-medicamento',
+        component: CrearEditarMedicamentosComponent,
+        canActivate: [specialistGuard]
+      },
+      {
+        path: 'editar-medicamento/:id',
+        component: CrearEditarMedicamentosComponent,
+        canActivate: [specialistGuard]
+      },
+      {
+        path: 'crear-patologia',
+        component: CrearEditarPatologiasComponent,
+        canActivate: [specialistGuard]
+      },
+      {
+        path: 'editar-patologia/:id',
+        component: CrearEditarPatologiasComponent,
+        canActivate: [specialistGuard]
+      },
     ]
   },
   // Rutas comunes a todos los usuarios, tanto logados como no

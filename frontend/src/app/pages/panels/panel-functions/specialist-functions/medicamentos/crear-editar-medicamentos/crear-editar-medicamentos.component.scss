@@ -1,0 +1,201 @@
+$form-shadow: 0 0 20px rgba(0,0,0,0.3);
+
+:host {
+  padding: .8rem;
+  border-radius: 1.6rem;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  form {
+    width: 80%;
+    padding: 1rem;
+    border-radius: 1rem;
+
+    section {
+      width: 100%;
+
+      fieldset {
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: rgba(202, 227, 239, 0.7);
+        box-shadow: $form-shadow;
+
+        &.form-speciality-data {
+          display: grid;
+          grid-template-columns: repeat(1, 1fr);
+          grid-template-areas:
+            "name "
+            "description "
+            "description "
+            "description ";
+          gap: 1rem;
+          align-content: center;
+
+          @media all and (max-width: 1200px) {
+            grid-template-columns: 1fr;
+            grid-template-areas:
+              "name"
+              "image"
+              "image-preview"
+              "description";
+          }
+        }
+
+        article {
+          max-width: 100%;
+
+          &.name-field {
+            grid-area: name;
+          }
+
+          &.description-field {
+            width: 100%;
+            grid-area: description;
+
+            .description-data {
+              display: flex;
+              flex-flow: row nowrap;
+              justify-content: space-between;
+
+              p {
+                margin-bottom: 0;
+                padding-right: 0.8rem;
+
+                span {
+                  &.description-overlimit {
+                    color: red;
+                    font-weight: bold;
+                  }
+                }
+              }
+            }
+          }
+
+          quill-editor {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            text-align: justify;
+            resize: none;
+            border-radius: .5rem;
+            word-break: break-word;
+
+            ::ng-deep.ql-toolbar.ql-snow {
+              background-color: lightgray;
+            }
+
+            ::ng-deep.ql-container.ql-snow {
+              background-color: white;
+              height: 100%;
+            }
+
+            @media all and (max-width: 1200px) {
+              height: 300px;
+            }
+
+            &.invalid {
+              ::ng-deep.ql-container.ql-snow {
+                background-color: lightcoral;
+              }
+            }
+          }
+        }
+
+        legend {
+          font-weight: bold;
+          font-size: 1.2rem;
+          border: 1px solid black;
+          border-radius: 5px;
+          padding: .5rem;
+          display: block;
+          width: 50%;
+          float: none;
+          background-color: #c0dff1;
+          box-shadow: $form-shadow;
+        }
+
+        label {
+          padding-left: 0.8rem;
+          font-weight: bold;
+          font-size: .9rem;
+          display: block;
+        }
+
+        input {
+          padding: 0.5rem 1rem;
+          border: 1px solid #ddd;
+          border-radius: 1rem;
+          width: 100%;
+
+          &.invalid {
+            border-color: red;
+            background-color: lightcoral;
+          }
+        }
+      }
+
+      &.btn-section {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1rem;
+      }
+
+      &.error-message {
+        font-size: .8rem;
+        background-color: lightcoral;
+        border: 1px solid red;
+        border-radius: 1rem;
+        padding: 1rem;
+
+        ul {
+          padding: 1rem;
+
+          li {
+            text-align: justify;
+          }
+        }
+      }
+
+      button {
+        padding: 1rem;
+        border: none;
+        border-radius: 1rem;
+        font-size: 1.2rem;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        transition: background-color .3s;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+
+        &:disabled {
+          background-color: #6c757d;
+          cursor: not-allowed;
+        }
+
+        &.btn-cancel {
+          background-color: #dc3545;
+        }
+
+        &.btn-cancel:hover {
+          background-color: #c82333;
+        }
+      }
+    }
+  }
+}

@@ -44,6 +44,40 @@ export class EspecialistPanelComponent {
         },
       ]
     },
+    {
+      name: 'Medicamentos',
+      options: [
+        {
+          name: 'Listar medicamentos',
+          icon: 'bi bi-capsule-pill',
+          path: '/mediapp/listado-medicamentos',
+          method: 'onOptionSelected',
+        },
+        {
+          name: 'Crear medicamentos',
+          icon: 'bi bi-capsule',
+          path: '/mediapp/crear-medicamento',
+          method: 'onOptionSelected',
+        }
+      ]
+    },
+    {
+      name: 'Patologias',
+      options: [
+        {
+          name: 'Listar patologias',
+          icon: 'bi bi-virus',
+          path: '/mediapp/listado-patologias',
+          method: 'onOptionSelected',
+        },
+        {
+          name: 'Crear patologias',
+          icon: 'bi bi-clipboard-heart',
+          path: '/mediapp/crear-patologia',
+          method: 'onOptionSelected',
+        }
+      ]
+    }
   ];
 
   sidebarOptionsBottom: PanelOptionModel[] = [

@@ -1,0 +1,73 @@
+<section class="header">
+    <h2>Patologías</h2>
+  </section>
+  <section class="filter-buttons">
+    <article class="filters">
+      <article class="search-filter">
+        <label for="search">Buscar</label>
+        <input type="text" id="search" [(ngModel)]="search" (keyup)="updateFilters()">
+      </article>
+      <article class="per-page-filter">
+        <label for="per-page">Items</label>
+        <select2 id="per-page" [data]="perPageOptions" [value]="10" [(ngModel)]="perPage" (update)="updateFilters()"></select2>
+      </article>
+    </article>
+    <article class="buttons">
+      <button type="button" class="btn btn-primary" routerLink="../crear-patologia">Crear Patologia</button>
+    </article>
+  </section>
+  @if (!dataLoaded) {
+    <app-loading-spinner></app-loading-spinner>
+  } @else if (!patologias.length) {
+    <section class="no-results">
+      <h3>No se encontraron resultados.</h3>
+    </section>
+  } @else {
+    <section class="specialties-table">
+      <div class="info">
+        <small>Mostrando {{ resultMin }} - {{ resultMax }} de {{ totalItems }} patologias.</small>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let patologia of (patologias | paginate: { id: 'patologyListPagination', itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems })">
+            <td>{{ patologia.datos_patologia.nombre }}</td>
+            <td [innerHTML]="sanitizeHtml(patologia.datos_patologia.descripcion | removeBr)"></td>
+            <td class="btn-container">
+                <div class="dropdown">
+                  <button class="btn btn-link" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <button class="dropdown-item edit-btn" type="button" routerLink="../editar-patologia/{{patologia.id}}">
+                      <i class="bi bi-pencil"></i> <span>Editar</span>
+                    </button>
+                  </div>
+                </div>
+              </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      @if (previousPageUrl || nextPageUrl) {
+      <div class="pagination">
+          <pagination-controls
+            (pageChange)="actualPage = $event; changePage(actualPage)"
+            id="patologyListPagination"
+            maxSize="5"
+            directionLinks="true"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+          ></pagination-controls>
+      </div>
+      }
+    </section>
+  }
+  

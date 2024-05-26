@@ -1,0 +1,358 @@
+@import "bootstrap-icons";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  section {
+    width: 100%;
+
+    &.filter-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @media all and (max-width: 1300px) {
+        flex-direction: column;
+      }
+    }
+
+    article {
+      padding: 1rem;
+
+      label {
+        font-size: 1.2rem;
+        font-weight: 500;
+        display: block;
+
+        @media all and (max-width: 1000px) {
+          font-size: 1rem;
+          text-align: center;
+          padding: .5rem;
+        }
+      }
+
+      input {
+        width: 100%;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1.2rem;
+      }
+
+      &.filters {
+        display: flex;
+        align-items: center;
+        width: 50%;
+
+        @media all and (max-width: 1300px) {
+          width: 100%;
+        }
+
+        @media all and (max-width: 1000px) {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-areas:
+           "search items";
+        }
+
+        .search-filter {
+          width: 60%;
+
+          @media all and (max-width: 1000px) {
+            grid-area: search;
+            width: 100%;
+          }
+        }
+
+        .per-page-filter {
+          width: 40%;
+
+          @media all and (max-width: 1000px) {
+            grid-area: items;
+            width: 100%;
+          }
+        }
+
+        ::ng-deep .select2-selection--single {
+          font-size: 1.2rem;
+          width: 100%;
+          border-radius: 5px;
+          padding: 20px;
+          text-align: center;
+          align-items: center;
+        }
+
+        #per-page {
+          --select2-selection-border-color: #ccc;
+        }
+      }
+
+      &.buttons {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 1rem;
+        width: 50%;
+
+        @media all and (max-width: 1300px) {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+
+    &.no-results {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: space-evenly;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 500;
+      height: 300px;
+
+      p {
+        text-align: center;
+      }
+
+      figure {
+        img {
+          width: 100%;
+          max-width: 200px;
+          margin-bottom: 1rem;
+        }
+      }
+    }
+
+    &.specialties-table {
+      width: 100%;
+      height: 450px;
+
+      @media all and (max-width: 999px) {
+        height: 380px;
+      }
+
+      @media all and (min-width: 1000px) and (max-width: 1300px) {
+        height: 390px;
+      }
+
+      .info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: -10%;
+
+        pagination-controls{
+          margin-top: 1rem;
+          margin-bottom: 0;
+        }
+
+        ::ng-deep .ngx-pagination {
+          .current {
+            background-color: lightblue;
+            color: black;
+            font-size: 1.2rem;
+            border-radius: 50%;
+          }
+
+          li {
+            a {
+              font-size: 1rem;
+              padding: 5px 10px;
+              border-radius: 5px;
+              margin: 0 5px;
+              cursor: pointer;
+              transition: background-color 0.3s;
+
+              &:hover {
+                background-color: transparent;
+              }
+            }
+
+            &.pagination-next,
+            &.pagination-previous{
+              &:hover {
+                a {
+                  background-color: transparent;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .table-container {
+        height: 100%;
+        overflow-y: auto;
+        width: 100%;
+        display: block;
+
+        &::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+
+        table {
+          display: table;
+          width: 100%;
+          border-collapse: collapse;
+          border-spacing: 0;
+          border-radius: 5px;
+
+          thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+
+            tr {
+              background-color: lightblue;
+
+              th {
+                font-size: 1.2rem;
+                font-weight: 500;
+                padding: 10px;
+                text-align: center;
+
+                &:first-child {
+                  border-radius: 16px 0 0 0;
+                  text-align: left;
+                }
+
+                &:first-child{
+                  width: 20%;
+                }
+
+                &:nth-child(2) {
+                  width: 50%;
+                }
+
+                &:last-child {
+                  border-radius: 0 16px 0 0;
+                }
+
+                @media all and (max-width: 510px) {
+                  &:first-child {
+                    width: 70%;
+                  }
+
+                  &:nth-child(3) {
+                    display: none;
+                  }
+                }
+
+                @media all and (max-width: 1200px) {
+                  &:nth-child(2) {
+                    display: none;
+                  }
+                }
+              }
+            }
+          }
+
+          tbody {
+            width: 100%;
+            tr {
+              width: 100%;
+              border-bottom: 1px solid #ccc;
+              transition: background-color 0.3s;
+
+              &:hover {
+                background-color: lightblue;
+              }
+              td {
+                padding: 20px 10px;
+                margin: 1rem 0;
+
+                &:nth-child(2) {
+                  text-align: center;
+                  img {
+                    width: 100px;
+                    padding: 10px;
+                  }
+                }
+
+                &:nth-child(3) {
+                  max-width: 200px;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
+
+                @media all and (max-width: 510px) {
+                  &:nth-child(3) {
+                    display: none;
+                  }
+                }
+
+                @media all and (max-width: 1200px) {
+                  &:nth-child(2) {
+                    display: none;
+                  }
+                }
+
+                img {
+                  width: 50%;
+                  padding: 10px;
+                }
+
+                &.btn-container {
+                  > div {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  }
+
+                  button {
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    border: none;
+                    font-size: 1rem;
+                    cursor: pointer;
+
+                    .bi-three-dots-vertical {
+                      font-size: 1.5rem;
+                      width: 70%;
+                    }
+
+                    span {
+                      width: 80%;
+                      display: inline-block;
+                      padding: .5rem;
+                      color: black;
+                      font-size: 1rem;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
