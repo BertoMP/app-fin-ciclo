@@ -312,7 +312,7 @@ router.post(
 	verifyAccessToken,
 	verifyUserRole([1]),
 	validateEspecialistaRegister,
-	UsuarioController.postRegistro,
+	UsuarioController.postRegistro
 );
 
 /**

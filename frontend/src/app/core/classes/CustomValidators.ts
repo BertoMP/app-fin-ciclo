@@ -69,8 +69,10 @@ export class CustomValidators {
 
   static validPassword(control: FormControl): { [s: string]: boolean } | null {
     const value = control.value;
-    const regex: RegExp
-      = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,}$');
+
+    const regex =
+      new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\\-+=\\[\\]{}|;:,.<>?\\/]).{8,}$');
+
 
     if (!regex.test(value)) {
       return { 'isInvalidPassword': true }
@@ -175,7 +177,7 @@ export class CustomValidators {
 
     if(!regex.test(value))
       return { 'isInvalidGlucometria': true }
-      
+
     return null;
   }
 }

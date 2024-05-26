@@ -12,8 +12,10 @@ import TokenService from "./token.service.js";
 import { dbConn } from '../util/database/database.js';
 import ObjectFactory from "../util/classes/objectFactory.js";
 import pkg from 'bcryptjs';
-import {createEncryptedPassword} from "../util/functions/createEncryptedPassword.js";
-import EspecialidadService from "./especialidad.service.js";
+import {
+	createEncryptedPassword,
+	generateRandomPassword
+} from "../util/functions/createEncryptedPassword.js";
 
 const { compare } = pkg;
 
@@ -165,6 +167,10 @@ class UsuarioService {
 				}
 			}
 
+			if (!data.datos_personales.password) {
+				data.datos_personales.password = generateRandomPassword();
+			}
+
 			const usuario = await ObjectFactory.createUserObject(data);
 			const nuevoUsuario = await UsuarioModel.create(usuario, conn);
 
@@ -177,6 +183,7 @@ class UsuarioService {
 				const especialista = ObjectFactory.createEspecialistaObject(data);
 				especialista.usuario_id = nuevoUsuario.usuario_id;
 				await EspecialistaService.createEspecialista(especialista, conn);
+				await EmailService.sendWelcomeEmailSpecialist(usuario.email, data.datos_personales.password, usuario.nombre);
 			}
 
 			if (!isConnProvided) {

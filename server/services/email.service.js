@@ -53,6 +53,30 @@ class EmailService {
 		}
 	}
 
+	static async sendWelcomeEmailSpecialist(to, pass, name) {
+		const transporter = EmailService.#createTransporter();
+		const compiledTemplate = EmailService.#compileTemplate(
+			'welcomeSpecialist.handlebars', {
+				name,
+				to,
+				pass,
+				url: `${process.env.ANGULAR_HOST}:${process.env.ANGULAR_PORT}/auth/login`
+			});
+
+		const mailDetails = EmailService.#createMailDetails(
+			process.env.EMAIL_ACCOUNT,
+			to,
+			'Bienvenido a Clínica Médica Coslada',
+			compiledTemplate,
+		);
+
+		try {
+			return await transporter.sendMail(mailDetails);
+		} catch (err) {
+			throw err;
+		}
+	}
+
 	/**
 	 * @method sendPasswordResetEmail
 	 * @description Método para enviar un correo electrónico de restablecimiento de contraseña.

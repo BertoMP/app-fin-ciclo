@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<title>Bienvenido a Clínica Médica Coslada</title>
+	<style>
+		button {
+			background-color: #4CAF50;
+			color: white;
+			padding: 14px 20px;
+			border: none;
+			cursor: pointer;
+			border-radius: 4px;
+		}
+	</style>
+</head>
+<body>
+<h1>¡Bienvenido, {{name}}!</h1>
+<p>Estamos encantados de que te hayas unido a Clínica Médica Coslada.</p>
+<p>Aquí tienes tus credenciales de acceso para nuestra plataforma MediAPP:</p>
+<ul>
+	<li>Usuario: {{to}}</li>
+	<li>Contraseña: {{pass}}</li>
+</ul>
+<p>Para ello puedes hacerlo desde el siguiente enlace:</p>
+<a href={{url}}>
+	<button>Acceder a MediAPP</button>
+</a>
+<p>Si tienes alguna pregunta, no dudes en ponerte en contacto con el equipo de administración.</p>
+<p>Gracias,</p>
+<p>El equipo de Clínica Médica Coslada</p>
+</body>
+</html>

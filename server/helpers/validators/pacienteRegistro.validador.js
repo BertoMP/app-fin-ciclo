@@ -26,11 +26,11 @@ export const validatePacienteRegister = [
 		.isString()
 		.withMessage('La contraseña debe ser una cadena de texto.')
 		.custom((value) => {
-			const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+			const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+=\[\]{}|;:,.<>?\/]).{8,}$/;
 
 			if (!regex.test(value)) {
 				throw new Error(
-					'La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número.',
+					'La contraseña debe tener al menos 8 caracteres: una letra mayúscula, una letra minúscula, un carácter especial y un número.',
 				);
 			}
 

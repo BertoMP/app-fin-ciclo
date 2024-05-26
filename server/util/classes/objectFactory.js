@@ -1,16 +1,15 @@
-import { createHistClinica } from "../functions/createHistClinica.js";
-import { createEncryptedPassword } from "../functions/createEncryptedPassword.js";
-
 // Importación de librerías
 import pkg from 'moment-timezone';
 import {sanitizeInput} from "../functions/sanitizeInput.js";
 const { tz } = pkg;
+import { createHistClinica } from "../functions/createHistClinica.js";
+import { createEncryptedPassword } from "../functions/createEncryptedPassword.js";
 
 class ObjectFactory {
 	static async createUserObject(data) {
 		return {
 			email: data.datos_personales.email,
-			password: (data.datos_paciente) ? await createEncryptedPassword(data.datos_personales.password) : await generateEncryptedPassword(),
+			password: await createEncryptedPassword(data.datos_personales.password),
 			nombre: data.datos_personales.nombre,
 			primer_apellido: data.datos_personales.primer_apellido,
 			segundo_apellido: data.datos_personales.segundo_apellido,

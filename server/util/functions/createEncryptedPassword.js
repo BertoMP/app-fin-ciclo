@@ -17,6 +17,24 @@ export const createEncryptedPassword = async (password) => {
 	return await hash(password, salt);
 };
 
-export const generateRandomEncryptedPassword = async () => {
+export const generateRandomPassword = () => {
+	const length = 8;
+	const digits = "0123456789";
+	const lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
+	const upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	const specialCharacters = "!@#$%^&*()-+=[]{}|;:,.<>?/";
+	const charset = digits + lowerCaseLetters + upperCaseLetters + specialCharacters;
 
+	let password = digits.charAt(Math.floor(Math.random() * digits.length))
+		+ lowerCaseLetters.charAt(Math.floor(Math.random() * lowerCaseLetters.length))
+		+ upperCaseLetters.charAt(Math.floor(Math.random() * upperCaseLetters.length))
+		+ specialCharacters.charAt(Math.floor(Math.random() * specialCharacters.length));
+
+	for (let i = 4, n = charset.length; i < length; ++i) {
+		password += charset.charAt(Math.floor(Math.random() * n));
+	}
+
+	password = password.split('').sort(() => 0.5 - Math.random()).join('');
+
+	return password;
 }
