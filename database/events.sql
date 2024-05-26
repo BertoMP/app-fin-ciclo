@@ -1,9 +1,6 @@
 -- Selección de la base de datos
 USE clinica;
 
--- Habilitar el planificador de eventos
-SET GLOBAL event_scheduler = ON;
-
 -- Eliminación de los eventos si existen
 DROP EVENT IF EXISTS limpiar_tabla_tokens_event;
 DROP EVENT IF EXISTS eliminar_tomas_vencidas_event;
@@ -15,7 +12,9 @@ CREATE EVENT limpiar_tabla_tokens_event
         STARTS CONCAT(CURRENT_DATE, ' 02:00:00')
     DO
     BEGIN
-        TRUNCATE TABLE token;
+        DELETE
+        FROM token
+        WHERE created_at < NOW() - INTERVAL 1 HOUR;
     END //
 DELIMITER ;
 
