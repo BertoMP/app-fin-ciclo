@@ -37,14 +37,11 @@ import {
   PatientListComponent
 } from "./pages/panels/panel-functions/specialist-functions/patient-list/patient-list.component";
 import {UpdatePasswordComponent} from "./pages/auth/update-password/update-password.component";
-<<<<<<< HEAD
 import { ListadoMedicamentosComponent } from './pages/panels/panel-functions/specialist-functions/medicamentos/listado-medicamentos/listado-medicamentos.component';
 import { ListadoPatologiasComponent } from './pages/panels/panel-functions/specialist-functions/patologias/listado-patologias/listado-patologias.component';
 import { CrearEditarMedicamentosComponent } from './pages/panels/panel-functions/specialist-functions/medicamentos/crear-editar-medicamentos/crear-editar-medicamentos.component';
 import { CrearEditarPatologiasComponent } from './pages/panels/panel-functions/specialist-functions/patologias/crear-editar-patologias/crear-editar-patologias.component';
-=======
 import {LogListComponent} from "./pages/panels/panel-functions/admin-functions/log-list/log-list.component";
->>>>>>> 5f336126e4f1410dcee31f529a7c508856381f6f
 
 export const routes: Routes = [
   {
