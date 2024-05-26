@@ -15,7 +15,7 @@ export const verifyUserRole = (roles) => {
 	return (req, res, next) => {
 		if (!req.user_role || !roles.includes(req.user_role)) {
 			return res.status(403).json({
-				errors: ['No tienes permiso para realizar esta acción.'],
+				errors: ['Hola','No tienes permiso para realizar esta acción.'],
 			});
 		}
 		next();

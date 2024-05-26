@@ -61,6 +61,7 @@ class MedicamentoController {
 			const searchValues = getSearchValues(req, 'search');
 			const medicamentos = await MedicamentoService.readMedicamentos(searchValues);
 
+
 			return res.status(200).json({
 				prev: medicamentos.prev,
 				next: medicamentos.next,

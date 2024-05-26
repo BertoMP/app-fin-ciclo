@@ -56,6 +56,7 @@ class MedicamentoService {
 				totalPages: paginas_totales,
 			} = await MedicamentoModel.fetchAll(searchValues, conn);
 
+
 			if (page > 1 && page > paginas_totales) {
 				throw new Error('Página no encontrada.');
 			}
@@ -73,7 +74,7 @@ class MedicamentoService {
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;
 			const items_pagina = parseInt(limit);
 
-			return res.status(200).json({
+			return{
 				prev,
 				next,
 				pagina_actual,
@@ -83,7 +84,7 @@ class MedicamentoService {
 				result_min,
 				result_max,
 				resultados,
-			});
+			};
 		} catch (err) {
 			throw err;
 		}

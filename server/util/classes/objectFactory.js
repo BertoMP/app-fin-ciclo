@@ -139,8 +139,8 @@ class ObjectFactory {
 
 	static createPatologiaObject(data) {
 		return {
-			nombre: data.nombre,
-			descripcion: sanitizeInput(data.descripcion),
+			nombre: data.datos_patologia.nombre,
+			descripcion: sanitizeInput(data.datos_patologia.descripcion),
 		};
 	}
 

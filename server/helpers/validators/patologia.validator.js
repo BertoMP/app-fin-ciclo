@@ -14,14 +14,14 @@ import { body, validationResult } from 'express-validator';
  * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
  */
 export const validatePatologia = [
-	body('nombre')
+	body('datos_patologia.nombre')
 		.trim()
 		.notEmpty()
 		.withMessage('El nombre es obligatorio')
 		.isString()
 		.withMessage('El nombre debe ser una cadena de texto')
 		.escape(),
-	body('descripcion')
+	body('datos_patologia.descripcion')
 		.trim()
 		.notEmpty()
 		.withMessage('La descripción es obligatoria')

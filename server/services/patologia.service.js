@@ -72,6 +72,7 @@ class PatologiaService {
 
 			const prev = page > 1 ? `/patologia?page=${page - 1}&limit=${limit}${query}` : null;
 			const next = page < paginas_totales ? `/patologia?page=${page + 1}&limit=${limit}${query}` : null;
+
 			const result_min = (page - 1) * limit + 1;
 			const result_max =
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;

@@ -101,7 +101,6 @@ class MedicamentoModel {
 					}
 				}
 			});
-
 			return { formattedRows, total, actualPage, totalPages };
 		} catch (err) {
 			throw new Error('Error al obtener los medicamentos.');
