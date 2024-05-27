@@ -174,6 +174,10 @@ class UsuarioController {
 				return res.status(403).json({ errors: [err.message] });
 			}
 
+			if (err.message === 'Cuenta deshabilitada.') {
+				return res.status(403).json({ errors: [err.message] });
+			}
+
 			return res.status(500).json({ errors: [err.message] });
 		}
 	}

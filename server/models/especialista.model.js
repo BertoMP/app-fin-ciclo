@@ -194,6 +194,39 @@ class EspecialistaModel {
 	}
 
 	/**
+	 * @method findTurnoById
+	 * @description Método para obtener el turno de un especialista por su ID.
+	 * @static
+	 * @async
+	 * @memberof EspecialistaModel
+	 * @param {number} usuario_id - El ID de usuario del especialista.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} El turno del especialista.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async findTurnoById(usuario_id, dbConn) {
+		const query =
+			'SELECT ' +
+			'    turno ' +
+			'FROM ' +
+			'   especialista ' +
+			'WHERE ' +
+			'   usuario_id = ?';
+
+		try {
+			const [rows] = await dbConn.execute(query, [usuario_id]);
+
+			if (rows.length === 0) {
+				return null;
+			}
+
+			return rows[0];
+		} catch (err) {
+			throw new Error('Error al obtener el especialista.');
+		}
+	}
+
+	/**
 	 * @method findByUserId
 	 * @description Método para obtener un especialista por su ID de usuario.
 	 * @static

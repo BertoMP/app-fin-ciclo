@@ -66,13 +66,14 @@ class PatologiaModel {
 			'SELECT ' +
 			'		COUNT(*) AS count ' +
 			'FROM ' +
-			'		patologia';
+			'		patologia ';
 
 		const queryParams = [];
 		const countParams = [];
 
 		if (search) {
 			query += 'WHERE nombre LIKE ? ';
+			queryCount += 'WHERE nombre LIKE ? ';
 			queryParams.push(`%${search}%`);
 			countParams.push(`%${search}%`);
 		}

@@ -221,6 +221,18 @@ class UsuarioService {
 				throw new Error('Correo o contraseña incorrectos.');
 			}
 
+			if (user.datos_rol.rol_id === 3) {
+				const isTrabajando = await EspecialistaService.readTurnoByEspecialistaId(user.usuario_id, conn);
+
+				if (isTrabajando.turno === 'no-trabajando') {
+					throw new Error('Cuenta deshabilitada.');
+				}
+
+				if (!isTrabajando) {
+					throw new Error('El especialista no está trabajando.');
+				}
+			}
+
 			const validPassword = await compare(password, user.datos_personales.password);
 
 			if (!validPassword) {
@@ -549,6 +561,7 @@ class UsuarioService {
 					const especialistaCita = await CitaService.readCitasByEspecialistaId(id, conn);
 					if (especialistaCita.length > 0) {
 						await EspecialistaService.setNoTrabajando(id, conn);
+						await UsuarioModel.deleteRefreshToken(id, conn);
 
 						for (const cita of especialistaCita) {
 							if (!cita.informe_id) {

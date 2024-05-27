@@ -164,6 +164,20 @@ class EspecialistaService {
 	static async setNoTrabajando(id, conn = dbConn) {
 		return await EspecialistaModel.setNoTrabajandoById(id, conn);
 	}
+
+	/**
+	 * @method setTrabajando
+	 * @description Método para establecer a un especialista como trabajando.
+	 * @static
+	 * @async
+	 * @memberof EspecialistaService
+	 * @param {number} especialista_id - El ID del especialista.
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} El especialista actualizado.
+	 */
+	static async readTurnoByEspecialistaId(especialista_id, conn = dbConn) {
+		return await EspecialistaModel.findTurnoById(especialista_id, conn);
+	}
 }
 
 // Exportación del servicio
