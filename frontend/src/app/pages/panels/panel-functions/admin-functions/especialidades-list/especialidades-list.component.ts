@@ -14,9 +14,6 @@ import {SpecialityDataModel} from "../../../../../core/interfaces/speciality-dat
 import {SpecialityListedModel} from "../../../../../core/interfaces/speciality-listed.model";
 import {RemoveBrPipe} from "../../../../../shared/pipes/remove-br.pipe";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import {
-  EllipsisDirective
-} from "../../../../../core/directives/ellipsis.directive";
 
 @Component({
   selector: 'app-especialidades-list',
@@ -36,7 +33,6 @@ import {
     Select2Module,
     UpperCasePipe,
     RemoveBrPipe,
-    EllipsisDirective
   ],
   templateUrl: './especialidades-list.component.html',
   styleUrl: './especialidades-list.component.scss'

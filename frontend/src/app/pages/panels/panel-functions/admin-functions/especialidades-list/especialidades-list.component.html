@@ -43,7 +43,7 @@
           <td>
             <img [src]="specialty.datos_especialidad.imagen" alt="Imagen de la especialidad">
           </td>
-          <td [appEllipsis]="200" [innerHTML]="sanitizeHtml(specialty.datos_especialidad.descripcion | removeBr)"></td>
+          <td [innerHTML]="sanitizeHtml(specialty.datos_especialidad.descripcion | removeBr)"></td>
           <td class="btn-container">
             <div class="dropdown">
               <button class="btn btn-link" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">

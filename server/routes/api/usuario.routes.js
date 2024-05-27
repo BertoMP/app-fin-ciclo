@@ -253,9 +253,9 @@ router.post(
 
 /**
  * @swagger
- * /usuario/paciente:
- *   put:
- *     summary: Actualiza la información del paciente
+ * /usuario/registro-especialista:
+ *   post:
+ *     summary: Inserta un usuario de tipo especialista
  *     tags: [Usuario]
  *     security:
  *       - bearerAuth: []
@@ -267,7 +267,7 @@ router.post(
  *             $ref: '#/components/schemas/UsuarioPaciente'
  *     responses:
  *       200:
- *         description: Usuario actualizado exitosamente
+ *         description: Especialista guardado exitosamente
  *         content:
  *           application/json:
  *             schema:
@@ -408,10 +408,11 @@ router.post(
 	UsuarioController.postForgotPassword
 );
 
+// Rutas PATCH
 /**
  * @swagger
  * /usuario/contrasena-reset:
- *   post:
+ *   patch:
  *     summary: Restablece la contraseña de un usuario
  *     tags: [Usuario]
  *     requestBody:
@@ -447,16 +448,16 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post(
+router.patch(
 	'/usuario/contrasena-reset',
 	validateUserPasswordChange,
-	UsuarioController.postResetPassword,
+	UsuarioController.patchResetPassword,
 );
 
 /**
  * @swagger
  * /usuario/refresh-token:
- *   post:
+ *   patch:
  *     summary: Actualiza el token de acceso del usuario
  *     tags: [Usuario]
  *     security:
@@ -501,15 +502,15 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post(
+router.patch(
 	'/usuario/refresh-token',
-	UsuarioController.postRefreshToken
+	UsuarioController.patchRefreshToken
 );
 
 /**
  * @swagger
  * /usuario/logout:
- *   post:
+ *   patch:
  *     summary: Cierra la sesión del usuario
  *     tags: [Usuario]
  *     security:
@@ -540,18 +541,17 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.post(
+router.patch(
 	'/usuario/logout',
 	verifyAccessToken,
 	verifyUserId,
-	UsuarioController.postLogout
+	UsuarioController.patchLogout
 );
 
-// Rutas PUT
 /**
  * @swagger
  * /usuario/update-password:
- *   post:
+ *   patch:
  *     summary: Actualizar la contraseña de un usuario
  *     tags: [Usuario]
  *     security:
@@ -604,14 +604,15 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/ServerError'
  */
-router.put(
+router.patch(
 	'/usuario/actualizar-password',
 	verifyAccessToken,
 	verifyUserId,
 	validateUserPasswordUpdate,
-	UsuarioController.postUpdatePassword,
+	UsuarioController.patchUpdatePassword,
 );
 
+// Rutas PUT
 /**
  * @swagger
  * /usuario/actualizar-usuario:

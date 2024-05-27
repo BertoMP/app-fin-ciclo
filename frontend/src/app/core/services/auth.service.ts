@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   updatePassword(newPassword: UpdatePasswordModel): Observable<any> {
-    return this.http.put(`${this.apiUrl}/usuario/actualizar-password`, newPassword)
+    return this.http.patch(`${this.apiUrl}/usuario/actualizar-password`, newPassword)
       .pipe(catchError(this.handleError));
   }
 
@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/usuario/logout`, {});
+    return this.http.patch(`${this.apiUrl}/usuario/logout`, {});
   }
 
   getAccessToken(): string {
@@ -165,7 +165,7 @@ export class AuthService {
     const refreshToken: string = this.getRefreshToken();
 
     if (refreshToken) {
-      return this.http.post(
+      return this.http.patch(
         `${this.apiUrl}/usuario/refresh-token`,
         {refresh_token: refreshToken}
       )

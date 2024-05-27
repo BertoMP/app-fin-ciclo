@@ -350,7 +350,11 @@ class UsuarioModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async updatePassword(email, password, dbConn) {
-		const query = 'UPDATE usuario SET password = ? WHERE email = ?';
+		const query =
+			'UPDATE ' +
+			'usuario ' +
+			'SET password = ? ' +
+			'WHERE email = ?';
 
 		try {
 			return await dbConn.execute(query, [password, email]);

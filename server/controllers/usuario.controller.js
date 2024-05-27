@@ -215,7 +215,7 @@ class UsuarioController {
 	}
 
 	/**
-	 * @name postResetPassword
+	 * @name patchResetPassword
 	 * @description Método asíncrono que maneja el restablecimiento de la contraseña de un usuario.
 	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
 	 *              Si el token es inválido o ha expirado, o si el usuario no se encuentra, devuelve un error con el mensaje correspondiente.
@@ -228,7 +228,7 @@ class UsuarioController {
 	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
 	 * @memberof UsuarioController
 	 */
-	static async postResetPassword(req, res) {
+	static async patchResetPassword(req, res) {
 		const newPassword = req.body.password;
 		const userEmail = await verifyResetToken(req, res);
 
@@ -247,7 +247,7 @@ class UsuarioController {
 	}
 
 	/**
-	 * @name postUpdatePassword
+	 * @name patchUpdatePassword
 	 * @description Método asíncrono que actualiza la contraseña de un usuario en la base de datos.
 	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
 	 *              Si el correo electrónico no se encuentra en la base de datos, o si el usuario no tiene permiso para realizar la acción,
@@ -261,7 +261,7 @@ class UsuarioController {
 	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
 	 * @memberof UsuarioController
 	 */
-	static async postUpdatePassword(req, res) {
+	static async patchUpdatePassword(req, res) {
 		const id = req.user_id;
 
 		try {
@@ -329,7 +329,7 @@ class UsuarioController {
 	}
 
 	/**
-	 * @name postRefreshToken
+	 * @name patchRefreshToken
 	 * @description Método asíncrono que maneja la renovación del token de acceso de un usuario.
 	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito y los nuevos tokens de acceso y actualización.
 	 *              Si el token de actualización no se proporciona, es inválido, o el usuario no se encuentra, devuelve un error con el mensaje correspondiente.
@@ -342,7 +342,7 @@ class UsuarioController {
 	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 403 con un mensaje de error.
 	 * @memberof UsuarioController
 	 */
-	static async postRefreshToken(req, res) {
+	static async patchRefreshToken(req, res) {
 		const refreshToken = req.body.refresh_token;
 
 		try {
@@ -380,7 +380,7 @@ class UsuarioController {
 	}
 
 	/**
-	 * @name postLogout
+	 * @name patchLogout
 	 * @description Método asíncrono que maneja el cierre de sesión de un usuario.
 	 *              Devuelve un objeto JSON con la respuesta HTTP que incluye un mensaje de éxito.
 	 *              Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
@@ -393,7 +393,7 @@ class UsuarioController {
 	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
 	 * @memberof UsuarioController
 	 */
-	static async postLogout(req, res) {
+	static async patchLogout(req, res) {
 		const userId = req.user_id;
 
 		try {
