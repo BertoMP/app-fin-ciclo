@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from "@angular/forms";
+import {FormControl, FormGroup, ValidatorFn} from "@angular/forms";
 
 export class CustomValidators {
   static validEmail(control: FormControl): { [s: string]: boolean } | null {
@@ -179,5 +179,20 @@ export class CustomValidators {
       return { 'isInvalidGlucometria': true }
 
     return null;
+  }
+
+  static maxLengthHtml(maxLength: number): ValidatorFn {
+    return (control: FormControl): {[key: string]: any} | null => {
+      const value = control.value;
+      const strippedValue = CustomValidators.#stripHtml(value);
+      const isValid = strippedValue.length <= maxLength;
+      return isValid ? null : { 'maxLengthHtml': { value: control.value } };
+    };
+  }
+
+  static #stripHtml(html: string) {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
   }
 }

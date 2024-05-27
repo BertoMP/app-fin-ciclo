@@ -108,7 +108,7 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
         null,
         [
           Validators.required,
-          Validators.maxLength(this.maxLength)
+          CustomValidators.maxLengthHtml(this.maxLength)
         ]
       )
     });

@@ -14,7 +14,7 @@ import { filter } from "rxjs/operators";
   templateUrl: './especialist-panel.component.html',
   styleUrl: './especialist-panel.component.scss'
 })
-export class EspecialistPanelComponent {
+export class EspecialistPanelComponent implements OnInit, OnDestroy {
   optionSelected: boolean = false;
   userName: string = '';
   routerSub: Subscription;
@@ -114,7 +114,11 @@ export class EspecialistPanelComponent {
     const options: string[] = [
       '/mediapp/listado-agenda',
       '/mediapp/listado-pacientes',
-      '/mediapp/actualizar-password'
+      '/mediapp/actualizar-password',
+      '/mediapp/listado-medicamentos',
+      '/mediapp/crear-medicamento',
+      '/mediapp/listado-patologias',
+      '/mediapp/crear-patologia',
     ];
     if (options.includes(this.router.url)) {
       this.optionSelected = true;

@@ -99,7 +99,7 @@ export class CrearEditarPatologiasComponent {
         null,
         [
           Validators.required,
-          Validators.maxLength(this.maxLength)
+          CustomValidators.maxLengthHtml(this.maxLength)
         ]
       )
     });
