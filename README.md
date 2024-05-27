@@ -29,17 +29,21 @@ pacientes acceder a sus historiales clínicos y guardar un registro de las medic
 
 ## Tecnologías Utilizadas
 
-| Tipo | Tecnologías |
-| :---: | :---: |
-| ___Frontend___ | ![Angular](https://img.shields.io/badge/-Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white) ![TypeScript](https://img.shields.io/badge/-TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) ![HTML5](https://img.shields.io/badge/-HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) |
-| ___Plantillas___ | ![Handlebars](https://img.shields.io/badge/-Handlebars-F0772B?style=for-the-badge&logo=handlebars&logoColor=white) |
-| ___Estilos___ | ![Bootstrap](https://img.shields.io/badge/-Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white) ![SCSS](https://img.shields.io/badge/-SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white) |
-| ___Backend___ | ![Node.js](https://img.shields.io/badge/-Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white) ![Express.js](https://img.shields.io/badge/-Express.js-404D59?style=for-the-badge&logo=express&logoColor=white) |
-| ___Base de Datos___ | ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![PL/SQL](https://img.shields.io/badge/-PL/SQL-F80000?style=for-the-badge&logo=oracle&logoColor=white) |
-| ___Control de Versiones___ | ![Git](https://img.shields.io/badge/-Git-F05032?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github&logoColor=white) |
-| ___Autenticación___ | ![JWT](https://img.shields.io/badge/-JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white) |
-| ___Documentación___ | ![Swagger](https://img.shields.io/badge/-Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black) ![JSDoc](https://img.shields.io/badge/-JSDoc-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) |
-| ___Pruebas___ | ![Supertest](https://img.shields.io/badge/-Supertest-009688?style=for-the-badge&logo=node.js&logoColor=white) ![Chai](https://img.shields.io/badge/-Chai-A30701?style=for-the-badge&logo=chai&logoColor=white) ![Mocha](https://img.shields.io/badge/-Mocha-8D6748?style=for-the-badge&logo=mocha&logoColor=white) |
+<div align="center">
+
+  | Tipo | Tecnologías |
+  | :---: | :---: |
+  | ___Frontend___ | ![Angular](https://img.shields.io/badge/-Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white) ![TypeScript](https://img.shields.io/badge/-TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) ![HTML5](https://img.shields.io/badge/-HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) |
+  | ___Plantillas___ | ![Handlebars](https://img.shields.io/badge/-Handlebars-F0772B?style=for-the-badge&logo=handlebars&logoColor=white) |
+  | ___Estilos___ | ![Bootstrap](https://img.shields.io/badge/-Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white) ![SCSS](https://img.shields.io/badge/-SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white) |
+  | ___Backend___ | ![Node.js](https://img.shields.io/badge/-Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white) ![Express.js](https://img.shields.io/badge/-Express.js-404D59?style=for-the-badge&logo=express&logoColor=white) |
+  | ___Base de Datos___ | ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![PL/SQL](https://img.shields.io/badge/-PL/SQL-F80000?style=for-the-badge&logo=oracle&logoColor=white) |
+  | ___Control de Versiones___ | ![Git](https://img.shields.io/badge/-Git-F05032?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github&logoColor=white) |
+  | ___Autenticación___ | ![JWT](https://img.shields.io/badge/-JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white) |
+  | ___Documentación___ | ![Swagger](https://img.shields.io/badge/-Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black) ![JSDoc](https://img.shields.io/badge/-JSDoc-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) |
+  | ___Pruebas___ | ![Supertest](https://img.shields.io/badge/-Supertest-009688?style=for-the-badge&logo=node.js&logoColor=white) ![Chai](https://img.shields.io/badge/-Chai-A30701?style=for-the-badge&logo=chai&logoColor=white) ![Mocha](https://img.shields.io/badge/-Mocha-8D6748?style=for-the-badge&logo=mocha&logoColor=white) |
+
+</div>
   
 ### Paquetes y librerías utilizadas
 
