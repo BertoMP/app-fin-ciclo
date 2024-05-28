@@ -117,12 +117,18 @@ class CitaService {
 			throw new Error('El especialista seleccionado no existe.');
 		}
 
+		const turno = especialista.turno;
+
+		let horas = turno === 'diurno'
+			? ['08:00:00', '09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00']
+			: ['16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00', '21:00:00', '22:00:00'];
+
 		const {
 			rows: resultados,
 			actualPage: pagina_actual,
 			total: cantidad_citas,
 			totalPages: paginas_totales,
-		} = await CitaModel.fetchAgendaDisponible(searchValues, conn);
+		} = await CitaModel.fetchAgendaDisponible(searchValues, horas, conn);
 
 		if (page > 1 && page > paginas_totales) {
 			throw new Error('La página de citas solicitada no existe.');

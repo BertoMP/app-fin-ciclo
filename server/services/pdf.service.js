@@ -159,6 +159,8 @@ class PdfService {
 		const headerHtml = compiledHeader({});
 		const footerHtml = compiledFooter({});
 
+		const browser = await launch();
+
 		const page = await browser.newPage();
 		await page.setContent(bodyHtml);
 

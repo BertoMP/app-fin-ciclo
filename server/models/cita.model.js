@@ -141,22 +141,20 @@ class CitaModel {
 	 * @async
 	 * @memberof CitaModel
 	 * @param {Object} searchValues - Los valores de búsqueda. Contiene la fecha de la cita, el ID del especialista, la página de resultados y el límite de resultados.
+	 * @param {Array} horas - Un array con las horas disponibles.
 	 * @param {Object} dbConn - La conexión a la base de datos.
 	 * @returns {Promise<Object>} Un objeto que contiene las horas disponibles, el total de horas disponibles, la página actual y el total de páginas.
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
-	static async fetchAgendaDisponible(searchValues, dbConn) {
+	static async fetchAgendaDisponible(searchValues, horas, dbConn) {
 		const page = searchValues.page;
 		const fecha = searchValues.fechaCita;
 		const especialistaId = searchValues.especialistaId;
 		const limit = searchValues.limit;
 		const offset = (page - 1) * limit;
 
-		const turnoDiurno = ['08:00:00', '09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00'];
-		const turnoVespertino = ['16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00', '21:00:00', '22:00:00'];
-
 		const query =
-			'SELECT hora, turno ' +
+			'SELECT hora ' +
 			'FROM ' +
 			'		cita ' +
 			'INNER JOIN ' +
@@ -168,9 +166,7 @@ class CitaModel {
 		try {
 			const [rows] = await dbConn.execute(query, [especialistaId, fecha]);
 			const citas = rows.map(row => row.hora);
-			const turno = rows[0] ? rows[0].turno : null;
-			const horasDisponibles = turno === 'diurno' ? turnoDiurno : turnoVespertino;
-			const horasLibres = horasDisponibles.filter(hora => !citas.includes(hora));
+			const horasLibres = horas.filter(hora => !citas.includes(hora));
 
 			const total = horasLibres.length;
 			const actualPage = page;
@@ -179,6 +175,7 @@ class CitaModel {
 
 			return { rows: paginatedHorasLibres, total, actualPage, totalPages };
 		} catch (err) {
+			console.log(err);
 			throw new Error('No se pudieron obtener las citas libres.');
 		}
 	}
