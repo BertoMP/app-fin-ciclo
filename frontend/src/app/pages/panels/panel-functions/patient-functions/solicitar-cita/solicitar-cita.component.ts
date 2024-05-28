@@ -222,6 +222,7 @@ export class SolicitarCitaComponent implements OnInit {
   }
 
   pedirCita(hora:string) {
+    this.dataLoaded = false;
     let citaSolicitada:CitaUploadModel={
       paciente_id:this.paciente_id,
       especialista_id:this.especialista_id,
@@ -232,7 +233,9 @@ export class SolicitarCitaComponent implements OnInit {
     let request = this.citasService.confirmarCita(citaSolicitada);
 
     request.subscribe({
+
       next: (response: CitaUploadModel) => {
+        this.dataLoaded = true;
         Swal.fire({
           title: 'Enhorabuena',
           text: 'Has conseguido solicitar la cita correctamente',
