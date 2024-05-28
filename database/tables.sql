@@ -257,7 +257,7 @@ CREATE TABLE informe
 (
     id        INT AUTO_INCREMENT,
     motivo    VARCHAR(255),
-    contenido TEXT,
+    contenido LONGTEXT,
     CONSTRAINT pk_informe
         PRIMARY KEY (id),
     CONSTRAINT ck_informe_null
