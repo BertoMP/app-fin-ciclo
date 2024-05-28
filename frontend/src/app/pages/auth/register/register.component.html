@@ -97,6 +97,14 @@
                                 [ngClass]="{ 'invalid': registerForm.get('password').invalid && sendedAttempt }">
             </app-password-input>
           </article>
+        } @else if (isAdmin && !isEditing) {
+          <article class="form-field">
+            <label for="password">Contraseña</label>
+            <app-password-input id="password"
+                                formControlName="password"
+                                [ngClass]="{ 'invalid': registerForm.get('password').invalid && sendedAttempt }">
+            </app-password-input>
+          </article>
         }
       </fieldset>
     </section>
