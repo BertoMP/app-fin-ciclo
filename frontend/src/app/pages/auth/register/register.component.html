@@ -86,20 +86,12 @@
                sendedAttempt }"
           >
         </article>
-        @if (!isAdmin) {
+        @if (!isAdmin || isAdmin && !this.isEditing) {
           <article class="form-field">
             <label for="password" *ngIf="!isEditing; else isEditingPass">Contraseña</label>
             <ng-template #isEditingPass>
               <label for="password">Contraseña actual</label>
             </ng-template>
-            <app-password-input id="password"
-                                formControlName="password"
-                                [ngClass]="{ 'invalid': registerForm.get('password').invalid && sendedAttempt }">
-            </app-password-input>
-          </article>
-        } @else if (isAdmin && !isEditing) {
-          <article class="form-field">
-            <label for="password">Contraseña</label>
             <app-password-input id="password"
                                 formControlName="password"
                                 [ngClass]="{ 'invalid': registerForm.get('password').invalid && sendedAttempt }">

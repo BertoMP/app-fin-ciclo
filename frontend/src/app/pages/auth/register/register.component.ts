@@ -250,7 +250,7 @@ export class RegisterComponent implements OnInit {
       ),
     });
 
-    if (!this.isAdmin) {
+    if (!this.isAdmin || this.isAdmin && !this.isEditing) {
       this.registerForm.addControl('password', new FormControl(
         null,
         [
@@ -441,7 +441,7 @@ export class RegisterComponent implements OnInit {
       email: this.registerForm.get('email').value,
     };
 
-    if (!this.isAdmin) {
+    if (!this.isAdmin || this.isAdmin && !this.isEditing) {
       datos_personales['password'] = this.registerForm.get('password').value;
     }
 
