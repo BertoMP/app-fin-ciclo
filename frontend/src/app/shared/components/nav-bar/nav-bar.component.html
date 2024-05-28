@@ -39,8 +39,9 @@
   <a [routerLink]="'/nuestros-servicios'" style="--i:1" [routerLinkActive]="'active'">Servicios</a>
   <a [routerLink]="'/contacto'" style="--i:2" [routerLinkActive]="'active'">Contacto</a>
    @if (isUserLoggedIn) {
-      <a [routerLink]="'/mediapp'" style="--i:3" [routerLinkActive]="'active'">Hola, {{ userName }}</a>
-    } @else {
+      <a [routerLink]="'/mediapp'" style="--i:3" [routerLinkActive]="'active'">Panel de usuario</a>
+     <a (click)="onLogout()" style="--i:4" class="logout-button"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a>
+   } @else {
       <a [routerLink]="'/auth/login'" style="--i:3" [routerLinkActive]="'active'">MediAPP</a>
     }
 </nav>

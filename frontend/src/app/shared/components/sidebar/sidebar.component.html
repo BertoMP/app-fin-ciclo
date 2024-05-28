@@ -6,7 +6,7 @@
   <article class="accordion-item"
        *ngFor="let option of mainOptions"
   >
-    <h2 class="accordion-header"
+    <h3 class="accordion-header"
         id="accordion-{{ option.name }}">
       <button class="accordion-button collapsed"
               type="button"
@@ -17,7 +17,7 @@
       >
         {{ option.name }}
       </button>
-    </h2>
+    </h3>
     <section id="option{{ option.name }}"
              class="accordion-collapse collapse"
              [attr.aria-labelledby]="'accordion-' + option.name"

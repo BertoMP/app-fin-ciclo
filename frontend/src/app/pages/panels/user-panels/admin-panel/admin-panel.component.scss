@@ -11,7 +11,7 @@
   .menu-button {
     display: none;
 
-    @media (max-width: 1000px) {
+    @media (max-width: 1100px) {
       display: block;
       position: fixed;
       top: 130px;
@@ -81,14 +81,13 @@
         width: 20%;
         position: relative;
         transition: transform 0.3s ease-in-out;
-        height: 100vh;
         transform: translateX(-0%);
         z-index: 2;
 
-        @media (max-width: 1000px) {
+        @media (max-width: 1100px) {
           position: absolute;
           width: 30%;
-          transform: translateX(-1000px);
+          transform: translateX(-1050px);
 
           &.open {
             transform: translateX(-117%);
@@ -106,7 +105,6 @@
         overflow: auto;
         padding: 1rem;
         border-radius: 0 16px 16px 0;
-        height: 80vh;
         flex-grow: 1;
       }
 

@@ -131,6 +131,11 @@ a:hover {
     text-align: center;
     transform: translateY(-50px);
     transition: .3s ease;
+    cursor: pointer;
+
+    &:hover {
+      color: white;
+    }
   }
 
   .navbar-mobile.open a {
@@ -138,6 +143,6 @@ a:hover {
     opacity: 1;
     max-height: 500px;
     transform: translateY(0);
-    transition-delay: calc(.15s * var(--i));
+    transition-delay: calc(.2s * var(--i));
   }
 }

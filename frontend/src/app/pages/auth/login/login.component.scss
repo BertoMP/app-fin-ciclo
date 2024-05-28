@@ -104,4 +104,16 @@ $warning-text: #ff0000;
       cursor: not-allowed;
     }
   }
+
+  section {
+    &.register-btn {
+      p {
+
+        @media all and (max-width: 700px) {
+          margin-top: 1rem;
+          text-align: center;
+        }
+      }
+    }
+  }
 }
