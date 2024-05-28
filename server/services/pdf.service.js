@@ -159,9 +159,6 @@ class PdfService {
 		const headerHtml = compiledHeader({});
 		const footerHtml = compiledFooter({});
 
-		const browser = await launch({
-			executablePath: '/usr/bin/chromium-browser',
-		});
 		const page = await browser.newPage();
 		await page.setContent(bodyHtml);
 
