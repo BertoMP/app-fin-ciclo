@@ -76,10 +76,12 @@ export class VerCitaComponent {
   }
 
   downloadCita(): void {
+    this.dataLoaded = false;
     this.citasService
       .downloadCita(this.id)
       .subscribe({
         next: (response: any): void => {
+          this.dataLoaded = true;
           const blob: Blob = new Blob([response])
           saveAs(
             blob,
