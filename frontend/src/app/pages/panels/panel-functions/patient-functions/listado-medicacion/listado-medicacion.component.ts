@@ -96,6 +96,7 @@ export class ListadoMedicacionComponent implements OnInit {
   }
 
   downloadPrescripcion(): void {
+    this.dataLoaded = false;
     let request: Observable<Blob>;
 
     if (UserRole.PACIENT === this.authService.getUserRole()) {
@@ -108,6 +109,7 @@ export class ListadoMedicacionComponent implements OnInit {
 
     request.subscribe({
       next: (response: Blob) => {
+        this.dataLoaded = true;
         saveAs(
           response,
           `prescripcion_${this.userData.nombre}_${this.userData.primer_apellido}_${this.userData.segundo_apellido}.pdf`);
