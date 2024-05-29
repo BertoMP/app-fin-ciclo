@@ -1,9 +1,9 @@
 @if (isLoading) {
-    <section>
-        <p>Registrando toma...</p>
-        <app-loading-spinner></app-loading-spinner>
-    </section>
-    } @else {
+  <app-loading-spinner></app-loading-spinner>
+} @else {
+  <figure>
+    <img src="assets/img/icons/glucometria.png" alt="Formulario de toma de glucometría">
+  </figure>
   <h2>FORMULARIO TOMA GLUCOMETRÍA</h2>
     <form [formGroup]="registerForm"
           (ngSubmit)="onRegisterGlucometria()">

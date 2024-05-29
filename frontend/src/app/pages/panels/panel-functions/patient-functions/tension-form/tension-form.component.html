@@ -1,15 +1,11 @@
 @if (isLoading) {
-    <section class="container">
-        <div class="row">
-            <div class="col">
-                <p>Registrando toma...</p>
-                <app-loading-spinner></app-loading-spinner>
-            </div>
-        </div>
-    </section>
+  <app-loading-spinner></app-loading-spinner>
 } @else {
+  <figure>
+    <img src="assets/img/icons/tensiometria.png" alt="Formulario de toma de tensión arterial">
+  </figure>
   <h2>FORMULARIO TOMA TENSIÓN ARTERIAL</h2>
-<form [formGroup]="registerForm"
+  <form [formGroup]="registerForm"
       (ngSubmit)="onRegisterTension()">
     <section class="form-row">
       <article>
