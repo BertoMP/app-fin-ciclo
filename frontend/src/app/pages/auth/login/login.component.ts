@@ -16,6 +16,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {
   PasswordInputComponent
 } from "../../../shared/components/password-input/password-input.component";
+import {ChatbotService} from "../../../core/services/chatbot.service";
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,8 @@ export class LoginComponent implements OnInit {
   error: string = null;
 
   constructor(private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private chatbotService: ChatbotService) {
   }
   passwordId: string = 'password';
 
@@ -85,7 +87,11 @@ export class LoginComponent implements OnInit {
           this.loginForm.reset();
           this.authService.userRoleSubject.next(this.authService.getUserRole());
           this.router.navigate(['/mediapp'])
-            .then((r: boolean): void => {});
+            .then((r: boolean): void => {
+              if (r) {
+                this.chatbotService.removeChatbotIfOnMediappPage();
+              }
+            });
         },
         error: (error: HttpErrorResponse): void => {
           this.error = error.error.errors[0]

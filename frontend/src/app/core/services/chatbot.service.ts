@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ export class ChatbotService {
   private landbotInitialized = false;
   private scriptElement: HTMLScriptElement | null = null;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   public initLandbot(): void {
     if (!this.landbotInitialized) {
@@ -30,6 +31,12 @@ export class ChatbotService {
       this.landbotInitialized = true;
     } else {
       console.log('Landbot already initialized.');
+    }
+  }
+
+  public removeChatbotIfOnMediappPage(): void {
+    if (this.router.url.startsWith('/mediapp')) {
+      this.removeLandbot();
     }
   }
 

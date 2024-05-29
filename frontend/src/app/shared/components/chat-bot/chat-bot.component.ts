@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ChatbotService } from '../../../core/services/chatbot.service';
-import {Router, ResolveEnd} from '@angular/router';
+import {Router, ResolveEnd, NavigationEnd, NavigationStart} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from "rxjs";
 
@@ -24,12 +24,8 @@ export class ChatBotComponent implements OnInit, OnDestroy {
     this.router.events.pipe(
       takeUntil(this.destroy$)
     ).subscribe((event) => {
-      console.log('Router event: ', event)
-
-      if (event instanceof ResolveEnd) {
-        console.log('NavigationEnd event: ', event.urlAfterRedirects)
-
-        if (event.urlAfterRedirects.startsWith('/mediapp')) {
+      if (event instanceof NavigationStart) {
+        if (event.url.startsWith('/mediapp')) {
           this.chatbotService.removeLandbot();
         }
       }
