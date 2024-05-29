@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: helpers/validators/usuarioPasswordChange.validator.js</title>
+    <title>JSDoc: Source: controllers/log.controller.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: helpers/validators/usuarioPasswordChange.validator.js</h1>
+    <h1 class="page-title">Source: controllers/log.controller.js</h1>
 
     
 
@@ -26,65 +26,60 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// Importación de las librerías necesarias
-import { body, validationResult } from 'express-validator';
+            <pre class="prettyprint source linenums"><code>// Importación de los servicios necesarios
+import LogService from '../services/log.service.js';
+
+// Importación de las librerías necesarias
+import { getSearchValues } from '../util/functions/getSearchValues.js';
 
 /**
- * @name validateUserPasswordChange
- * @description Middleware que valida el cuerpo de la solicitud para el cambio de contraseña de un usuario.
- *              Valida 'password' y 'confirm_password'.
- *              Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
- *              Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
- * @memberof Helpers-Validators-Body
- * @function
- * @param {Object} req - El objeto de solicitud de Express.
- * @param {Object} res - El objeto de respuesta de Express.
- * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
+ * @class LogController
+ * @description Clase estática que implementa la lógica de los logs de la aplicación.
  */
-export const validateUserPasswordChange = [
-	body('password')
-		.trim()
-		.notEmpty()
-		.withMessage('La contraseña es requerida.')
-		.isString()
-		.withMessage('La contraseña debe ser una cadena de texto.')
-		.custom((value) => {
-			const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()\-_+=\[\]{}|;:,.&lt;>?\/]).{8,}$/;
+class LogController {
+	/**
+	 * @name getLogs
+	 * @description Método asíncrono que obtiene todos los logs de la base de datos.
+	 * 						Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de los logs.
+	 * 						Si ocurre algún error durante el proceso, devuelve un error con el mensaje correspondiente.
+	 * 						Se utiliza el servicio de logs para obtener los datos de los logs.
+	 * @static
+	 * @async
+	 * @function
+	 * @param req - El objeto de solicitud de Express.
+	 * @param res - El objeto de respuesta de Express.
+	 * @returns {Object} res - El objeto de respuesta de Express.
+	 * @throws {Error} Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+	 * @memberof LogController
+	 */
+	static async getLogs(req, res) {
+		try {
+			const searchParams = getSearchValues(req, 'date');
+			const logs = await LogService.readLogs(searchParams);
 
-			if (!regex.test(value)) {
-				throw new Error(
-					'La contraseña debe tener al menos 8 caracteres: una letra mayúscula, una letra minúscula, un carácter especial y un número.',
-				);
-			}
-
-			return regex.test(value);
-		})
-		.escape(),
-	body('checkPassword')
-		.trim()
-		.notEmpty()
-		.withMessage('La confirmación de la contraseña es requerida.')
-		.isString()
-		.withMessage('La confirmación de la contraseña debe ser una cadena de texto.')
-		.custom((value, { req }) => {
-			if (value !== req.body.password) {
-				throw new Error('Las contraseñas no coinciden.');
-			}
-
-			return true;
-		})
-		.escape(),
-
-	(req, res, next) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			const errorMessages = errors.array().map((error) => error.msg);
-
-			return res.status(400).json({ errors: errorMessages });
+			return res.status(200).json({
+				prev: logs.prev,
+				next: logs.next,
+				pagina_actual: logs.pagina_actual,
+				paginas_totales: logs.paginas_totales,
+				cantidad_logs: logs.cantidad_logs,
+				result_min: logs.result_min,
+				result_max: logs.result_max,
+				items_pagina: logs.items_pagina,
+				fecha_inicio: logs.fecha_inicio,
+				fecha_fin: logs.fecha_fin,
+				resultados: logs.resultados,
+			});
+		} catch (err) {
+			return res.status(500).json({
+				errors: [err.message],
+			});
 		}
-		next();
-	},
-];
+	}
+}
+
+// Exportación de la clase LogController
+export default LogController;
 </code></pre>
         </article>
     </section>

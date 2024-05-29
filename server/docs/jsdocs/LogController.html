@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: helpers/validators/usuarioPasswordChange.validator.js</title>
+    <title>JSDoc: Class: LogController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,77 +17,342 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: helpers/validators/usuarioPasswordChange.validator.js</h1>
+    <h1 class="page-title">Class: LogController</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>// Importación de las librerías necesarias
-import { body, validationResult } from 'express-validator';
+        <h2><span class="attribs"><span class="type-signature"></span></span>LogController<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
 
-/**
- * @name validateUserPasswordChange
- * @description Middleware que valida el cuerpo de la solicitud para el cambio de contraseña de un usuario.
- *              Valida 'password' y 'confirm_password'.
- *              Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
- *              Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
- * @memberof Helpers-Validators-Body
- * @function
- * @param {Object} req - El objeto de solicitud de Express.
- * @param {Object} res - El objeto de respuesta de Express.
- * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
- */
-export const validateUserPasswordChange = [
-	body('password')
-		.trim()
-		.notEmpty()
-		.withMessage('La contraseña es requerida.')
-		.isString()
-		.withMessage('La contraseña debe ser una cadena de texto.')
-		.custom((value) => {
-			const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()\-_+=\[\]{}|;:,.&lt;>?\/]).{8,}$/;
+<article>
+    <div class="container-overview">
+    
+        
 
-			if (!regex.test(value)) {
-				throw new Error(
-					'La contraseña debe tener al menos 8 caracteres: una letra mayúscula, una letra minúscula, un carácter especial y un número.',
-				);
-			}
+    
 
-			return regex.test(value);
-		})
-		.escape(),
-	body('checkPassword')
-		.trim()
-		.notEmpty()
-		.withMessage('La confirmación de la contraseña es requerida.')
-		.isString()
-		.withMessage('La confirmación de la contraseña debe ser una cadena de texto.')
-		.custom((value, { req }) => {
-			if (value !== req.body.password) {
-				throw new Error('Las contraseñas no coinciden.');
-			}
+    
+    <h4 class="name" id="LogController"><span class="type-signature"></span>new LogController<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
-			return true;
-		})
-		.escape(),
+    
 
-	(req, res, next) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			const errorMessages = errors.array().map((error) => error.msg);
 
-			return res.status(400).json({ errors: errorMessages });
-		}
-		next();
-	},
-];
-</code></pre>
-        </article>
-    </section>
+
+<div class="description">
+    Clase estática que implementa la lógica de los logs de la aplicación.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_log.controller.js.html">controllers/log.controller.js</a>, <a href="controllers_log.controller.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".getLogs"><span class="type-signature">(async, static) </span>getLogs<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Método asíncrono que obtiene todos los logs de la base de datos.						Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de los logs.						Si ocurre algún error durante el proceso, devuelve un error con el mensaje correspondiente.						Se utiliza el servicio de logs para obtener los datos de los logs.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El objeto de solicitud de Express.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">El objeto de respuesta de Express.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_log.controller.js.html">controllers/log.controller.js</a>, <a href="controllers_log.controller.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si ocurre algún error durante el proceso, captura el error y devuelve un error 500 con un mensaje de error.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    res - El objeto de respuesta de Express.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: helpers/validators/usuarioPasswordChange.validator.js</title>
+    <title>JSDoc: Source: services/log.service.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: helpers/validators/usuarioPasswordChange.validator.js</h1>
+    <h1 class="page-title">Source: services/log.service.js</h1>
 
     
 
@@ -26,65 +26,86 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// Importación de las librerías necesarias
-import { body, validationResult } from 'express-validator';
+            <pre class="prettyprint source linenums"><code>// Importación del modelo del servicio
+import LogModel from '../models/log.model.js';
+
+// Importación de utilidades necesarias
+import { dbConn } from '../util/database/database.js';
+import pkg from 'moment-timezone';
+const { tz } = pkg;
 
 /**
- * @name validateUserPasswordChange
- * @description Middleware que valida el cuerpo de la solicitud para el cambio de contraseña de un usuario.
- *              Valida 'password' y 'confirm_password'.
- *              Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
- *              Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
- * @memberof Helpers-Validators-Body
- * @function
- * @param {Object} req - El objeto de solicitud de Express.
- * @param {Object} res - El objeto de respuesta de Express.
- * @param {Function} next - La función de callback para pasar al siguiente middleware o ruta.
+ * @class LogService
+ * @description Clase que contiene los métodos para interactuar con el modelo de Log.
  */
-export const validateUserPasswordChange = [
-	body('password')
-		.trim()
-		.notEmpty()
-		.withMessage('La contraseña es requerida.')
-		.isString()
-		.withMessage('La contraseña debe ser una cadena de texto.')
-		.custom((value) => {
-			const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()\-_+=\[\]{}|;:,.&lt;>?\/]).{8,}$/;
+class LogService {
+	/**
+	 * @method readLogs
+	 * @description Método para leer los logs de la base de datos.
+	 * @static
+	 * @async
+	 * @memberof LogService
+	 * @param {Object} searchParams - Los parámetros de búsqueda.
+	 * @param conn - La conexión a la base de datos.
+	 * @returns {Promise&lt;Object>} El resultado de la operación de lectura.
+	 */
+	static async readLogs(searchParams, conn = dbConn) {
+		try {
+			const page = searchParams.page;
+			const fechaInicio = searchParams.fechaInicio;
+			const fechaFin = searchParams.fechaFin;
+			const limit = searchParams.limit;
 
-			if (!regex.test(value)) {
-				throw new Error(
-					'La contraseña debe tener al menos 8 caracteres: una letra mayúscula, una letra minúscula, un carácter especial y un número.',
-				);
+			const {
+				results: resultados,
+				actualPage: pagina_actual,
+				total: cantidad_logs,
+				totalPages: paginas_totales,
+			} = await LogModel.fetchAll(searchParams, conn);
+
+			if (page > 1 &amp;&amp; page > paginas_totales) {
+				throw new Error('La página de logs solicitada no existe.');
 			}
 
-			return regex.test(value);
-		})
-		.escape(),
-	body('checkPassword')
-		.trim()
-		.notEmpty()
-		.withMessage('La confirmación de la contraseña es requerida.')
-		.isString()
-		.withMessage('La confirmación de la contraseña debe ser una cadena de texto.')
-		.custom((value, { req }) => {
-			if (value !== req.body.password) {
-				throw new Error('Las contraseñas no coinciden.');
+			let query = '';
+
+			if (fechaInicio) {
+				query += `&amp;fechaInicio=${fechaInicio}`;
 			}
 
-			return true;
-		})
-		.escape(),
+			if (fechaFin) {
+				query += `&amp;fechaFin=${fechaFin}`;
+			}
 
-	(req, res, next) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			const errorMessages = errors.array().map((error) => error.msg);
+			const prev = pagina_actual > 1 ? `?page=${pagina_actual - 1}${query}` : null;
+			const next = pagina_actual &lt; paginas_totales ? `?page=${pagina_actual + 1}${query}` : null;
+			const result_min = (pagina_actual - 1) * limit + 1;
+			const result_max = pagina_actual * limit > cantidad_logs ? cantidad_logs : pagina_actual * limit;
+			const fecha_inicio = tz(fechaInicio, 'Europe/Madrid').format('DD-MM-YYYY');
+			const fecha_fin = tz(fechaFin, 'Europe/Madrid').format('DD-MM-YYYY');
+			const items_pagina = parseInt(limit);
 
-			return res.status(400).json({ errors: errorMessages });
+			return {
+				prev,
+				next,
+				pagina_actual,
+				paginas_totales,
+				cantidad_logs,
+				result_min,
+				result_max,
+				items_pagina,
+				fecha_inicio,
+				fecha_fin,
+				resultados,
+			};
+		} catch (err) {
+			throw err;
 		}
-		next();
-	},
-];
+	}
+}
+
+// Exportación del servicio
+export default LogService;
 </code></pre>
         </article>
     </section>
