@@ -1,5 +1,8 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ChatbotService } from '../../../core/services/chatbot.service';
+import {Router, ResolveEnd} from '@angular/router';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-chat-bot',
@@ -8,21 +11,33 @@ import { ChatbotService } from '../../../core/services/chatbot.service';
   templateUrl: './chat-bot.component.html',
   styleUrl: './chat-bot.component.scss'
 })
-export class ChatBotComponent implements OnInit,OnDestroy {
-  constructor(private chatbotService: ChatbotService) {}
+export class ChatBotComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  constructor(private chatbotService: ChatbotService, private router: Router) {}
 
   ngOnInit(): void {
-    this.chatbotService.initLandbot();
+    if (!this.chatbotService.isLandbotVisible()) {
+      this.chatbotService.initLandbot();
+    }
+
+    this.router.events.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((event) => {
+      console.log('Router event: ', event)
+
+      if (event instanceof ResolveEnd) {
+        console.log('NavigationEnd event: ', event.urlAfterRedirects)
+
+        if (event.urlAfterRedirects.startsWith('/mediapp')) {
+          this.chatbotService.removeLandbot();
+        }
+      }
+    });
   }
 
   ngOnDestroy(): void {
-    this.chatbotService.removeLandbot();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
-
-  @HostListener('window:mouseover', ['$event'])
-  @HostListener('window:touchstart', ['$event'])
-  onInitLandbot(event: Event): void {
-    this.chatbotService.initLandbot();
-  }
-
 }

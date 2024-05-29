@@ -15,6 +15,7 @@ import {
   LoadingSpinnerComponent
 } from "../../shared/components/loading-spinner/loading-spinner.component";
 import {NgxPaginationModule} from "ngx-pagination";
+import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
 
 @Component({
   selector: 'app-medical-specialty-list',
@@ -26,7 +27,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     LoadingSpinnerComponent,
     NgxPaginationModule,
     NgForOf,
-    NgIf
+    NgIf,
+    ChatBotComponent
   ],
   templateUrl: './medical-specialty-list.component.html',
   styleUrl: './medical-specialty-list.component.scss'

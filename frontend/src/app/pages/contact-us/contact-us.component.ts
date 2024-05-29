@@ -9,6 +9,7 @@ import {
   LoadingSpinnerComponent
 } from "../../shared/components/loading-spinner/loading-spinner.component";
 import {QuillEditorComponent} from "ngx-quill";
+import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
 
 @Component({
   selector: 'app-contact-us',
@@ -17,7 +18,8 @@ import {QuillEditorComponent} from "ngx-quill";
     ReactiveFormsModule,
     CommonModule,
     LoadingSpinnerComponent,
-    QuillEditorComponent
+    QuillEditorComponent,
+    ChatBotComponent
   ],
   templateUrl: './contact-us.component.html',
   styleUrl: './contact-us.component.scss'

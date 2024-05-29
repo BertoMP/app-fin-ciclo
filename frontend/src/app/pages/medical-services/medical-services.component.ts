@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import {
   HorizontalCardComponent
 } from "../../shared/components/horizontal-card/horizontal-card.component";
+import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
 
 @Component({
   selector: 'app-medical-specialties',
   standalone: true,
   imports: [
-    HorizontalCardComponent
+    HorizontalCardComponent,
+    ChatBotComponent
   ],
   templateUrl: './medical-services.component.html',
   styleUrl: './medical-services.component.scss'

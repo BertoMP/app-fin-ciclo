@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
+import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
 
 @Component({
   selector: 'app-page-not-found',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    ChatBotComponent
   ],
   templateUrl: './page-not-found.component.html',
   styleUrl: './page-not-found.component.scss'

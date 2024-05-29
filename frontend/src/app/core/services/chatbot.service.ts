@@ -39,6 +39,17 @@ export class ChatbotService {
       this.landbotInitialized = false;
       console.log('Landbot script removed.');
     }
+
+    const landbotElements = document.getElementsByClassName('LandbotLivechat');
+    while (landbotElements.length > 0) {
+      landbotElements[0].parentNode.parentNode.removeChild(landbotElements[0].parentNode);
+    }
+  }
+
+  public isLandbotVisible(): boolean {
+    const landbotElements = document.getElementsByClassName('LandbotLivechat');
+
+    return landbotElements.length > 0;
   }
 
   private initializeLandbot(): void {

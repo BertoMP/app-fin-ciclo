@@ -7,11 +7,12 @@ import { EspecialistModel } from '../../core/interfaces/especialist.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import { NgIf,Location } from '@angular/common';
+import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
 
 @Component({
   selector: 'app-especialist-data',
   standalone: true,
-  imports: [RouterLink,NgIf],
+  imports: [RouterLink, NgIf, ChatBotComponent],
   templateUrl: './especialist-data.component.html',
   styleUrl: './especialist-data.component.scss'
 })
