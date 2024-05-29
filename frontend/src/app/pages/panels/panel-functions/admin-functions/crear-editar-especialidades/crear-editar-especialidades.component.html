@@ -1,8 +1,5 @@
 @if (isLoading) {
-<section>
-    <p>Registrando especialidad...</p>
-    <app-loading-spinner></app-loading-spinner>
-</section>
+  <app-loading-spinner></app-loading-spinner>
 } @else {
 <form [formGroup]="registerForm" (ngSubmit)="onRegisterEspeciality()">
   <h2 *ngIf="!isEditing; else isEditingH2">FORMULARIO CREAR ESPECIALIDAD</h2>

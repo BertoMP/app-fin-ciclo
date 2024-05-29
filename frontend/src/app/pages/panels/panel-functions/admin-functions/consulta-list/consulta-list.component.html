@@ -1,0 +1,74 @@
+<section class="header">
+  <h2>Consultas</h2>
+</section>
+<section class="filter-buttons">
+  <article class="filters">
+    <article class="per-page-filter">
+      <label for="per-page">Items</label>
+      <select2 id="per-page" [data]="perPageOptions" [value]="10" [(ngModel)]="perPage" (update)="updateFilters()"></select2>
+    </article>
+  </article>
+  <article class="buttons">
+    <button type="button" class="btn btn-primary" routerLink="../crear-consulta">Crear consulta</button>
+  </article>
+</section>
+
+@if (!dataLoaded) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (!consultas.length) {
+  <section class="no-results">
+    <p>No se encontraron consultas.</p>
+    <figure>
+      <img src="assets/img/search-not-found.png" alt="No se encontraron resultados">
+    </figure>
+  </section>
+} @else {
+  <section class="consultas-table">
+    <div class="info">
+      <small>Mostrando {{ resultMin }} - {{ resultMax }} de {{ totalItems }} consultas.</small>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let consulta of (consultas | paginate: { id: 'consultaListPagination', itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems })">
+          <tr>
+            <td>{{ consulta.nombre }}</td>
+            <td class="btn-container">
+              <div class="dropdown">
+                <button class="btn btn-link" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <button class="dropdown-item edit-btn" type="button" routerLink="../editar-consulta/{{consulta.id}}">
+                    <i class="bi bi-pencil"></i> <span>Editar</span>
+                  </button>
+                  <button class="dropdown-item delete-btn" type="button" (click)="confirmarEliminacion(consulta.id)">
+                    <i class="bi bi-trash3"></i> <span>Eliminar</span>
+                  </button>
+                </div>
+              </div>
+            </td>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+    @if (previousPageUrl || nextPageUrl) {
+      <div class="pagination">
+        <pagination-controls
+          (pageChange)="actualPage = $event; changePage(actualPage)"
+          id="consultaListPagination"
+          maxSize="5"
+          directionLinks="true"
+          previousLabel="Anterior"
+          nextLabel="Siguiente"
+        ></pagination-controls>
+      </div>
+    }
+  </section>
+}

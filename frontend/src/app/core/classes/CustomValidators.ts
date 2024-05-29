@@ -181,6 +181,17 @@ export class CustomValidators {
     return null;
   }
 
+  static validConsulta(control: FormControl): { [s: string]: boolean } | null {
+    const value = control.value;
+    const regex: RegExp = new RegExp('^[1-9]\\d?-[A-Z]$');
+
+    if (!regex.test(value)) {
+      return { 'isInvalidConsulta': true }
+    }
+
+    return null;
+  }
+
   static maxLengthHtml(maxLength: number): ValidatorFn {
     return (control: FormControl): {[key: string]: any} | null => {
       const value = control.value;

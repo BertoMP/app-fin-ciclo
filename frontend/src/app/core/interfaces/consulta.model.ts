@@ -1,4 +1,4 @@
 export interface ConsultaModel {
-    id: number,
+    id?: number,
     nombre: string
 }

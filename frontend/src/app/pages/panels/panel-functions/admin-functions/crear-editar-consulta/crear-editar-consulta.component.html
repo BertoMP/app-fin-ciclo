@@ -1,0 +1,49 @@
+@if (isLoading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else {
+  <figure>
+    <img src="assets/img/icons/consulta.png" alt="Formulario de consulta">
+  </figure>
+  <h2 *ngIf="!isEditing; else editingH2">FORMULARIO CREAR CONSULTA</h2>
+  <ng-template #editingH2>
+    <h2>FORMULARIO EDITAR CONSULTA</h2>
+  </ng-template>
+  <form [formGroup]="registerForm"
+        (ngSubmit)="onRegisterConsulta()">
+    <section class="form-first-row">
+      <fieldset class="form-speciality-data">
+        <article class="name-field">
+          <label for="name">Nombre</label>
+          <input type="text" id="name" formControlName="name" class="form-control" [ngClass]="{'is-invalid':
+                           registerForm.get('name').invalid && sendedAttempt }">
+        </article>
+      </fieldset>
+    </section>
+    @if (registerForm.invalid && sendedAttempt) {
+      <section class="error-message mt-4 bg-danger text-white p-3 rounded">
+        <h3>Error: Por favor, cumple con los requisitos de los campos</h3>
+        <ul>
+          @if (registerForm.get('name').invalid) {
+            <li>
+              <strong>Nombre:</strong> El nombre de la consulta no puede estar vacío. Debe ser 1-2 dígitos
+              (el primero no puede ser 0), un guión y una letra mayúscula.
+            </li>
+          }
+        </ul>
+      </section>
+    } @else if (errores.length > 0) {
+      <div class="error-message">
+        <ul>
+          <li *ngFor="let error of errores">{{ error }}</li>
+        </ul>
+      </div>
+    }
+    <section class="btn-container">
+      <button type="submit" class="btn-send" *ngIf="!isEditing; else editingBtn">Crear</button>
+      <ng-template #editingBtn>
+        <button type="submit" class="btn-send">Editar</button>
+      </ng-template>
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+    </section>
+  </form>
+}

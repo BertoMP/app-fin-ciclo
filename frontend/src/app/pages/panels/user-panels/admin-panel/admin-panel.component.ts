@@ -70,6 +70,23 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       ],
     },
     {
+      name: 'Consultas',
+      options: [
+        {
+          name: 'Listado Consultas',
+          icon: 'bi bi-list-task',
+          path: '/mediapp/consultas',
+          method: 'onOptionSelected',
+        },
+        {
+          name: 'Crear Consulta',
+          icon: 'bi bi-hospital-fill',
+          path: '/mediapp/crear-consulta',
+          method: 'onOptionSelected',
+        }
+      ],
+    },
+    {
       name: 'Logs',
       options: [
         {
@@ -119,6 +136,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       '/mediapp/crear-paciente',
       '/mediapp/crear-especialista',
       '/mediapp/crear-especialidad',
+      '/mediapp/consultas',
+      '/mediapp/crear-consulta',
       '/mediapp/actualizar-password',
       '/mediapp/logs-error-db'
     ];

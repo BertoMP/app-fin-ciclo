@@ -42,6 +42,12 @@ import { ListadoPatologiasComponent } from './pages/panels/panel-functions/speci
 import { CrearEditarMedicamentosComponent } from './pages/panels/panel-functions/specialist-functions/medicamentos/crear-editar-medicamentos/crear-editar-medicamentos.component';
 import { CrearEditarPatologiasComponent } from './pages/panels/panel-functions/specialist-functions/patologias/crear-editar-patologias/crear-editar-patologias.component';
 import {LogListComponent} from "./pages/panels/panel-functions/admin-functions/log-list/log-list.component";
+import {
+  ConsultaListComponent
+} from "./pages/panels/panel-functions/admin-functions/consulta-list/consulta-list.component";
+import {
+  CrearEditarConsultaComponent
+} from "./pages/panels/panel-functions/admin-functions/crear-editar-consulta/crear-editar-consulta.component";
 
 export const routes: Routes = [
   {
@@ -98,6 +104,21 @@ export const routes: Routes = [
       {
         path: 'editar-especialidad/:id',
         component: CrearEditarEspecialidadesComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'consultas',
+        component: ConsultaListComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'crear-consulta',
+        component: CrearEditarConsultaComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'editar-consulta/:id',
+        component: CrearEditarConsultaComponent,
         canActivate: [adminGuard]
       },
       {

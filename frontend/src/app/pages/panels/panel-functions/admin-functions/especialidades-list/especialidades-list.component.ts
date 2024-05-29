@@ -185,6 +185,11 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
             },
             error: (error: string[]): void => {
               this.errores = error;
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo eliminar la especialidad. Por favor, intente nuevamente más tarde.',
+              });
             }
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
