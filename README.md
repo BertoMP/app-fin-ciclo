@@ -112,6 +112,9 @@ Además, necesitarás tener una copia del código fuente. Puedes obtenerla clona
 ### Cómo Instalar y Ejecutar el Proyecto
 
 1. Clona el repositorio a tu máquina local.
+
+       git clone https://github.com/BertoMP/mediapp.git
+   
 2. Abre MySQL Workbench y ejecuta los diferentes scripts .sql del directorio
 `/database` para crear la base de datos.
 3. Una vez en el directorio principal, utilizar una terminal para navegar hasta el directorio del 
