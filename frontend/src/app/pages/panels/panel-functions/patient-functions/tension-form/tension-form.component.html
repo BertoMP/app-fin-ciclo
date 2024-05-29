@@ -51,7 +51,11 @@
         </ul>
     </section>
     } @else if (errores.length > 0) {
-    <p class="error-message mt-4 bg-danger text-white p-3 rounded" *ngFor="let error of errores">{{ error }}</p>
+      <div class="error-message">
+        <ul>
+          <li *ngFor="let error of errores">{{ error }}</li>
+        </ul>
+      </div>
     }
   <section class="btn-container">
     <button type="submit" class="btn-send">Subir</button>

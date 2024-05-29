@@ -26,10 +26,6 @@
 </section>
 @if (!dataLoaded) {
   <app-loading-spinner></app-loading-spinner>
-} @else if (errores.length > 0) {
-  <section class="error-message mt-4 bg-danger text-white p-3 rounded">
-    <p>{{ errores[0] }}</p>
-  </section>
 } @else if (!mediciones.length) {
   @if (fechaInicio || fechaFin) {
     <section class="no-results">

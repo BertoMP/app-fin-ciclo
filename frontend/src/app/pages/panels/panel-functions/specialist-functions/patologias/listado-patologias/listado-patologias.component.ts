@@ -13,6 +13,7 @@ import { RemoveBrPipe } from '../../../../../../shared/pipes/remove-br.pipe';
 import { PatologiasDataModel } from '../../../../../../core/interfaces/patologias-data.model';
 import { PatologiasService } from '../../../../../../core/services/patologias.service';
 import { PatologiasListModel } from '../../../../../../core/interfaces/patologias-list.model';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-listado-patologias',
@@ -135,6 +136,12 @@ export class ListadoPatologiasComponent {
         this.errores = error;
         console.log(error);
         this.dataLoaded = true;
+
+        Swal.fire({
+          title: 'Error',
+          text: 'Ha ocurrido un error al cargar las patologías',
+          icon: 'error'
+        });
       }
     });
   }

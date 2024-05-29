@@ -173,18 +173,6 @@
                   display: none;
                 }
               }
-
-              @media all and (max-width: 800px) {
-                &:nth-child(4) {
-                  display: none;
-                }
-              }
-
-              @media all and (max-width: 500px) {
-                &:nth-child(5) {
-                  display: none;
-                }
-              }
             }
           }
         }
@@ -208,18 +196,6 @@
 
               @media all and (max-width: 1100px) {
                 &:nth-child(3) {
-                  display: none;
-                }
-              }
-
-              @media all and (max-width: 800px) {
-                &:nth-child(4) {
-                  display: none;
-                }
-              }
-
-              @media all and (max-width: 500px) {
-                &:nth-child(5) {
                   display: none;
                 }
               }

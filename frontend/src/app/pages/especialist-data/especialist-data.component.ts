@@ -8,11 +8,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import { NgIf,Location } from '@angular/common';
 import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
+import {LoadingSpinnerComponent} from "../../shared/components/loading-spinner/loading-spinner.component";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-especialist-data',
   standalone: true,
-  imports: [RouterLink, NgIf, ChatBotComponent],
+  imports: [RouterLink, NgIf, ChatBotComponent, LoadingSpinnerComponent],
   templateUrl: './especialist-data.component.html',
   styleUrl: './especialist-data.component.scss'
 })
@@ -22,6 +24,7 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
   datosEspecialista: EspecialistModel;
   errores: string[] = [];
   safeDescription: SafeHtml;
+  isLoading = false;
 
   constructor(private professionalDataService: ProfessionalDataService,
               private activatedRoute: ActivatedRoute,
@@ -41,9 +44,11 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
+      this.isLoading = true;
       if (this.id != null) {
         this.professionalDataService.recogerInfoEspecialista(this.id).subscribe({
           next: (res: EspecialistModel) => {
+            this.isLoading = false;
             this.datosEspecialista = res;
             this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(this.datosEspecialista.datos_especialista.descripcion);
           },
@@ -53,6 +58,12 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
             if (error.status === 404) {
               this.router.navigate(['/404'])
                 .then(() => console.log('Navegación a 404'));
+            } else {
+              Swal.fire({
+                title: 'Error',
+                text: 'Ha ocurrido un error al cargar la información del especialista',
+                icon: 'error',
+              });
             }
           }
         });

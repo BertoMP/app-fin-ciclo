@@ -127,6 +127,12 @@ export class ContactUsComponent implements OnInit {
         error: (error: string[]): void => {
           this.errores = error;
           this.isSendingEmail = false;
+          Swal.fire({
+            title: 'Error',
+            text: 'No se ha podido enviar el correo. Por favor, inténtelo de nuevo.',
+            icon: 'error',
+            width: '50%'
+          });
         }
       });
 

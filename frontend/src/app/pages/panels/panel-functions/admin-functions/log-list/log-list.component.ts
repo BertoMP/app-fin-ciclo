@@ -10,6 +10,7 @@ import {debounceTime, Observable, Subject} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {LogDataModel} from "../../../../../core/interfaces/log-data.model";
 import {LogService} from "../../../../../core/services/log.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-log-list',
@@ -117,6 +118,12 @@ export class LogListComponent implements OnInit, OnDestroy {
         } else {
           this.errores = ['Ha ocurrido un error durante el proceso'];
         }
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error durante el proceso',
+        });
       }
     });
   }

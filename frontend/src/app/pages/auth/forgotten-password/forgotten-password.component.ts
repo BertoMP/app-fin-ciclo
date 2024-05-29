@@ -7,12 +7,13 @@ import { CustomValidators } from '../../../core/classes/CustomValidators';
 import { ForgottenPasswordService } from '../../../core/services/forgotten-password.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import {LoadingSpinnerComponent} from "../../../shared/components/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-forgotten-password',
   standalone: true,
   imports: [ReactiveFormsModule,
-    CommonModule],
+    CommonModule, LoadingSpinnerComponent],
   templateUrl: './forgotten-password.component.html',
   styleUrl: './forgotten-password.component.scss'
 })
@@ -21,6 +22,7 @@ export class ForgottenPasswordComponent {
   sendedAttempt: boolean = false;
   errores: string[] = [];
   botonDesactivado: boolean = false;
+  isDataLoaded: boolean = true;
 
   constructor(
     private router: Router,
@@ -41,10 +43,13 @@ export class ForgottenPasswordComponent {
 
   onRegisterAttempt(): void {
     this.sendedAttempt = true;
-    this.botonDesactivado=true;
+    this.botonDesactivado = true;
+    this.errores=[];
+    this.isDataLoaded = false;
 
     if (this.emailForm.invalid) {
       this.botonDesactivado=false;
+      this.isDataLoaded = true;
       return;
     }
 
@@ -52,6 +57,8 @@ export class ForgottenPasswordComponent {
     this.refreshPasswordService.enviarCorreoRenovacion(newCorreo)
       .subscribe({
         next: (response) => {
+          this.botonDesactivado = false;
+          this.isDataLoaded = true;
           Swal.fire({
             title: 'Enhorabuena',
             text: 'Se ha enviado un enlace a su email, por favor siga las instrucciones para renovar su contraseña',
@@ -68,9 +75,16 @@ export class ForgottenPasswordComponent {
             });
         },
         error: (error: HttpErrorResponse): void => {
-          this.errores=error.message.split(',');
-          this.botonDesactivado=false;
-           }
+          this.errores = error.message.split(',');
+          this.botonDesactivado = false;
+          this.isDataLoaded = true;
+          Swal.fire({
+            title: 'Error',
+            text: `Ha ocurrido un error durante la solicitud de renovación de contraseña.`,
+            icon: 'error',
+            width: '50%'
+          });
+        }
       });
 
   }

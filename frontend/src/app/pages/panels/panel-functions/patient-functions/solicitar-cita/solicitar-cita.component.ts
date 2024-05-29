@@ -87,6 +87,13 @@ export class SolicitarCitaComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching especialidades', error.error);
+
+          Swal.fire({
+            title: 'Error',
+            text: 'Ha ocurrido un error al intentar buscar las especialidades',
+            icon: 'error',
+            width: '50%'
+          })
         }
       })
   }
@@ -129,6 +136,13 @@ export class SolicitarCitaComponent implements OnInit {
             this.especialistas = null;
             this.especialista_id=null;
             console.error('Error fetching especialistas', error.error);
+
+            Swal.fire({
+              title: 'Error',
+              text: 'Ha ocurrido un error al intentar buscar los especialistas',
+              icon: 'error',
+              width: '50%'
+            })
           }
         })
     }
@@ -173,6 +187,13 @@ export class SolicitarCitaComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching citas', error.error);
+
+          Swal.fire({
+            title: 'Error',
+            text: 'Ha ocurrido un error al intentar buscar las citas disponibles',
+            icon: 'error',
+            width: '50%'
+          })
         }
       });
     }
@@ -186,6 +207,13 @@ export class SolicitarCitaComponent implements OnInit {
       },
       error: (error: HttpErrorResponse) => {
         console.error('Error fetching Especialista', error.error);
+
+        Swal.fire({
+          title: 'Error',
+          text: 'Ha ocurrido un error al intentar buscar el especialista',
+          icon: 'error',
+          width: '50%'
+        })
       }
     })
   }
@@ -247,6 +275,13 @@ export class SolicitarCitaComponent implements OnInit {
       },
       error: (error: string[]) => {
         this.errores = error;
+
+        Swal.fire({
+          title: 'Error',
+          text: 'Ha ocurrido un error al intentar solicitar la cita',
+          icon: 'error',
+          width: '50%'
+        })
       },
     });
   }

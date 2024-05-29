@@ -10,6 +10,7 @@ import { LoadingSpinnerComponent } from '../../../../../shared/components/loadin
 import { CitasEspecialistaListModel } from '../../../../../core/interfaces/citas-especialista-list.model';
 import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-listado-agenda',
@@ -85,6 +86,12 @@ export class ListadoAgendaComponent {
         },
         error: (error) => {
           this.errores = error;
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ha ocurrido un error durante el proceso',
+          });
         }
       });
     this.initialLoad = true;
@@ -105,6 +112,12 @@ export class ListadoAgendaComponent {
       },
       error: (error: HttpErrorResponse) => {
         this.dataLoaded = true;
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error durante el proceso',
+        });
 
         if (error.error.errors) {
           this.errores = error.error.errors;

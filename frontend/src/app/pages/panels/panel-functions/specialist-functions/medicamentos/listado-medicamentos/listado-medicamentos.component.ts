@@ -13,6 +13,7 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import { MedicinasDataModel } from '../../../../../../core/interfaces/medicinas-data.model';
 import { MedicinasListModel } from '../../../../../../core/interfaces/medicinas-list.model';
 import { MedicacionesService } from '../../../../../../core/services/medicaciones.service';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-listado-medicamentos',
@@ -136,6 +137,13 @@ export class ListadoMedicamentosComponent {
         this.errores = error;
         console.log(error);
         this.dataLoaded = true;
+
+        Swal.fire({
+          title: 'Error',
+          text: 'Se ha producido un error al cargar los medicamentos',
+          icon: 'error',
+          width: '50%'
+        });
       }
     });
   }

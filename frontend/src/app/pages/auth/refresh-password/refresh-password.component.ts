@@ -107,6 +107,12 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
         },
         error: (error: HttpErrorResponse): void => {
           this.errores = error.message.split(',');
+          Swal.fire({
+            title: 'Error',
+            text: 'No se ha podido actualizar la contraseña',
+            icon: 'error',
+            width: '50%'
+          });
         }
       });
   }

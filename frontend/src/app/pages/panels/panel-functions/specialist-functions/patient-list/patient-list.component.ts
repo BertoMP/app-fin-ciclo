@@ -6,6 +6,7 @@ import {PacienteListModel} from "../../../../../core/interfaces/paciente-list.mo
 import {MenuOptionComponent} from "../../../../../shared/components/menu-option/menu-option.component";
 import {NgForOf} from "@angular/common";
 import {MenuOptionModel} from "../../../../../core/interfaces/menu-option.model";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-patient-list',
@@ -43,6 +44,12 @@ export class PatientListComponent implements OnInit {
         },
         error: (error) => {
           console.error(error);
+
+          Swal.fire({
+            title: 'Error',
+            text: 'Ha ocurrido un error al cargar los pacientes',
+            icon: 'error'
+          });
         }
       }
     );
@@ -51,7 +58,7 @@ export class PatientListComponent implements OnInit {
   onPatientSelected(event: any) {
     this.id = event.value;
     this.num_historia_clinica = event.options[0].num_historia_clinica;
-    this.options = this.loadOptions()
+    this.options = this.loadOptions();
   }
 
   loadOptions(): MenuOptionModel[] {

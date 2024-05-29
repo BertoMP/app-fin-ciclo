@@ -17,6 +17,7 @@ import {
   PasswordInputComponent
 } from "../../../shared/components/password-input/password-input.component";
 import {ChatbotService} from "../../../core/services/chatbot.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-login',
@@ -94,10 +95,21 @@ export class LoginComponent implements OnInit {
             });
         },
         error: (error: HttpErrorResponse): void => {
-          this.error = error.error.errors[0]
-            .toString()
-            .replace(/Error: /g, '');
           this.isLoading = false;
+
+          if (error.status === 0 || error.status === 500) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Algo salió mal, por favor intenta de nuevo.',
+              width: '50%'
+            });
+            this.isLoading = false;
+          } else {
+            this.error = error.error.errors[0]
+              .toString()
+              .replace(/Error: /g, '');
+          }
         }
       });
   }

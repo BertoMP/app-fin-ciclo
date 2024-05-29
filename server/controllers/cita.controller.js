@@ -214,11 +214,6 @@ class CitaController {
 
 			return res.status(200).json(citas);
 		} catch (err) {
-			if (err.message === 'No hay citas disponibles.') {
-				return res.status(404).json({
-					errors: [err.message],
-				});
-			}
 
 			return res.status(500).json({
 				errors: [err.message],

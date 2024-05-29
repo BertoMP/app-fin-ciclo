@@ -200,6 +200,12 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
     const formCopy = { ...this.registerForm.value };
     delete formCopy.imagen;
 
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No se pudo crear/editar la especialidad. Por favor, intente nuevamente más tarde.',
+    });
+
     this.registerForm.reset(formCopy);
   }
 

@@ -12,6 +12,7 @@ import { DatosPacienteModel } from "../../../../../core/interfaces/datos-pacient
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {UserRole} from "../../../../../core/enum/user-role.enum";
 import {AuthService} from "../../../../../core/services/auth.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-listado-medicacion',
@@ -91,6 +92,14 @@ export class ListadoMedicacionComponent implements OnInit {
       },
       error: (error: string[]) => {
         this.errores = error;
+        this.dataLoaded = true;
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error al cargar las medicaciones',
+          confirmButtonText: 'Aceptar'
+        });
       },
     });
   }
@@ -116,6 +125,14 @@ export class ListadoMedicacionComponent implements OnInit {
       },
       error: (error: string[]) => {
         this.errores = error;
+        this.dataLoaded = true;
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error al descargar la prescripción',
+          confirmButtonText: 'Aceptar'
+        });
       }
     });
   }

@@ -166,7 +166,9 @@ class CitaModel {
 		try {
 			const [rows] = await dbConn.execute(query, [especialistaId, fecha]);
 			const citas = rows.map(row => row.hora);
-			const horasLibres = horas.filter(hora => !citas.includes(hora));
+
+			const currentHour = new Date().getHours();
+			const horasLibres = horas.filter(hora => !citas.includes(hora) && parseInt(hora.split(':')[0]) > currentHour);
 
 			const total = horasLibres.length;
 			const actualPage = page;
@@ -404,7 +406,7 @@ class CitaModel {
 			const [rows] = await dbConn.execute(query, [especialista_id]);
 
 			if (rows.length === 0) {
-				return null;
+				return [];
 			}
 
 			return rows;

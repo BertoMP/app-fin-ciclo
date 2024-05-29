@@ -215,7 +215,7 @@ router.get(
 router.get(
 	'/cita/pdf/:cita_id',
 	verifyAccessToken,
-	verifyUserRole([2]),
+	verifyUserRole([2, 3]),
 	verifyUserId,
 	validateCitaIdParam,
 	CitaController.getCitaPdf,

@@ -1,22 +1,26 @@
 <h2 class="page-title">ESPECIALIDADES MÉDICAS</h2>
-@if (specialties) {
-  <section class="pagination">
-    <pagination-controls (pageChange)="actualPage = $event; getSpecialties(actualPage)"
-                         maxSize="5"
-                         directionLinks="true"
-                         previousLabel="Anterior"
-                         nextLabel="Siguiente"
-    ></pagination-controls>
-  </section>
-  <section class="card-container">
-    <div *ngFor="let specialty of specialties | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
-      <app-vertical-card [info]="specialty"
-                         [routerLink]="'/listado-de-especialistas'"
-                         [fragment]="specialty.datos_especialidad.nombre | lowercase | removeAccents"
-      ></app-vertical-card>
-    </div>
-    <app-chat-bot></app-chat-bot>
-  </section>
-} @else {
+@if (isLoading) {
   <app-loading-spinner></app-loading-spinner>
+} @else {
+  @if (specialties.length === 0) {
+    <p class="no-results">No se han encontrado especialidades médicas</p>
+  } @else {
+    <section class="pagination">
+      <pagination-controls (pageChange)="actualPage = $event; getSpecialties(actualPage)"
+                           maxSize="5"
+                           directionLinks="true"
+                           previousLabel="Anterior"
+                           nextLabel="Siguiente"
+      ></pagination-controls>
+    </section>
+    <section class="card-container">
+      <div *ngFor="let specialty of specialties | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
+        <app-vertical-card [info]="specialty"
+                           [routerLink]="'/listado-de-especialistas'"
+                           [fragment]="specialty.datos_especialidad.nombre | lowercase | removeAccents"
+        ></app-vertical-card>
+      </div>
+      <app-chat-bot></app-chat-bot>
+    </section>
+  }
 }

@@ -8,9 +8,10 @@ import EmailService from './email.service.js';
 import EspecialistaService from "./especialista.service.js";
 
 // Importación de utilidades necesarias
-import { dbConn } from '../util/database/database.js';
-import { generateQRCode } from '../util/functions/createQr.js';
+import {dbConn} from '../util/database/database.js';
+import {generateQRCode} from '../util/functions/createQr.js';
 import pkg from 'moment-timezone';
+
 const { tz } = pkg;
 
 /**
@@ -258,17 +259,7 @@ class CitaService {
 	 * @returns {Promise<Array>} Un array de citas.
 	 */
 	static async readCitasAgenda(especialista_id, conn = dbConn) {
-		try {
-			const citas = await CitaModel.fetchAgenda(especialista_id, conn);
-
-			if (!citas) {
-				throw new Error('No hay citas disponibles.');
-			}
-
-			return citas;
-		} catch (err) {
-			throw err;
-		}
+		return await CitaModel.fetchAgenda(especialista_id, conn);
 	}
 
 	/**
@@ -449,6 +440,7 @@ class CitaService {
 	 * @throws {Error} Si ocurre algún error durante el proceso, lanza un error.
 	 */
 	static async printCitaPDF(userId, citaId, conn = dbConn) {
+
 		try {
 			const cita = await CitaModel.fetchById(citaId, conn);
 
@@ -456,7 +448,7 @@ class CitaService {
 				throw new Error('La cita que intenta imprimir no existe.');
 			}
 
-			if (cita.datos_paciente.paciente_id !== userId) {
+			if (cita.datos_especialista.especialista_id !== userId && cita.datos_paciente.paciente_id !== userId) {
 				throw new Error('No tiene permiso para imprimir esta cita.');
 			}
 
@@ -464,6 +456,8 @@ class CitaService {
 
 			return await PdfService.generateCitaPDF(cita, qr);
 		} catch (err) {
+			console.log(err);
+
 			throw err;
 		}
 	}

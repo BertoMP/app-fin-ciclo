@@ -82,6 +82,12 @@ export class CrearEditarPatologiasComponent {
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
+
+            Swal.fire({
+              title: 'Error',
+              text: 'Ha ocurrido un error al cargar la patología',
+              icon: 'error'
+            });
           }
         });
       }
@@ -185,6 +191,13 @@ export class CrearEditarPatologiasComponent {
   onSubmitError(error: string[]): void {
     this.isLoading = false;
     this.errores = error;
+
+    Swal.fire({
+      title: 'Error',
+      text: 'Se ha producido un error al registrar/editar la patología',
+      icon: 'error',
+      width: '50%'
+    });
 
     const formCopy = { ...this.registerForm.value };
     this.registerForm.reset(formCopy);

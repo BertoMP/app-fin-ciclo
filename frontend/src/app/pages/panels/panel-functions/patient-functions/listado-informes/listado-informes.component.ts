@@ -11,6 +11,7 @@ import {InformesListModel} from "../../../../../core/interfaces/informes-list.mo
 import {InformeService} from "../../../../../core/services/informe.service";
 import {AuthService} from "../../../../../core/services/auth.service";
 import {UserRole} from "../../../../../core/enum/user-role.enum";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-listado-informes',
@@ -134,6 +135,12 @@ export class ListadoInformesComponent {
       },
       error: (error: HttpErrorResponse) => {
         this.dataLoaded = true;
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error durante el proceso',
+        });
 
         if (error.error.errors) {
           this.errores = error.error.errors;

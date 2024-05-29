@@ -16,6 +16,7 @@ import {
 } from "../../shared/components/loading-spinner/loading-spinner.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-medical-specialty-list',
@@ -37,6 +38,7 @@ export class MedicalSpecialtyListComponent implements OnInit {
   especialidadesSubscripcion: Subscription;
   specialties: MedicalSpecialtyModel[];
   error: boolean = false;
+  isLoading: boolean = false;
 
   nextPageUrl: string;
   previousPageUrl: string;
@@ -55,10 +57,12 @@ export class MedicalSpecialtyListComponent implements OnInit {
   }
 
   getSpecialties(page: number): void {
+    this.isLoading = true;
     this.especialidadesSubscripcion =
       this.medicalSpecialtiesService.getSpecialties(page)
         .subscribe({
           next: (response) => {
+            this.isLoading = false;
             this.specialties = response.resultados;
             this.nextPageUrl = response.next;
             this.previousPageUrl = response.prev;
@@ -68,6 +72,13 @@ export class MedicalSpecialtyListComponent implements OnInit {
           },
           error: () => {
             this.error = true;
+            this.isLoading = false;
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Ha ocurrido un error al cargar las especialidades médicas'
+            });
           }
         });
   }

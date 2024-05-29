@@ -12,6 +12,7 @@ import {Select2Data, Select2Module} from "ng-select2-component";
 import {AuthService} from "../../../../../core/services/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserRole} from "../../../../../core/enum/user-role.enum";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-listado-mediciones',
@@ -192,6 +193,12 @@ export class ListadoMedicionesComponent implements OnInit {
         } else {
           this.errores = ['Ha ocurrido un error durante el proceso'];
         }
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error durante el proceso de obtención de mediciones',
+        });
       }
     });
   }

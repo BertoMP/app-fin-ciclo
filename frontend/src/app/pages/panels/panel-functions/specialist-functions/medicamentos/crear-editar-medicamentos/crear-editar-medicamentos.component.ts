@@ -82,6 +82,12 @@ export class CrearEditarMedicamentosComponent {
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
+
+            Swal.fire({
+              title: 'Error',
+              text: 'Ha ocurrido un error al cargar los datos del medicamento',
+              icon: 'error'
+            });
           }
         });
       }
@@ -185,6 +191,13 @@ export class CrearEditarMedicamentosComponent {
   onSubmitError(error: string[]): void {
     this.isLoading = false;
     this.errores = error;
+
+    Swal.fire({
+      title: 'Error',
+      text: 'Se ha producido un error al crear/editar el medicamento',
+      icon: 'error',
+      width: '50%'
+    })
 
     const formCopy = { ...this.registerForm.value };
     this.registerForm.reset(formCopy);

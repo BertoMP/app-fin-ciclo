@@ -117,6 +117,14 @@ export class ListadoCitasComponent {
       error: (error: HttpErrorResponse) => {
         this.dataLoaded = true;
 
+        Swal.fire({
+          title: 'Error',
+          text: 'Ha ocurrido un error durante el proceso',
+          icon: 'error',
+          width: '50%'
+        });
+
+
         if (error.error.errors) {
           this.errores = error.error.errors;
         } else {

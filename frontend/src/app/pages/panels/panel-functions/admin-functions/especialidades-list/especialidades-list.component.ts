@@ -137,6 +137,12 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
       },
       error: (error: string[]) => {
         this.errores = error;
+        this.dataLoaded = true;
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo cargar la lista de especialidades. Por favor, intente nuevamente más tarde.',
+        });
       }
     });
   }

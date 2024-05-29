@@ -139,6 +139,13 @@ export class UserListComponent implements OnInit {
       },
       error: (error: string[]) => {
         this.errores = error;
+        this.dataLoaded = true;
+        Swal.fire({
+          title: 'Error',
+          text: `Ha ocurrido un error al intentar obtener los usuarios`,
+          icon: 'error',
+          width: '50%'
+        });
       }
     });
   }
@@ -162,6 +169,7 @@ export class UserListComponent implements OnInit {
       cancelButtonText: 'Cancelar',
       showCancelButton: true,
     }).then((result) => {
+      this.dataLoaded = false;
       if (result.isConfirmed) {
         this.adminPanelService
           .eliminateUser(id)
@@ -172,6 +180,7 @@ export class UserListComponent implements OnInit {
               }
 
               this.getUsers();
+              this.dataLoaded = true;
               Swal.fire({
                 title: 'Enhorabuena',
                 text: 'Has conseguido eliminar al usuario correctamente',
@@ -181,7 +190,16 @@ export class UserListComponent implements OnInit {
               },
             error: (error: string[]): void => {
               this.errores = error;
-            }
+              this.dataLoaded = true;
+              Swal.fire({
+                title: 'Error',
+                text: `Ha ocurrido un error al intentar eliminar al usuario`,
+                icon: 'error',
+                width: '50%'
+              }).then(() => {
+                this.getUsers();
+              });
+              }
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         console.log("Usuario canceló la eliminación");

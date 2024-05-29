@@ -105,6 +105,13 @@ export class RegisterComponent implements OnInit {
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
+
+            Swal.fire({
+              title: 'Error',
+              text: 'Ha ocurrido un error durante la carga de datos del paciente.',
+              icon: 'error',
+              width: '50%'
+            });
           }
         });
       } else if (this.isPatient) {
@@ -116,6 +123,13 @@ export class RegisterComponent implements OnInit {
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
+
+            Swal.fire({
+              title: 'Error',
+              text: 'Ha ocurrido un error durante la carga de datos de sus datos.',
+              icon: 'error',
+              width: '50%'
+            });
           }
         });
       }
@@ -273,6 +287,12 @@ export class RegisterComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching places', error.error);
+
+          Swal.fire({
+            title: 'Error',
+            text: 'Ha ocurrido un error al cargar los tipos de vía',
+            icon: 'error'
+          });
         }
       });
 
@@ -288,6 +308,12 @@ export class RegisterComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching provinces', error.error);
+
+          Swal.fire({
+            title: 'Error',
+            text: 'Ha ocurrido un error al cargar las provincias',
+            icon: 'error'
+          });
         }
       });
 
@@ -306,6 +332,12 @@ export class RegisterComponent implements OnInit {
               },
               error: (error: HttpErrorResponse) => {
                 console.error('Error fetching municipios', error.error);
+
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Ha ocurrido un error al cargar los municipios',
+                  icon: 'error'
+                });
               }
             });
         }
@@ -326,8 +358,14 @@ export class RegisterComponent implements OnInit {
               },
               error: (error: HttpErrorResponse) => {
                 console.error('Error fetching codigos_postales', error.error);
+
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Ha ocurrido un error al cargar los códigos postales',
+                  icon: 'error'
+                });
               }
-            })
+            });
         }
       });
   }
@@ -425,6 +463,12 @@ export class RegisterComponent implements OnInit {
   onSubmitError(error: string[]): void {
     this.isLoading = false;
     this.errores = error;
+    Swal.fire({
+      title: 'Error',
+      text: 'Ha ocurrido un error durante el proceso.',
+      icon: 'error',
+      width: '50%'
+    });
   }
 
 

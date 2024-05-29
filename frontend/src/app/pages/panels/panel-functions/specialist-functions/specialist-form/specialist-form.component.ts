@@ -103,6 +103,12 @@ export class SpecialistFormComponent implements OnInit {
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
+
+            Swal.fire({
+              title: 'Error',
+              text: 'Ha ocurrido un error al cargar los datos del especialista',
+              icon: 'error'
+            });
           }
         });
       }
@@ -207,6 +213,12 @@ export class SpecialistFormComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching places', error.error);
+
+          Swal.fire({
+            title: 'Error',
+            text: 'Ha ocurrido un error al cargar las consultas',
+            icon: 'error'
+          });
         }
       });
 
@@ -305,6 +317,12 @@ export class SpecialistFormComponent implements OnInit {
   onSubmitError(error: string[]): void {
     this.isLoading = false;
     this.errores = error;
+
+    Swal.fire({
+      title: 'Error',
+      text: 'Ha ocurrido un error durante el proceso.',
+      icon: 'error'
+    });
 
     const formCopy = { ...this.registerForm.value };
     delete formCopy.imagen;
