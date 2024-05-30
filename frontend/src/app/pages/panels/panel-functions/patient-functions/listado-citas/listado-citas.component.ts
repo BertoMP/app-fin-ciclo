@@ -197,7 +197,6 @@ export class ListadoCitasComponent {
 
   updateFilters():void {
     if (this.initialLoad) {
-      this.dataLoaded = false;
       this.actualPage = 1;
       this.getCitasSubject.next();
     }

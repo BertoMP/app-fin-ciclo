@@ -116,7 +116,6 @@ export class UserListComponent implements OnInit {
 
   updateFilters(): void {
     if (this.initialLoad) {
-      this.dataLoaded = false;
       this.actualPage = 1;
       this.getUsersSubject.next();
     }

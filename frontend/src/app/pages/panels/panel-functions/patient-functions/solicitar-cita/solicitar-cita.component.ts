@@ -5,12 +5,12 @@ import { EspecialidadModel } from '../../../../../core/interfaces/especialidad.m
 import { HttpErrorResponse } from '@angular/common/http';
 import { MedicalSpecialistListService } from '../../../../../core/services/medical-specialist-list.service';
 import { EspecialistaCitaModel } from '../../../../../core/interfaces/especialista-cita.model';
-import { NgFor, NgForOf, NgIf } from '@angular/common';
+import {DatePipe, NgFor, NgForOf, NgIf} from '@angular/common';
 import { CitasService } from '../../../../../core/services/citas.service';
 import { CitasDisponiblesModel } from '../../../../../core/interfaces/citas-disponibles.model';
-import { Observable, Subject, debounceTime } from 'rxjs';
+import { Subject } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { FormsModule } from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
 import { AuthService } from '../../../../../core/services/auth.service';
@@ -30,7 +30,7 @@ import { CitaUploadModel } from '../../../../../core/interfaces/cita-upload.mode
     FormsModule,
     RouterLink,
     LoadingSpinnerComponent,
-    Select2Module,DateFormatPipe],
+    Select2Module, DateFormatPipe, DatePipe],
   templateUrl: './solicitar-cita.component.html',
   styleUrl: './solicitar-cita.component.scss'
 })
@@ -44,6 +44,7 @@ export class SolicitarCitaComponent implements OnInit {
   paciente_nombre: string;
   paciente_id:number;
   fecha: string;
+  fechaSpan: string;
 
   citaBuscada = false;
 
@@ -149,8 +150,11 @@ export class SolicitarCitaComponent implements OnInit {
   }
 
   checkFecha() {
+    this.citas_disponibles = [];
     if (this.fecha) {
       this.fecha = this.fecha.split('T')[0];
+
+      let fechaIngresada = new Date(this.fecha);
 
       if (this.fecha < new Date().toISOString().split('T')[0]) {
         Swal.fire({
@@ -163,7 +167,19 @@ export class SolicitarCitaComponent implements OnInit {
             Swal.close();
             this.fecha = null;
           })
+      } else if (fechaIngresada.getDay() === 0 || fechaIngresada.getDay() === 6) {
+        Swal.fire({
+          title: 'Fecha incorrecta',
+          text: `La fecha no puede ser un fin de semana`,
+          icon: 'error',
+          width: '50%'
+        })
+          .then(() => {
+            Swal.close();
+            this.fecha = null;
+          })
       } else if (this.especialista_id) {
+        this.fechaSpan = this.fecha;
         this.buscarCitas();
       }
     }

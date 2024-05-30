@@ -34,7 +34,7 @@
         }
     }@else{
       <div class="info mb-3">
-        <small>Mostrando {{ resultMin }} - {{ resultMax }} de {{ totalItems }} citas disponibles.</small>
+        <small>Mostrando {{ resultMin }} - {{ resultMax }} de {{ totalItems }} citas disponibles <span *ngIf="fecha">(Fecha {{ fechaSpan | date:'dd/MM/yyyy' }})</span></small>
       </div>
       <div class="table-container">
         <table>

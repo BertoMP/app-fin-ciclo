@@ -153,7 +153,6 @@ export class ListadoInformesComponent {
 
   updateFilters():void {
     if (this.initialLoad) {
-      this.dataLoaded = false;
       this.actualPage = 1;
       this.getInformesSubject.next();
     }
