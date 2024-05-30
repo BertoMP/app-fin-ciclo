@@ -167,8 +167,14 @@ class CitaModel {
 			const [rows] = await dbConn.execute(query, [especialistaId, fecha]);
 			const citas = rows.map(row => row.hora);
 
-			const currentHour = new Date().getHours();
-			const horasLibres = horas.filter(hora => !citas.includes(hora) && parseInt(hora.split(':')[0]) > currentHour);
+			let horasLibres;
+
+			if (new Date(fecha).toDateString() === new Date().toDateString()) {
+				const currentHour = new Date().getHours();
+				horasLibres = horas.filter(hora => !citas.includes(hora) && parseInt(hora.split(':')[0]) > currentHour);
+			} else {
+				horasLibres = horas.filter(hora => !citas.includes(hora));
+			}
 
 			const total = horasLibres.length;
 			const actualPage = page;
