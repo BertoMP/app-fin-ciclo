@@ -93,6 +93,10 @@ export const validateQueryParams = [
 			if (value < new Date().toISOString().split('T')[0]) {
 				throw new Error('La fecha de cita no puede ser menor a la fecha actual.');
 			}
+			
+			if (new Date(value).getDay() === 6 || new Date(value).getDay() === 0) {
+				throw new Error('La fecha de cita no puede ser sábado ni domingo.');
+			}
 
 			return true;
 		})
