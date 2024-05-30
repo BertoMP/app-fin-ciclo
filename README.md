@@ -1,4 +1,10 @@
-# MediAPP
+<p align="center" style="margin-bottom: 0;">
+  <img src="frontend/src/assets/img/logo.svg" width="200">
+</p>
+
+<h1 align="center" style="margin-top: 0;">
+  MediAPP
+</h1>
 
 Este es un proyecto de fin de ciclo desarrollado por [Alberto Martínez Pérez](https://github.com/BertoMP) y [Rafael Romero Roibu](https://github.com/romraf) utilizando las tecnologías
 Angular 17.3.5 para el _frontend_, Node.js (v. 20.13.1) para el _backend_ y MySQL para la base de datos.

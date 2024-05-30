@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1.3rem 10%;
+  padding: 1.3rem 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,6 +22,16 @@
   z-index: -1;
 }
 
+div {
+  display: flex;
+  align-items: center;
+}
+
+img {
+  width: 50px;
+  margin-right: 20px;
+}
+
 .logo {
   font-size: 2rem;
   color: #fff;
@@ -30,16 +40,6 @@
 }
 
 @media (max-width: 1200px) {
-  .logo {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 950px) {
-  :host {
-    padding: 1.3rem 5%;
-  }
-
   .logo {
     font-size: 2rem;
   }
