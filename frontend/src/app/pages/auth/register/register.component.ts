@@ -76,12 +76,17 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private location: Location) {
   }
+
   formatearFecha(fechaString: string) {
     const partesFecha = fechaString.split("-");
     return partesFecha[2] + "-" + partesFecha[1] + "-" + partesFecha[0];
   }
 
   ngOnInit(): void {
+    if (this.authService.isLoggedIn() && this.router.url === '/auth/register') {
+      this.router.navigate(['/mediapp']).then(r => { });
+    }
+
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
       this.isAdmin = UserRole.ADMIN === this.authService.getUserRole();
