@@ -97,16 +97,16 @@ export class ConsultaListComponent implements OnDestroy {
 
   updateFilters(): void {
     if (this.initialLoad) {
-      this.dataLoaded = false;
       this.actualPage = 1;
       this.getConsultasSubject.next();
     }
   }
 
   getConsultas(): void {
+    this.consultas = [];
     let request: Observable<ConsultaListModel>;
 
-    request = this.consultaService.getConsultasPage(this.actualPage, parseInt(this.perPage));
+    request = this.consultaService.getConsultasPage(this.actualPage, this.search, parseInt(this.perPage));
 
     request.subscribe({
       next: (response: ConsultaListModel) => {
@@ -114,7 +114,12 @@ export class ConsultaListComponent implements OnDestroy {
         this.dataLoaded = true;
       },
       error: (error: string[]) => {
-        this.errores = error;
+        this.dataLoaded = true;
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo obtener las consultas. Por favor, intente nuevamente más tarde.',
+        });
       }
     });
   }

@@ -24,21 +24,9 @@ class ConsultaModel {
 		let query =
 			'SELECT ' +
 			'   consulta.id, ' +
-			'   consulta.nombre, ' +
-			'   especialidad.id AS especialidad_id, ' +
-			'   especialidad.nombre AS nombre_especialidad, ' +
-			'   usuario.id AS especialista_id,' +
-			'   usuario.nombre AS nombre_usuario, ' +
-			'   usuario.primer_apellido, ' +
-			'   usuario.segundo_apellido ' +
+			'   consulta.nombre ' +
 			'FROM ' +
-			'   consulta ' +
-			'LEFT JOIN ' +
-			'   especialista ON consulta.id = especialista.consulta_id ' +
-			'LEFT JOIN ' +
-			'   usuario ON especialista.usuario_id = usuario.id ' +
-			'LEFT JOIN ' +
-			'   especialidad ON especialista.especialidad_id = especialidad.id ';
+			'   consulta ';
 
 		let countQuery =
 			'SELECT ' +
@@ -59,8 +47,8 @@ class ConsultaModel {
 		}
 
 		query +=
-			'ORDER BY ' +
-			'   consulta.id ASC ' +
+			'ORDER BY' +
+			' consulta.id ASC ' +
 			'LIMIT ? OFFSET ?';
 
 		queryParams.push(`${limit}`, `${offset}`);
@@ -78,23 +66,7 @@ class ConsultaModel {
 					consultas[row.id] = {
 						id: row.id,
 						nombre: row.nombre,
-						medicos_asociados: [],
 					};
-				}
-
-				if (row.nombre_usuario) {
-					consultas[row.id].medicos_asociados.push({
-						id: row.especialista_id,
-						datos_personales: {
-							nombre: row.nombre_usuario,
-							primer_apellido: row.primer_apellido,
-							segundo_apellido: row.segundo_apellido,
-						},
-						datos_especialidad: {
-							id: row.especialidad_id,
-							nombre: row.nombre_especialidad,
-						},
-					});
 				}
 			});
 

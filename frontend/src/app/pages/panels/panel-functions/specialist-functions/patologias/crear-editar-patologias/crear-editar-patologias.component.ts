@@ -2,7 +2,7 @@ import { CommonModule, Location, LowerCasePipe, NgClass } from '@angular/common'
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { CustomValidators } from '../../../../../../core/classes/CustomValidators';
@@ -61,6 +61,7 @@ export class CrearEditarPatologiasComponent {
 
   constructor(private activatedRoute: ActivatedRoute,
               private patologiasService: PatologiasService,
+              private router: Router,
               private location: Location) {
   }
 
@@ -173,7 +174,8 @@ export class CrearEditarPatologiasComponent {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-    this.location.back();
+    this.router.navigate(['/mediapp/listado-patologias'])
+      .then(() => {});
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} una patología correctamente`,

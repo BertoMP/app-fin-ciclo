@@ -59,7 +59,7 @@ class InformeModel {
 					sql_state: row.sql_state,
 					message: row.error_text,
 					hora: moment.utc(row.timestamp).format('HH:mm:ss'),
-					fecha: moment(row.timestamp).format('DD-MM-YYYY')
+					fecha: moment.utc(row.timestamp).format('DD-MM-YYYY')
 				};
 			});
 

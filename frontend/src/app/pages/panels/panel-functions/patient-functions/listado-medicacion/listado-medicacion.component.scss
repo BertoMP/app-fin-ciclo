@@ -94,6 +94,34 @@
       p {
         text-align: center;
       }
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-right: 20px;
+
+        i {
+          margin-right: 20px;
+        }
+
+        &:hover {
+          background-color: #0056b3;
+        }
+
+        @media all and (max-width: 600px) {
+          padding: 10px 10px;
+          font-size: 1rem;
+
+          i {
+            display: none;
+          }
+        }
+      }
     }
 
     &.medication-table {

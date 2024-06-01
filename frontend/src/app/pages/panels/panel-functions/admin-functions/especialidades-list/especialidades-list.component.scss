@@ -237,18 +237,17 @@
                 padding: 10px;
                 text-align: left;
 
-                &:first-child {
-                  border-radius: 16px 0 0 0;
-                }
-
                 &:first-child,
                 &:nth-child(2) {
                   width: 20%;
                 }
 
+                &:nth-child(2) {
+                  text-align: center;
+                }
+
                 &:last-child {
                   text-align: center;
-                  border-radius: 0 16px 0 0;
                 }
 
                 @media all and (max-width: 510px) {

@@ -153,6 +153,42 @@ export class ListadoInformesComponent {
 
   updateFilters():void {
     if (this.initialLoad) {
+      let currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+
+      let startDate = new Date(this.fechaInicio);
+      startDate.setHours(0, 0, 0, 0);
+
+      let endDate = new Date(this.fechaFin);
+      endDate.setHours(0, 0, 0, 0);
+
+      if (startDate > currentDate) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'La fecha de inicio no puede ser posterior a hoy',
+        });
+        return;
+      }
+
+      if (endDate > currentDate) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'La fecha de fin no puede ser posterior a hoy',
+        });
+        return;
+      }
+
+      if (endDate < startDate) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'La fecha de fin no puede ser anterior a la fecha de inicio',
+        });
+        return;
+      }
+
       this.actualPage = 1;
       this.getInformesSubject.next();
     }

@@ -22,6 +22,7 @@ class ConsultaService {
 	 */
 	static async readConsultas(searchValues, conn = dbConn) {
 		try {
+			const search = searchValues.search;
 			const page = searchValues.page;
 			const limit = searchValues.limit;
 
@@ -36,8 +37,8 @@ class ConsultaService {
 				throw new Error('La página solicitada no existe.');
 			}
 
-			const prev = page > 1 ? `/consulta?page=${page - 1}&limit=${limit}` : null;
-			const next = page < paginas_totales ? `/consulta?page=${page + 1}&limit=${limit}` : null;
+			const prev = page > 1 ? `/consulta?page=${page - 1}&search=${search}&limit=${limit}` : null;
+			const next = page < paginas_totales ? `/consulta?page=${page + 1}&search=${search}&limit=${limit}` : null;
 			const result_min = (page - 1) * limit + 1;
 			const result_max =
 				resultados.length === limit ? page * limit : (page - 1) * limit + resultados.length;

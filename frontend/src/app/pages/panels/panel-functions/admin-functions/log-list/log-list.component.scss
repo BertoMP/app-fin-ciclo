@@ -168,7 +168,7 @@
               padding: 10px;
               text-align: center;
 
-              @media all and (max-width: 1100px) {
+              @media all and (max-width: 1200px) {
                 &:nth-child(3) {
                   display: none;
                 }
@@ -206,7 +206,11 @@
               margin: 1rem 0;
               text-align: center;
 
-              @media all and (max-width: 1100px) {
+              &:nth-child(4) {
+                width: 30%;
+              }
+
+              @media all and (max-width: 1200px) {
                 &:nth-child(3) {
                   display: none;
                 }

@@ -29,8 +29,8 @@ export class ConsultaService {
     return this.http.put<ConsultaModel>(`${this.baseUrl}/consulta/${consulta.id}`, consulta);
   }
 
-  getConsultasPage(page: number, perPage: number): Observable<ConsultaListModel> {
-    return this.http.get<ConsultaListModel>(`${this.baseUrl}/consulta?page=${page}&limit=${perPage}`);
+  getConsultasPage(page: number, search: string, perPage: number): Observable<ConsultaListModel> {
+    return this.http.get<ConsultaListModel>(`${this.baseUrl}/consulta?page=${page}&search=${search}&limit=${perPage}`);
   }
 
   eliminarConsulta(id: number): Observable<void> {

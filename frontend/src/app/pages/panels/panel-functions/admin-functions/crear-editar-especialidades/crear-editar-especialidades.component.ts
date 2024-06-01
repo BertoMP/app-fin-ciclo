@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomValidators } from '../../../../../core/classes/CustomValidators';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { FileUploadService } from '../../../../../core/services/file-uploader.service';
 import Swal from 'sweetalert2';
 import { SpecialityListedModel } from '../../../../../core/interfaces/speciality-listed.model';
@@ -66,6 +66,7 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
   constructor(private fileUploadService: FileUploadService,
               private activatedRoute: ActivatedRoute,
               private especialidadService: EspecialidadService,
+              private router: Router,
               private location: Location) {
   }
 
@@ -178,7 +179,8 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-    this.location.back();
+    this.router.navigate(['/mediapp/especialidades'])
+      .then(() => {});
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} una especialidad correctamente`,

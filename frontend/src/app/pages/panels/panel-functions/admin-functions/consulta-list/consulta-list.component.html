@@ -7,6 +7,10 @@
       <label for="per-page">Items</label>
       <select2 id="per-page" [data]="perPageOptions" [value]="10" [(ngModel)]="perPage" (update)="updateFilters()"></select2>
     </article>
+    <article class="search-filter">
+      <label for="search">Nombre</label>
+      <input type="text" id="search" [(ngModel)]="search" (input)="updateFilters()">
+    </article>
   </article>
   <article class="buttons">
     <button type="button" class="btn btn-primary" routerLink="../crear-consulta">Crear consulta</button>

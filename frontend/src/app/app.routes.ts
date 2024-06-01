@@ -18,7 +18,6 @@ import { CrearEditarEspecialidadesComponent } from './pages/panels/panel-functio
 import { ListadoMedicionesComponent } from './pages/panels/panel-functions/patient-functions/listado-mediciones/listado-mediciones.component';
 import { GlucometriaFormComponent } from './pages/panels/panel-functions/patient-functions/glucometria-form/glucometria-form.component';
 import { TensionFormComponent } from './pages/panels/panel-functions/patient-functions/tension-form/tension-form.component';
-
 import { loginGuard } from './core/guards/login.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { ListadoMedicacionComponent } from './pages/panels/panel-functions/patient-functions/listado-medicacion/listado-medicacion.component';
@@ -27,15 +26,11 @@ import { ListadoCitasComponent } from './pages/panels/panel-functions/patient-fu
 import { VerInformeComponent } from './pages/panels/panel-functions/patient-functions/ver-informe/ver-informe.component';
 import { VerCitaComponent } from './pages/panels/panel-functions/patient-functions/ver-cita/ver-cita.component';
 import { SolicitarCitaComponent } from './pages/panels/panel-functions/patient-functions/solicitar-cita/solicitar-cita.component';
-import {
-  ListadoInformesComponent
-} from "./pages/panels/panel-functions/patient-functions/listado-informes/listado-informes.component";
+import { ListadoInformesComponent } from "./pages/panels/panel-functions/patient-functions/listado-informes/listado-informes.component";
 import { ListadoAgendaComponent } from './pages/panels/panel-functions/specialist-functions/listado-agenda/listado-agenda.component';
 import { specialistGuard } from './core/guards/specialist.guard';
 import { patientSpecialistGuard } from './core/guards/patientSpecialist.guard';
-import {
-  PatientListComponent
-} from "./pages/panels/panel-functions/specialist-functions/patient-list/patient-list.component";
+import { PatientListComponent } from "./pages/panels/panel-functions/specialist-functions/patient-list/patient-list.component";
 import {UpdatePasswordComponent} from "./pages/auth/update-password/update-password.component";
 import { ListadoMedicamentosComponent } from './pages/panels/panel-functions/specialist-functions/medicamentos/listado-medicamentos/listado-medicamentos.component';
 import { ListadoPatologiasComponent } from './pages/panels/panel-functions/specialist-functions/patologias/listado-patologias/listado-patologias.component';

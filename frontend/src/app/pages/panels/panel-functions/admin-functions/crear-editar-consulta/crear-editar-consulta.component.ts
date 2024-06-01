@@ -125,7 +125,8 @@ export class CrearEditarConsultaComponent {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-    this.location.back();
+    this.router.navigate(['/mediapp/consultas'])
+      .then(() => {});
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} una consulta correctamente`,

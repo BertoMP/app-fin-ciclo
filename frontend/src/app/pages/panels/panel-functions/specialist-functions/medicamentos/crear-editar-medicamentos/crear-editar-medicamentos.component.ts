@@ -2,7 +2,7 @@ import { CommonModule, Location, LowerCasePipe, NgClass } from '@angular/common'
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Select2Module } from 'ng-select2-component';
 import { QuillEditorComponent } from 'ngx-quill';
 import { Subscription } from 'rxjs';
@@ -61,6 +61,7 @@ export class CrearEditarMedicamentosComponent {
 
   constructor(private activatedRoute: ActivatedRoute,
     private medicacionesService: MedicacionesService,
+    private router: Router,
     private location: Location) {
   }
 
@@ -173,7 +174,7 @@ export class CrearEditarMedicamentosComponent {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-    this.location.back();
+    this.router.navigate(['/mediapp/listado-medicamentos'])
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} un medicamento correctamente`,

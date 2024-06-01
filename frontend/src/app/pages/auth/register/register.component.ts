@@ -73,8 +73,7 @@ export class RegisterComponent implements OnInit {
     private codigoPostalService: CodigoPostalService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
-    private location: Location) {
+    private authService: AuthService) {
   }
 
   formatearFecha(fechaString: string) {
@@ -452,13 +451,19 @@ export class RegisterComponent implements OnInit {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-    this.location.back()
     Swal.fire({
       title: 'Enhorabuena',
-      text: `Has conseguido ${message} un usuario correctamente`,
+      text: (this.isPatient) ? 'Has editado tu usuario con éxito.' : `Has conseguido ${message} un usuario correctamente`,
       icon: 'success',
       width: '50%'
     }).then(() => {
+      if (this.isPatient) {
+        this.router.navigate(['/mediapp']).then(r => { });
+      } else if (this.isAdmin) {
+        this.router.navigate(['/mediapp/listado-pacientes']).then(r => { });
+      } else {
+        this.router.navigate(['/auth/login']).then(r => { });
+      }
       Swal.close();
     }).catch(() => {
       console.log('Se produjo un error.')
@@ -478,7 +483,7 @@ export class RegisterComponent implements OnInit {
 
 
   onCancel(): void {
-    this.location.back();
+    this.router.navigate(['/auth/login']).then(r => { });
   }
 
   private generateUser(): PatientModel {

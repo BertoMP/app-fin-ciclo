@@ -5,7 +5,15 @@
   <app-loading-spinner></app-loading-spinner>
 } @else if (!meds.length) {
   <section class="no-results">
-    <p>Actualmente no tienes medicamentos asignados.</p>
+    @if (isPatient) {
+      <p>Actualmente no tienes medicamentos asignados.</p>
+    } @else {
+      <p>Este paciente no tiene medicamentos asignados.</p>
+      <button type="button">
+        <i class="bi bi-plus-lg"></i><span>Añadir medicación</span>
+      </button>
+    }
+
   </section>
 } @else {
   <section class="name-download">

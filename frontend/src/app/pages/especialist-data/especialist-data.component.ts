@@ -29,7 +29,6 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
   constructor(private professionalDataService: ProfessionalDataService,
               private activatedRoute: ActivatedRoute,
               private sanitizer: DomSanitizer,
-              private location: Location,
               private router: Router) {
 
   }
@@ -38,7 +37,7 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
   }
 
   volver(){
-    this.location.back();
+    this.router.navigate(['/listado-de-especialistas']).then(() => {});
   }
 
   ngOnInit(): void {

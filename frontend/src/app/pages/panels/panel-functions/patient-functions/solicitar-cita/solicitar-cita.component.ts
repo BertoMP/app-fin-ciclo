@@ -280,13 +280,14 @@ export class SolicitarCitaComponent implements OnInit {
 
       next: (response: CitaUploadModel) => {
         this.dataLoaded = true;
+        this.router.navigate(['/mediapp/listado-citas'])
         Swal.fire({
           title: 'Enhorabuena',
           text: 'Has conseguido solicitar la cita correctamente',
           icon: 'success',
           width: '50%'
         }).then(() => {
-          this.router.navigate(['/mediapp/listado-citas'])
+          Swal.close();
         })
       },
       error: (error: string[]) => {
@@ -297,6 +298,8 @@ export class SolicitarCitaComponent implements OnInit {
           text: 'Ha ocurrido un error al intentar solicitar la cita',
           icon: 'error',
           width: '50%'
+        }).then(() => {
+          Swal.close();
         })
       },
     });
@@ -316,6 +319,7 @@ export class SolicitarCitaComponent implements OnInit {
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         console.log("Usuario canceló la solicitud");
       }
+      Swal.close();
     })
   }
 

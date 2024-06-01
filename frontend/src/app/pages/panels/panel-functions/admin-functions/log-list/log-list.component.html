@@ -5,11 +5,11 @@
   <article class="filters">
     <article class="init-date-filter">
       <label for="fechaInicio">Fecha inicio</label>
-      <input type="date" id="fechaInicio" [(ngModel)]="fechaInicio" (change)="updateFilters()">
+      <input type="date" id="fechaInicio" [(ngModel)]="fechaInicio" (blur)="updateFilters()">
     </article>
     <article class="end-date-filter">
       <label for="fechaFin">Fecha fin</label>
-      <input type="date" id="fechaFin" [(ngModel)]="fechaFin" (change)="updateFilters()">
+      <input type="date" id="fechaFin" [(ngModel)]="fechaFin" (blur)="updateFilters()">
     </article>
     <article class="per-page-filter">
       <label for="per-page">Items</label>

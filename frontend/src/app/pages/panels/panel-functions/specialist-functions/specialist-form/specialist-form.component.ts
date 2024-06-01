@@ -83,6 +83,7 @@ export class SpecialistFormComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private professionalDataService: ProfessionalDataService,
               private authService: AuthService,
+              private router: Router,
               private location: Location) {
   }
 
@@ -299,7 +300,7 @@ export class SpecialistFormComponent implements OnInit {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-    this.location.back();
+    this.router.navigate(['/mediapp/usuarios']);
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} un especialista correctamente`,
