@@ -180,7 +180,7 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
                 text: 'Has conseguido eliminar la especialidad correctamente',
                 icon: 'success',
                 width: '50%'
-              })
+              });
             },
             error: (error: string[]): void => {
               this.errores = error;
@@ -192,7 +192,12 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
             }
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        console.log("Usuario canceló la eliminación");
+        Swal.fire({
+          title: 'Cancelado',
+          text: 'No se ha eliminado la especialidad',
+          icon: 'info',
+          width: '50%'
+        });
       }
     })
   }

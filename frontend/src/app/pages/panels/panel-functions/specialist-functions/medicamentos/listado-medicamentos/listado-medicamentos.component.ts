@@ -134,7 +134,6 @@ export class ListadoMedicamentosComponent {
       },
       error: (error: string[]) => {
         this.errores = error;
-        console.log(error);
         this.dataLoaded = true;
 
         Swal.fire({
@@ -148,7 +147,6 @@ export class ListadoMedicamentosComponent {
   }
 
   #showResults(data) {
-    console.log(data);
     this.medicamentos = data.resultados;
     this.itemsPerPage = data.items_pagina;
     this.nextPageUrl = data.next;

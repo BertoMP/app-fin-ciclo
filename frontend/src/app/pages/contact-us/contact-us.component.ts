@@ -121,8 +121,7 @@ export class ContactUsComponent implements OnInit {
               this.sendedAttempt = false;
               this.contactForm.reset();
             })
-            .catch(() => {
-              console.log('Se produjo un error.') });
+            .catch(() => {});
         },
         error: (error: string[]): void => {
           this.errores = error;

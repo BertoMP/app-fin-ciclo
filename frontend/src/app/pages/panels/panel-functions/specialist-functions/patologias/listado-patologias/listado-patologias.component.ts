@@ -133,7 +133,6 @@ export class ListadoPatologiasComponent {
       },
       error: (error: string[]) => {
         this.errores = error;
-        console.log(error);
         this.dataLoaded = true;
 
         Swal.fire({
@@ -146,7 +145,6 @@ export class ListadoPatologiasComponent {
   }
 
   #showResults(data) {
-    console.log(data);
     this.patologias = data.resultados;
     this.itemsPerPage = data.items_pagina;
     this.nextPageUrl = data.next;

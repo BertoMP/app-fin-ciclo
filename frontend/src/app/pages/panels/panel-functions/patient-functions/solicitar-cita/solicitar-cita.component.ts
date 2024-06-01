@@ -87,7 +87,6 @@ export class SolicitarCitaComponent implements OnInit {
 
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error fetching especialidades', error.error);
 
           Swal.fire({
             title: 'Error',
@@ -136,7 +135,6 @@ export class SolicitarCitaComponent implements OnInit {
             this.citas_disponibles=[];
             this.especialistas = null;
             this.especialista_id=null;
-            console.error('Error fetching especialistas', error.error);
 
             Swal.fire({
               title: 'Error',
@@ -202,7 +200,6 @@ export class SolicitarCitaComponent implements OnInit {
           this.citaBuscada = true;
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error fetching citas', error.error);
 
           Swal.fire({
             title: 'Error',
@@ -222,8 +219,6 @@ export class SolicitarCitaComponent implements OnInit {
         this.dataLoaded = true;
       },
       error: (error: HttpErrorResponse) => {
-        console.error('Error fetching Especialista', error.error);
-
         Swal.fire({
           title: 'Error',
           text: 'Ha ocurrido un error al intentar buscar el especialista',
@@ -317,7 +312,12 @@ export class SolicitarCitaComponent implements OnInit {
       if (result.isConfirmed) {
         this.pedirCita(hora);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        console.log("Usuario canceló la solicitud");
+        Swal.fire({
+          title: 'Cancelado',
+          text: 'No se ha confirmado la cita',
+          icon: 'info',
+          width: '50%'
+        });
       }
       Swal.close();
     })

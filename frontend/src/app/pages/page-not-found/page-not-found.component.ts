@@ -18,6 +18,6 @@ export class PageNotFoundComponent {
 
   goToIndex() {
     this.router.navigate(['/'])
-      .then(() => console.log('Navegación a inicio'));
+      .then(() => {});
   }
 }

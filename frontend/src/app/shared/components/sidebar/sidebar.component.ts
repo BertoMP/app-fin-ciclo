@@ -69,11 +69,15 @@ export class SidebarComponent {
               .catch((): void => {});
           },
           error: (error) => {
-            console.error(error);
           }
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        console.log("Usuario canceló la eliminación");
+        Swal.fire({
+          icon: 'info',
+          title: 'Cancelado',
+          text: 'No se ha eliminado al usuario',
+          width: '50%'
+        });
       }
     });
   }
@@ -86,7 +90,6 @@ export class SidebarComponent {
           .catch((): void => {});
       },
       error: (error) => {
-        console.error(error);
       }
     });
   }

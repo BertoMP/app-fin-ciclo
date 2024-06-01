@@ -118,9 +118,7 @@ export class TensionFormComponent implements OnInit {
       .then(() => {
         Swal.close();
       })
-      .catch(() => {
-        console.log('Se produjo un error.')
-      });
+      .catch(() => {});
   }
 
   onSubmitError(error: string[]): void {

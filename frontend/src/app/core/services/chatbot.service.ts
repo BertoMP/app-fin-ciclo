@@ -21,16 +21,12 @@ export class ChatbotService {
         this.initializeLandbot();
       };
 
-      this.scriptElement.onerror = () => {
-        console.error('Failed to load Landbot script.');
-      };
+      this.scriptElement.onerror = () => {};
 
       const x = document.getElementsByTagName('script')[0];
       x.parentNode.insertBefore(this.scriptElement, x);
 
       this.landbotInitialized = true;
-    } else {
-      console.log('Landbot already initialized.');
     }
   }
 
@@ -44,7 +40,6 @@ export class ChatbotService {
     if (this.scriptElement) {
       this.scriptElement=null;
       this.landbotInitialized = false;
-      console.log('Landbot script removed.');
     }
 
     const landbotElements = document.getElementsByClassName('LandbotLivechat');
@@ -64,9 +59,6 @@ export class ChatbotService {
       new (window as any).Landbot.Livechat({
         configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-2238915-UHSCWASU3IQANV09/index.json'
       });
-      console.log('Landbot initialized successfully on ' + new Date().toLocaleString());
-    } else {
-      console.error('Landbot script not loaded properly');
     }
   }
 }

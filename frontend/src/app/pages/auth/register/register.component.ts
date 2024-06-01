@@ -290,8 +290,6 @@ export class RegisterComponent implements OnInit {
 
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error fetching places', error.error);
-
           Swal.fire({
             title: 'Error',
             text: 'Ha ocurrido un error al cargar los tipos de vía',
@@ -311,8 +309,6 @@ export class RegisterComponent implements OnInit {
           });
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error fetching provinces', error.error);
-
           Swal.fire({
             title: 'Error',
             text: 'Ha ocurrido un error al cargar las provincias',
@@ -335,8 +331,6 @@ export class RegisterComponent implements OnInit {
                 });
               },
               error: (error: HttpErrorResponse) => {
-                console.error('Error fetching municipios', error.error);
-
                 Swal.fire({
                   title: 'Error',
                   text: 'Ha ocurrido un error al cargar los municipios',
@@ -361,8 +355,6 @@ export class RegisterComponent implements OnInit {
                 });
               },
               error: (error: HttpErrorResponse) => {
-                console.error('Error fetching codigos_postales', error.error);
-
                 Swal.fire({
                   title: 'Error',
                   text: 'Ha ocurrido un error al cargar los códigos postales',
@@ -465,9 +457,7 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['/auth/login']).then(r => { });
       }
       Swal.close();
-    }).catch(() => {
-      console.log('Se produjo un error.')
-    });
+    }).catch(() => {});
   }
 
   onSubmitError(error: string[]): void {

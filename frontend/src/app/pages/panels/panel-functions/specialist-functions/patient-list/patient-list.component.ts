@@ -43,8 +43,6 @@ export class PatientListComponent implements OnInit {
           });
         },
         error: (error) => {
-          console.error(error);
-
           Swal.fire({
             title: 'Error',
             text: 'Ha ocurrido un error al cargar los pacientes',

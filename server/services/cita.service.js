@@ -456,8 +456,6 @@ class CitaService {
 
 			return await PdfService.generateCitaPDF(cita, qr);
 		} catch (err) {
-			console.log(err);
-
 			throw err;
 		}
 	}

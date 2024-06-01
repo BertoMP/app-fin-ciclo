@@ -128,36 +128,8 @@ export class ListadoAgendaComponent {
     });
   }
 
-  // updateFilters():void {
-  //   if (this.initialLoad) {
-  //     this.dataLoaded = false;
-  //     this.actualPage = 1;
-  //     this.getCitasSubject.next();
-  //   }
-  // }
-
-  // changePage(page: number) {
-  //   console.log(page);
-  //   if (this.initialLoad) {
-  //     this.dataLoaded = false;
-  //     this.actualPage = page;
-  //     this.getCitasSubject.next();
-  //   }
-  // }
-
   #showResults(data) {
     this.citas=data;
-    console.log(this.citas);
-    // this.nextPageUrl = data.next;
-    // this.previousPageUrl = data.prev;
-    // this.totalPages = data.paginas_totales;
-    // this.resultMin = data.result_min;
-    // this.resultMax = data.result_max;
-    // this.totalItems = data.cantidad_citas;
-    // this.itemsPerPage = data.items_pagina;
-    // this.actualPage = data.pagina_actual;
-    // this.citas = data.citas[0].citas;
-    // this.paciente = data.citas[0].datos_paciente;
   }
 
 

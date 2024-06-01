@@ -180,7 +180,12 @@ export class ConsultaListComponent implements OnDestroy {
             }
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        console.log("Usuario canceló la eliminación");
+        Swal.fire({
+          title: 'Cancelado',
+          text: 'No se ha eliminado la consulta',
+          icon: 'info',
+          width: '50%'
+        });
       }
     });
   }

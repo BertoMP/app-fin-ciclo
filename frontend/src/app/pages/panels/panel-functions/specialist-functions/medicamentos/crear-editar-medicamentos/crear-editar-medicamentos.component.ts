@@ -184,9 +184,7 @@ export class CrearEditarMedicamentosComponent {
       .then(() => {
         Swal.close();
       })
-      .catch(() => {
-        console.log('Se produjo un error.')
-      });
+      .catch(() => {});
   }
 
   onSubmitError(error: string[]): void {

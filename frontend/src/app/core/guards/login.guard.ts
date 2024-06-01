@@ -8,9 +8,7 @@ export const loginGuard = () => {
     }else{
         router.navigate(["/auth/login"])
           .then(() => {})
-          .catch((err) => {
-            console.error(err)
-          });
+          .catch((err) => {});
         return false;
     }
 }

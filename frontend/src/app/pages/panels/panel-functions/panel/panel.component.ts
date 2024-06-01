@@ -46,9 +46,7 @@ export class PanelComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.router.navigate(['/auth/login']).then(r => { });
         },
-        error: (error: HttpErrorResponse) => {
-          console.error(error.error);
-        }
+        error: (error: HttpErrorResponse) => {}
       });
   }
 

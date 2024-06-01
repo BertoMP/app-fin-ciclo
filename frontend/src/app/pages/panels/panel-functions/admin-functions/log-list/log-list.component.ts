@@ -86,9 +86,7 @@ export class LogListComponent implements OnInit, OnDestroy {
         next: () => {
           this.getLogs();
         },
-        error: (error) => {
-          console.error(error);
-        }
+        error: (error) => {}
       });
     this.initialLoad = true;
     this.getLogsSubject.next();

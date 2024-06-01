@@ -68,11 +68,9 @@ export class ForgottenPasswordComponent {
             .then(() => {
               this.router.navigate(['auth/login'])
                 .then(() => { })
-                .catch((error) => console.error('Error navigating to login', error));
+                .catch((error) => {});
             })
-            .catch(() => {
-              console.log('Se produjo un error.')
-            });
+            .catch(() => {});
         },
         error: (error: HttpErrorResponse): void => {
           this.errores = error.message.split(',');

@@ -197,7 +197,6 @@ export class SpecialistFormComponent implements OnInit {
 
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error fetching places', error.error);
         }
       });
 
@@ -213,8 +212,6 @@ export class SpecialistFormComponent implements OnInit {
 
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error fetching places', error.error);
-
           Swal.fire({
             title: 'Error',
             text: 'Ha ocurrido un error al cargar las consultas',
@@ -310,9 +307,7 @@ export class SpecialistFormComponent implements OnInit {
       .then(() => {
         Swal.close();
       })
-      .catch(() => {
-        console.log('Se produjo un error.')
-      });
+      .catch(() => {});
   }
 
   onSubmitError(error: string[]): void {

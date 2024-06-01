@@ -14,7 +14,6 @@ export class FileDownloadService {
     return this.http.get(url, { responseType: 'blob' })
       .pipe(
         catchError(error => {
-          console.error('Error downloading file:', error);
           return throwError(() => error);
         })
       );

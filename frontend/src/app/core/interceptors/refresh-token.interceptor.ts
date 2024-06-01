@@ -36,8 +36,10 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
         }),
         catchError((error) => {
           this.isRefreshing = false;
-          this.authService.removeTokens();
-          location.reload();
+          if (error instanceof HttpErrorResponse && error.status === 401) {
+            this.authService.removeTokens();
+            location.reload();
+          }
           return throwError(() => error);
         })
       );

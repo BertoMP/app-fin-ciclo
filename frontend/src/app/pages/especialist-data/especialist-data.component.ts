@@ -56,7 +56,7 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
 
             if (error.status === 404) {
               this.router.navigate(['/404'])
-                .then(() => console.log('Navegación a 404'));
+                .then(() => {});
             } else {
               Swal.fire({
                 title: 'Error',

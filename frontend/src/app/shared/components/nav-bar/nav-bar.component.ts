@@ -80,7 +80,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
           .catch((): void => {});
       },
       error: (error) => {
-        console.error(error);
       }
     });
   }

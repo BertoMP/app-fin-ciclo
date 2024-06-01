@@ -31,11 +31,11 @@ class PdfService {
 		if (existsSync(file)) {
 			unlink(file, (unlinkError) => {
 				if (unlinkError) {
-					console.log(`Error al eliminar el archivo subido: ${unlinkError}`);
+					console.error(`Error al eliminar el archivo subido: ${unlinkError}`);
 				}
 			});
 		} else {
-			console.log(`El archivo no existe en: ${file}`);
+			console.error(`El archivo no existe en: ${file}`);
 		}
 	}
 

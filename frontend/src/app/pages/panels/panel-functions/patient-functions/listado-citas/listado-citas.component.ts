@@ -165,7 +165,12 @@ export class ListadoCitasComponent {
       if (result.isConfirmed) {
         this.cancelarCita(idCita);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        console.log("Usuario canceló la eliminación");
+        Swal.fire({
+          title: 'Cancelado',
+          text: 'No se ha eliminado la cita',
+          icon: 'info',
+          width: '50%'
+        });
       }
     })
   }
