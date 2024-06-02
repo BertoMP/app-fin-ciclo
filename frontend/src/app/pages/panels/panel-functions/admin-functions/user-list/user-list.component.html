@@ -25,7 +25,11 @@
   <app-loading-spinner></app-loading-spinner>
 } @else if (!users.length) {
   <section class="no-results">
+    @if (search || role !== '1') {
     <p>No se encontraron resultados con esos criterios de búsqueda.</p>
+    } @else {
+    <p>No se encontraron usuarios registrados.</p>
+    }
     <figure>
       <img src="assets/img/search-not-found.png" alt="No se encontraron resultados">
     </figure>

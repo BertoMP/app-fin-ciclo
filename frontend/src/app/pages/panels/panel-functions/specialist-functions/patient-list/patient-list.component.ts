@@ -4,9 +4,10 @@ import {Subscription} from "rxjs";
 import {PacienteService} from "../../../../../core/services/paciente.service";
 import {PacienteListModel} from "../../../../../core/interfaces/paciente-list.model";
 import {MenuOptionComponent} from "../../../../../shared/components/menu-option/menu-option.component";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {MenuOptionModel} from "../../../../../core/interfaces/menu-option.model";
 import Swal from "sweetalert2";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-patient-list',
@@ -14,7 +15,8 @@ import Swal from "sweetalert2";
   imports: [
     Select2Module,
     MenuOptionComponent,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './patient-list.component.html',
   styleUrl: './patient-list.component.scss'
@@ -22,25 +24,39 @@ import Swal from "sweetalert2";
 export class PatientListComponent implements OnInit {
   pacientes: Select2Data;
   id: number = 0;
+  isSearch: boolean = false;
   num_historia_clinica: string;
 
   subscripcionPacientes: Subscription;
   options: MenuOptionModel[] = [];
 
-  constructor(private pacienteService: PacienteService) {
+  constructor(private pacienteService: PacienteService,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
+    const idSearch = this.activatedRoute.snapshot.params.id;
+
+    if (idSearch) {
+      this.isSearch = true;
+      this.id = parseInt(idSearch);
+      this.options = this.loadOptions();
+    }
+
     this.subscripcionPacientes = this.pacienteService.getPacienteList()
       .subscribe({
         next: (pacientes: PacienteListModel[]) => {
-          this.pacientes = pacientes.map((paciente: PacienteListModel)=> {
-            return {
-              value: paciente.paciente_id,
-              label: `${paciente.primer_apellido} ${paciente.segundo_apellido}, ${paciente.nombre}`,
-              num_historia_clinica: paciente.num_historia_clinica
-            };
-          });
+          if (!this.isSearch) {
+            this.pacientes = pacientes.map((paciente: PacienteListModel) => {
+              return {
+                value: paciente.paciente_id,
+                label: `${paciente.primer_apellido} ${paciente.segundo_apellido}, ${paciente.nombre}`,
+                num_historia_clinica: paciente.num_historia_clinica
+              };
+            });
+          } else {
+            this.num_historia_clinica = pacientes.filter((paciente: PacienteListModel) => paciente.paciente_id === this.id)[0].num_historia_clinica;
+          }
         },
         error: (error) => {
           Swal.fire({
@@ -51,6 +67,8 @@ export class PatientListComponent implements OnInit {
         }
       }
     );
+
+
   }
 
   onPatientSelected(event: any) {

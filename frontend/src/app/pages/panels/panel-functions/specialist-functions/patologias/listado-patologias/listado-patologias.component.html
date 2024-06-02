@@ -20,7 +20,14 @@
     <app-loading-spinner></app-loading-spinner>
   } @else if (!patologias.length) {
     <section class="no-results">
-      <h3>No se encontraron resultados.</h3>
+      @if (search) {
+        <p>No se encontraron resultados con esos criterios de búsqueda.</p>
+      } @else {
+        <p>No se encontraron patologías registradas.</p>
+      }
+      <figure>
+        <img src="assets/img/search-not-found.png" alt="No se encontraron resultados">
+      </figure>
     </section>
   } @else {
     <section class="specialties-table">
@@ -70,4 +77,3 @@
       }
     </section>
   }
-  

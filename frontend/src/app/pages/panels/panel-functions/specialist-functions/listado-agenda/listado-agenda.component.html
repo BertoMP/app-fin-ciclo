@@ -5,7 +5,10 @@
 <app-loading-spinner></app-loading-spinner>
 } @else if (!citas.length) {
 <section class="no-results">
-  <p>No se encontraron citas registradas.</p>
+  <p>No se encontraron citas registradas para hoy.</p>
+  <figure>
+    <img src="assets/img/search-not-found.png" alt="No se encontraron resultados">
+  </figure>
 </section>
 } @else {
 <section class="name-download">
@@ -35,8 +38,13 @@
                   <i class="bi bi-three-dots-vertical"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li class="dropdown-item" href="#" routerLink="../ver-cita/{{cita.id}}"><i class="bi bi-calendar2-event"></i> <span>Ver cita</span></li>
-                  <li class="dropdown-item" href="#" routerLink="../crear-informe/{{cita.id}}"><i class="bi  bi-file-earmark-plus"></i> <span>Generar Informe</span></li>
+                  <li class="dropdown-item" routerLink="../ver-cita/{{cita.id}}"><i class="bi bi-calendar2-event"></i> <span>Ver cita</span></li>
+                  <li class="dropdown-item" routerLink="../listado-pacientes/{{cita.paciente_id}}"><i class="bi bi-file-medical"></i> <span>Ver historia clínica</span></li>
+                  @if (!cita.informe_id) {
+                    <li class="dropdown-item" routerLink="../crear-informe/{{cita.id}}"><i class="bi  bi-file-earmark-plus"></i> <span>Generar Informe</span></li>
+                  } @else {
+                    <li class="dropdown-item" routerLink="../ver-informe/{{cita.informe_id}}"><i class="bi  bi-file-earmark-text"></i> <span>Ver Informe</span></li>
+                  }
                 </div>
               </div>
             </td>

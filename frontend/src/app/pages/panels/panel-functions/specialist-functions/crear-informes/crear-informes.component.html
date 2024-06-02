@@ -8,7 +8,7 @@
     <h2>FORMULARIO CREAR INFORME</h2>
     <section class="form-first-row">
         <fieldset class="form-speciality-data">
-            <legend>Datos</legend>
+            <legend>Datos del informe</legend>
             <article class="reason-field">
                 <label for="reason">Motivo</label>
                 <input type="text" id="reason" formControlName="motivo" [ngClass]="{'invalid':
@@ -51,7 +51,7 @@
             </li>
             }
 
-            
+
             @if (registerForm.get('patologias').invalid) {
                 <li>
                     <strong>Patologias:</strong> Debe de haber mínimo una patología seleccionada.
@@ -68,8 +68,8 @@
     </div>
     }
     <section class="btn-section">
-        <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
-        <button type="submit">Crear</button>
+      <button type="submit">Crear</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
     </section>
 </form>
 }

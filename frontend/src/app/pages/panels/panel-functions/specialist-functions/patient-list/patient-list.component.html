@@ -1,17 +1,22 @@
 <section class="header">
-  <h2>Buscador historias clínicas</h2>
+  <h2 *ngIf="!isSearch; else vistaHistoria">Buscador historias clínicas</h2>
+  <ng-template #vistaHistoria>
+    <h2>Historia clínica</h2>
+  </ng-template>
 </section>
-<section class="filter-buttons">
-  <article class="filters">
-    <article class="search-filter">
-      <select2 id="pacientes"
-               [data]="pacientes"
-               placeholder="Elige un paciente"
-               (update)="onPatientSelected($event)"
-      ></select2>
+@if (!isSearch) {
+  <section class="filter-buttons">
+    <article class="filters">
+      <article class="search-filter">
+        <select2 id="pacientes"
+                 [data]="pacientes"
+                 placeholder="Elige un paciente"
+                 (update)="onPatientSelected($event)"
+        ></select2>
+      </article>
     </article>
-  </article>
-</section>
+  </section>
+}
 <section class="options">
   <article>
     @if (!id) {

@@ -473,7 +473,11 @@ export class RegisterComponent implements OnInit {
 
 
   onCancel(): void {
-    this.router.navigate(['/auth/login']).then(r => { });
+    if (this.isAdmin) {
+      this.router.navigate(['/mediapp/usuarios']).then(r => { });
+    } else {
+      this.router.navigate(['/auth/login']).then(r => { });
+    }
   }
 
   private generateUser(): PatientModel {

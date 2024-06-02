@@ -16,7 +16,6 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
   }
 
   form {
-    width: 80%;
     padding: 1rem;
     border-radius: 1rem;
 
@@ -150,7 +149,6 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
         flex-flow: row nowrap;
         justify-content: center;
         gap: 1rem;
-        margin: 1rem;
       }
 
       &.error-message {

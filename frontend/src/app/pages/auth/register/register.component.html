@@ -326,10 +326,12 @@
       <section class="btn-section">
         <button type="submit" *ngIf="isEditing || isPatient; else isRegistering">Editar</button>
         <ng-template #isRegistering>
-          <button type="submit">Registrarse</button>
+          <button type="submit">Registrar</button>
         </ng-template>
-        <button type="button" class="btn-cancel" (click)="onCancel()">Volver al login
-        </button>
+        <button type="button" *ngIf="!isEditing && !isAdmin; else isEditingCancel" class="btn-cancel" (click)="onCancel()">Volver al login</button>
+        <ng-template #isEditingCancel>
+          <button type="button" class="btn-cancel" (click)="onCancel()">Volver</button>
+        </ng-template>
       </section>
     </section>
   </form>

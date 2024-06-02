@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 import { Observable, Subject, debounceTime } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CitasService } from '../../../../../core/services/citas.service';
-import { Select2Data } from 'ng-select2-component';
 import { DatosPacienteModel } from '../../../../../core/interfaces/datos-paciente.model';
-import { CitasDataModel } from '../../../../../core/interfaces/citas-data.model';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
 import { CitasEspecialistaListModel } from '../../../../../core/interfaces/citas-especialista-list.model';
@@ -34,46 +32,11 @@ export class ListadoAgendaComponent {
   fechaInicio: string;
   errores: string[];
 
-  // rutaActual: string;
-  // nextPageUrl: string;
-  // previousPageUrl: string;
-  // actualPage: number;
-  // totalPages: number;
-  // totalItems: number;
-  // itemsPerPage: number;
-  //
-  // datos: string[];
-  // rango: number;
-  // resultMin:number;
-  // resultMax:number;
-
-  // perPage: string = "10";
-
-  // perPageOptions: Select2Data = [
-  //   {
-  //     value: 5,
-  //     label: '5'
-  //   },
-  //   {
-  //     value: 10,
-  //     label: '10'
-  //   },
-  //   {
-  //     value: 15,
-  //     label: '15'
-  //   },
-  //   {
-  //     value: 20,
-  //     label: '20'
-  //   }
-  // ];
-
   private getCitasSubject: Subject<void> = new Subject<void>();
 
   constructor(private citasService: CitasService,private authService:AuthService) { }
 
   ngOnInit(): void {
-    // this.actualPage = 1;
     this.nombre_especialista=this.authService.getUserName();
 
     this.getCitasSubject

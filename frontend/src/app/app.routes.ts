@@ -208,6 +208,11 @@ export const routes: Routes = [
         canActivate: [specialistGuard]
       },
       {
+        path: 'listado-pacientes/:id',
+        component: PatientListComponent,
+        canActivate: [specialistGuard]
+      },
+      {
         path: 'listado-medicamentos',
         component: ListadoMedicamentosComponent,
         canActivate: [specialistGuard]
