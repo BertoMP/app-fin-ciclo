@@ -135,6 +135,53 @@ router.get(
 	PacienteTomaMedicamentoController.getRecetaPDF,
 );
 
+/**
+ * @swagger
+ * /prescripcion/tomas/{toma_id}:
+ *   get:
+ *     summary: Obtiene una toma específica de un paciente
+ *     tags: [PacienteTomaMedicamento]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: toma_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: El ID de la toma
+ *     responses:
+ *       200:
+ *         description: Toma obtenida correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Toma'
+ *       401:
+ *         description: No autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenExpiredError'
+ *       403:
+ *         description: Token inválido o no proporcionado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TokenInvalidError'
+ *       404:
+ *         description: Toma no encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NotFoundError'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ */
 router.get(
 	'/prescripcion/tomas/:toma_id',
 	verifyAccessToken,

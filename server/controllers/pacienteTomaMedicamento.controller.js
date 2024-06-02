@@ -44,6 +44,18 @@ class PacienteTomaMedicamentoController {
 		}
 	}
 
+	/**
+	 * @name getReceta
+	 * @description Método asíncrono que obtiene una receta específica de un paciente de la base de datos utilizando su ID.
+	 * 						Devuelve un objeto JSON con la respuesta HTTP que incluye los datos de la receta.
+	 * 						Si la receta no existe, devuelve un error con el mensaje correspondiente.
+	 * @static
+	 * @async
+	 * @function
+	 * @param {Object} req - El objeto de solicitud de Express.
+	 * @param {Object} res - El objeto de respuesta de Express.
+	 * @returns {Object} res - El objeto de respuesta de Express.
+	 */
 	static async getToma(req, res) {
 		const toma_id = req.params.toma_id;
 
