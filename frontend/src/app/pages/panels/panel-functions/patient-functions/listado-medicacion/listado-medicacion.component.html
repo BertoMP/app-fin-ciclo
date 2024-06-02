@@ -74,13 +74,12 @@
                     <i class="bi bi-three-dots-vertical"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                    <li class="dropdown-item" href="#"
+                    <li class="dropdown-item"
                       (click)="confirmarCancelar('¿Estás seguro que quieres eliminar esta toma?','eliminarToma',toma.id)">
                       <i class="bi bi-calendar2-x-fill"></i> <span>Eliminar Registro</span>
                     </li>
                     @if(prescripcion.medicamento.tomas.length>1){
-                    <li class="dropdown-item" href="#"
+                    <li class="dropdown-item"
                       (click)="confirmarCancelar('¿Estás seguro que quieres eliminar el medicamento por completo?','eliminarMedicamento',prescripcion.medicamento.id)">
                       <i class="bi bi-calendar2-heart-fill"></i> <span>Eliminar Medicamento</span>
                     </li>

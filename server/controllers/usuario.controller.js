@@ -361,6 +361,12 @@ class UsuarioController {
 				});
 			}
 
+			if (err.message === 'El token no coincide con la base de datos.') {
+				return res.status(403).json({
+					errors: ['Token de actualización inválido.'],
+				});
+			}
+
 			if (err.message === 'No se ha proporcionado un token de actualización.') {
 				return res.status(403).json({
 					errors: ['Token de actualización no proporcionado.'],

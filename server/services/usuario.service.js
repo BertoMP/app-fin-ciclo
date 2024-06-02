@@ -500,7 +500,7 @@ class UsuarioService {
 			}
 
 			if (userToken.refresh_token !== refreshToken) {
-				throw new Error('El token no es válido.');
+				throw new Error('El token no coincide con la base de datos.');
 			}
 
 			const user = await UsuarioModel.findById(userId, conn);
