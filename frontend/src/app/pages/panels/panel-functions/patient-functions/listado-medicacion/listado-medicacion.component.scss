@@ -193,7 +193,7 @@
                 &.fecha-fin{
                   width: 15%;
 
-                  @media all and (max-width: 650px) {
+                  @media all and (max-width: 750px) {
                     display: none;
                   }
                 }
@@ -235,9 +235,13 @@
                 &.fecha-fin {
                   width: 15%;
 
-                  @media all and (max-width: 650px) {
+                  @media all and (max-width: 750px) {
                     display: none;
                   }
+                }
+
+                &:last-child {
+                  width: 10%;
                 }
 
                 &.btn-container {
