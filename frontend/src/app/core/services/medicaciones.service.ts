@@ -32,6 +32,14 @@ export class MedicacionesService {
     return this.descargarPDF.downloadFile(`${this.baseUrl}/prescripcion/pdf/${id}`);
   }
 
+  eliminarToma(toma_id:number):Observable<void>{
+    return this.http.delete<void>(`${this.baseUrl}/prescripcion/borrar-toma/${toma_id}`)
+  }
+
+  eliminarMedicamento(usuario_id:number,medicamento_id:number):Observable<void>{
+    return this.http.delete<void>(`${this.baseUrl}/prescripcion/borrar-medicamento/${usuario_id}/${medicamento_id}`)
+  }
+
   
   getMedicamentos(search: string, perPage: number, page: number):Observable<MedicinasListModel>{
     let query: string = '';

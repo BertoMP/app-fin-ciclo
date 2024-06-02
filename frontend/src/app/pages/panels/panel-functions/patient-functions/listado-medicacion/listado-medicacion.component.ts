@@ -38,6 +38,8 @@ export class ListadoMedicacionComponent implements OnInit {
 
   private getMedsSubject: Subject<void> = new Subject<void>();
 
+  suscripcionRuta: Subscription;
+
   isUserLoggedIn: boolean = false;
   userId: number;
 
@@ -45,6 +47,7 @@ export class ListadoMedicacionComponent implements OnInit {
 
   constructor(private medicacionesService: MedicacionesService,
               private sanitizer: DomSanitizer,
+              
               private authService: AuthService,
               private activeRoute: ActivatedRoute) { }
 
@@ -78,16 +81,17 @@ export class ListadoMedicacionComponent implements OnInit {
     if (UserRole.PACIENT === this.authService.getUserRole()) {
       request = this.medicacionesService.getMedicaciones();
     } else {
-      const id = this.activeRoute.snapshot.params.id;
+      this.userId = this.activeRoute.snapshot.params.id;
 
-      request = this.medicacionesService.getMedicacionesByPacienteId(id);
+      request = this.medicacionesService.getMedicacionesByPacienteId(this.userId);
+
     }
 
     request.subscribe({
       next: (response: MedicacionListModel) => {
         this.userData = response.datos_paciente;
         this.meds = response.prescripciones;
-
+        console.log(this.meds);
         this.dataLoaded = true;
       },
       error: (error: string[]) => {
@@ -104,6 +108,53 @@ export class ListadoMedicacionComponent implements OnInit {
     });
   }
 
+  confirmarCancelar(mensaje:string,accion:string,id:number) {
+    Swal.fire({
+      titleText: mensaje,
+      icon: 'question',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+      showCancelButton: true,
+      width: '50%'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if(accion!='' && accion!=null){
+          this.eliminarRegistro(id,accion);
+        }
+      }
+    })
+  }
+
+  eliminarRegistro(idToma: number,accion:string) {
+    let request: Observable<void>;
+    if(accion=='eliminarToma'){
+      console.log('eliminar');
+      request=this.medicacionesService.eliminarToma(idToma);
+    }else if(accion=='eliminarMedicamento'){
+      request=this.medicacionesService.eliminarMedicamento(this.userId,idToma);
+    }
+    this.actualizacionRegistros(request);
+  }
+
+  actualizacionRegistros(request:Observable<void>){
+    request.subscribe({
+      next: (response) => {
+        this.dataLoaded = true;
+        Swal.fire({
+          title: 'Enhorabuena',
+          text: 'Has conseguido eliminar la toma correctamente',
+          icon: 'success',
+          width: '50%'
+        }).then(() => {
+          this.getMedicaciones();
+        })
+      },
+      error: (error: string[]) => {
+        console.log(error);
+        this.errores = error;
+      },
+    });
+  }
   downloadPrescripcion(): void {
     this.dataLoaded = false;
     let request: Observable<Blob>;

@@ -2,42 +2,41 @@
   <h2>Listado medicamentos</h2>
 </section>
 @if (!dataLoaded) {
-  <app-loading-spinner></app-loading-spinner>
+<app-loading-spinner></app-loading-spinner>
 } @else if (!meds.length) {
-  <section class="no-results">
-    @if (isPatient) {
-      <p>Actualmente no tienes medicamentos asignados.</p>
-    } @else {
-      <p>Este paciente no tiene medicamentos asignados.</p>
-      <button type="button">
-        <i class="bi bi-plus-lg"></i><span>Añadir medicación</span>
-      </button>
-    }
+<section class="no-results">
+  @if (isPatient) {
+  <p>Actualmente no tienes medicamentos asignados.</p>
+  } @else {
+  <p>Este paciente no tiene medicamentos asignados.</p>
+  <button type="button">
+    <i class="bi bi-plus-lg"></i><span>Añadir medicación</span>
+  </button>
+  }
 
-  </section>
+</section>
 } @else {
-  <section class="name-download">
-    @if (isPatient) {
-      <p>Estas son tus medicaciones, {{ userData.nombre }}</p>
-    } @else {
-      <p>Estas son las medicaciones de {{ userData.nombre }}</p>
-    }
-    <article class="buttons">
+<section class="name-download">
+  @if (isPatient) {
+  <p>Estas son tus medicaciones, {{ userData.nombre }}</p>
+  } @else {
+  <p>Estas son las medicaciones de {{ userData.nombre }}</p>
+  }
+  <article class="buttons">
     @if (!isPatient) {
-      <button type="button">
-        <i class="bi bi-plus-lg"></i><span>Añadir medicación</span>
-      </button>
+    <button type="button">
+      <i class="bi bi-plus-lg"></i><span>Añadir medicación</span>
+    </button>
     }
-    <button type="button"
-            (click)="downloadPrescripcion()">
+    <button type="button" (click)="downloadPrescripcion()">
       <i class="bi bi-file-earmark-pdf-fill"></i><span>Descargar en PDF</span>
     </button>
-    </article>
-  </section>
-  <section class="medication-table">
-    <div class="table-container">
-      <table class="med-list">
-        <thead>
+  </article>
+</section>
+<section class="medication-table">
+  <div class="table-container">
+    <table class="med-list">
+      <thead>
         <tr>
           <th rowspan="2" class="nombre">Nombre</th>
           <th class="hora">Hora</th>
@@ -45,17 +44,19 @@
           <th class="fecha-inicio">Inicio</th>
           <th class="fecha-fin">Fin</th>
           <th class="observaciones">Observaciones</th>
+          @if (!isPatient) {
+          <th class="acciones">Acciones</th>
+
+          }
         </tr>
-        </thead>
-        <tbody>
+      </thead>
+      <tbody>
         <ng-container *ngFor="let prescripcion of meds">
           <ng-container *ngFor="let toma of prescripcion.medicamento.tomas; let i = index">
             <tr [ngClass]="{'odd-row': i % 2 !== 0}">
               <ng-container *ngIf="i == 0">
-                <td [attr.rowspan]="prescripcion.medicamento.tomas.length"
-                    class="nombre"
-                    title="{{ prescripcion.medicamento.descripcion }}"
-                >
+                <td [attr.rowspan]="prescripcion.medicamento.tomas.length" class="nombre"
+                  title="{{ prescripcion.medicamento.descripcion }}">
                   {{ prescripcion.medicamento.nombre }}
                 </td>
               </ng-container>
@@ -63,14 +64,36 @@
               <td class="dosis">{{ toma.dosis }}</td>
               <td class="fecha-inicio">{{ toma.fecha_inicio }}</td>
               <td class="fecha-fin">{{ toma.fecha_fin }}</td>
-              <td class="observaciones"
-                  [innerHTML]="toma.observaciones ? sanitizeHtml(toma.observaciones) : ''"
-                  [title]="toma.observaciones ? sanitizeHtml(toma.observaciones) : ''"></td>
+              <td class="observaciones" [innerHTML]="toma.observaciones ? sanitizeHtml(toma.observaciones) : ''"
+                [title]="toma.observaciones ? sanitizeHtml(toma.observaciones) : ''"></td>
+              @if(!isPatient){
+              <td class="btn-container">
+                <div class="dropdown">
+                  <button class="btn btn-link" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                    <li class="dropdown-item" href="#"
+                      (click)="confirmarCancelar('¿Estás seguro que quieres eliminar esta toma?','eliminarToma',toma.id)">
+                      <i class="bi bi-calendar2-x-fill"></i> <span>Eliminar Registro</span>
+                    </li>
+                    @if(prescripcion.medicamento.tomas.length>1){
+                    <li class="dropdown-item" href="#"
+                      (click)="confirmarCancelar('¿Estás seguro que quieres eliminar el medicamento por completo?','eliminarMedicamento',prescripcion.medicamento.id)">
+                      <i class="bi bi-calendar2-heart-fill"></i> <span>Eliminar Medicamento</span>
+                    </li>
+                    }
+                  </div>
+                </div>
+              </td>
+              }
             </tr>
           </ng-container>
         </ng-container>
-        </tbody>
-      </table>
-    </div>
-  </section>
+      </tbody>
+    </table>
+  </div>
+</section>
 }
