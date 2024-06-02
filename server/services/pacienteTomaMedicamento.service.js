@@ -224,7 +224,7 @@ class PacienteTomaMedicamentoService {
 				conn,
 			);
 
-			if (tomas.prescripciones.length === 0) {
+			if (tomas.length === 0) {
 				throw new Error('No hay recetas de este medicamento para el paciente.');
 			}
 
