@@ -1,0 +1,75 @@
+@if (isLoading) {
+<section>
+    <p>Registrando Informe...</p>
+    <app-loading-spinner></app-loading-spinner>
+</section>
+} @else {
+<form [formGroup]="registerForm" (ngSubmit)="confirmarCancelar()">
+    <h2>FORMULARIO CREAR INFORME</h2>
+    <section class="form-first-row">
+        <fieldset class="form-speciality-data">
+            <legend>Datos</legend>
+            <article class="reason-field">
+                <label for="reason">Motivo</label>
+                <input type="text" id="reason" formControlName="motivo" [ngClass]="{'invalid':
+                               registerForm.get('motivo').invalid && sendedAttempt }">
+            </article>
+            <article class="patology-field">
+                <label for="patology">Patologias</label>
+                <select2 formControlName="patologias" id="patology"
+                        [ngClass]="{ 'invalid':
+                     registerForm.get('patologias').invalid &&
+                     sendedAttempt }" [data]="patologias" placeholder="Elige una opcion" [multiple]="true">
+                </select2>
+              </article>
+            <article class="description-field">
+                <section class="description-data">
+                    <label for="content">Contenido</label>
+                    <p><span
+                            [class.description-overlimit]="contentLength > maxLength">{{contentLength}}</span>/{{maxLength}}
+                        caracteres</p>
+                </section>
+                <quill-editor formControlName="contenido" id="content" placeholder="Introduce una descripción..."
+                    [modules]="quillConfig"
+                    [ngClass]="{ 'invalid': registerForm.get('contenido').invalid && sendedAttempt }"></quill-editor>
+            </article>
+        </fieldset>
+    </section>
+    @if (registerForm.invalid && sendedAttempt) {
+    <section class="error-message">
+        <h3>Por favor, rellena todos los campos correctamente:</h3>
+        <ul>
+            @if (registerForm.get('motivo').invalid) {
+            <li>
+                <strong>Motivo:</strong> Debe de tener un motivo.
+            </li>
+            }
+
+            @if (registerForm.get('contenido').invalid) {
+            <li>
+                <strong>Contenido:</strong> Debe de tener un contenido y no superar los 2500 caracteres.
+            </li>
+            }
+
+            
+            @if (registerForm.get('patologias').invalid) {
+                <li>
+                    <strong>Patologias:</strong> Debe de haber mínimo una patología seleccionada.
+                </li>
+                }
+
+        </ul>
+    </section>
+    } @else if (errores.length > 0) {
+    <div class="error-message">
+        <ul>
+            <li *ngFor="let error of errores">{{ error }}</li>
+        </ul>
+    </div>
+    }
+    <section class="btn-section">
+        <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+        <button type="submit">Crear</button>
+    </section>
+</form>
+}

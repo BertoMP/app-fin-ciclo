@@ -67,10 +67,7 @@
                   <td>
                     <div class="mb-3">
                       <h5 class="mb-3"><strong>CONTENIDO DEL INFORME:</strong></h5>
-                      <textarea class="form-control"
-                                rows="4"
-                                readonly
-                                [innerHTML]="sanitizeHtml(informe.datos_informe.contenido)"></textarea>
+                      <div class="form-control" [innerHTML]="sanitizeHtml(informe.datos_informe.contenido)"></div>
                     </div>
                   </td>
                 </tr>

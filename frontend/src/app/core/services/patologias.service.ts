@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { PatologiasListModel } from '../interfaces/patologias-list.model';
 import { Observable, catchError, throwError } from 'rxjs';
 import { PatologiasDataModel } from '../interfaces/patologias-data.model';
+import { PatologiasInformeModel } from '../interfaces/patologia-informe.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,10 @@ export class PatologiasService {
 
   getPatologiaId(id: number): Observable<PatologiasDataModel> {
     return this.http.get<PatologiasDataModel>(`${this.baseUrl}/patologia/${id}`);
+  }
+
+  getInformePatologias(): Observable<PatologiasInformeModel[]> {
+    return this.http.get<PatologiasInformeModel[]>(`${this.baseUrl}/patologia/informe`);
   }
 
   private handleError(errorRes: HttpErrorResponse) {

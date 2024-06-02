@@ -144,7 +144,9 @@ class PatologiaService {
 	 */
 	static async createPatologia(data, conn = dbConn) {
 		try {
+			console.log(data.descripcion);
 			const patologia = ObjectFactory.createPatologiaObject(data);
+			console.log(patologia.descripcion);
 			const patologiaExists = await PatologiaModel.findByNombre(patologia.nombre, conn);
 
 			if (patologiaExists) {

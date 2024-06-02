@@ -43,6 +43,7 @@ import {
 import {
   CrearEditarConsultaComponent
 } from "./pages/panels/panel-functions/admin-functions/crear-editar-consulta/crear-editar-consulta.component";
+import { CrearInformesComponent } from './pages/panels/panel-functions/specialist-functions/crear-informes/crear-informes.component';
 
 export const routes: Routes = [
   {
@@ -236,6 +237,11 @@ export const routes: Routes = [
         component: CrearEditarPatologiasComponent,
         canActivate: [specialistGuard]
       },
+      {
+        path: 'crear-informe/:cita_id',
+        component: CrearInformesComponent,
+        canActivate: [specialistGuard]
+      }
     ]
   },
   // Rutas comunes a todos los usuarios, tanto logados como no

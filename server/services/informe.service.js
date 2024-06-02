@@ -163,7 +163,6 @@ class InformeService {
 	 */
 	static async createInforme(data, conn = null) {
 		const isConnProvided = !!conn;
-
 		const informe = ObjectFactory.createInformeObject(data);
 
 		if (!isConnProvided) {
@@ -176,7 +175,7 @@ class InformeService {
 			}
 
 			const informeCreado = await InformeModel.create(informe, conn);
-			const informeId = informeCreado.insertId;
+			const informeId = informeCreado.id;
 
 			for (const patologiaId of informe.patologias) {
 				const patologiaExists = await PatologiaService.readPatologiaById(patologiaId, conn);
@@ -187,6 +186,8 @@ class InformeService {
 
 				await InformePatologiaService.addInformePatologia(informeId, patologiaId, conn);
 			}
+
+
 
 			await CitaService.updateInformeId(informe.cita_id, informeId, conn);
 

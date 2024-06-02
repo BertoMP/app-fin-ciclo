@@ -20,18 +20,16 @@
 @if (!dataLoaded) {
   <app-loading-spinner></app-loading-spinner>
 } @else if (!informes.length) {
+  <section class="no-results">
   @if (fechaInicio || fechaFin) {
-    <section class="no-results">
       <p>No se encontraron resultados con esos criterios de búsqueda.</p>
       <figure>
         <img src="assets/img/search-not-found.png" alt="No se encontraron resultados">
       </figure>
-    </section>
   } @else {
-    <section class="no-results">
       <p>No se encontraron informes.</p>
-    </section>
   }
+</section>
 } @else {
   <section class="name-download">
     @if (isPatient) {
