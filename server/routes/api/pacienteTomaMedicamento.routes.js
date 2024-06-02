@@ -135,6 +135,15 @@ router.get(
 	PacienteTomaMedicamentoController.getRecetaPDF,
 );
 
+router.get(
+	'/prescripcion/tomas/:toma_id',
+	verifyAccessToken,
+	verifyUserRole([3]),
+	verifyUserId,
+	validateTomaIdParam,
+	PacienteTomaMedicamentoController.getToma,
+)
+
 /**
  * @swagger
  * /prescripcion/{usuario_id}:

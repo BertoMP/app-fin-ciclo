@@ -1,3 +1,5 @@
+import {format} from "date-fns";
+
 /**
  * @class TomaModel
  * @description Clase que contiene los métodos para interactuar con la tabla de toma.
@@ -89,13 +91,17 @@ class TomaModel {
 	static async findToma(id, dbConn) {
 		const query =
 			'SELECT ' +
+			'   id, ' +
 			'		hora,' +
 			'   dosis,' +
 			'   fecha_inicio,' +
 			'   fecha_fin,' +
-			'   observaciones ' +
+			'   observaciones, ' +
+			'   medicamento_id ' +
 			'FROM ' +
 			'		toma ' +
+			'INNER JOIN ' +
+			'		paciente_toma_medicamento ON toma.id = paciente_toma_medicamento.toma_id ' +
 			'WHERE ' +
 			'		id = ?';
 
@@ -111,12 +117,14 @@ class TomaModel {
 				datos_toma: {
 					dosis: rows[0].dosis,
 					hora: rows[0].hora,
-					fecha_inicio: rows[0].fecha_inicio,
-					fecha_fin: rows[0].fecha_fin,
+					fecha_inicio: format(new Date(rows[0].fecha_inicio), 'dd-MM-yyyy'),
+					fecha_fin: rows[0].fecha_fin ? format(new Date(rows[0].fecha_fin), 'dd-MM-yyyy') : null,
 					observaciones: rows[0].observaciones,
-				}
+				},
+				medicamento_id: rows[0].medicamento_id,
 			};
 		} catch (err) {
+			console.log(err);
 			throw new Error('Error al buscar la toma.');
 		}
 	}
