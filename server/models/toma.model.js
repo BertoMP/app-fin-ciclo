@@ -113,15 +113,15 @@ class TomaModel {
 			}
 
 			return {
-				id: id,
 				datos_toma: {
+					id: rows[0].id,
 					dosis: rows[0].dosis,
 					hora: rows[0].hora,
 					fecha_inicio: format(new Date(rows[0].fecha_inicio), 'dd-MM-yyyy'),
 					fecha_fin: rows[0].fecha_fin ? format(new Date(rows[0].fecha_fin), 'dd-MM-yyyy') : null,
 					observaciones: rows[0].observaciones,
 				},
-				medicamento_id: rows[0].medicamento_id,
+				id: rows[0].medicamento_id,
 			};
 		} catch (err) {
 			console.log(err);
