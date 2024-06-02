@@ -127,22 +127,27 @@ export class ListadoMedicacionComponent implements OnInit {
 
   eliminarRegistro(idToma: number,accion:string) {
     let request: Observable<void>;
+    let mensaje:string='toma';
+
     if(accion=='eliminarToma'){
-      console.log('eliminar');
       request=this.medicacionesService.eliminarToma(idToma);
+      
     }else if(accion=='eliminarMedicamento'){
       request=this.medicacionesService.eliminarMedicamento(this.userId,idToma);
+      mensaje='medicación';
     }
-    this.actualizacionRegistros(request);
+
+    this.actualizacionRegistros(request,mensaje);
+
   }
 
-  actualizacionRegistros(request:Observable<void>){
+  actualizacionRegistros(request:Observable<void>,mensaje:string){
     request.subscribe({
       next: (response) => {
         this.dataLoaded = true;
         Swal.fire({
           title: 'Enhorabuena',
-          text: 'Has conseguido eliminar la toma correctamente',
+          text: `Has conseguido eliminar ${mensaje} correctamente`,
           icon: 'success',
           width: '50%'
         }).then(() => {
