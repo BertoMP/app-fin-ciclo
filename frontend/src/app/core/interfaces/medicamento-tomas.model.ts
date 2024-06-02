@@ -3,6 +3,6 @@ export interface MedicamentoTomasModel {
     fecha_fin: string,
     fecha_inicio: string,
     hora: string,
-    id: number,
+    id?: number,
     observaciones: string
 }

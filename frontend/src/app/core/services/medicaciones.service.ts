@@ -6,6 +6,7 @@ import { MedicacionListModel } from '../interfaces/medicacion-list.model';
 import { FileDownloadService } from './file-downloader.service';
 import { MedicinasDataModel } from '../interfaces/medicinas-data.model';
 import { MedicinasListModel } from '../interfaces/medicinas-list.model';
+import { MedicacionToma } from '../interfaces/medicacion-toma.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class MedicacionesService {
 
   getMedicaciones() {
     return this.http.get<MedicacionListModel>(`${this.baseUrl}/prescripcion`);
+  }
+
+  getMedicamentosPreescripcion():Observable<MedicacionToma[]> {
+    return this.http.get<MedicacionToma[]>(`${this.baseUrl}/medicamento/prescripcion`);
   }
 
   getMedicacionesByPacienteId(id: number) {

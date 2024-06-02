@@ -44,6 +44,7 @@ import {
   CrearEditarConsultaComponent
 } from "./pages/panels/panel-functions/admin-functions/crear-editar-consulta/crear-editar-consulta.component";
 import { CrearInformesComponent } from './pages/panels/panel-functions/specialist-functions/crear-informes/crear-informes.component';
+import { ModalComponent } from './pages/panels/panel-functions/specialist-functions/crear-editar-tomas/modal/modal.component';
 
 export const routes: Routes = [
   {
@@ -246,7 +247,17 @@ export const routes: Routes = [
         path: 'crear-informe/:cita_id',
         component: CrearInformesComponent,
         canActivate: [specialistGuard]
-      }
+      },
+      {
+        path: 'crear-tomas',
+        component: ModalComponent,
+        canActivate: [specialistGuard]
+      },
+      {
+        path: 'editar-tomas/:id',
+        component: ModalComponent,
+        canActivate: [specialistGuard]
+      },
     ]
   },
   // Rutas comunes a todos los usuarios, tanto logados como no

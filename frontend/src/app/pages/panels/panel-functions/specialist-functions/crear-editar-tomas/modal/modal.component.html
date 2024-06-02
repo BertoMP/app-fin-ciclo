@@ -1,0 +1,104 @@
+<form [formGroup]="registerForm" (ngSubmit)="onRegisterToma()">
+    <h2 *ngIf="!isEditing; else isEditingH2">FORMULARIO CREAR TOMA</h2>
+    <ng-template #isEditingH2>
+        <h2>FORMULARIO EDITAR TOMA</h2>
+    </ng-template>
+    <section class="form-first-row">
+        <fieldset class="form-speciality-data">
+            <legend>Datos toma</legend>
+            <article class="medicamento-field">
+                <label for="medicamento">Medicamento</label>
+                <select2 id="medicamento" formControlName="medicamento" [ngClass]="{ 'invalid': registerForm.get('medicamento').invalid &&
+                      sendedAttempt }" [data]="medicamentos" placeholder="Elige una opcion">
+                </select2>
+            </article>
+            <article class="name-field">
+                <label for="hour">Hora</label>
+                <input type="time" id="hour" formControlName="hora" [ngClass]="{'invalid':
+                               registerForm.get('hora').invalid && sendedAttempt }">
+            </article>
+            <article class="name-field">
+                <label for="dose">Dosis</label>
+                <input type="number" id="dose" formControlName="dosis" [ngClass]="{'invalid':
+                               registerForm.get('dosis').invalid && sendedAttempt }">
+            </article>
+            <article class="name-field">
+                <label for="initDate">Fecha Inicio</label>
+                <input type="date" id="initDate" formControlName="fechaInicio" [ngClass]="{'invalid':
+                               registerForm.get('fechaInicio').invalid && sendedAttempt }">
+            </article>
+            <article class="name-field">
+                <label for="endDate">Fecha Fin</label>
+                <input type="date" id="endDate" formControlName="fechaFin" [ngClass]="{'invalid':
+                               registerForm.get('fechaFin').invalid && sendedAttempt }">
+            </article>
+            <article class="observation-field">
+                <section class="observation-data">
+                    <label for="observation">Observaciones</label>
+                    <p><span
+                            [class.description-overlimit]="observationLength > maxLength">{{observationLength}}</span>/{{maxLength}}
+                        caracteres</p>
+                </section>
+                <quill-editor formControlName="observacion" id="observation" placeholder="Introduce una observación..."
+                    [modules]="quillConfig"
+                    [ngClass]="{ 'invalid': registerForm.get('observacion').invalid && sendedAttempt }"></quill-editor>
+            </article>
+        </fieldset>
+    </section>
+    @if (registerForm.invalid && sendedAttempt) {
+    <section class="error-message">
+        <h3>Por favor, rellena todos los campos correctamente:</h3>
+        <ul>
+            @if (registerForm.get('medicamento').invalid) {
+            <li>
+                <strong>Medicamento:</strong> Debe haber un medicamento seleccionado.
+            </li>
+            }
+
+            @if (registerForm.get('hora').invalid) {
+            <li>
+                <strong>Hora:</strong> Debe haber una hora establecida.
+            </li>
+            }
+
+            @if (registerForm.get('dosis').invalid) {
+            <li>
+                <strong>Dosis:</strong>El medicamento debe de estar dosificado.
+            </li>
+            }
+
+            @if (registerForm.get('fechaInicio').invalid) {
+            <li>
+                <strong>Fecha inicio:</strong> El tratamiento debe de tener una fecha de inicio y no superar a la fecha de fin.
+            </li>
+            }
+
+            @if (registerForm.get('fechaFin').invalid) {
+            <li>
+                <strong>Fecha fin:</strong> El tratamiento debe de tener una fecha de fin establecida.
+            </li>
+            }
+
+            @if (registerForm.get('observacion').invalid) {
+            <li>
+                <strong>Observación:</strong> Debe de tener una observación y no superar los 1000 caracteres.
+            </li>
+            }
+
+        </ul>
+    </section>
+    } @else if (errores.length > 0) {
+    <div class="error-message">
+        <ul>
+            <li *ngFor="let error of errores">{{ error }}</li>
+        </ul>
+    </div>
+    }
+    <section class="btn-section">
+        <button type="submit" *ngIf="!isEditing; else isEditingBtn">Crear</button>
+        <ng-template #isEditingBtn>
+            <button type="submit">Editar</button>
+        </ng-template>
+        <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+    </section>
+</form>
