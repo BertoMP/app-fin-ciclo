@@ -42,7 +42,8 @@ class InformeModel {
 			'    cita.paciente_id = ? ' +
 			'    AND cita.fecha BETWEEN ? AND ? ' +
 			'ORDER BY' +
-			'    cita.fecha DESC ' +
+			'    cita.fecha DESC, ' +
+			'    cita.hora DESC ' +
 			'LIMIT ? OFFSET ?';
 
 		const countQuery =

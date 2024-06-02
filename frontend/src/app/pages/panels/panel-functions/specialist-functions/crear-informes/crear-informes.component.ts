@@ -175,7 +175,7 @@ export class CrearInformesComponent {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
-    this.router.navigate(['/mediapp/listado-pacientes'])
+    this.router.navigate(['/mediapp/listado-agenda'])
       .then(() => { });
     Swal.fire({
       title: 'Enhorabuena',
@@ -205,7 +205,8 @@ export class CrearInformesComponent {
   }
 
   onCancel(): void {
-    this.location.back();
+    this.router.navigate(['/mediapp/listado-agenda'])
+      .then(() => { });
   }
 
   private generateInform(): InformeFormModel {
