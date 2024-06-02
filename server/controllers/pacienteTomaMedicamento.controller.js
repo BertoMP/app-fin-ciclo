@@ -44,6 +44,21 @@ class PacienteTomaMedicamentoController {
 		}
 	}
 
+	static async getToma(req, res) {
+		const toma_id = req.params.toma_id;
+
+		try {
+			const toma = await TomaService.findToma(toma_id);
+
+			return res.status(200).json(toma);
+		} catch (error) {
+			return res.status(500).json({
+				errors: [error.message],
+			});
+		}
+
+	}
+
 	/**
 	 * @name postReceta
 	 * @description Método asíncrono que crea una nueva receta en la base de datos.
