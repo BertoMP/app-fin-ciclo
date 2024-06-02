@@ -110,14 +110,6 @@ class PacienteTomaMedicamentoController {
 		const toma_id = req.params.toma_id;
 
 		try {
-			const tomaExists = await TomaService.findToma(toma_id);
-
-			if (!tomaExists) {
-				return res.status(404).json({
-					errors: ['La toma no existe.'],
-				});
-			}
-
 			await PacienteTomaMedicamentoService.deleteTomaFromPrescription(toma_id);
 
 			return res.status(200).json({
