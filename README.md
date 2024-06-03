@@ -160,15 +160,52 @@ del cliente:
 11. Para acceder a la documentación JSDoc, navega a `http://localhost:3000/docs`.
 
 ## Capturas de pantalla
-![Especialidades](./screenshots/especialidades.png)
-![Login](./screenshots/login.png)
-![Listado de usuarios](./screenshots/listado-usuarios.png)
-![Toma de tensión arterial](./screenshots/toma-tension.png)
-![Listado de citas](./screenshots/listado-citas.png)
-![Listado de glucometrías](./screenshots/listado-glucometrias.png)
-![Modal](./screenshots/modal.png)
-![Swagger](./screenshots/swagger.png)
-![JSDoc](./screenshots/jsdoc.png)
+<div align="center">
+  <table align="center">
+    <tr>
+      <td>
+        <img src="./screenshots/especialidades.png" width="200"/>
+        <p>Especialidades Médicas</p>
+      </td>
+      <td>
+        <img src="./screenshots/login.png" width="200"/>
+        <p>Pantalla de Inicio de Sesión</p>
+      </td>
+      <td>
+        <img src="./screenshots/listado-usuarios.png" width="200"/>
+        <p>Listado de Usuarios Registrados</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="./screenshots/toma-tension.png" width="200"/>
+        <p>Proceso de Toma de Tensión Arterial</p>
+      </td>
+      <td>
+        <img src="./screenshots/listado-citas.png" width="200"/>
+        <p>Listado de Citas Médicas</p>
+      </td>
+      <td>
+        <img src="./screenshots/listado-glucometrias.png" width="200"/>
+        <p>Listado de Resultados de Glucometrías</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="./screenshots/modal.png" width="200"/>
+        <p>Ejemplo de Ventana Modal</p>
+      </td>
+      <td>
+        <img src="./screenshots/swagger.png" width="200"/>
+        <p>Documentación de API con Swagger</p>
+      </td>
+      <td>
+        <img src="./screenshots/jsdoc.png" width="200"/>
+        <p>Documentación de Código con JSDoc</p>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ## Licencia
 
