@@ -7,7 +7,7 @@
 </h1>
 
 Este es un proyecto de fin de ciclo desarrollado por [Alberto Martínez Pérez](https://github.com/BertoMP) y [Rafael Romero Roibu](https://github.com/romraf) utilizando las tecnologías
-Angular 17 para el _frontend_, Node.JS 20 para el _backend_ y MySQL para la base de datos.
+Angular 17.3.10 para el _frontend_, Node.JS 20.14 para el _backend_ y MySQL para la base de datos.
 
 Nuestro _frontend_ se encarga de la interfaz de usuario y la comunicación con el _backend_ a través de peticiones HTTP. El _backend_ por su parte es el encargado 
 de llevar a cabo toda la lógica de negocio así como la comunicación con la base de datos comportándose como una API REST.
@@ -160,15 +160,52 @@ del cliente:
 11. Para acceder a la documentación JSDoc, navega a `http://localhost:3000/docs`.
 
 ## Capturas de pantalla
-![Especialidades](./screenshots/especialidades.png)
-![Login](./screenshots/login.png)
-![Listado de usuarios](./screenshots/listado-usuarios.png)
-![Toma de tensión arterial](./screenshots/toma-tension.png)
-![Listado de citas](./screenshots/listado-citas.png)
-![Listado de glucometrías](./screenshots/listado-glucometrias.png)
-![Modal](./screenshots/modal.png)
-![Swagger](./screenshots/swagger.png)
-![JSDoc](./screenshots/jsdoc.png)
+<div align="center">
+  <table align="center">
+    <tr>
+      <td>
+        <img src="./screenshots/especialidades.png" width="200"/>
+        <p>Especialidades Médicas</p>
+      </td>
+      <td>
+        <img src="./screenshots/login.png" width="200"/>
+        <p>Pantalla de Inicio de Sesión</p>
+      </td>
+      <td>
+        <img src="./screenshots/listado-usuarios.png" width="200"/>
+        <p>Listado de Usuarios Registrados</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="./screenshots/toma-tension.png" width="200"/>
+        <p>Proceso de Toma de Tensión Arterial</p>
+      </td>
+      <td>
+        <img src="./screenshots/listado-citas.png" width="200"/>
+        <p>Listado de Citas Médicas</p>
+      </td>
+      <td>
+        <img src="./screenshots/listado-glucometrias.png" width="200"/>
+        <p>Listado de Resultados de Glucometrías</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="./screenshots/modal.png" width="200"/>
+        <p>Ejemplo de Ventana Modal</p>
+      </td>
+      <td>
+        <img src="./screenshots/swagger.png" width="200"/>
+        <p>Documentación de API con Swagger</p>
+      </td>
+      <td>
+        <img src="./screenshots/jsdoc.png" width="200"/>
+        <p>Documentación de Código con JSDoc</p>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ## Licencia
 
