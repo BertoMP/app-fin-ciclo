@@ -9,7 +9,7 @@
   <p>Actualmente no tienes medicamentos asignados.</p>
   } @else {
   <p>Este paciente no tiene medicamentos asignados.</p>
-  <button type="button" routerLink="/mediapp/crear-tomas">
+  <button type="button" routerLink="/mediapp/modificar-tomas/{{userId}}">
     <i class="bi bi-plus-lg"></i><span>Añadir medicación</span>
   </button>
   }
@@ -24,7 +24,7 @@
   }
   <article class="buttons">
     @if (!isPatient) {
-    <button type="button" routerLink="/mediapp/editar-tomas/{{userId}}">
+    <button type="button" routerLink="/mediapp/modificar-tomas/{{userId}}">
       <i class="bi bi-plus-lg"></i><span>Editar medicación</span>
     </button>
     }

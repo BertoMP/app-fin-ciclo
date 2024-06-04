@@ -8,8 +8,8 @@
             <legend>Datos toma</legend>
             <article class="medicamento-field">
                 <label for="medicamento">Medicamento</label>
-                <select2 id="medicamento" formControlName="medicamento" [ngClass]="{ 'invalid': registerForm.get('medicamento').invalid &&
-                      sendedAttempt }" [data]="medicamentos" placeholder="Elige una opcion">
+                <select2 id="medicamento" formControlName="medicamento" [ngClass]="{ 'invalid': sendedAttempt && registerForm.get('medicamento').invalid
+                       }" [data]="medicamentos" placeholder="Elige una opcion">
                 </select2>
             </article>
             <article class="name-field">

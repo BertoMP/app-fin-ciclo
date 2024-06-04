@@ -1,0 +1,289 @@
+@import "bootstrap-icons";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  section {
+    width: 100%;
+
+    &.name-download {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      @media all and (max-width: 1300px) {
+        flex-direction: column;
+      }
+
+      p {
+        font-size: 1.5rem;
+        font-weight: 500;
+        display: block;
+
+        @media all and (max-width: 1000px) {
+          font-size: 1rem;
+          text-align: center;
+        }
+      }
+
+      article {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @media all and (max-width: 1300px) {
+          margin-top: 10px;
+        }
+
+        button {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          background-color: #007bff;
+          color: white;
+          font-size: 1.2rem;
+          cursor: pointer;
+          margin-right: 20px;
+
+          i {
+            margin-right: 20px;
+
+            &.bi-file-earmark-pdf-fill {
+              color: #ec7b7b;
+            }
+          }
+
+          &:hover {
+            background-color: #0056b3;
+          }
+
+          @media all and (max-width: 600px) {
+            padding: 10px 10px;
+            font-size: 1rem;
+
+            i {
+              display: none;
+            }
+          }
+
+          @media all and (max-width: 1300px) {
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+
+    &.no-results {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 500;
+      justify-content: center;
+
+      p {
+        text-align: center;
+      }
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-right: 20px;
+
+        i {
+          margin-right: 20px;
+        }
+
+        &:hover {
+          background-color: #0056b3;
+        }
+
+        @media all and (max-width: 600px) {
+          padding: 10px 10px;
+          font-size: 1rem;
+
+          i {
+            display: none;
+          }
+        }
+      }
+    }
+
+    &.medication-table {
+      width: 80%;
+      height: 580px;
+
+      @media all and (max-width: 1600px) {
+        width: 100%;
+      }
+
+      @media all and (max-width: 1300px) {
+        height: 500px;
+      }
+
+      .table-container {
+        height: 100%;
+        overflow-y: auto;
+        width: 100%;
+        display: block;
+
+        &::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+
+        table {
+          display: table;
+          width: 100%;
+          border-collapse: collapse;
+          border-spacing: 0;
+          border-radius: 5px;
+
+          thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+
+            tr {
+              background-color: lightblue;
+
+              th {
+                font-size: 1.2rem;
+                font-weight: 500;
+                padding: 10px;
+                text-align: center;
+
+                &.nombre {
+                  width: 10%;
+                }
+
+                &.hora,
+                &.dosis {
+                  width: 5%
+                }
+
+                &.fecha-inicio,
+                &.fecha-fin{
+                  width: 15%;
+
+                  @media all and (max-width: 750px) {
+                    display: none;
+                  }
+                }
+
+                &.observaciones {
+                  width: 30%;
+
+                  @media all and (max-width: 1300px){
+                    display: none;
+                  }
+                }
+              }
+            }
+          }
+          tbody {
+            tr {
+              border-bottom: 1px solid #ccc;
+              transition: background-color 0.3s;
+              background-color: #e1fae1;
+              text-align: center;
+
+              &.odd-row {
+                background-color: #eefdee;
+              }
+
+              td {
+                padding: 1.2rem;
+
+                &.nombre {
+                  width: 10%;
+                }
+
+                &.hora,
+                &.dosis {
+                  width: 5%;
+                }
+
+                &.fecha-inicio,
+                &.fecha-fin {
+                  width: 15%;
+
+                  @media all and (max-width: 750px) {
+                    display: none;
+                  }
+                }
+
+                &:last-child {
+                  width: 10%;
+                }
+
+                &.btn-container {
+                  > div {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  }
+
+                  li {
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    border: none;
+                    font-size: 1rem;
+                    cursor: pointer;
+
+                    bi {
+                      font-size: 1.5rem;
+                      width: 20%;
+                    }
+
+                    span {
+                      width: 80%;
+                      display: inline-block;
+                      padding: .5rem;
+                      color: black;
+                      font-size: 1rem;
+                    }
+                  }
+                }
+
+                &.observaciones {
+                  @media all and (max-width: 1300px){
+                    display: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

@@ -1,21 +1,18 @@
 import { CommonModule, Location, LowerCasePipe, NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Select2Data, Select2Module } from 'ng-select2-component';
 import { QuillEditorComponent } from 'ngx-quill';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { CustomValidators } from '../../../../../../core/classes/CustomValidators';
-import { PatologiasDataModel } from '../../../../../../core/interfaces/patologias-data.model';
-import { PatologiasService } from '../../../../../../core/services/patologias.service';
 import { LoadingSpinnerComponent } from '../../../../../../shared/components/loading-spinner/loading-spinner.component';
 import { PasswordInputComponent } from '../../../../../../shared/components/password-input/password-input.component';
 import { MedicacionesService } from '../../../../../../core/services/medicaciones.service';
 import { MedicacionToma } from '../../../../../../core/interfaces/medicacion-toma.model';
-import { MedicamentoDataModel } from '../../../../../../core/interfaces/medicamento-data.model';
 import { TomaInforme } from '../../../../../../core/interfaces/tomaInforme.model';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-modal',
@@ -37,12 +34,18 @@ export class ModalComponent {
   isLoading: boolean = false;
   errores: string[] = [];
   maxLength: number = 1000;
+  @Input() tomaMedicamento: TomaInforme;
+
 
   suscripcionRuta: Subscription;
   medicamentos: Select2Data;
 
   id: number;
-  nombre: string = '';
+  id_medicamento: number;
+  hora: string;
+  dosis: number;
+  fecha_inicio: string;
+  fecha_fin: string;
   observaciones: string = '';
 
   isEditing: boolean = false;
@@ -63,42 +66,13 @@ export class ModalComponent {
     ]
   };
 
-  constructor(private activatedRoute: ActivatedRoute,
-    private patologiasService: PatologiasService,
-    private medicacionesService: MedicacionesService,
-    private router: Router,
-    private location: Location) {
+  constructor(
+    public activeModal: NgbActiveModal,
+    private medicacionesService: MedicacionesService,) {
   }
 
   ngOnInit(): void {
-    this.getMedicaciones();
-    this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
-      this.id = params['id'] || null;
-
-      if (this.id !== null) {
-        this.isEditing = true;
-      }
-
-      if (this.isEditing) {
-        // this.patologiasService.getPatologiaId(this.id).subscribe({
-        //   next: (res: PatologiasDataModel) => {
-        //     this.patologias = res;
-        //     this.nombre = this.patologias.datos_patologia.nombre;
-        //     this.descripcion = this.patologias.datos_patologia.descripcion;
-        //     this.patchForm();
-        //   },
-        //   error: (error: HttpErrorResponse): void => {
-        //     this.errores = error.message.split(',');
-
-        //     Swal.fire({
-        //       title: 'Error',
-        //       text: 'Ha ocurrido un error al cargar la patología',
-        //       icon: 'error'
-        //     });
-        //   }
-        // });
-      }
-    });
+    console.log('Datos recibidos en el modal:', this.tomaMedicamento);
 
     this.registerForm = new FormGroup<any>({
       'medicamento': new FormControl(
@@ -113,23 +87,20 @@ export class ModalComponent {
           Validators.required,
         ]
       ),
-      'dosis':new FormControl(
+      'dosis': new FormControl(
         null,
         [
           Validators.required,
         ]
       ),
-      'fechaInicio':new FormControl(
+      'fechaInicio': new FormControl(
         null,
         [
           Validators.required,
         ]
       ),
-      'fechaFin':new FormControl(
-        null,
-        [
-          Validators.required,
-        ]
+      'fechaFin': new FormControl(
+        null
       ),
       'observacion': new FormControl(
         null,
@@ -139,6 +110,41 @@ export class ModalComponent {
         ]
       ),
     });
+
+    if (this.tomaMedicamento != null) {
+      this.id_medicamento = this.tomaMedicamento.id;
+      this.hora = this.tomaMedicamento.toma.hora;
+      this.dosis = this.tomaMedicamento.toma.dosis;
+      this.fecha_inicio = this.transformarFecha(this.tomaMedicamento.toma.fecha_inicio);
+      this.fecha_fin = this.transformarFecha(this.tomaMedicamento.toma.fecha_fin);
+      this.observaciones = this.tomaMedicamento.toma.observaciones;
+      this.isEditing=true;
+      this.patchForm();
+    }
+
+    console.log(this.fecha_inicio);
+
+    this.getMedicaciones();
+  }
+
+  transformarFecha(fecha: string) {
+    console.log(fecha);
+    if (fecha != null) {
+      let [day, month, year] = fecha.split('-');
+
+      return `${year}-${month}-${day}`;
+    }
+    return null;
+  }
+
+  enviarFecha(fecha: string) {
+    console.log(fecha);
+    if (fecha != null) {
+      let [year, month, day] = fecha.split('-');
+
+      return `${day}-${month}-${year}`;
+    }
+    return null;
   }
   getMedicaciones() {
     this.medicacionesService.getMedicamentosPreescripcion()
@@ -178,16 +184,22 @@ export class ModalComponent {
     return strippedInput.length;
   }
 
-  // patchForm(): void {
-  //   let observationWithLineBreaks = this.observaciones.replace(/<br>/g, '\n');
+  patchForm(): void {
+    let observationWithLineBreaks = this.observaciones.replace(/<br>/g, '\n');
 
-  //   this.registerForm.patchValue({
-  //     'nombre': this.nombre,
-  //     'observacion': observationWithLineBreaks
-  //   });
+    this.registerForm.patchValue({
+      'medicamento': this.id_medicamento,
+      'hora': this.hora,
+      'dosis': this.dosis,
+      'fechaInicio': this.fecha_inicio,
+      'fechaFin': this.fecha_fin,
+      'observacion': observationWithLineBreaks
+    });
 
-  //   this.registerForm.updateValueAndValidity();
-  // }
+    this.registerForm.updateValueAndValidity();
+
+    console.log("Actualizados");
+  }
 
   onRegisterToma(): void {
     this.sendedAttempt = true;
@@ -200,9 +212,10 @@ export class ModalComponent {
     const newToma: TomaInforme = this.generateToma();
 
     console.log(newToma);
+    this.activeModal.close(newToma);
 
     if (this.id != null) {
-            this.onSubmitted('actualizar');
+      this.onSubmitted('actualizar');
     } else {
       this.onSubmitted('registrar');
 
@@ -224,20 +237,21 @@ export class ModalComponent {
   }
 
   onCancel(): void {
-    this.location.back();
+    this.activeModal.close();
   }
 
   private generateToma(): TomaInforme {
     return {
-        id:this.registerForm.get('medicamento').value,
-        toma:{
-          dosis: this.registerForm.get('dosis').value,
-          fecha_fin: this.registerForm.get('fechaFin').value,
-          fecha_inicio: this.registerForm.get('fechaInicio').value,
-          hora: this.registerForm.get('hora').value,
-          id: this.id??null,
-          observaciones: this.registerForm.get('observacion').value,
-        }
+      id: this.registerForm.get('medicamento').value,
+      nombre: null,
+      toma: {
+        dosis: this.registerForm.get('dosis').value,
+        fecha_fin: this.enviarFecha(this.registerForm.get('fechaFin').value),
+        fecha_inicio: this.enviarFecha(this.registerForm.get('fechaInicio').value),
+        hora: this.registerForm.get('hora').value,
+        id: this.id ?? null,
+        observaciones: this.registerForm.get('observacion').value,
       }
     }
+  }
 }

@@ -7,6 +7,7 @@ import { FileDownloadService } from './file-downloader.service';
 import { MedicinasDataModel } from '../interfaces/medicinas-data.model';
 import { MedicinasListModel } from '../interfaces/medicinas-list.model';
 import { MedicacionToma } from '../interfaces/medicacion-toma.model';
+import { MedicamentoDataModel } from '../interfaces/medicamento-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +80,11 @@ export class MedicacionesService {
   updateMedicamento(medicamento: MedicinasDataModel): Observable<any> {
     return this.http.put(`${this.baseUrl}/medicamento/${medicamento.id}`, medicamento)
       .pipe(catchError(this.handleError));
+  }
+
+  subirMedicamentosPaciente(medicamentos:MedicamentoDataModel[]):Observable<any>{
+    return this.http.post(`${this.baseUrl}/prescripcion`, medicamentos)
+    .pipe(catchError(this.handleError));
   }
 
   getMedicamentoId(id: number): Observable<MedicinasDataModel> {

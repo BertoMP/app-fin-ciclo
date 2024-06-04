@@ -45,6 +45,7 @@ import {
 } from "./pages/panels/panel-functions/admin-functions/crear-editar-consulta/crear-editar-consulta.component";
 import { CrearInformesComponent } from './pages/panels/panel-functions/specialist-functions/crear-informes/crear-informes.component';
 import { ModalComponent } from './pages/panels/panel-functions/specialist-functions/crear-editar-tomas/modal/modal.component';
+import { CrearEditarTomasComponent } from './pages/panels/panel-functions/specialist-functions/crear-editar-tomas/crear-editar-tomas.component';
 
 export const routes: Routes = [
   {
@@ -249,13 +250,8 @@ export const routes: Routes = [
         canActivate: [specialistGuard]
       },
       {
-        path: 'crear-tomas',
-        component: ModalComponent,
-        canActivate: [specialistGuard]
-      },
-      {
-        path: 'editar-tomas/:id',
-        component: ModalComponent,
+        path: 'modificar-tomas/:id',
+        component: CrearEditarTomasComponent,
         canActivate: [specialistGuard]
       },
     ]
