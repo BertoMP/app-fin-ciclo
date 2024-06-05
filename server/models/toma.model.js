@@ -128,6 +128,32 @@ class TomaModel {
 			throw new Error('Error al buscar la toma.');
 		}
 	}
+
+	/**
+	 * @method deleteAllTomas
+	 * @description Método para eliminar todas las tomas de un paciente.
+	 * @static
+	 * @async
+	 * @memberof TomaModel
+	 * @param {Array} tomas - El arreglo con los IDs de las tomas.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} El resultado de la operación de eliminación.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async deleteAllTomas(tomas, dbConn) {
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		toma ' +
+			'WHERE ' +
+			'		id IN (?)';
+
+		try {
+			return await dbConn.execute(query, [tomas]);
+		} catch (err) {
+			throw new Error('Error al eliminar las tomas.');
+		}
+	}
 }
 
 export default TomaModel;

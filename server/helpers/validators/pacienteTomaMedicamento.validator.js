@@ -34,11 +34,6 @@ export const validatePacienteTomaMedicamento = [
 	body('prescripcion.*.tomas')
 		.isArray()
 		.withMessage('Las tomas del medicamento deben ser un arreglo de objetos.'),
-	body('prescripcion.*.tomas.*.toma_id')
-		.trim()
-		.custom((value) => value === null || typeof value === 'number')
-		.withMessage('El identificador de la toma debe ser null o un valor numérico.')
-		.escape(),
 	body('prescripcion.*.tomas.*.dosis')
 		.trim()
 		.notEmpty()

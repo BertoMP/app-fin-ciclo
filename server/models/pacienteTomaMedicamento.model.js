@@ -305,6 +305,32 @@ class PacienteTomaMedicamentoModel {
 			throw new Error('Error al buscar la toma.');
 		}
 	}
+
+	/**
+	 * @method deleteTomasByUserId
+	 * @description Método para eliminar las tomas de un paciente.
+	 * @static
+	 * @async
+	 * @memberof PacienteTomaMedicamentoModel
+	 * @param {number} pacienteId - El ID del paciente.
+	 * @param {Object} dbConn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} El resultado de la operación de eliminación.
+	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
+	 */
+	static async deleteTomasByUserId(pacienteId, dbConn) {
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			'		paciente_toma_medicamento ' +
+			'WHERE ' +
+			'		paciente_id = ?';
+
+		try {
+			return await dbConn.execute(query, [pacienteId]);
+		} catch (error) {
+			throw new Error('Error al eliminar las tomas.');
+		}
+	}
 }
 
 // Exportación del modelo

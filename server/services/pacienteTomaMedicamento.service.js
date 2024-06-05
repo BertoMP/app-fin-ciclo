@@ -38,6 +38,10 @@ class PacienteTomaMedicamentoService {
 				await conn.beginTransaction();
 			}
 
+			const tomas = await PacienteTomaMedicamentoModel.findTomasByUserId(pacienteId, conn);
+			await TomaService.deleteAllTomas(tomas, conn);
+			await PacienteTomaMedicamentoModel.deleteTomasByUserId(pacienteId, conn);
+
 			for (const prescripcion of data.prescripciones) {
 				const medicamentoId = prescripcion.medicamento_id;
 				const tomas = prescripcion.tomas;
@@ -53,24 +57,20 @@ class PacienteTomaMedicamentoService {
 				for (const toma of tomas) {
 					const prescripcion = ObjectFactory.createPrescripcion(toma);
 
-					if (prescripcion.id) {
-						await PacienteTomaMedicamentoModel.updateToma(prescripcion.id, prescripcion, conn);
-					} else {
-						const existingToma = await PacienteTomaMedicamentoModel.findTomaByHora(
-							pacienteId,
-							medicamentoId,
-							prescripcion.hora,
-							conn,
-						);
+					const existingToma = await PacienteTomaMedicamentoModel.findTomaByHora(
+						pacienteId,
+						medicamentoId,
+						prescripcion.hora,
+						conn,
+					);
 
-						if (existingToma) {
-							throw new Error('Ya existe una toma para este medicamento a esta hora.',);
-						}
-
-						const toma = await TomaService.createToma(prescripcion, conn);
-						const idToma = toma.id;
-						await PacienteTomaMedicamentoModel.createPacienteTomaMedicamento(pacienteId, medicamentoId, idToma, conn);
+					if (existingToma) {
+						throw new Error('Ya existe una toma para este medicamento a esta hora.',);
 					}
+
+					const toma = await TomaService.createToma(prescripcion, conn);
+					const idToma = toma.id;
+					await PacienteTomaMedicamentoModel.createPacienteTomaMedicamento(pacienteId, medicamentoId, idToma, conn);
 				}
 			}
 

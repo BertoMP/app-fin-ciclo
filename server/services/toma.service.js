@@ -50,6 +50,20 @@ class TomaService {
 	static async findToma(id, conn = dbConn) {
 		return await TomaModel.findToma(id, conn);
 	}
+
+	/**
+	 * @method deleteAllTomas
+	 * @description Método para eliminar todas las tomas de un paciente.
+	 * @static
+	 * @async
+	 * @memberof TomaService
+	 * @param {Object} tomas - Las tomas a eliminar.
+	 * @param {Object} conn - La conexión a la base de datos.
+	 * @returns {Promise<Object>} - El resultado de la operación de eliminación.
+	 */
+	static async deleteAllTomas(tomas, conn = dbConn) {
+		return await TomaModel.deleteAllTomas(tomas, conn);
+	}
 }
 
 // Exportación del servicio
