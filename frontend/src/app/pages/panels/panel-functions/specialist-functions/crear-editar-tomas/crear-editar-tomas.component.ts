@@ -64,19 +64,31 @@ export class CrearEditarTomasComponent {
         if (tomaIndex !== -1) {
           prescripcion.medicamento.tomas[tomaIndex] = result.toma; // Nueva dosis
         }else{
-          prescripcion.medicamento.tomas.push(result.toma);
+          const index = prescripcion.medicamento.tomas.findIndex(t => t.hora > result.toma.hora);
+
+          if (index === -1) {
+            prescripcion.medicamento.tomas.push(result.toma);
+          } else {
+            prescripcion.medicamento.tomas.splice(index, 0, result.toma);
+          }
         }
       }else{
-        this.meds.push({
+        const newMed = {
           medicamento:{
             id:result.id,
             nombre:result.nombre,
             tomas:[result.toma]
           }
-        })
-      }
-      // Identificamos la toma que queremos modificar, por ejemplo, la primera toma
+        };
 
+        const index = this.meds.findIndex(med => med.medicamento.nombre > newMed.medicamento.nombre);
+
+        if (index === -1) {
+          this.meds.push(newMed);
+        } else {
+          this.meds.splice(index, 0, newMed);
+        }
+      }
 
       console.log(this.meds);
 
