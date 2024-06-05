@@ -1,6 +1,6 @@
 import { CommonModule, Location, LowerCasePipe, NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Select2Data, Select2Module } from 'ng-select2-component';
 import { QuillEditorComponent } from 'ngx-quill';
@@ -29,7 +29,7 @@ import {MedicamentoDataModel} from "../../../../../../core/interfaces/medicament
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss'
 })
-export class ModalComponent {
+export class ModalComponent implements OnInit {
   registerForm: FormGroup;
   sendedAttempt: boolean = false;
   isLoading: boolean = false;

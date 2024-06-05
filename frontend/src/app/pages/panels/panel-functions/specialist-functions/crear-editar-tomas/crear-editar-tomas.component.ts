@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from './modal/modal.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -26,7 +26,7 @@ import { TomaInforme } from '../../../../../core/interfaces/tomaInforme.model';
   templateUrl: './crear-editar-tomas.component.html',
   styleUrl: './crear-editar-tomas.component.scss'
 })
-export class CrearEditarTomasComponent {
+export class CrearEditarTomasComponent implements OnInit {
   meds: MedicamentoDataModel[];
   initialLoad: boolean = false;
   dataLoaded: boolean = false;
