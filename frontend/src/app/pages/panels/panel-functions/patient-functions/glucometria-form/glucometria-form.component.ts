@@ -12,6 +12,7 @@ import { CustomValidators } from '../../../../../core/classes/CustomValidators';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { GlucometriaDataModel } from '../../../../../core/interfaces/glucometria-data.model';
 import {Router} from "@angular/router";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-glucometria-form',
@@ -42,14 +43,16 @@ export class GlucometriaFormComponent implements OnInit {
   loggedInSubscription: Subscription;
   isUserLoggedIn: boolean = false;
 
-  constructor(
-    private authService:AuthService,
-    private medicionesService: MedicionesService,
-    private location: Location,
-    private router: Router) {
+  constructor(private authService:AuthService,
+              private medicionesService: MedicionesService,
+              private location: Location,
+              private router: Router,
+              private title: Title) {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Registrar Glucometría');
+
     this.loggedInSubscription = this.authService.isLoggedInUser.subscribe(
       loggedIn => {
         this.isUserLoggedIn = loggedIn;

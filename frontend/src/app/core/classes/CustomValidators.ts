@@ -213,20 +213,23 @@ export class CustomValidators {
   }
 
   static dateValidator(control: AbstractControl): ValidationErrors | null {
-    const startDate = new Date(control.get('fechaInicio').value);
-    const endDate = new Date(control.get('fechaFin').value);
-    const now = new Date();
+    const endDateValue = control.get('fechaFin').value;
 
-    startDate.setHours(0, 0, 0, 0);
-    now.setHours(0, 0, 0, 0);
+    if (endDateValue) {
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
 
-    if (startDate < now) {
-      return {'startDate': true};
-    }
-
-    if (endDate) {
+      const endDate = new Date(control.get('fechaFin').value);
       endDate.setHours(0, 0, 0, 0);
-      if (endDate < startDate || endDate < now) {
+
+      const startDate = new Date(control.get('fechaInicio').value);
+      startDate.setHours(0, 0, 0, 0);
+
+      if (endDate < startDate) {
+        return {'endDate': true};
+      }
+
+      if (endDate < now) {
         return {'endDate': true};
       }
     }

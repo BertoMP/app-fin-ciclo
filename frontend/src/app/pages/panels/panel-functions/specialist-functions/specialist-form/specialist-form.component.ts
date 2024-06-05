@@ -24,6 +24,7 @@ import { AuthService } from '../../../../../core/services/auth.service';
 import { CustomValidators } from '../../../../../core/classes/CustomValidators';
 import { EspecialidadModel } from '../../../../../core/interfaces/especialidad.model';
 import {QuillEditorComponent} from "ngx-quill";
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
@@ -84,7 +85,8 @@ export class SpecialistFormComponent implements OnInit {
               private professionalDataService: ProfessionalDataService,
               private authService: AuthService,
               private router: Router,
-              private location: Location) {
+              private location: Location,
+              private title: Title) {
   }
 
   ngOnInit(): void {
@@ -96,6 +98,7 @@ export class SpecialistFormComponent implements OnInit {
       }
 
       if (this.isEditing) {
+        this.title.setTitle('MediAPP - Editar especialista');
         this.professionalDataService.specificEspecialista(this.id).subscribe({
           next: (res: EspecialistModel) => {
             this.especialista = res;
@@ -112,6 +115,8 @@ export class SpecialistFormComponent implements OnInit {
             });
           }
         });
+      } else {
+        this.title.setTitle('MediAPP - Crear especialista');
       }
     });
 

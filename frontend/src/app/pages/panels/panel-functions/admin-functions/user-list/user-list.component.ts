@@ -12,6 +12,7 @@ import { LoadingSpinnerComponent } from '../../../../../shared/components/loadin
 import { ListedUserModel } from '../../../../../core/interfaces/listed-user.model';
 import { AdminPanelService } from '../../../../../core/services/admin-panel.service';
 import { UserListResponseModel } from '../../../../../core/interfaces/user-list-response.model';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-user-list',
@@ -85,9 +86,12 @@ export class UserListComponent implements OnInit {
 
   private getUsersSubject: Subject<void> = new Subject<void>();
 
-  constructor(private adminPanelService: AdminPanelService) { }
+  constructor(private adminPanelService: AdminPanelService,
+              private title: Title) { }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Listado de usuarios');
+
     this.users = [];
     this.actualPage = 1;
     this.getUsersSubject

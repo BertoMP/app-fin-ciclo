@@ -8,6 +8,7 @@ import { LoadingSpinnerComponent } from '../../../../../shared/components/loadin
 import {Location} from "@angular/common";
 import {saveAs} from "file-saver";
 import {AuthService} from "../../../../../core/services/auth.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-ver-cita',
@@ -33,8 +34,8 @@ export class VerCitaComponent {
   constructor(private citasService: CitasService,
               private activatedRoute: ActivatedRoute,
               private location: Location,
-              private authService: AuthService) { }
-
+              private authService: AuthService,
+              private title: Title) { }
 
   errores: string[];
 
@@ -43,6 +44,8 @@ export class VerCitaComponent {
 
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
+
+      this.title.setTitle('MediAPP - Ver cita');
 
       this.getMedsSubject
         .pipe(

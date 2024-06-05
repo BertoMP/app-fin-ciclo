@@ -8,6 +8,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {MenuOptionModel} from "../../../../../core/interfaces/menu-option.model";
 import Swal from "sweetalert2";
 import {ActivatedRoute} from "@angular/router";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-patient-list',
@@ -31,10 +32,13 @@ export class PatientListComponent implements OnInit {
   options: MenuOptionModel[] = [];
 
   constructor(private pacienteService: PacienteService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private title: Title) {
   }
 
   ngOnInit() {
+    this.title.setTitle('MediAPP - Buscador de pacientes');
+
     const idSearch = this.activatedRoute.snapshot.params.id;
 
     if (idSearch) {

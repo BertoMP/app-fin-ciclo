@@ -34,8 +34,9 @@ export class ModalComponent implements OnInit {
   sendedAttempt: boolean = false;
   isLoading: boolean = false;
   errores: string[] = [];
-  maxLength: number = 1000;
+  maxLength: number = 120;
   @Input() tomaMedicamento: TomaInforme;
+  @Input() meds: MedicamentoDataModel[];
 
   suscripcionRuta: Subscription;
   medicamentos: Select2Data;
@@ -106,7 +107,6 @@ export class ModalComponent implements OnInit {
       'observacion': new FormControl(
         null,
         [
-          Validators.required,
           CustomValidators.maxLengthHtml(this.maxLength)
         ]
       ),
@@ -187,7 +187,7 @@ export class ModalComponent implements OnInit {
   }
 
   patchForm(): void {
-    let observationWithLineBreaks = this.observaciones.replace(/<br>/g, '\n');
+    let observationWithLineBreaks = this.observaciones;
 
     this.registerForm.patchValue({
       'medicamento': this.id_medicamento,
@@ -212,6 +212,23 @@ export class ModalComponent implements OnInit {
 
     this.isLoading = true;
     const newToma: TomaInforme = this.generateToma();
+
+    let prescription = this.meds.find(p => p.medicamento.id === newToma.id);
+
+    if (prescription) {
+      const existingToma = prescription.medicamento.tomas.find(t => t.hora === newToma.toma.hora);
+
+      if (existingToma) {
+        this.isLoading = false;
+        Swal.fire({
+          title: 'Error',
+          text: 'Ya existe una toma de este medicamento a esa hora hora',
+          icon: 'error',
+          width: '50%'
+        });
+        return;
+      }
+    }
 
     console.log(newToma);
     this.activeModal.close(newToma);

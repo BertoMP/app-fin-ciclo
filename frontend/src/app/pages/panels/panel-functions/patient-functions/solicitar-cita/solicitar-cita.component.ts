@@ -19,6 +19,7 @@ import { EspecialistModel } from '../../../../../core/interfaces/especialist.mod
 import { DateFormatPipe } from '../../../../../shared/pipes/date-format.pipe';
 import Swal from 'sweetalert2';
 import { CitaUploadModel } from '../../../../../core/interfaces/cita-upload.model';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-solicitar-cita',
@@ -72,7 +73,8 @@ export class SolicitarCitaComponent implements OnInit {
               private authService: AuthService,
               private especialidadService: EspecialidadService,
               private medicalEspecialistService: MedicalSpecialistListService,
-              private citasService: CitasService) { }
+              private citasService: CitasService,
+              private title: Title) { }
 
   buscarEspecialidades() {
     this.especialidadService.getEspecialidad()
@@ -324,6 +326,8 @@ export class SolicitarCitaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Solicitar cita');
+
     this.actualPage = 1;
     this.citas_disponibles = [];
     this.errores = [];

@@ -7,62 +7,67 @@
 <section class="no-results">
         <button type="button" (click)="open()">Añadir toma</button>
         <button type="button" (click)="onRegisterTomas()">Guardar tomas</button>
-
 </section>
-<section class="medication-table">
+@if (meds.length === 0) {
+  <section class="no-results">
+      <p>No hay medicamentos registrados</p>
+  </section>
+} @else {
+  <section class="medication-table">
     <div class="table-container">
-        <table class="med-list">
-            <thead>
-                <tr>
-                    <th rowspan="2" class="nombre">Nombre</th>
-                    <th class="hora">Hora</th>
-                    <th class="dosis">Dosis</th>
-                    <th class="fecha-inicio">Inicio</th>
-                    <th class="fecha-fin">Fin</th>
-                    <th class="observaciones">Observaciones</th>
-                    <th class="accion">Accion</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngFor="let prescripcion of meds">
-                    <ng-container *ngFor="let toma of prescripcion.medicamento.tomas; let i = index">
-                        <tr [ngClass]="{'odd-row': i % 2 !== 0}">
-                            <ng-container *ngIf="i == 0">
-                                <td [attr.rowspan]="prescripcion.medicamento.tomas.length" class="nombre"
-                                    title="{{ prescripcion.medicamento.descripcion }}">
-                                    {{ prescripcion.medicamento.nombre }}
-                                </td>
-                            </ng-container>
-                            <td class="hora">{{ toma.hora }}</td>
-                            <td class="dosis">{{ toma.dosis }}</td>
-                            <td class="fecha-inicio">{{ toma.fecha_inicio }}</td>
-                            <td class="fecha-fin">{{ toma.fecha_fin }}</td>
-                            <td class="observaciones"
-                                [innerHTML]="toma.observaciones ? sanitizeHtml(toma.observaciones) : ''"
-                                [title]="toma.observaciones ? sanitizeHtml(toma.observaciones) : ''"></td>
-                                <td class="btn-container">
-                                    <div class="dropdown">
-                                      <button class="btn btn-link" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                        <i class="bi bi-three-dots-vertical"></i>
-                                      </button>
-                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li class="dropdown-item"
-                                          (click)="open(toma,prescripcion.medicamento.id)">
-                                          <i class="bi bi-calendar2-x-fill"></i> <span>Editar Toma</span>
-                                        </li>
-                                        <li class="dropdown-item"
-                                          (click)="eliminateToma(toma,prescripcion.medicamento.id)">
-                                          <i class="bi bi-calendar2-x-fill"></i> <span>Eliminar Toma</span>
-                                        </li>
-                                      </div>
-                                    </div>
-                                  </td>
-                        </tr>
-                    </ng-container>
-                </ng-container>
-            </tbody>
-        </table>
+      <table class="med-list">
+        <thead>
+        <tr>
+          <th rowspan="2" class="nombre">Nombre</th>
+          <th class="hora">Hora</th>
+          <th class="dosis">Dosis</th>
+          <th class="fecha-inicio">Inicio</th>
+          <th class="fecha-fin">Fin</th>
+          <th class="observaciones">Observaciones</th>
+          <th class="accion">Accion</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let prescripcion of meds">
+          <ng-container *ngFor="let toma of prescripcion.medicamento.tomas; let i = index">
+            <tr [ngClass]="{'odd-row': i % 2 !== 0}">
+              <ng-container *ngIf="i == 0">
+                <td [attr.rowspan]="prescripcion.medicamento.tomas.length" class="nombre"
+                    title="{{ prescripcion.medicamento.descripcion }}">
+                  {{ prescripcion.medicamento.nombre }}
+                </td>
+              </ng-container>
+              <td class="hora">{{ toma.hora }}</td>
+              <td class="dosis">{{ toma.dosis }}</td>
+              <td class="fecha-inicio">{{ toma.fecha_inicio }}</td>
+              <td class="fecha-fin">{{ toma.fecha_fin }}</td>
+              <td class="observaciones"
+                  [innerHTML]="toma.observaciones ? sanitizeHtml(toma.observaciones) : ''"
+                  [title]="toma.observaciones ? sanitizeHtml(toma.observaciones) : ''"></td>
+              <td class="btn-container">
+                <div class="dropdown">
+                  <button class="btn btn-link" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li class="dropdown-item"
+                        (click)="open(toma,prescripcion.medicamento.id)">
+                      <i class="bi bi-calendar2-x-fill"></i> <span>Editar Toma</span>
+                    </li>
+                    <li class="dropdown-item"
+                        (click)="eliminateToma(toma,prescripcion.medicamento.id)">
+                      <i class="bi bi-calendar2-x-fill"></i> <span>Eliminar Toma</span>
+                    </li>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        </tbody>
+      </table>
     </div>
-</section>
+  </section>
+  }
 }

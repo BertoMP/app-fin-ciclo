@@ -1,7 +1,7 @@
 import { LowerCasePipe, NgForOf, NgIf, UpperCasePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {DomSanitizer, SafeHtml, Title} from '@angular/platform-browser';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Select2Module, Select2Data } from 'ng-select2-component';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -35,7 +35,7 @@ import Swal from "sweetalert2";
   templateUrl: './listado-patologias.component.html',
   styleUrl: './listado-patologias.component.scss'
 })
-export class ListadoPatologiasComponent {
+export class ListadoPatologiasComponent implements OnInit {
   patologias: PatologiasDataModel[];
   nextPageUrl: string;
   previousPageUrl: string;
@@ -74,9 +74,12 @@ export class ListadoPatologiasComponent {
   private getPatologiesSubject: Subject<void> = new Subject<void>();
 
   constructor(private patologiasService: PatologiasService,
-    private sanitizer: DomSanitizer) { }
+              private sanitizer: DomSanitizer,
+              private title: Title) { }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Listado de patologías');
+
     this.patologias = [];
     this.actualPage = 1;
     this.getPatologiesSubject

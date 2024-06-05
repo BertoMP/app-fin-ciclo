@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Observable, Subject, debounceTime } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CitasService } from '../../../../../core/services/citas.service';
@@ -9,6 +9,7 @@ import { CitasEspecialistaListModel } from '../../../../../core/interfaces/citas
 import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import Swal from "sweetalert2";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-listado-agenda',
@@ -17,7 +18,7 @@ import Swal from "sweetalert2";
   templateUrl: './listado-agenda.component.html',
   styleUrl: './listado-agenda.component.scss'
 })
-export class ListadoAgendaComponent {
+export class ListadoAgendaComponent implements OnInit {
   citas: CitasEspecialistaListModel[];
   paciente: DatosPacienteModel;
   nombre_especialista:string;
@@ -34,9 +35,12 @@ export class ListadoAgendaComponent {
 
   private getCitasSubject: Subject<void> = new Subject<void>();
 
-  constructor(private citasService: CitasService,private authService:AuthService) { }
+  constructor(private citasService: CitasService,
+              private authService:AuthService,
+              private title: Title) { }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Agenda diaria');
     this.nombre_especialista=this.authService.getUserName();
 
     this.getCitasSubject

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { ProfessionalDataService } from '../../core/services/professional-data.service';
 import { EspecialistModel } from '../../core/interfaces/especialist.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {DomSanitizer, SafeHtml, Title} from "@angular/platform-browser";
 import { NgIf,Location } from '@angular/common';
 import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
 import {LoadingSpinnerComponent} from "../../shared/components/loading-spinner/loading-spinner.component";
@@ -29,7 +29,8 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
   constructor(private professionalDataService: ProfessionalDataService,
               private activatedRoute: ActivatedRoute,
               private sanitizer: DomSanitizer,
-              private router: Router) {
+              private router: Router,
+              private title: Title) {
 
   }
   ngOnDestroy(): void {
@@ -41,6 +42,8 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('Datos del especialista');
+
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
       this.isLoading = true;

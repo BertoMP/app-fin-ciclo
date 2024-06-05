@@ -81,13 +81,13 @@
 
             @if (registerForm.get('observacion').invalid) {
             <li>
-                <strong>Observación:</strong> Debe de tener una observación y no superar los 1000 caracteres.
+                <strong>Observación:</strong> Debe de tener una observación y no superar los 120 caracteres.
             </li>
             }
 
             @if (registerForm.errors?.startDate) {
             <li>
-                <strong>Fecha inicio:</strong> La fecha de inicio no puede ser anterior a la fecha actual.
+                <strong>Fecha inicio:</strong> La fecha de inicio no puede ser anterior a hoy.
             </li>
             }
 

@@ -24,14 +24,14 @@ export const validatePacienteTomaMedicamento = [
 	body('prescripcion')
 		.isArray()
 		.withMessage('La prescripción de medicamentos debe ser un arreglo de objetos.'),
-	body('prescripcion.*.medicamento_id')
+	body('prescripcion.*.medicamento.id')
 		.trim()
 		.notEmpty()
 		.withMessage('El medicamento es requerido.')
 		.isNumeric()
 		.withMessage('El medicamento debe ser un valor numérico.')
 		.escape(),
-	body('prescripcion.*.tomas')
+	body('prescripcion.*.medicamento.tomas')
 		.isArray()
 		.withMessage('Las tomas del medicamento deben ser un arreglo de objetos.'),
 	body('prescripcion.*.tomas.*.dosis')
@@ -41,61 +41,49 @@ export const validatePacienteTomaMedicamento = [
 		.isNumeric()
 		.withMessage('La dosis debe ser un valor numérico.')
 		.escape(),
-	body('prescripcion.*.tomas.*.hora')
+	body('prescripcion.*.medicamento.tomas.*.hora')
 		.trim()
 		.notEmpty()
 		.withMessage('La hora de toma es requerida.')
 		.isString()
 		.withMessage('La hora de toma debe ser un valor alfanumérico.')
 		.custom((value) => {
-			const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]:00$/;
+			const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
 			if (!regex.test(value)) {
-				throw new Error('La hora de toma debe tener el formato HH:MM:00.');
+				throw new Error('La hora de toma debe tener el formato HH:MM.');
 			}
 
 			return true;
 		})
 		.escape(),
-	body('prescripcion.*.tomas.*.fecha_inicio')
+	body('prescripcion.*.medicamento.tomas.*.fecha_inicio')
 		.trim()
 		.notEmpty()
 		.withMessage('La fecha de inicio es requerida.')
-		.isDate()
+		.isDate({ format: 'DD-MM-YYYY' })
 		.withMessage('La fecha de inicio debe ser un valor de fecha.')
 		.custom((value) => {
-			const regex = /^\d{4}-\d{2}-\d{2}$/;
+			const regex = /^\d{2}-\d{2}-\d{4}$/;
 			if (!regex.test(value)) {
-				throw new Error('La fecha de inicio debe tener el formato YYYY-MM-DD.');
-			}
-
-			const fechaAyer = new Date();
-			fechaAyer.setDate(fechaAyer.getDate() - 1);
-			fechaAyer.setHours(0, 0, 0, 0);
-
-			if (new Date(value) < fechaAyer) {
-				throw new Error('La fecha de inicio no puede ser menor a la fecha actual.');
+				throw new Error('La fecha de inicio debe tener el formato DD-MM-YYYY.');
 			}
 
 			return true;
 		})
 		.escape(),
-	body('prescripcion.*.tomas.*.fecha_fin')
+	body('prescripcion.*.medicamento.tomas.*.fecha_fin')
 		.trim()
-		.optional()
-		.isDate()
+		.optional({ checkFalsy: true })
+		.isDate({ format: 'DD-MM-YYYY'})
 		.withMessage('La fecha de fin debe ser un valor de fecha.')
 		.custom((value, { req, path }) => {
-			const regex = /^\d{4}-\d{2}-\d{2}$/;
-			if (!regex.test(value)) {
-				throw new Error('La fecha de fin debe tener el formato YYYY-MM-DD.');
+			if (!value) {
+				return true;
 			}
 
-			const fechaAyer = new Date();
-			fechaAyer.setDate(fechaAyer.getDate() - 1);
-			fechaAyer.setHours(0, 0, 0, 0);
-
-			if (new Date(value) < fechaAyer) {
-				throw new Error('La fecha de fin no puede ser menor a la fecha actual.');
+			const regex = /^\d{2}-\d{2}-\d{4}$/;
+			if (!regex.test(value)) {
+				throw new Error('La fecha de fin debe tener el formato DD-MM-YYYY.');
 			}
 
 			const pathParts = path.split('.');
@@ -116,7 +104,7 @@ export const validatePacienteTomaMedicamento = [
 			return true;
 		})
 		.escape(),
-	body('prescripcion.*.tomas.*.observaciones')
+	body('prescripcion.*.medicamento.tomas.*.observaciones')
 		.trim()
 		.optional()
 		.isString()

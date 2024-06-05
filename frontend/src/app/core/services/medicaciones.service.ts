@@ -46,7 +46,7 @@ export class MedicacionesService {
     return this.http.delete<void>(`${this.baseUrl}/prescripcion/borrar-medicamento/${usuario_id}/${medicamento_id}`)
   }
 
-  
+
   getMedicamentos(search: string, perPage: number, page: number):Observable<MedicinasListModel>{
     let query: string = '';
 
@@ -82,7 +82,9 @@ export class MedicacionesService {
       .pipe(catchError(this.handleError));
   }
 
-  subirMedicamentosPaciente(medicamentos:MedicamentoDataModel[]):Observable<any>{
+  subirMedicamentosPaciente(medicamentos: { paciente_id: number; prescripcion: MedicamentoDataModel[]; }):Observable<any>{
+    console.log(medicamentos);
+
     return this.http.post(`${this.baseUrl}/prescripcion`, medicamentos)
     .pipe(catchError(this.handleError));
   }

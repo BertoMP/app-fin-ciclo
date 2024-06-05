@@ -11,6 +11,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {LogDataModel} from "../../../../../core/interfaces/log-data.model";
 import {LogService} from "../../../../../core/services/log.service";
 import Swal from "sweetalert2";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-log-list',
@@ -38,7 +39,6 @@ export class LogListComponent implements OnInit, OnDestroy {
   fechaFin: string;
   fechaInicio: string;
 
-  rutaActual: string;
   nextPageUrl: string;
   previousPageUrl: string;
   actualPage: number;
@@ -73,10 +73,13 @@ export class LogListComponent implements OnInit, OnDestroy {
 
   private getLogsSubject: Subject<void> = new Subject<void>();
 
-  constructor(private logsService: LogService) { }
+  constructor(private logsService: LogService,
+              private title: Title) { }
 
   ngOnInit(): void {
     this.actualPage = 1;
+
+    this.title.setTitle('MediAPP - Listado de logs');
 
     this.getLogsSubject
       .pipe(

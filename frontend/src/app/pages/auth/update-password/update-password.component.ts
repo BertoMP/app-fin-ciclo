@@ -8,6 +8,7 @@ import {CustomValidators} from "../../../core/classes/CustomValidators";
 import Swal from "sweetalert2";
 import {UpdatePasswordModel} from "../../../core/interfaces/update-password.model";
 import {Router} from "@angular/router";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-update-password',
@@ -28,9 +29,12 @@ export class UpdatePasswordComponent implements OnInit {
   errores: string[] = [];
 
   constructor(private authService: AuthService,
-              private router: Router) {}
+              private router: Router,
+              private title: Title) {}
 
   ngOnInit() {
+    this.title.setTitle('MediAPP - Actualizar contraseña');
+
     this.updatePassForm = new FormGroup<any>({
       'oldPassword': new FormControl(
         null,

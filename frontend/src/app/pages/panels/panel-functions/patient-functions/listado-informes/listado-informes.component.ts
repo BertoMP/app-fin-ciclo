@@ -12,6 +12,7 @@ import {InformeService} from "../../../../../core/services/informe.service";
 import {AuthService} from "../../../../../core/services/auth.service";
 import {UserRole} from "../../../../../core/enum/user-role.enum";
 import Swal from "sweetalert2";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-listado-informes',
@@ -77,9 +78,12 @@ export class ListadoInformesComponent {
 
   constructor(private informeService: InformeService,
               private authService: AuthService,
-              private activeRoute: ActivatedRoute) { }
+              private activeRoute: ActivatedRoute,
+              private title: Title) { }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Listado de informes');
+
     this.isPatient = UserRole.PACIENT === this.authService.getUserRole();
     this.actualPage = 1;
     this.informes = [];

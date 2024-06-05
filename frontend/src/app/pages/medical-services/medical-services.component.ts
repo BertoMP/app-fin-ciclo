@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   HorizontalCardComponent
 } from "../../shared/components/horizontal-card/horizontal-card.component";
 import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-medical-specialties',
@@ -14,7 +15,7 @@ import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.compon
   templateUrl: './medical-services.component.html',
   styleUrl: './medical-services.component.scss'
 })
-export class MedicalServicesComponent {
+export class MedicalServicesComponent implements OnInit {
   infoCards: {
     title: string,
     description: string,
@@ -43,4 +44,10 @@ export class MedicalServicesComponent {
       order: 'reverse'
     }
   ]
+
+  constructor(private title: Title) {}
+
+  ngOnInit() {
+    this.title.setTitle('Servicios médicos');
+  }
 }

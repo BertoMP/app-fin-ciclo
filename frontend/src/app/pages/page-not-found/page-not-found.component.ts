@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-page-not-found',
@@ -12,8 +13,13 @@ import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.compon
   templateUrl: './page-not-found.component.html',
   styleUrl: './page-not-found.component.scss'
 })
-export class PageNotFoundComponent {
-  constructor(private router: Router) {
+export class PageNotFoundComponent implements OnInit {
+  constructor(private router: Router,
+              private title: Title) {
+  }
+
+  ngOnInit() {
+    this.title.setTitle('404 - Página no encontrada');
   }
 
   goToIndex() {

@@ -20,6 +20,7 @@ import {Subscription} from 'rxjs';
 import {
   PasswordInputComponent
 } from "../../../shared/components/password-input/password-input.component";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-refresh-password',
@@ -40,10 +41,13 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private refreshPasswordService: RefreshPasswordService,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private title: Title) {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Recuperar contraseña');
+
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.token = params['token'] || null;
     });

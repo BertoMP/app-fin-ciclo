@@ -10,6 +10,7 @@ import {
 } from "../../shared/components/loading-spinner/loading-spinner.component";
 import {QuillEditorComponent} from "ngx-quill";
 import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-contact-us',
@@ -52,10 +53,13 @@ export class ContactUsComponent implements OnInit {
     ]
   };
 
-  constructor(private contactoService: ContactoService) {
+  constructor(private contactoService: ContactoService,
+              private title: Title) {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('Contacto');
+
     this.contactForm = new FormGroup<any>({
       'nombre': new FormControl(
         null,

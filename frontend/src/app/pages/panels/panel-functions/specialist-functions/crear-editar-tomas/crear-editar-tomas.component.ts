@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from './modal/modal.component';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {DomSanitizer, SafeHtml, Title} from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subject, Subscription, debounceTime, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -39,7 +39,8 @@ export class CrearEditarTomasComponent implements OnInit {
               private medicacionesService: MedicacionesService,
               private sanitizer: DomSanitizer,
               private activeRoute: ActivatedRoute,
-              private router:Router) { }
+              private router:Router,
+              private title: Title) { }
 
   open(toma?: MedicamentoTomasModel, medicamento_id?: number) {
     const modalRef = this.modalService.open(ModalComponent);
@@ -50,6 +51,8 @@ export class CrearEditarTomasComponent implements OnInit {
     }else{
       modalRef.componentInstance.tomaMedicamento = null;
     }
+
+    modalRef.componentInstance.meds = this.meds;
 
     modalRef.result.then((result) => {
       // Recibimos los datos del modal y los asignamos a la variable datos
@@ -106,7 +109,6 @@ export class CrearEditarTomasComponent implements OnInit {
         fecha_fin: toma.fecha_fin,
         fecha_inicio: toma.fecha_inicio,
         hora: toma.hora,
-        id: toma.id,
         observaciones: toma.observaciones,
       }
     }
@@ -121,6 +123,7 @@ export class CrearEditarTomasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Crear/Editar tomas');
     this.meds = [];
 
     this.getMedsSubject
@@ -171,8 +174,10 @@ export class CrearEditarTomasComponent implements OnInit {
     }
   }
   onRegisterTomas(){
+    this.dataLoaded = false;
     console.log(this.meds);
-    this.medicacionesService.subirMedicamentosPaciente(this.meds)
+    const medsObj = this.generateMeds();
+    this.medicacionesService.subirMedicamentosPaciente(medsObj)
           .subscribe({
             next: (response) => {
               this.onSubmitted("editar")
@@ -183,7 +188,15 @@ export class CrearEditarTomasComponent implements OnInit {
           });
   }
 
+  private generateMeds(){
+    return {
+      paciente_id: this.userId,
+      prescripcion: this.meds,
+    }
+  }
+
   onSubmitted(message: string): void {
+    this.dataLoaded = true;
     Swal.fire({
       title: 'Enhorabuena',
       text:  `Has conseguido ${message} las tomas correctamente`,
@@ -196,6 +209,7 @@ export class CrearEditarTomasComponent implements OnInit {
   }
 
   onSubmitError(error: string[]): void {
+    this.dataLoaded = true;
     this.errores = error;
     Swal.fire({
       title: 'Error',

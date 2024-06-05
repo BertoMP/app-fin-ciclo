@@ -31,6 +31,7 @@ import {
 import { Subscription } from 'rxjs';
 import { PatientModel } from '../../../core/interfaces/patient.model';
 import {UserRole} from "../../../core/enum/user-role.enum";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-register',
@@ -68,12 +69,13 @@ export class RegisterComponent implements OnInit {
   isAdmin: boolean = false;
 
   constructor(private provinceService: ProvinceService,
-    private municipioService: MunicipioService,
-    private tipoViaService: TipoViaService,
-    private codigoPostalService: CodigoPostalService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService) {
+              private municipioService: MunicipioService,
+              private tipoViaService: TipoViaService,
+              private codigoPostalService: CodigoPostalService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private authService: AuthService,
+              private title: Title) {
   }
 
   formatearFecha(fechaString: string) {
@@ -92,7 +94,9 @@ export class RegisterComponent implements OnInit {
 
       if (this.id) {
         this.isEditing = true;
+        this.title.setTitle('MediAPP - Editar usuario');
       } else {
+        this.title.setTitle('MediAPP - Registro de usuario');
         if (this.authService.isLoggedIn() && UserRole.PACIENT == this.authService.getUserRole()) {
           this.isPatient=true;
           this.id = this.authService.getUserId();

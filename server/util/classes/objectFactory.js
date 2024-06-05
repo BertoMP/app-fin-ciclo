@@ -146,7 +146,6 @@ class ObjectFactory {
 
 	static createPrescripcion(data) {
 		return {
-			id: data.toma_id ?? null,
 			dosis: data.dosis,
 			hora: data.hora,
 			fecha_inicio: data.fecha_inicio,

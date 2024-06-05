@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {LoadingSpinnerComponent} from "../../../../../shared/components/loading-spinner/loading-spinner.component";
 import {NgForOf} from "@angular/common";
@@ -11,6 +11,7 @@ import {ConsultaModel} from "../../../../../core/interfaces/consulta.model";
 import Swal from "sweetalert2";
 import {ConsultaListModel} from "../../../../../core/interfaces/consulta-list.model";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-consulta-list',
@@ -26,7 +27,7 @@ import {HttpErrorResponse} from "@angular/common/http";
   templateUrl: './consulta-list.component.html',
   styleUrl: './consulta-list.component.scss'
 })
-export class ConsultaListComponent implements OnDestroy {
+export class ConsultaListComponent implements OnInit, OnDestroy {
   consultas: ConsultaModel[];
   nextPageUrl: string;
   previousPageUrl: string;
@@ -64,7 +65,12 @@ export class ConsultaListComponent implements OnDestroy {
 
   private getConsultasSubject: Subject<void> = new Subject<void>();
 
-  constructor(private consultaService: ConsultaService) {
+  constructor(private consultaService: ConsultaService,
+              private title: Title) {}
+
+  ngOnInit(): void {
+    this.title.setTitle('MediAPP - Listado de consultas');
+
     this.consultas = [];
     this.actualPage = 1;
     this.getConsultasSubject

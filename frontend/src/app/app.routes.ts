@@ -46,6 +46,8 @@ import {
 import { CrearInformesComponent } from './pages/panels/panel-functions/specialist-functions/crear-informes/crear-informes.component';
 import { ModalComponent } from './pages/panels/panel-functions/specialist-functions/crear-editar-tomas/modal/modal.component';
 import { CrearEditarTomasComponent } from './pages/panels/panel-functions/specialist-functions/crear-editar-tomas/crear-editar-tomas.component';
+import {TermsComponent} from "./pages/terms/terms.component";
+import {PrivacityPolicyComponent} from "./pages/privacity-policy/privacity-policy.component";
 
 export const routes: Routes = [
   {
@@ -296,6 +298,14 @@ export const routes: Routes = [
   {
     path: 'listado-de-especialistas/:id',
     component: EspecialistDataComponent
+  },
+  {
+    path: 'terminos-y-condiciones',
+    component: TermsComponent
+  },
+  {
+    path: 'politica-de-privacidad',
+    component: PrivacityPolicyComponent
   },
   {
     path: '404',

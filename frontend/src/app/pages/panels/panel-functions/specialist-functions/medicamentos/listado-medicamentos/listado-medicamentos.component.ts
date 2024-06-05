@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { NgxPaginationModule } from "ngx-pagination";
 import {LowerCasePipe, NgForOf, NgIf, UpperCasePipe} from '@angular/common';
 import {debounceTime, Observable, Subject} from 'rxjs';
@@ -9,7 +9,7 @@ import { VerticalCardComponent } from '../../../../../../shared/components/verti
 import { RemoveAccentsPipe } from '../../../../../../shared/pipes/remove-accents.pipe';
 import { LoadingSpinnerComponent } from '../../../../../../shared/components/loading-spinner/loading-spinner.component';
 import {RemoveBrPipe} from "../../../../../../shared/pipes/remove-br.pipe";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {DomSanitizer, SafeHtml, Title} from "@angular/platform-browser";
 import { MedicinasDataModel } from '../../../../../../core/interfaces/medicinas-data.model';
 import { MedicinasListModel } from '../../../../../../core/interfaces/medicinas-list.model';
 import { MedicacionesService } from '../../../../../../core/services/medicaciones.service';
@@ -35,7 +35,7 @@ import Swal from "sweetalert2";
   templateUrl: './listado-medicamentos.component.html',
   styleUrl: './listado-medicamentos.component.scss'
 })
-export class ListadoMedicamentosComponent {
+export class ListadoMedicamentosComponent implements OnInit {
   medicamentos: MedicinasDataModel[];
   nextPageUrl: string;
   previousPageUrl: string;
@@ -74,9 +74,11 @@ export class ListadoMedicamentosComponent {
   private getMedicinesSubject: Subject<void> = new Subject<void>();
 
   constructor(private medicacionesService: MedicacionesService,
-    private sanitizer: DomSanitizer) { }
+              private sanitizer: DomSanitizer,
+              private title: Title) { }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Listado de medicamentos');
     this.medicamentos = [];
     this.actualPage = 1;
     this.getMedicinesSubject

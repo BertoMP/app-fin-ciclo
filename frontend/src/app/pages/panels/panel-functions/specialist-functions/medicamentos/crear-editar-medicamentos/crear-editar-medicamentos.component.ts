@@ -1,6 +1,6 @@
 import { CommonModule, Location, LowerCasePipe, NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import { Select2Module } from 'ng-select2-component';
@@ -12,6 +12,7 @@ import { LoadingSpinnerComponent } from '../../../../../../shared/components/loa
 import { PasswordInputComponent } from '../../../../../../shared/components/password-input/password-input.component';
 import { MedicinasDataModel } from '../../../../../../core/interfaces/medicinas-data.model';
 import { MedicacionesService } from '../../../../../../core/services/medicaciones.service';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-crear-editar-medicamentos',
@@ -27,7 +28,7 @@ import { MedicacionesService } from '../../../../../../core/services/medicacione
   templateUrl: './crear-editar-medicamentos.component.html',
   styleUrl: './crear-editar-medicamentos.component.scss'
 })
-export class CrearEditarMedicamentosComponent {
+export class CrearEditarMedicamentosComponent implements OnInit {
   registerForm: FormGroup;
   sendedAttempt: boolean = false;
   isLoading: boolean = false;
@@ -60,12 +61,14 @@ export class CrearEditarMedicamentosComponent {
   };
 
   constructor(private activatedRoute: ActivatedRoute,
-    private medicacionesService: MedicacionesService,
-    private router: Router,
-    private location: Location) {
+              private medicacionesService: MedicacionesService,
+              private router: Router,
+              private location: Location,
+              private title: Title) {
   }
 
   ngOnInit(): void {
+
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.id = params['id'] || null;
 
@@ -74,6 +77,7 @@ export class CrearEditarMedicamentosComponent {
       }
 
       if (this.isEditing) {
+        this.title.setTitle('MediAPP - Editar medicamento');
         this.medicacionesService.getMedicamentoId(this.id).subscribe({
           next: (res: MedicinasDataModel) => {
             this.medicamentos = res;
@@ -91,6 +95,8 @@ export class CrearEditarMedicamentosComponent {
             });
           }
         });
+      } else {
+        this.title.setTitle('MediAPP - Crear medicamento');
       }
     });
 

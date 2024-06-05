@@ -17,6 +17,7 @@ import {
 import {NgxPaginationModule} from "ngx-pagination";
 import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
 import Swal from "sweetalert2";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-medical-specialty-list',
@@ -47,10 +48,13 @@ export class MedicalSpecialtyListComponent implements OnInit {
   totalItems: number;
   itemsPerPage: number;
 
-  constructor(private medicalSpecialtiesService: MedicalSpecialtiesService) {
+  constructor(private medicalSpecialtiesService: MedicalSpecialtiesService,
+              private title: Title) {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('Clínica Médica Coslada - Especialidades médicas');
+
     this.actualPage = 1;
 
     this.getSpecialties(this.actualPage);

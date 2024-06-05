@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Select2Data, Select2Module } from 'ng-select2-component';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-listado-citas',
@@ -41,7 +42,6 @@ export class ListadoCitasComponent {
   fechaFin: string;
   fechaInicio: string;
 
-  rutaActual: string;
   nextPageUrl: string;
   previousPageUrl: string;
   actualPage: number;
@@ -77,9 +77,12 @@ export class ListadoCitasComponent {
 
   private getCitasSubject: Subject<void> = new Subject<void>();
 
-  constructor(private citasService: CitasService) { }
+  constructor(private citasService: CitasService,
+              private title: Title) { }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Listado de citas');
+
     this.actualPage = 1;
 
     this.getCitasSubject

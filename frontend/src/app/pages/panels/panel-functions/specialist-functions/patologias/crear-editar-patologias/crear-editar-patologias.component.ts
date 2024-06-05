@@ -12,6 +12,7 @@ import { Select2Module } from 'ng-select2-component';
 import { QuillEditorComponent } from 'ngx-quill';
 import { LoadingSpinnerComponent } from '../../../../../../shared/components/loading-spinner/loading-spinner.component';
 import { PasswordInputComponent } from '../../../../../../shared/components/password-input/password-input.component';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-crear-editar-patologias',
@@ -62,7 +63,8 @@ export class CrearEditarPatologiasComponent {
   constructor(private activatedRoute: ActivatedRoute,
               private patologiasService: PatologiasService,
               private router: Router,
-              private location: Location) {
+              private location: Location,
+              private title: Title) {
   }
 
   ngOnInit(): void {
@@ -74,6 +76,7 @@ export class CrearEditarPatologiasComponent {
       }
 
       if (this.isEditing) {
+        this.title.setTitle('MediAPP - Editar patología');
         this.patologiasService.getPatologiaId(this.id).subscribe({
           next: (res: PatologiasDataModel) => {
             this.patologias = res;
@@ -91,6 +94,8 @@ export class CrearEditarPatologiasComponent {
             });
           }
         });
+      } else {
+        this.title.setTitle('MediAPP - Crear patología');
       }
     });
 

@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { EspecialidadService } from '../../../../../core/services/especialidad.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import {QuillEditorComponent} from 'ngx-quill';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-crear-editar-especialidades',
@@ -67,7 +68,8 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private especialidadService: EspecialidadService,
               private router: Router,
-              private location: Location) {
+              private location: Location,
+              private title: Title) {
   }
 
   ngOnInit(): void {
@@ -79,6 +81,7 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
       }
 
       if (this.isEditing) {
+        this.title.setTitle('MediAPP - Editar especialidad');
         this.especialidadService.getEspecialidadId(this.id).subscribe({
           next: (res: SpecialityListedModel) => {
             this.especialidad = res;
@@ -93,6 +96,8 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
             this.errores = error.message.split(',');
           }
         });
+      } else {
+        this.title.setTitle('MediAPP - Crear especialidad');
       }
     });
 

@@ -13,6 +13,7 @@ import {AuthService} from "../../../../../core/services/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserRole} from "../../../../../core/enum/user-role.enum";
 import Swal from "sweetalert2";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-listado-mediciones',
@@ -39,7 +40,6 @@ export class ListadoMedicionesComponent implements OnInit {
   fields: string[] = ['SYS', 'DIA', 'Pulso'];
 
   userId: number;
-  loggedInSubscription: Subscription;
   mediciones: MedicionListedModel[];
 
   rutaActual: string;
@@ -86,7 +86,8 @@ export class ListadoMedicionesComponent implements OnInit {
   constructor(private medicionesService: MedicionesService,
               private router: Router,
               private authService: AuthService,
-              private activeRoute: ActivatedRoute) { }
+              private activeRoute: ActivatedRoute,
+              private title: Title) { }
 
 
   ngOnInit(): void {
@@ -98,8 +99,11 @@ export class ListadoMedicionesComponent implements OnInit {
 
     if (this.rutaActual.includes('listado-glucometria')) {
       this.isGlucometria = true;
+      this.title.setTitle('MediAPP - Listado de mediciones de glucosa');
 
       this.fields = ['Medición'];
+    } else {
+      this.title.setTitle('MediAPP - Listado de mediciones de tensión arterial');
     }
 
     this.getMedicionesSubject

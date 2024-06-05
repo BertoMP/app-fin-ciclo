@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
 import {ChatBotComponent} from "../../shared/components/chat-bot/chat-bot.component";
 import {LoadingSpinnerComponent} from "../../shared/components/loading-spinner/loading-spinner.component";
 import Swal from "sweetalert2";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-professionals-list',
@@ -33,10 +34,13 @@ export class ProfessionalsListComponent implements OnInit {
   listOfData: MedicalSpecialistListModel[];
   isLoading: boolean = false;
 
-  constructor(private medicalSpecialistListService: MedicalSpecialistListService) {
+  constructor(private medicalSpecialistListService: MedicalSpecialistListService,
+              private title: Title) {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('Listado de profesionales médicos');
+
     this.isLoading = true;
     document.querySelector('body').scrollIntoView({
       behavior: 'smooth',

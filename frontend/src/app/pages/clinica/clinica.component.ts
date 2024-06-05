@@ -1,5 +1,6 @@
-import { Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ChatBotComponent } from '../../shared/components/chat-bot/chat-bot.component';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-clinica',
@@ -8,6 +9,10 @@ import { ChatBotComponent } from '../../shared/components/chat-bot/chat-bot.comp
   templateUrl: './clinica.component.html',
   styleUrl: './clinica.component.scss'
 })
-export class ClinicaComponent{
+export class ClinicaComponent implements OnInit {
+  constructor(private title: Title) {}
 
+  ngOnInit(): void {
+    this.title.setTitle('La clínica');
+  }
 }

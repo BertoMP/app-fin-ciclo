@@ -12,6 +12,7 @@ import {ConsultaModel} from "../../../../../core/interfaces/consulta.model";
 import {ConsultaService} from "../../../../../core/services/consulta.service";
 import {SpecialityListedModel} from "../../../../../core/interfaces/speciality-listed.model";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-crear-editar-consulta',
@@ -45,7 +46,8 @@ export class CrearEditarConsultaComponent {
     private consultaService: ConsultaService,
     private activatedRoute: ActivatedRoute,
     private location: Location,
-    private router: Router) {
+    private router: Router,
+    private title: Title) {
   }
 
   ngOnInit(): void {
@@ -57,6 +59,7 @@ export class CrearEditarConsultaComponent {
       }
 
       if (this.isEditing) {
+        this.title.setTitle('MediAPP - Editar consulta');
         this.consultaService.getConsultaById(this.id).subscribe({
           next: (res: ConsultaModel) => {
             this.id = res.id;
@@ -68,6 +71,8 @@ export class CrearEditarConsultaComponent {
             this.errores = error.message.split(',');
           }
         });
+      } else {
+        this.title.setTitle('MediAPP - Crear consulta');
       }
     });
 

@@ -8,6 +8,7 @@ import { ForgottenPasswordService } from '../../../core/services/forgotten-passw
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import {LoadingSpinnerComponent} from "../../../shared/components/loading-spinner/loading-spinner.component";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-forgotten-password',
@@ -26,10 +27,13 @@ export class ForgottenPasswordComponent {
 
   constructor(
     private router: Router,
-    private refreshPasswordService: ForgottenPasswordService) {
+    private refreshPasswordService: ForgottenPasswordService,
+    private title: Title) {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Recuperar contraseña');
+
     this.emailForm = new FormGroup<any>({
       'email': new FormControl(
         null,

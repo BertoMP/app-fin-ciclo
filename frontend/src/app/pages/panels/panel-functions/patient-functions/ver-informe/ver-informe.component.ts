@@ -8,7 +8,7 @@ import { InformeSpecificData } from '../../../../../core/interfaces/informe-spec
 import { Location, NgFor } from '@angular/common';
 import { InformeService } from '../../../../../core/services/informe.service';
 import { saveAs } from 'file-saver';
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {DomSanitizer, SafeHtml, Title} from "@angular/platform-browser";
 import {AuthService} from "../../../../../core/services/auth.service";
 
 @Component({
@@ -36,12 +36,15 @@ export class VerInformeComponent {
               private activatedRoute: ActivatedRoute,
               private location: Location,
               private sanitizer: DomSanitizer,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private title: Title) { }
 
 
   errores: string[];
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Ver informe');
+
     this.username = this.authService.getUserName();
 
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {

@@ -6,6 +6,7 @@ import {Subscription} from "rxjs";
 import {filter} from "rxjs/operators";
 import {SidebarComponent} from "../../../../shared/components/sidebar/sidebar.component";
 import {PanelOptionModel} from "../../../../core/interfaces/panel-option.model";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-admin-panel',
@@ -124,10 +125,13 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   constructor(private auth: AuthService,
               private router: Router,
-              private elementRef: ElementRef) {
+              private elementRef: ElementRef,
+              private title: Title) {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Panel de Administrador');
+
     this.userName = this.auth.getUserName();
 
     const options: string[] = [

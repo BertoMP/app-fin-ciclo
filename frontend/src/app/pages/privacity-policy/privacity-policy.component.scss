@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column nowrap;
+  padding: 20px;
+  font-size: 1.2em;
+  line-height: 1.5;
+  color: #333;
+  height: 100%;
+
+  h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+
+  section {
+    position: relative;
+    text-align: justify;
+    max-width: 1000px;
+    padding: 20px;
+    height: 700px;
+    overflow-y: auto;
+    margin: 0 auto;
+
+    h3 {
+      font-size: 1.3em;
+      margin-top: 20px;
+      border-style: solid;
+      border-width: 2px 0;
+      border-color: #333;
+      text-align: center;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+  }
+}

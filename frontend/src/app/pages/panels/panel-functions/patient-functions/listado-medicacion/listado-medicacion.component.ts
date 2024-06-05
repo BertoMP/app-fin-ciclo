@@ -9,7 +9,7 @@ import { LoadingSpinnerComponent } from '../../../../../shared/components/loadin
 import { saveAs } from 'file-saver';
 import { MedicamentoDataModel } from "../../../../../core/interfaces/medicamento-data.model";
 import { DatosPacienteModel } from "../../../../../core/interfaces/datos-paciente.model";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {DomSanitizer, SafeHtml, Title} from "@angular/platform-browser";
 import {UserRole} from "../../../../../core/enum/user-role.enum";
 import {AuthService} from "../../../../../core/services/auth.service";
 import Swal from "sweetalert2";
@@ -47,11 +47,12 @@ export class ListadoMedicacionComponent implements OnInit {
 
   constructor(private medicacionesService: MedicacionesService,
               private sanitizer: DomSanitizer,
-              
               private authService: AuthService,
-              private activeRoute: ActivatedRoute) { }
+              private activeRoute: ActivatedRoute,
+              private title: Title) { }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Listado de medicación');
     this.meds = [];
     this.isPatient = UserRole.PACIENT === this.authService.getUserRole();
 
@@ -131,7 +132,7 @@ export class ListadoMedicacionComponent implements OnInit {
 
     if(accion=='eliminarToma'){
       request=this.medicacionesService.eliminarToma(idToma);
-      
+
     }else if(accion=='eliminarMedicamento'){
       request=this.medicacionesService.eliminarMedicamento(this.userId,idToma);
       mensaje='medicación';

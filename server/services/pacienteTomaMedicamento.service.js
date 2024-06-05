@@ -39,12 +39,15 @@ class PacienteTomaMedicamentoService {
 			}
 
 			const tomas = await PacienteTomaMedicamentoModel.findTomasByUserId(pacienteId, conn);
-			await TomaService.deleteAllTomas(tomas, conn);
-			await PacienteTomaMedicamentoModel.deleteTomasByUserId(pacienteId, conn);
 
-			for (const prescripcion of data.prescripciones) {
-				const medicamentoId = prescripcion.medicamento_id;
-				const tomas = prescripcion.tomas;
+			if (tomas.length > 0) {
+				await TomaService.deleteAllTomas(tomas, conn);
+				await PacienteTomaMedicamentoModel.deleteTomasByUserId(pacienteId, conn);
+			}
+
+			for (const prescripcion of data.prescripcion) {
+				const medicamentoId = prescripcion.medicamento.id;
+				const tomas = prescripcion.medicamento.tomas;
 
 				if (!medicamentoId) {
 					throw new Error('Debe especificar un medicamento para cada prescripción.');
@@ -54,8 +57,8 @@ class PacienteTomaMedicamentoService {
 					throw new Error('Debe especificar al menos una toma para cada medicamento.');
 				}
 
-				for (const toma of tomas) {
-					const prescripcion = ObjectFactory.createPrescripcion(toma);
+				for (const tomaData of tomas) {
+					const prescripcion = ObjectFactory.createPrescripcion(tomaData);
 
 					const existingToma = await PacienteTomaMedicamentoModel.findTomaByHora(
 						pacienteId,
@@ -78,6 +81,8 @@ class PacienteTomaMedicamentoService {
 				await conn.commit();
 			}
 		} catch (err) {
+			console.log(err);
+
 			if (!isConnProvided) {
 				await conn.rollback();
 			}

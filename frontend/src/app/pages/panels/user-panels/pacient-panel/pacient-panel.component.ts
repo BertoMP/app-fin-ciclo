@@ -6,6 +6,7 @@ import {Subscription} from "rxjs";
 import {PanelOptionModel} from "../../../../core/interfaces/panel-option.model";
 import {AuthService} from "../../../../core/services/auth.service";
 import {filter} from "rxjs/operators";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-pacient-panel',
@@ -129,10 +130,13 @@ export class PacientPanelComponent implements OnInit, OnDestroy {
 
   constructor(private auth: AuthService,
               private router: Router,
-              private elementRef: ElementRef) {
+              private elementRef: ElementRef,
+              private title: Title) {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Panel de paciente');
+
     this.userName = this.auth.getUserName();
 
     const options: string[] = [

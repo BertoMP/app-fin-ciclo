@@ -19,8 +19,15 @@ class TomaModel {
 	static async createToma(prescripcion, dbConn) {
 		const dosis = prescripcion.dosis;
 		const hora = prescripcion.hora;
-		const fecha_inicio = prescripcion.fecha_inicio;
-		const fecha_fin = prescripcion.fecha_fin ?? null;
+		const [day, month, year] = prescripcion.fecha_inicio.split('-');
+		const fecha_inicio = `${year}-${month}-${day}`;
+		let fecha_fin = null;
+
+		if (prescripcion.fecha_fin) {
+			const [day_fin, month_fin, year_fin] = prescripcion.fecha_fin.split('-');
+			fecha_fin = `${year_fin}-${month_fin}-${day_fin}`;
+		}
+
 		const observaciones = prescripcion.observaciones ?? null;
 
 		const query =
@@ -47,6 +54,7 @@ class TomaModel {
 				}
 			}
 		} catch (err) {
+			console.log(err);
 			throw new Error('Error al guardar la toma.');
 		}
 	}
@@ -149,7 +157,7 @@ class TomaModel {
 			'		id IN (?)';
 
 		try {
-			return await dbConn.execute(query, [tomas]);
+			return await dbConn.execute(query, [...tomas]);
 		} catch (err) {
 			throw new Error('Error al eliminar las tomas.');
 		}

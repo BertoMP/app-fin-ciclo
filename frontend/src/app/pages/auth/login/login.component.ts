@@ -18,6 +18,7 @@ import {
 } from "../../../shared/components/password-input/password-input.component";
 import {ChatbotService} from "../../../core/services/chatbot.service";
 import Swal from "sweetalert2";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-login',
@@ -41,11 +42,14 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private router: Router,
-              private chatbotService: ChatbotService) {
+              private chatbotService: ChatbotService,
+              private title: Title) {
   }
   passwordId: string = 'password';
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Iniciar sesión');
+
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/mediapp']).then(r => {});
     }

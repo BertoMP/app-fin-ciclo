@@ -1,6 +1,6 @@
 import { CommonModule, Location, LowerCasePipe, NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select2Data, Select2Module } from 'ng-select2-component';
@@ -14,6 +14,7 @@ import { PatologiasInformeModel } from '../../../../../core/interfaces/patologia
 import { InformeFormModel } from '../../../../../core/interfaces/informe-form.model';
 import { Subscription } from 'rxjs';
 import { InformeService } from '../../../../../core/services/informe.service';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-crear-informes',
@@ -30,7 +31,7 @@ import { InformeService } from '../../../../../core/services/informe.service';
   templateUrl: './crear-informes.component.html',
   styleUrl: './crear-informes.component.scss'
 })
-export class CrearInformesComponent {
+export class CrearInformesComponent implements OnInit {
   registerForm: FormGroup;
   sendedAttempt: boolean = false;
   isLoading: boolean = false;
@@ -66,10 +67,12 @@ export class CrearInformesComponent {
     private patologiasService: PatologiasService,
     private informeService: InformeService,
     private router: Router,
-    private location: Location) {
+    private title: Title) {
   }
 
   ngOnInit(): void {
+    this.title.setTitle('MediAPP - Crear informe');
+
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.cita_id = params['cita_id'] || null;
       console.log(this.cita_id);
