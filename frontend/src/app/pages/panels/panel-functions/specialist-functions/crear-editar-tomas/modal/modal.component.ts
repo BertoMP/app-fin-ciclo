@@ -37,7 +37,6 @@ export class ModalComponent implements OnInit {
   maxLength: number = 1000;
   @Input() tomaMedicamento: TomaInforme;
 
-
   suscripcionRuta: Subscription;
   medicamentos: Select2Data;
   medsArray: MedicacionToma[];
@@ -111,7 +110,7 @@ export class ModalComponent implements OnInit {
           CustomValidators.maxLengthHtml(this.maxLength)
         ]
       ),
-    });
+    }, { validators: CustomValidators.dateValidator });
 
     if (this.tomaMedicamento != null) {
       this.id_medicamento = this.tomaMedicamento.id;

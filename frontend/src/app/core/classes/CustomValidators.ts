@@ -1,4 +1,9 @@
-import {FormControl, FormGroup, ValidatorFn} from "@angular/forms";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup, ValidationErrors,
+  ValidatorFn
+} from "@angular/forms";
 
 export class CustomValidators {
   static validEmail(control: FormControl): { [s: string]: boolean } | null {
@@ -205,5 +210,25 @@ export class CustomValidators {
     const tmp = document.createElement("DIV");
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || "";
+  }
+
+  static dateValidator(control: AbstractControl): ValidationErrors | null {
+    const startDate = new Date(control.get('fechaInicio').value);
+    const endDate = new Date(control.get('fechaFin').value);
+    const now = new Date();
+
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
+
+    if (startDate < now) {
+      return {'startDate': true};
+    }
+
+    if (endDate < now || endDate < startDate) {
+      return {'endDate': true};
+    }
+
+    return null;
   }
 }

@@ -85,6 +85,18 @@
             </li>
             }
 
+            @if (registerForm.errors?.startDate) {
+            <li>
+                <strong>Fecha inicio:</strong> La fecha de inicio no puede ser anterior a la fecha actual.
+            </li>
+            }
+
+            @if (registerForm.errors?.endDate) {
+            <li>
+                <strong>Fecha fin:</strong> La fecha de fin no puede ser anterior a hoy ni a la fecha de inicio.
+            </li>
+            }
+
         </ul>
     </section>
     } @else if (errores.length > 0) {
