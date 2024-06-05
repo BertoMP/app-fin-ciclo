@@ -47,6 +47,8 @@ export class CrearEditarTomasComponent {
 
     if (toma != null && medicamento_id != null) {
       modalRef.componentInstance.tomaMedicamento = this.generateToma(toma, medicamento_id); // Pasar datos al modal
+    }else{
+      modalRef.componentInstance.tomaMedicamento = null;
     }
 
     modalRef.result.then((result) => {
@@ -138,7 +140,6 @@ export class CrearEditarTomasComponent {
       request.subscribe({
         next: (response: MedicacionListModel) => {
           this.meds = response.prescripciones;
-          console.log(this.meds);
           this.dataLoaded = true;
         },
         error: (error: string[]) => {

@@ -246,10 +246,9 @@ export class ModalComponent {
   private generateToma(): TomaInforme {
     const medicamentoId = this.registerForm.get('medicamento').value;
     const medicamentoSeleccionado = this.medsArray.find(medicina => medicina.id === medicamentoId);
-
     return {
       id: this.registerForm.get('medicamento').value,
-      nombre: medicamentoSeleccionado.nombre,
+      nombre:medicamentoSeleccionado.nombre,
       toma: {
         dosis: this.registerForm.get('dosis').value,
         fecha_fin: this.enviarFecha(this.registerForm.get('fechaFin').value),
