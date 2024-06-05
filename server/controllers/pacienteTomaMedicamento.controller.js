@@ -35,8 +35,6 @@ class PacienteTomaMedicamentoController {
 
 		try {
 			const prescripciones = await PacienteTomaMedicamentoService.findPrescripciones(paciente_id);
-			console.log(prescripciones);
-			console.log(prescripciones.prescripciones[0]);
 
 			return res.status(200).json(prescripciones);
 		} catch (error) {
@@ -63,7 +61,6 @@ class PacienteTomaMedicamentoController {
 
 		try {
 			const toma = await TomaService.findToma(toma_id);
-			console.log(toma);
 
 			return res.status(200).json(toma);
 		} catch (error) {
