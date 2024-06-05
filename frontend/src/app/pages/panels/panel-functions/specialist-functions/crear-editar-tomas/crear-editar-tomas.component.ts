@@ -43,7 +43,7 @@ export class CrearEditarTomasComponent implements OnInit {
               private title: Title) { }
 
   open(toma?: MedicamentoTomasModel, medicamento_id?: number) {
-    const modalRef = this.modalService.open(ModalComponent);
+    const modalRef = this.modalService.open(ModalComponent,{size:"lg",centered:true});
     let hora=(toma!=null)?toma.hora:null;
 
     if (toma != null && medicamento_id != null) {

@@ -1,80 +1,103 @@
 @if (!dataLoaded) {
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <app-loading-spinner></app-loading-spinner>
-    </div>
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <app-loading-spinner></app-loading-spinner>
+</div>
 } @else if (!informe) {
-    <section class="no-results text-center mt-5">
-        <p>No existe la cita indicada</p>
-    </section>
+<section class="no-results text-center mt-5">
+    <p>No existe la cita indicada</p>
+</section>
 } @else {
-    <div class="container mt-5">
-        <section>
-          <button type="button" (click)="descargarInforme()" class="btn btn-primary ml-8"><i class="bi bi-file-pdf-fill"></i> Descargar informe</button>
-        </section>
-        <div class="text-center mb-4">
-            <h2>{{username}}, estos son los datos del informe seleccionado:</h2>
-        </div>
-        <table class="table table-bordered">
-            <thead class="thead-light">
-                <tr>
-                    <th colspan="2" class="text-center">FECHA DEL INFORME: {{informe.datos_cita.fecha}} a las {{informe.datos_cita.hora}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>DATOS DEL PACIENTE</strong></td>
-                </tr>
-                <tr>
-                    <td>
-                        <p><strong>Nombre:</strong> {{informe.datos_paciente.datos_personales.nombre}}</p>
-                        <p><strong>Apellidos:</strong> {{informe.datos_paciente.datos_personales.primer_apellido}} {{informe.datos_paciente.datos_personales.segundo_apellido}}</p>
-                        <p><strong>DNI:</strong> {{informe.datos_paciente.datos_personales.dni}}</p>
-                        <p><strong>Dirección:</strong> {{informe.datos_paciente.datos_vivienda.tipo_via}} {{informe.datos_paciente.datos_vivienda.nombre_via}}, Nº {{informe.datos_paciente.datos_vivienda.numero}}, Piso {{informe.datos_paciente.datos_vivienda.piso}}, Puerta {{informe.datos_paciente.datos_vivienda.puerta}}, {{informe.datos_paciente.datos_vivienda.municipio}}, {{informe.datos_paciente.datos_vivienda.provincia}}, CP {{informe.datos_paciente.datos_vivienda.codigo_postal}}</p>
-                        <p><strong>Teléfono:</strong> {{informe.datos_paciente.telefonos.tel_movil}}</p>
-                    </td>
-                </tr>
-                <tr>
-                  <td><strong>DATOS DEL MÉDICO</strong></td>
-                </tr>
-                <tr>
-                  <td>
-                    <p><strong>Médico de referencia:</strong> {{informe.datos_especialista.datos_personales.nombre}} {{informe.datos_especialista.datos_personales.primer_apellido}} {{informe.datos_especialista.datos_personales.segundo_apellido}}</p>
+<div class="container mt-4">
+    <section class="mb-5 text-right">
+        <button type="button" (click)="descargarInforme()" class="btn btn-primary">
+            <i class="bi bi-file-pdf-fill"></i> Descargar informe
+        </button>
+    </section>
+
+    <div class="mb-4">
+        <h2 class="font-weight-bold text-center">{{username}}, estos son los datos del informe seleccionado:</h2>
+    </div>
+
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th colspan="2" class="text-center text-secondary font-weight-bold">FECHA DEL INFORME:
+                    {{informe.datos_cita.fecha}} a las {{informe.datos_cita.hora}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="2" class="bg-primary text-white font-weight-bold">DATOS DEL PACIENTE</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p><strong>Nombre:</strong> {{informe.datos_paciente.datos_personales.nombre}}</p>
+                    <p><strong>Apellidos:</strong> {{informe.datos_paciente.datos_personales.primer_apellido}}
+                        {{informe.datos_paciente.datos_personales.segundo_apellido}}</p>
+                    <p><strong>DNI:</strong> {{informe.datos_paciente.datos_personales.dni}}</p>
+                    <p><strong>Dirección:</strong> {{informe.datos_paciente.datos_vivienda.tipo_via}}
+                        {{informe.datos_paciente.datos_vivienda.nombre_via}}, Nº
+                        {{informe.datos_paciente.datos_vivienda.numero}}, Piso
+                        {{informe.datos_paciente.datos_vivienda.piso}}, Puerta
+                        {{informe.datos_paciente.datos_vivienda.puerta}},
+                        {{informe.datos_paciente.datos_vivienda.municipio}},
+                        {{informe.datos_paciente.datos_vivienda.provincia}}, CP
+                        {{informe.datos_paciente.datos_vivienda.codigo_postal}}</p>
+                    <p><strong>Teléfono:</strong> {{informe.datos_paciente.telefonos.tel_movil}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="bg-primary text-white font-weight-bold">DATOS DEL MÉDICO</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p><strong>Médico de referencia:</strong> {{informe.datos_especialista.datos_personales.nombre}}
+                        {{informe.datos_especialista.datos_personales.primer_apellido}}
+                        {{informe.datos_especialista.datos_personales.segundo_apellido}}</p>
                     <p><strong>Especialidad:</strong> {{informe.datos_especialista.especialidad}}</p>
                     <p><strong>Número colegiado:</strong> {{informe.datos_especialista.num_colegiado}}</p>
                     <p><strong>Correo contacto:</strong> {{informe.datos_especialista.datos_personales.email}}</p>
-                  </td>
-                <tr>
-                    <td colspan="2">
-                        <h5 class="mb-3"><strong>MOTIVO DEL INFORME:</strong></h5>
-                        <p>{{informe.datos_informe.motivo}}</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <h5 class="mb-3"><strong>DIAGNÓSTICOS:</strong></h5>
-                        <p>Indique los diagnósticos (CIE-10) de las principales enfermedades, trastornos u otras condiciones de salud que afectan de manera significativa en las actividades de la vida diaria (AVDs)</p>
-                        <div class="mb-3">
-                            <ul class="list-group">
-                                <li class="list-group-item" *ngFor="let patologia of informe.datos_informe.patologias">
-                                    <p><strong>Nombre:</strong> {{patologia.nombre}}</p>
-                                    <p [innerHTML]="sanitizeHtml(patologia.descripcion)"></p>
-                                </li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                  <td>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="bg-primary text-white font-weight-bold">MOTIVO DEL INFORME</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>{{informe.datos_informe.motivo}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="bg-primary text-white  font-weight-bold">DIAGNÓSTICOS</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>Indique los diagnósticos (CIE-10) de las principales enfermedades, trastornos u otras condiciones
+                        de salud que afectan de manera significativa en las actividades de la vida diaria (AVDs)</p>
                     <div class="mb-3">
-                      <h5 class="mb-3"><strong>CONTENIDO DEL INFORME:</strong></h5>
-                      <div class="form-control" [innerHTML]="sanitizeHtml(informe.datos_informe.contenido)"></div>
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let patologia of informe.datos_informe.patologias">
+                                <p><strong>Nombre:</strong> {{patologia.nombre}}</p>
+                                <p [innerHTML]="sanitizeHtml(patologia.descripcion)"></p>
+                            </li>
+                        </ul>
                     </div>
-                  </td>
-                </tr>
-            </tbody>
-        </table>
-        <section>
-          <button type="button" (click)="volver()" class="btn btn-primary">Volver</button>
-        </section>
-    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="bg-primary text-white font-weight-bold">CONTENIDO DEL INFORME</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="form-control" [innerHTML]="sanitizeHtml(informe.datos_informe.contenido)"></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <section class="text-right">
+        <button type="button" (click)="volver()" class="btn btn-secondary">Volver</button>
+    </section>
+</div>
+
 }

@@ -1,4 +1,4 @@
-import { CommonModule, Location, LowerCasePipe, NgClass } from '@angular/common';
+import { CommonModule, Location, LowerCasePipe, NgClass, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import {Component, Input, OnInit} from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -21,6 +21,7 @@ import {MedicamentoDataModel} from "../../../../../../core/interfaces/medicament
   imports: [ReactiveFormsModule,
     LowerCasePipe,
     NgClass,
+    NgIf,
     LoadingSpinnerComponent,
     Select2Module,
     CommonModule,
