@@ -13,6 +13,7 @@ import { MedicacionesService } from '../../../../../../core/services/medicacione
 import { MedicacionToma } from '../../../../../../core/interfaces/medicacion-toma.model';
 import { TomaInforme } from '../../../../../../core/interfaces/tomaInforme.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {MedicamentoDataModel} from "../../../../../../core/interfaces/medicamento-data.model";
 
 @Component({
   selector: 'app-modal',
@@ -39,6 +40,7 @@ export class ModalComponent {
 
   suscripcionRuta: Subscription;
   medicamentos: Select2Data;
+  medsArray: MedicacionToma[];
 
   id: number;
   id_medicamento: number;
@@ -150,6 +152,7 @@ export class ModalComponent {
     this.medicacionesService.getMedicamentosPreescripcion()
       .subscribe({
         next: (medicinas: MedicacionToma[]) => {
+          this.medsArray = medicinas;
           this.medicamentos = medicinas.map((medicina: MedicacionToma) => {
             return {
               value: medicina.id,
@@ -241,9 +244,12 @@ export class ModalComponent {
   }
 
   private generateToma(): TomaInforme {
+    const medicamentoId = this.registerForm.get('medicamento').value;
+    const medicamentoSeleccionado = this.medsArray.find(medicina => medicina.id === medicamentoId);
+
     return {
       id: this.registerForm.get('medicamento').value,
-      nombre: null,
+      nombre: medicamentoSeleccionado.nombre,
       toma: {
         dosis: this.registerForm.get('dosis').value,
         fecha_fin: this.enviarFecha(this.registerForm.get('fechaFin').value),

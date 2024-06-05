@@ -36,10 +36,10 @@ export class CrearEditarTomasComponent {
   errores: string[];
 
   constructor(private modalService: NgbModal,
-    private medicacionesService: MedicacionesService,
-    private sanitizer: DomSanitizer,
-    private activeRoute: ActivatedRoute,
-  private router:Router) { }
+              private medicacionesService: MedicacionesService,
+              private sanitizer: DomSanitizer,
+              private activeRoute: ActivatedRoute,
+              private router:Router) { }
 
   open(toma?: MedicamentoTomasModel, medicamento_id?: number) {
     const modalRef = this.modalService.open(ModalComponent);
@@ -74,7 +74,7 @@ export class CrearEditarTomasComponent {
         })
       }
       // Identificamos la toma que queremos modificar, por ejemplo, la primera toma
-      
+
 
       console.log(this.meds);
 
@@ -98,15 +98,13 @@ export class CrearEditarTomasComponent {
     }
   }
 
-  private eliminateToma(toma?: MedicamentoTomasModel, medicamento_id?: number){
+  eliminateToma(toma?: MedicamentoTomasModel, medicamento_id?: number){
     let prescripcionOriginal = this.meds.find(p => p.medicamento.id === medicamento_id);
     let hora=toma.hora;
     if (prescripcionOriginal) {
       prescripcionOriginal.medicamento.tomas = prescripcionOriginal.medicamento.tomas.filter(t => t.hora !== hora);
     }
   }
-
-
 
   ngOnInit(): void {
     this.meds = [];
