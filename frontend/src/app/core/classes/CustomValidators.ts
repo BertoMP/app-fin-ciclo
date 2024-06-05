@@ -218,15 +218,17 @@ export class CustomValidators {
     const now = new Date();
 
     startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(0, 0, 0, 0);
     now.setHours(0, 0, 0, 0);
 
     if (startDate < now) {
       return {'startDate': true};
     }
 
-    if (endDate < now || endDate < startDate) {
-      return {'endDate': true};
+    if (endDate) {
+      endDate.setHours(0, 0, 0, 0);
+      if (endDate < startDate || endDate < now) {
+        return {'endDate': true};
+      }
     }
 
     return null;
