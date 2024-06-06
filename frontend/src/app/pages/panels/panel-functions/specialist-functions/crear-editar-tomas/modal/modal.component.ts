@@ -75,8 +75,6 @@ export class ModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Datos recibidos en el modal:', this.tomaMedicamento);
-
     this.registerForm = new FormGroup<any>({
       'medicamento': new FormControl(
         null,
@@ -123,9 +121,6 @@ export class ModalComponent implements OnInit {
       this.isEditing=true;
       this.patchForm();
     }
-
-    console.log(this.fecha_inicio);
-
     this.getMedicaciones();
   }
 
@@ -198,8 +193,6 @@ export class ModalComponent implements OnInit {
     });
 
     this.registerForm.updateValueAndValidity();
-
-    console.log("Actualizados");
   }
 
   onRegisterToma(): void {
@@ -230,8 +223,6 @@ export class ModalComponent implements OnInit {
         }
       }
     }
-
-    console.log(newToma);
     this.activeModal.close(newToma);
 
     if (this.id != null) {
@@ -262,8 +253,14 @@ export class ModalComponent implements OnInit {
 
   private generateToma(): TomaInforme {
     const medicamentoId = this.registerForm.get('medicamento').value;
-    const formatHora = this.registerForm.get('hora').value + ':00';
     const medicamentoSeleccionado = this.medsArray.find(medicina => medicina.id === medicamentoId);
+    let hora = this.registerForm.get('hora').value;
+    const horaString = hora.toString();
+
+    if (horaString.length === 5) {
+      hora = horaString + ':00';
+    }
+
     return {
       id: this.registerForm.get('medicamento').value,
       nombre:medicamentoSeleccionado.nombre,
@@ -271,7 +268,7 @@ export class ModalComponent implements OnInit {
         dosis: this.registerForm.get('dosis').value,
         fecha_fin: this.enviarFecha(this.registerForm.get('fechaFin').value),
         fecha_inicio: this.enviarFecha(this.registerForm.get('fechaInicio').value),
-        hora: formatHora,
+        hora: hora,
         id: this.id ?? null,
         observaciones: this.registerForm.get('observacion').value,
       }

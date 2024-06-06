@@ -54,7 +54,6 @@ class TomaModel {
 				}
 			}
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al guardar la toma.');
 		}
 	}
@@ -132,7 +131,6 @@ class TomaModel {
 				id: rows[0].medicamento_id,
 			};
 		} catch (err) {
-			console.log(err);
 			throw new Error('Error al buscar la toma.');
 		}
 	}

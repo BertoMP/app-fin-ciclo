@@ -75,7 +75,6 @@ export class CrearInformesComponent implements OnInit {
 
     this.suscripcionRuta = this.activatedRoute.params.subscribe(params => {
       this.cita_id = params['cita_id'] || null;
-      console.log(this.cita_id);
     });
 
     this.registerForm = new FormGroup<any>({

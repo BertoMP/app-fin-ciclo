@@ -117,10 +117,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para una cita.
-             Valida 'paciente_id', 'especialista_id', 'fecha' y 'hora'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para una cita.             Valida 'paciente_id', 'especialista_id', 'fecha' y 'hora'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -303,10 +300,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para una consulta.
-             Valida 'nombre' que debe ser una cadena de texto y seguir el formato 1-2 caracteres numéricos (el primero no puede ser 0) seguidos de un guión y una letra mayúscula.
-             Si 'nombre' no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si 'nombre' es válido, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para una consulta.             Valida 'nombre' que debe ser una cadena de texto y seguir el formato 1-2 caracteres numéricos (el primero no puede ser 0) seguidos de un guión y una letra mayúscula.             Si 'nombre' no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si 'nombre' es válido, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -489,10 +483,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para un contacto.
-             Valida 'nombre', 'descripcion', 'email', 'telefono' y 'mensaje'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para un contacto.             Valida 'nombre', 'descripcion', 'email', 'telefono' y 'mensaje'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -675,10 +666,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para una especialidad.
-             Valida 'nombre', 'descripcion' e 'imagen'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para una especialidad.             Valida 'nombre', 'descripcion' e 'imagen'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -861,10 +849,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para el registro de un especialista.
-             Valida 'num_colegiado', 'descripcion', 'turno', 'especialidad_id', 'consulta_id' e 'imagen'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para el registro de un especialista.             Valida 'num_colegiado', 'descripcion', 'turno', 'especialidad_id', 'consulta_id' e 'imagen'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -1047,10 +1032,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para una glucometría.
-             Valida 'medicion' que debe ser un valor numérico entre 2 y 3 dígitos y no puede ser un valor negativo.
-             Si 'medicion' no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si 'medicion' es válido, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para una glucometría.             Valida 'medicion' que debe ser un valor numérico entre 2 y 3 dígitos y no puede ser un valor negativo.             Si 'medicion' no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si 'medicion' es válido, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -1233,10 +1215,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para un informe.
-             Valida 'cita_id', 'motivo', 'patologias', 'patologias.*' y 'contenido'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para un informe.             Valida 'cita_id', 'motivo', 'patologias', 'patologias.*' y 'contenido'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -1419,10 +1398,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para un medicamento.
-             Valida 'nombre' y 'descripcion'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para un medicamento.             Valida 'nombre' y 'descripcion'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -1605,10 +1581,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para el registro de un paciente.
-             Valida 'password', 'tipo_via', 'nombre_via', 'numero', 'piso', 'puerta', 'codigo_postal', 'municipio', 'tel_fijo', 'tel_movil', y 'fecha_nacimiento'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para el registro de un paciente.             Valida 'password', 'tipo_via', 'nombre_via', 'numero', 'piso', 'puerta', 'codigo_postal', 'municipio', 'tel_fijo', 'tel_movil', y 'fecha_nacimiento'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -1791,10 +1764,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para el registro de un paciente.
-             Valida 'tipo_via', 'nombre_via', 'numero', 'piso', 'puerta', 'codigo_postal', 'municipio', 'tel_fijo', 'tel_movil', y 'fecha_nacimiento'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para el registro de un paciente.             Valida 'tipo_via', 'nombre_via', 'numero', 'piso', 'puerta', 'codigo_postal', 'municipio', 'tel_fijo', 'tel_movil', y 'fecha_nacimiento'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -1977,10 +1947,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para la actualización de un paciente.
-             Valida 'tipo_via', 'nombre_via', 'numero', 'piso', 'puerta', 'codigo_postal', 'municipio', 'tel_fijo', 'tel_movil', y 'fecha_nacimiento'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para la actualización de un paciente.             Valida 'tipo_via', 'nombre_via', 'numero', 'piso', 'puerta', 'codigo_postal', 'municipio', 'tel_fijo', 'tel_movil', y 'fecha_nacimiento'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -2163,10 +2130,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para una patología.
-             Valida 'nombre' y 'descripcion'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para una patología.             Valida 'nombre' y 'descripcion'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -2349,10 +2313,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para una medición de tensión arterial.
-             Valida 'sistolica', 'diastolica' y 'pulsaciones'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para una medición de tensión arterial.             Valida 'sistolica', 'diastolica' y 'pulsaciones'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -2535,10 +2496,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para el inicio de sesión de un usuario.
-             Valida 'email' y 'password'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para el inicio de sesión de un usuario.             Valida 'email' y 'password'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -2721,10 +2679,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para el cambio de contraseña de un usuario.
-             Valida 'password' y 'confirm_password'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para el cambio de contraseña de un usuario.             Valida 'password' y 'confirm_password'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -2907,10 +2862,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para la recuperación de contraseña de un usuario.
-						Valida 'email'.
-						Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-						Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para la recuperación de contraseña de un usuario.						Valida 'email'.						Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.						Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -3093,10 +3045,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para el cambio de contraseña de un usuario.
-             Valida 'oldPassword', 'password' y 'checkPassword'.
-             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.
-             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
+    Middleware que valida el cuerpo de la solicitud para el cambio de contraseña de un usuario.             Valida 'oldPassword', 'password' y 'checkPassword'.             Si alguno de estos campos no es válido, se envía una respuesta con el estado 400 y los mensajes de error.             Si todos los campos son válidos, se llama a la función next() para pasar al siguiente middleware o ruta.
 </div>
 
 
@@ -3279,9 +3228,7 @@
 
 
 <div class="description">
-    Middleware que valida el cuerpo de la solicitud para el registro de un usuario.
-             Valida 'email', 'nombre', 'primer_apellido', 'segundo_apellido' y 'dni'.
-             Si alguno de estos campos no es válido, se lanza un error con el mensaje correspondiente.
+    Middleware que valida el cuerpo de la solicitud para el registro de un usuario.             Valida 'email', 'nombre', 'primer_apellido', 'segundo_apellido' y 'dni'.             Si alguno de estos campos no es válido, se lanza un error con el mensaje correspondiente.
 </div>
 
 
@@ -3472,7 +3419,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Jun 05 2024 12:18:04 GMT+0200 (hora de verano de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Jun 06 2024 19:28:25 GMT+0200 (hora de verano de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

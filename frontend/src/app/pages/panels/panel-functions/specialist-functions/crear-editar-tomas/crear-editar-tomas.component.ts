@@ -95,14 +95,8 @@ export class CrearEditarTomasComponent implements OnInit {
           this.meds.splice(index, 0, newMed);
         }
       }
-
-      console.log(this.meds);
-
     }, (reason) => {
       // Manejo de cierre del modal si es necesario
-      if (reason === 'cancel' || reason === 'backdrop-click' || reason === 'esc') {
-        console.log('Modal cerrado');
-      }
     });
   }
 
@@ -181,7 +175,6 @@ export class CrearEditarTomasComponent implements OnInit {
   }
   onRegisterTomas(){
     this.dataLoaded = false;
-    console.log(this.meds);
     const medsObj = this.generateMeds();
     this.medicacionesService.subirMedicamentosPaciente(medsObj)
           .subscribe({

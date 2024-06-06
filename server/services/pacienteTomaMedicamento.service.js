@@ -59,9 +59,6 @@ class PacienteTomaMedicamentoService {
 
 				for (const tomaData of tomas) {
 					const tomaPrescripcion = ObjectFactory.createPrescripcion(tomaData);
-
-					console.log(tomaPrescripcion);
-
 					const existingToma = await PacienteTomaMedicamentoModel.findTomaByHora(
 						pacienteId,
 						medicamentoId,
@@ -83,8 +80,6 @@ class PacienteTomaMedicamentoService {
 				await conn.commit();
 			}
 		} catch (err) {
-			console.log(err);
-
 			if (!isConnProvided) {
 				await conn.rollback();
 			}

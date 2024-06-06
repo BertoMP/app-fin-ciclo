@@ -92,7 +92,6 @@ export class ListadoMedicacionComponent implements OnInit {
       next: (response: MedicacionListModel) => {
         this.userData = response.datos_paciente;
         this.meds = response.prescripciones;
-        console.log(this.meds);
         this.dataLoaded = true;
       },
       error: (error: string[]) => {
@@ -156,7 +155,6 @@ export class ListadoMedicacionComponent implements OnInit {
         })
       },
       error: (error: string[]) => {
-        console.log(error);
         this.errores = error;
       },
     });

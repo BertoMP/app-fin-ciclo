@@ -213,7 +213,6 @@ export class CrearEditarPatologiasComponent {
   }
 
   private generatePatology(): PatologiasDataModel {
-     console.log(this.registerForm.get('descripcion').value);
     return {
       id: this.id ?? null,
       datos_patologia: {

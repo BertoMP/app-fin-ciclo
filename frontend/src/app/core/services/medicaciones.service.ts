@@ -83,8 +83,6 @@ export class MedicacionesService {
   }
 
   subirMedicamentosPaciente(medicamentos: { paciente_id: number; prescripcion: MedicamentoDataModel[]; }):Observable<any>{
-    console.log(medicamentos);
-
     return this.http.post(`${this.baseUrl}/prescripcion`, medicamentos)
     .pipe(catchError(this.handleError));
   }
