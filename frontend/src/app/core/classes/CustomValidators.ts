@@ -228,10 +228,6 @@ export class CustomValidators {
       if (endDate < startDate) {
         return {'endDate': true};
       }
-
-      if (endDate < now) {
-        return {'endDate': true};
-      }
     }
 
     return null;
