@@ -63,7 +63,7 @@
                 <strong>Dosis:</strong>El medicamento debe de estar dosificado.
             </li>
             <li *ngIf="registerForm.get('fechaInicio').invalid">
-                <strong>Fecha inicio:</strong> El tratamiento debe de tener una fecha de inicio y no superar a la fecha de fin.
+                <strong>Fecha inicio:</strong> El tratamiento debe de tener una fecha de inicio.
             </li>
             <li *ngIf="registerForm.get('fechaFin').invalid">
                 <strong>Fecha fin:</strong> El tratamiento debe de tener una fecha de fin establecida.
@@ -75,7 +75,7 @@
                 <strong>Fecha inicio:</strong> La fecha de inicio no puede ser anterior a hoy.
             </li>
             <li *ngIf="registerForm.errors?.endDate">
-                <strong>Fecha fin:</strong> La fecha de fin no puede ser anterior a hoy ni a la fecha de inicio.
+                <strong>Fecha fin:</strong> La fecha de fin no puede ser anterior a la fecha de inicio.
             </li>
         </ul>
     </div>
