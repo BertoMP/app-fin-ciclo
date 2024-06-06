@@ -53,7 +53,7 @@ export class MedicalSpecialtyListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Clínica Médica Coslada - Especialidades médicas');
+    this.title.setTitle('Especialidades médicas');
 
     this.actualPage = 1;
 
