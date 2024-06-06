@@ -226,6 +226,7 @@ export class CustomValidators {
       startDate.setHours(0, 0, 0, 0);
 
       if (endDate < startDate) {
+        console.log('endDate < startDate');
         return {'endDate': true};
       }
     }
