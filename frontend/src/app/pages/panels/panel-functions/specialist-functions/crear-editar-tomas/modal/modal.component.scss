@@ -1,3 +1,45 @@
 :host {
-    z-index: 3001;
+  z-index: 3001;
+
+  quill-editor {
+    width: 100%;
+    height: 150px;
+    text-align: justify;
+    resize: none;
+    border-radius: .5rem;
+    border-color: transparent;
+    word-break: break-word;
+
+    ::ng-deep.ql-toolbar.ql-snow {
+      background-color: lightgray;
+    }
+
+    ::ng-deep.ql-container.ql-snow {
+      background-color: white;
+      height: 100px;
+    }
+
+    &.invalid {
+      ::ng-deep.ql-container.ql-snow {
+        background-color: lightcoral;
+      }
+    }
   }
+
+  select2 {
+    border-color: transparent;
+
+    ::ng-deep .select2-selection--single {
+      font-size: 1.2rem;
+      width: 100%;
+      border-radius: 5px;
+      padding: 20px;
+      text-align: center;
+      align-items: center;
+    }
+
+    &#medicamento {
+      --select2-selection-border-color: #ccc;
+    }
+  }
+}

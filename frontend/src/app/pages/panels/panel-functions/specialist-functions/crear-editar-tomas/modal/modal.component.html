@@ -11,38 +11,42 @@
         <legend class="w-auto">Datos toma</legend>
         <div class="mb-3">
             <label for="medicamento" class="form-label">Medicamento</label>
-            <select2 id="medicamento" formControlName="medicamento" class="form-control" 
-                [ngClass]="{ 'is-invalid': sendedAttempt && registerForm.get('medicamento').invalid }" 
+            <select2 id="medicamento" formControlName="medicamento" class="form-control"
+                [ngClass]="{ 'is-invalid': sendedAttempt && registerForm.get('medicamento').invalid }"
                 [data]="medicamentos" placeholder="Elige una opcion">
             </select2>
         </div>
-        <div class="mb-3">
+      <div class="row">
+        <div class="col-6 mb-3">
             <label for="hour" class="form-label">Hora</label>
-            <input type="time" id="hour" formControlName="hora" class="form-control" 
+            <input type="time" id="hour" formControlName="hora" class="form-control"
                 [ngClass]="{'is-invalid': registerForm.get('hora').invalid && sendedAttempt }">
         </div>
-        <div class="mb-3">
+        <div class="col-6 mb-3">
             <label for="dose" class="form-label">Dosis</label>
-            <input type="number" id="dose" formControlName="dosis" class="form-control" 
+            <input type="number" id="dose" formControlName="dosis" class="form-control"
                 [ngClass]="{'is-invalid': registerForm.get('dosis').invalid && sendedAttempt }">
         </div>
-        <div class="mb-3">
-            <label for="initDate" class="form-label">Fecha Inicio</label>
-            <input type="date" id="initDate" formControlName="fechaInicio" class="form-control" 
-                [ngClass]="{'is-invalid': registerForm.get('fechaInicio').invalid && sendedAttempt }">
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-sm-12 mb-3">
+          <label for="initDate" class="form-label">Fecha Inicio</label>
+          <input type="date" id="initDate" formControlName="fechaInicio" class="form-control"
+                 [ngClass]="{'is-invalid': registerForm.get('fechaInicio').invalid && sendedAttempt }">
         </div>
-        <div class="mb-3">
-            <label for="endDate" class="form-label">Fecha Fin</label>
-            <input type="date" id="endDate" formControlName="fechaFin" class="form-control" 
-                [ngClass]="{'is-invalid': registerForm.get('fechaFin').invalid && sendedAttempt }">
+        <div class="col-md-6 col-sm-12 mb-3">
+          <label for="endDate" class="form-label">Fecha Fin</label>
+          <input type="date" id="endDate" formControlName="fechaFin" class="form-control"
+                 [ngClass]="{'is-invalid': registerForm.get('fechaFin').invalid && sendedAttempt }">
         </div>
+      </div>
         <div class="mb-3">
             <label for="observation" class="form-label">Observaciones</label>
             <p class="text-muted"><span
                     [class.text-danger]="observationLength > maxLength">{{observationLength}}</span>/{{maxLength}}
                 caracteres</p>
             <quill-editor formControlName="observacion" id="observation" placeholder="Introduce una observación..."
-                [modules]="quillConfig" class="form-control" 
+                [modules]="quillConfig" class="form-control"
                 [ngClass]="{ 'is-invalid': registerForm.get('observacion').invalid && sendedAttempt }"></quill-editor>
         </div>
     </fieldset>
