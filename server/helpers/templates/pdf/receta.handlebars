@@ -58,6 +58,10 @@
 				background-color: #7aa4ea;
 			}
 
+			.observaciones {
+				width: 200px;
+			}
+
 			.fecha {
 					margin-top: 2rem;
 					text-align: right;
@@ -95,7 +99,7 @@
 					<th>Dosis</th>
 					<th>Fecha de inicio</th>
 					<th>Fecha de fin</th>
-					<th>Observaciones</th>
+					<th class="observaciones">Observaciones</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -105,7 +109,7 @@
 						<td>{{dosis}}</td>
 						<td>{{fecha_inicio}}</td>
 						<td>{{fecha_fin}}</td>
-						<td>{{{observaciones}}}</td>
+						<td class="observaciones">{{{observaciones}}}</td>
 					</tr>
 				{{/each}}
 				</tbody>
