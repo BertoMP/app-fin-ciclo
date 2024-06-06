@@ -113,8 +113,6 @@ export const validatePacienteTomaMedicamento = [
 	(req, res, next) => {
 		const errors = validationResult(req);
 
-		console.log(errors);
-
 		if (!errors.isEmpty()) {
 			const errorMessages = errors.array().map((error) => error.msg);
 
