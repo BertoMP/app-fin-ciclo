@@ -262,6 +262,7 @@ export class ModalComponent implements OnInit {
 
   private generateToma(): TomaInforme {
     const medicamentoId = this.registerForm.get('medicamento').value;
+    const formatHora = this.registerForm.get('hora').value + ':00';
     const medicamentoSeleccionado = this.medsArray.find(medicina => medicina.id === medicamentoId);
     return {
       id: this.registerForm.get('medicamento').value,
@@ -270,7 +271,7 @@ export class ModalComponent implements OnInit {
         dosis: this.registerForm.get('dosis').value,
         fecha_fin: this.enviarFecha(this.registerForm.get('fechaFin').value),
         fecha_inicio: this.enviarFecha(this.registerForm.get('fechaInicio').value),
-        hora: this.registerForm.get('hora').value + ':00',
+        hora: formatHora,
         id: this.id ?? null,
         observaciones: this.registerForm.get('observacion').value,
       }

@@ -16,12 +16,12 @@ class TipoViaModel {
 	static async fetchAll(dbConn) {
 		const query =
 			'SELECT ' +
-			'		id, ' +
-			'		nombre ' +
+			' id, ' +
+			' nombre ' +
 			'FROM ' +
-			'		tipo_via ' +
+			' tipo_via ' +
 			'ORDER BY ' +
-			'		nombre';
+			' nombre';
 
 		try {
 			const [rows] = await dbConn.execute(query);

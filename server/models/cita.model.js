@@ -27,42 +27,42 @@ class CitaModel {
 
 		const query =
 			'SELECT ' +
-			'   cita.id, ' +
-			'   cita.fecha, ' +
-			'   cita.hora, ' +
-			'   cita.informe_id, ' +
-			'   especialista_user.id AS especialista_id, ' +
-			'   especialista_user.nombre AS especialista_nombre, ' +
-			'   especialista_user.primer_apellido AS especialista_primer_apellido, ' +
-			'   especialista_user.segundo_apellido AS especialista_segundo_apellido, ' +
-			'   especialidad.id AS especialidad_id, ' +
-			'   especialidad.nombre AS especialidad_nombre, ' +
-			'   consulta.id AS consulta_id, ' +
-			'   consulta.nombre AS consulta_nombre, ' +
-			'   paciente_user.id AS paciente_id, ' +
-			'   paciente_user.nombre AS paciente_nombre, ' +
-			'   paciente_user.primer_apellido AS paciente_primer_apellido, ' +
-			'   paciente_user.segundo_apellido AS paciente_segundo_apellido ' +
+			' cita.id, ' +
+			' cita.fecha, ' +
+			' cita.hora, ' +
+			' cita.informe_id, ' +
+			' especialista_user.id AS especialista_id, ' +
+			' especialista_user.nombre AS especialista_nombre, ' +
+			' especialista_user.primer_apellido AS especialista_primer_apellido, ' +
+			' especialista_user.segundo_apellido AS especialista_segundo_apellido, ' +
+			' especialidad.id AS especialidad_id, ' +
+			' especialidad.nombre AS especialidad_nombre, ' +
+			' consulta.id AS consulta_id, ' +
+			' consulta.nombre AS consulta_nombre, ' +
+			' paciente_user.id AS paciente_id, ' +
+			' paciente_user.nombre AS paciente_nombre, ' +
+			' paciente_user.primer_apellido AS paciente_primer_apellido, ' +
+			' paciente_user.segundo_apellido AS paciente_segundo_apellido ' +
 			'FROM ' +
-			'   cita ' +
+			' cita ' +
 			'INNER JOIN ' +
-			'   paciente ON cita.paciente_id = paciente.usuario_id ' +
+			' paciente ON cita.paciente_id = paciente.usuario_id ' +
 			'INNER JOIN ' +
-			'   especialista ON cita.especialista_id = especialista.usuario_id ' +
+			' especialista ON cita.especialista_id = especialista.usuario_id ' +
 			'INNER JOIN ' +
-			'   usuario AS especialista_user ON especialista.usuario_id = especialista_user.id ' +
+			' usuario AS especialista_user ON especialista.usuario_id = especialista_user.id ' +
 			'INNER JOIN ' +
-			'   usuario AS paciente_user ON paciente.usuario_id = paciente_user.id ' +
+			' usuario AS paciente_user ON paciente.usuario_id = paciente_user.id ' +
 			'INNER JOIN ' +
-			'   especialidad ON especialista.especialidad_id = especialidad.id ' +
+			' especialidad ON especialista.especialidad_id = especialidad.id ' +
 			'INNER JOIN ' +
-			'   consulta ON especialista.consulta_id = consulta.id ' +
+			' consulta ON especialista.consulta_id = consulta.id ' +
 			'WHERE ' +
-			'   cita.paciente_id = ? ' +
-			'   AND cita.fecha BETWEEN ? AND ? ' +
+			' cita.paciente_id = ? ' +
+			' AND cita.fecha BETWEEN ? AND ? ' +
 			'ORDER BY ' +
-			'   cita.fecha DESC, ' +
-			'   cita.hora DESC ' +
+			' cita.fecha DESC, ' +
+			' cita.hora DESC ' +
 			'LIMIT ? OFFSET ?';
 
 		try {
@@ -75,12 +75,12 @@ class CitaModel {
 			]);
 			const [count] = await dbConn.execute(
 				'SELECT ' +
-					'   COUNT(*) AS count ' +
+					' COUNT(*) AS count ' +
 					'FROM ' +
-					'   cita ' +
+					' cita ' +
 					'WHERE ' +
-					'   paciente_id = ? AND ' +
-					'   fecha BETWEEN ? AND ?',
+					' paciente_id = ? AND ' +
+					' fecha BETWEEN ? AND ?',
 				[userId, fechaInicioCita, fechaFinCita],
 			);
 			const total = count[0].count;
@@ -156,12 +156,12 @@ class CitaModel {
 		const query =
 			'SELECT hora ' +
 			'FROM ' +
-			'		cita ' +
+			' cita ' +
 			'INNER JOIN ' +
-			'   especialista ON cita.especialista_id = especialista.usuario_id ' +
+			' especialista ON cita.especialista_id = especialista.usuario_id ' +
 			'WHERE ' +
-			'   especialista_id = ? ' +
-			'   AND fecha = ? ';
+			' especialista_id = ? ' +
+			' AND fecha = ? ';
 
 		try {
 			const [rows] = await dbConn.execute(query, [especialistaId, fecha]);
@@ -201,38 +201,38 @@ class CitaModel {
 	static async fetchById(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   cita.id, ' +
-			'   cita.fecha, ' +
-			'   cita.hora, ' +
-			'   cita.informe_id, ' +
-			'   especialista_user.id AS especialista_id, ' +
-			'   especialista_user.nombre AS especialista_nombre, ' +
-			'   especialista_user.primer_apellido AS especialista_primer_apellido, ' +
-			'   especialista_user.segundo_apellido AS especialista_segundo_apellido, ' +
-			'   especialidad.id AS especialidad_id, ' +
-			'   especialidad.nombre AS especialidad_nombre, ' +
-			'   consulta.id AS consulta_id, ' +
-			'   consulta.nombre AS consulta_nombre, ' +
-			'   paciente_user.id AS paciente_id, ' +
-			'   paciente_user.nombre AS paciente_nombre, ' +
-			'   paciente_user.primer_apellido AS paciente_primer_apellido, ' +
-			'   paciente_user.segundo_apellido AS paciente_segundo_apellido ' +
+			' cita.id, ' +
+			' cita.fecha, ' +
+			' cita.hora, ' +
+			' cita.informe_id, ' +
+			' especialista_user.id AS especialista_id, ' +
+			' especialista_user.nombre AS especialista_nombre, ' +
+			' especialista_user.primer_apellido AS especialista_primer_apellido, ' +
+			' especialista_user.segundo_apellido AS especialista_segundo_apellido, ' +
+			' especialidad.id AS especialidad_id, ' +
+			' especialidad.nombre AS especialidad_nombre, ' +
+			' consulta.id AS consulta_id, ' +
+			' consulta.nombre AS consulta_nombre, ' +
+			' paciente_user.id AS paciente_id, ' +
+			' paciente_user.nombre AS paciente_nombre, ' +
+			' paciente_user.primer_apellido AS paciente_primer_apellido, ' +
+			' paciente_user.segundo_apellido AS paciente_segundo_apellido ' +
 			'FROM ' +
-			'   cita ' +
+			' cita ' +
 			'INNER JOIN ' +
-			'   especialista ON cita.especialista_id = especialista.usuario_id ' +
+			' especialista ON cita.especialista_id = especialista.usuario_id ' +
 			'INNER JOIN ' +
-			'   usuario AS especialista_user ON especialista.usuario_id = especialista_user.id ' +
+			' usuario AS especialista_user ON especialista.usuario_id = especialista_user.id ' +
 			'INNER JOIN ' +
-			'   paciente ON cita.paciente_id = paciente.usuario_id ' +
+			' paciente ON cita.paciente_id = paciente.usuario_id ' +
 			'INNER JOIN ' +
-			'   usuario AS paciente_user ON paciente.usuario_id = paciente_user.id ' +
+			' usuario AS paciente_user ON paciente.usuario_id = paciente_user.id ' +
 			'INNER JOIN ' +
-			'   especialidad ON especialista.especialidad_id = especialidad.id ' +
+			' especialidad ON especialista.especialidad_id = especialidad.id ' +
 			'INNER JOIN ' +
-			'   consulta ON especialista.consulta_id = consulta.id ' +
+			' consulta ON especialista.consulta_id = consulta.id ' +
 			'WHERE ' +
-			'   cita.id = ?';
+			' cita.id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -290,9 +290,9 @@ class CitaModel {
 		const query =
 			'SELECT * ' +
 			'FROM ' +
-			'   cita ' +
+			' cita ' +
 			'WHERE ' +
-			'   especialista_id = ? ';
+			' especialista_id = ? ';
 
 		try {
 			const [rows] = await dbConn.execute(query, [especialista_id]);
@@ -322,11 +322,11 @@ class CitaModel {
 		const query =
 			'SELECT * ' +
 			'FROM ' +
-			'   cita ' +
+			' cita ' +
 			'WHERE ' +
-			'   fecha = ? ' +
-			'   AND hora = ? ' +
-			'   AND especialista_id = ? ';
+			' fecha = ? ' +
+			' AND hora = ? ' +
+			' AND especialista_id = ? ';
 
 		try {
 			const [rows] = await dbConn.execute(query, [data.fecha, data.hora, data.especialista_id]);
@@ -356,11 +356,11 @@ class CitaModel {
 		const query =
 			'SELECT * ' +
 			'FROM ' +
-			'		cita ' +
+			' cita ' +
 			'WHERE ' +
-			'		fecha = ? ' +
-			'   AND hora = ? ' +
-			'   AND paciente_id = ? ';
+			' fecha = ? ' +
+			' AND hora = ? ' +
+			' AND paciente_id = ? ';
 
 		try {
 			const [rows] = await dbConn.execute(query, [data.fecha, data.hora, data.paciente_id]);
@@ -389,23 +389,23 @@ class CitaModel {
 	static async fetchAgenda(especialista_id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   cita.id, ' +
-			'   cita.hora, ' +
-			'   cita.informe_id, ' +
-			'   paciente.usuario_id AS paciente_id, ' +
-			'   paciente.num_historia_clinica AS paciente_historia_clinica, ' +
-			'   usuario.nombre AS paciente_nombre, ' +
-			'   usuario.primer_apellido AS paciente_primer_apellido, ' +
-			'   usuario.segundo_apellido AS paciente_segundo_apellido ' +
+			' cita.id, ' +
+			' cita.hora, ' +
+			' cita.informe_id, ' +
+			' paciente.usuario_id AS paciente_id, ' +
+			' paciente.num_historia_clinica AS paciente_historia_clinica, ' +
+			' usuario.nombre AS paciente_nombre, ' +
+			' usuario.primer_apellido AS paciente_primer_apellido, ' +
+			' usuario.segundo_apellido AS paciente_segundo_apellido ' +
 			'FROM ' +
-			'   cita ' +
+			' cita ' +
 			'INNER JOIN ' +
-			'   paciente ON cita.paciente_id = paciente.usuario_id ' +
+			' paciente ON cita.paciente_id = paciente.usuario_id ' +
 			'INNER JOIN ' +
-			'   usuario ON paciente.usuario_id = usuario.id ' +
+			' usuario ON paciente.usuario_id = usuario.id ' +
 			'WHERE ' +
-			'   especialista_id = ? ' +
-			'   AND fecha = CURDATE() ';
+			' especialista_id = ? ' +
+			' AND fecha = CURDATE() ';
 
 		try {
 			const [rows] = await dbConn.execute(query, [especialista_id]);
@@ -439,7 +439,7 @@ class CitaModel {
 
 		const query =
 			'INSERT INTO cita (fecha, hora, paciente_id, especialista_id) ' +
-			'		VALUES (?, ?, ?, ?)';
+			' VALUES (?, ?, ?, ?)';
 
 		try {
 			const [rows] = await dbConn.execute(query, [fecha, hora, paciente_id, especialista_id]);
@@ -473,7 +473,7 @@ class CitaModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		cita ' +
+			' cita ' +
 			'WHERE id = ?';
 
 		try {
@@ -497,11 +497,11 @@ class CitaModel {
 	static async getInformesByUserId(paciente_id, dbConn) {
 		const query =
 			'SELECT ' +
-			'		informe_id ' +
+			' informe_id ' +
 			'FROM ' +
-			'		cita ' +
+			' cita ' +
 			'WHERE ' +
-			'		paciente_id = ?';
+			' paciente_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [paciente_id]);
@@ -526,9 +526,9 @@ class CitaModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		cita ' +
+			' cita ' +
 			'WHERE ' +
-			'		paciente_id = ?';
+			' paciente_id = ?';
 
 		try {
 			return await dbConn.execute(query, [paciente_id]);
@@ -551,11 +551,11 @@ class CitaModel {
 	static async fetchPacienteIdByInformeId(informe_id, dbConn) {
 		const query =
 			'SELECT ' +
-			'		paciente_id ' +
+			' paciente_id ' +
 			'FROM ' +
-			'		cita ' +
+			' cita ' +
 			'WHERE ' +
-			'		informe_id = ?';
+			' informe_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [informe_id]);
@@ -587,11 +587,11 @@ class CitaModel {
 	static async updateInformeId(cita_id, informe_id, dbConn) {
 		const query =
 			'UPDATE ' +
-			'		cita ' +
+			' cita ' +
 			'SET ' +
-			'		informe_id = ? ' +
+			' informe_id = ? ' +
 			'WHERE ' +
-			'		id = ?';
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query, [informe_id, cita_id]);

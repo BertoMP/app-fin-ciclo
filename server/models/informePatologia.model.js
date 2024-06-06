@@ -18,7 +18,7 @@ class InformePatologiaModel {
 	static async addPatologia(informeId, patologiaId, dbConn) {
 		const query =
 			'INSERT INTO informe_patologia (informe_id, patologia_id) ' +
-			'		VALUES (?, ?)';
+			' VALUES (?, ?)';
 
 		try {
 			await dbConn.execute(query, [informeId, patologiaId]);
@@ -47,9 +47,9 @@ class InformePatologiaModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		informe_patologia ' +
+			' informe_patologia ' +
 			'WHERE ' +
-			'		informe_id = ?';
+			' informe_id = ?';
 
 		try {
 			return await dbConn.execute(query, [informeId]);

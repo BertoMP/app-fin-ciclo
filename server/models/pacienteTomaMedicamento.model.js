@@ -20,35 +20,35 @@ class PacienteTomaMedicamentoModel {
 	static async findPrescripciones(pacienteId, dbConn) {
 		const query =
 			'SELECT ' +
-			'   usuario.id as paciente_id, ' +
-			'   usuario.nombre, ' +
-			'   usuario.primer_apellido, ' +
-			'   usuario.segundo_apellido, ' +
-			'   paciente.num_historia_clinica, ' +
-			'   medicamento.id as medicamento_id, ' +
-			'   medicamento.nombre as medicamento_nombre, ' +
-			'   medicamento.descripcion, ' +
-			'   toma.id as toma_id, ' +
-			'   toma.hora, ' +
-			'   toma.dosis, ' +
-			'   toma.fecha_inicio, ' +
-			'   toma.fecha_fin, ' +
-			'   toma.observaciones ' +
+			' usuario.id as paciente_id, ' +
+			' usuario.nombre, ' +
+			' usuario.primer_apellido, ' +
+			' usuario.segundo_apellido, ' +
+			' paciente.num_historia_clinica, ' +
+			' medicamento.id as medicamento_id, ' +
+			' medicamento.nombre as medicamento_nombre, ' +
+			' medicamento.descripcion, ' +
+			' toma.id as toma_id, ' +
+			' toma.hora, ' +
+			' toma.dosis, ' +
+			' toma.fecha_inicio, ' +
+			' toma.fecha_fin, ' +
+			' toma.observaciones ' +
 			'FROM ' +
-			'   paciente_toma_medicamento ' +
+			' paciente_toma_medicamento ' +
 			'INNER JOIN ' +
-			'   paciente on paciente.usuario_id = paciente_toma_medicamento.paciente_id ' +
+			' paciente on paciente.usuario_id = paciente_toma_medicamento.paciente_id ' +
 			'INNER JOIN ' +
-			'   usuario on usuario.id = paciente.usuario_id ' +
+			' usuario on usuario.id = paciente.usuario_id ' +
 			'INNER JOIN ' +
-			'   medicamento on medicamento.id = paciente_toma_medicamento.medicamento_id ' +
+			' medicamento on medicamento.id = paciente_toma_medicamento.medicamento_id ' +
 			'INNER JOIN ' +
-			'   toma on toma.id = paciente_toma_medicamento.toma_id ' +
+			' toma on toma.id = paciente_toma_medicamento.toma_id ' +
 			'WHERE ' +
-			'   usuario.id = ? ' +
+			' usuario.id = ? ' +
 			'ORDER BY ' +
-			'   medicamento.nombre, ' +
-			'   toma.hora';
+			' medicamento.nombre, ' +
+			' toma.hora';
 
 		try {
 			const [rows] = await dbConn.execute(query, [pacienteId]);
@@ -118,7 +118,7 @@ class PacienteTomaMedicamentoModel {
 	static async createPacienteTomaMedicamento(pacienteId, medicamentoId, tomaId, dbConn) {
 		const query =
 			'INSERT INTO paciente_toma_medicamento (paciente_id, medicamento_id, toma_id) ' +
-			'   VALUES (?, ?, ?)';
+			' VALUES (?, ?, ?)';
 
 		try {
 			const insert = await dbConn.execute(query, [pacienteId, medicamentoId, tomaId]);
@@ -151,12 +151,12 @@ class PacienteTomaMedicamentoModel {
 	static async findPrescripcion(pacienteId, medicamentoId, dbConn) {
 		const query =
 			'SELECT ' +
-			'   toma_id ' +
+			' toma_id ' +
 			'FROM ' +
-			'   paciente_toma_medicamento ' +
+			' paciente_toma_medicamento ' +
 			'WHERE ' +
-			'   paciente_id = ? AND ' +
-			'		medicamento_id = ?';
+			' paciente_id = ? AND ' +
+			' medicamento_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [pacienteId, medicamentoId]);
@@ -187,14 +187,16 @@ class PacienteTomaMedicamentoModel {
 		const observaciones = prescripcion.observaciones ?? null;
 
 		const query =
-			'UPDATE toma ' +
+			'UPDATE ' +
+			' toma ' +
 			'SET ' +
-			'   dosis = ?, ' +
-			'   hora = ?, ' +
-			'   fecha_inicio = ?, ' +
-			'   fecha_fin = ?, ' +
-			'   observaciones = ? ' +
-			'WHERE id = ?';
+			' dosis = ?, ' +
+			' hora = ?, ' +
+			' fecha_inicio = ?, ' +
+			' fecha_fin = ?, ' +
+			' observaciones = ? ' +
+			'WHERE ' +
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query, [
@@ -225,9 +227,9 @@ class PacienteTomaMedicamentoModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		paciente_toma_medicamento ' +
+			' paciente_toma_medicamento ' +
 			'WHERE ' +
-			'		toma_id = ?';
+			' toma_id = ?';
 
 		try {
 			return await dbConn.execute(query, [idToma]);
@@ -250,11 +252,11 @@ class PacienteTomaMedicamentoModel {
 	static async findTomasByUserId(pacienteId, dbConn) {
 		const query =
 			'SELECT ' +
-			'   toma_id ' +
+			' toma_id ' +
 			'FROM ' +
-			'   paciente_toma_medicamento ' +
+			' paciente_toma_medicamento ' +
 			'WHERE ' +
-			'   paciente_id = ?';
+			' paciente_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [pacienteId]);
@@ -281,15 +283,15 @@ class PacienteTomaMedicamentoModel {
 	static async findTomaByHora(pacienteId, medicamentoId, hora, dbConn) {
 		const query =
 			'SELECT ' +
-			'   toma_id ' +
+			' toma_id ' +
 			'FROM ' +
-			'   paciente_toma_medicamento ' +
+			' paciente_toma_medicamento ' +
 			'INNER JOIN ' +
-			'   toma ON toma.id = paciente_toma_medicamento.toma_id ' +
+			' toma ON toma.id = paciente_toma_medicamento.toma_id ' +
 			'WHERE ' +
-			'   paciente_id = ? ' +
-			'   AND medicamento_id = ? ' +
-			'   AND hora = ?';
+			' paciente_id = ? ' +
+			' AND medicamento_id = ? ' +
+			' AND hora = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [pacienteId, medicamentoId, hora]);
@@ -321,9 +323,9 @@ class PacienteTomaMedicamentoModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		paciente_toma_medicamento ' +
+			' paciente_toma_medicamento ' +
 			'WHERE ' +
-			'		paciente_id = ?';
+			' paciente_id = ?';
 
 		try {
 			return await dbConn.execute(query, [pacienteId]);

@@ -23,25 +23,25 @@ class ConsultaModel {
 
 		let query =
 			'SELECT ' +
-			'   consulta.id, ' +
-			'   consulta.nombre ' +
+			' consulta.id, ' +
+			' consulta.nombre ' +
 			'FROM ' +
-			'   consulta ';
+			' consulta ';
 
 		let countQuery =
 			'SELECT ' +
-			'   COUNT(*) AS count ' +
+			' COUNT(*) AS count ' +
 			'FROM ' +
-			'   consulta ';
+			' consulta ';
 
 		const queryParams = [];
 		const countParams = [];
 
 		if (search) {
 			query += ' WHERE ' +
-				'   consulta.nombre LIKE ? ';
+				' consulta.nombre LIKE ? ';
 			countQuery += ' WHERE ' +
-				'   consulta.nombre LIKE ? ';
+				' consulta.nombre LIKE ? ';
 			queryParams.push(`%${search}%`);
 			countParams.push(`%${search}%`);
 		}
@@ -89,12 +89,12 @@ class ConsultaModel {
 	static async findAllListado(dbConn) {
 		const query =
 			'SELECT ' +
-			'		id, ' +
-			'		nombre ' +
+			' id, ' +
+			' nombre ' +
 			'FROM ' +
-			'		consulta ' +
+			' consulta ' +
 			'ORDER BY ' +
-			'		id ASC';
+			' id ASC';
 
 		try {
 			const [rows] = await dbConn.execute(query);
@@ -123,24 +123,24 @@ class ConsultaModel {
 	static async findById(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   consulta.id, ' +
-			'   consulta.nombre, ' +
-			'   especialidad.id AS especialidad_id, ' +
-			'   especialidad.nombre AS nombre_especialidad, ' +
-			'   usuario.id AS especialista_id,' +
-			'   usuario.nombre AS nombre_usuario, ' +
-			'   usuario.primer_apellido, ' +
-			'   usuario.segundo_apellido ' +
+			' consulta.id, ' +
+			' consulta.nombre, ' +
+			' especialidad.id AS especialidad_id, ' +
+			' especialidad.nombre AS nombre_especialidad, ' +
+			' usuario.id AS especialista_id,' +
+			' usuario.nombre AS nombre_usuario, ' +
+			' usuario.primer_apellido, ' +
+			' usuario.segundo_apellido ' +
 			'FROM ' +
-			'   consulta ' +
+			' consulta ' +
 			'LEFT JOIN ' +
-			'   especialista ON consulta.id = especialista.consulta_id ' +
+			' especialista ON consulta.id = especialista.consulta_id ' +
 			'LEFT JOIN ' +
-			'   usuario ON especialista.usuario_id = usuario.id ' +
+			' usuario ON especialista.usuario_id = usuario.id ' +
 			'LEFT JOIN ' +
-			'   especialidad ON especialista.especialidad_id = especialidad.id ' +
+			' especialidad ON especialista.especialidad_id = especialidad.id ' +
 			'WHERE ' +
-			'   consulta.id = ?';
+			' consulta.id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -188,7 +188,13 @@ class ConsultaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async findByName(nombre, dbConn) {
-		const query = 'SELECT id FROM consulta WHERE nombre = ?';
+		const query =
+			'SELECT ' +
+			' id ' +
+			'FROM ' +
+			' consulta ' +
+			'WHERE ' +
+			' nombre = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [nombre]);
@@ -217,7 +223,9 @@ class ConsultaModel {
 	static async createConsulta(consulta, dbConn) {
 		const nombre = consulta.nombre;
 
-		const query = 'INSERT INTO consulta (nombre) VALUES (?)';
+		const query =
+			'INSERT INTO consulta (nombre) ' +
+			' VALUES (?)';
 
 		try {
 			return await dbConn.execute(query, [nombre]);
@@ -241,7 +249,13 @@ class ConsultaModel {
 	static async updateConsulta(id, consulta, dbConn) {
 		const nombre = consulta.nombre;
 
-		const query = 'UPDATE consulta SET nombre = ? WHERE id = ?';
+		const query =
+			'UPDATE ' +
+			' consulta ' +
+			'SET ' +
+			' nombre = ? ' +
+			'WHERE ' +
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query, [nombre, id]);
@@ -262,7 +276,12 @@ class ConsultaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteConsulta(id, dbConn) {
-		const query = 'DELETE FROM consulta WHERE id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			' consulta ' +
+			'WHERE ' +
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);

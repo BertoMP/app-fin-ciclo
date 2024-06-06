@@ -27,39 +27,39 @@ class InformeModel {
 
 		const query =
 			'SELECT' +
-			'    informe.id AS informe_id,' +
-			'    cita.fecha,' +
-			'    especialidad.nombre AS especialidad_nombre ' +
+			' informe.id AS informe_id,' +
+			' cita.fecha,' +
+			' especialidad.nombre AS especialidad_nombre ' +
 			'FROM' +
-			'    informe ' +
+			' informe ' +
 			'INNER JOIN' +
-			'    cita ON informe.id = cita.informe_id ' +
+			' cita ON informe.id = cita.informe_id ' +
 			'INNER JOIN' +
-			'    especialista ON cita.especialista_id = especialista.usuario_id ' +
+			' especialista ON cita.especialista_id = especialista.usuario_id ' +
 			'INNER JOIN' +
-			'    especialidad ON especialista.especialidad_id = especialidad.id ' +
+			' especialidad ON especialista.especialidad_id = especialidad.id ' +
 			'WHERE' +
-			'    cita.paciente_id = ? ' +
-			'    AND cita.fecha BETWEEN ? AND ? ' +
+			' cita.paciente_id = ? ' +
+			' AND cita.fecha BETWEEN ? AND ? ' +
 			'ORDER BY' +
-			'    cita.fecha DESC, ' +
-			'    cita.hora DESC ' +
+			' cita.fecha DESC, ' +
+			' cita.hora DESC ' +
 			'LIMIT ? OFFSET ?';
 
 		const countQuery =
 			'SELECT' +
-			'		COUNT(*) AS total ' +
+			' COUNT(*) AS total ' +
 			'FROM ' +
-			'		informe ' +
+			' informe ' +
 			'INNER JOIN ' +
-			'		cita ON informe.id = cita.informe_id ' +
+			' cita ON informe.id = cita.informe_id ' +
 			'INNER JOIN ' +
-			'		especialista ON cita.especialista_id = especialista.usuario_id ' +
+			' especialista ON cita.especialista_id = especialista.usuario_id ' +
 			'INNER JOIN ' +
-			'		especialidad ON especialista.especialidad_id = especialidad.id ' +
+			' especialidad ON especialista.especialidad_id = especialidad.id ' +
 			'WHERE ' +
-			'		cita.paciente_id = ? ' +
-			'		AND cita.fecha BETWEEN ? AND ?';
+			' cita.paciente_id = ? ' +
+			' AND cita.fecha BETWEEN ? AND ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [userId, fechaInicio, fechaFin, `${limit}`, `${offset}`]);
@@ -97,69 +97,69 @@ class InformeModel {
 	static async fetchById(id, dbConn) {
 		const query =
 			'SELECT' +
-			'    informe.id AS informe_id,' +
-			'    informe.motivo,' +
-			'    informe.contenido,' +
-			'    cita.id AS cita_id,' +
-			'    cita.fecha,' +
-			'    cita.hora,' +
-			'    paciente.usuario_id AS paciente_id,' +
-			'    paciente.num_historia_clinica,' +
-			'    tipo_via.nombre AS nombre_tipo_via,' +
-			'    paciente.nombre_via AS paciente_nombre_via,' +
-			'    paciente.numero AS paciente_numero,' +
-			'    paciente.piso AS paciente_piso,' +
-			'    paciente.puerta AS paciente_puerta,' +
-			'    municipio.nombre AS paciente_municipio,' +
-			'    provincia.nombre AS paciente_provincia,' +
-			'    paciente.codigo_postal AS paciente_codigo_postal,' +
-			'    paciente.tel_fijo AS paciente_tel_fijo,' +
-			'    paciente.tel_movil AS paciente_tel_movil,' +
-			'		 usuario_paciente.email AS paciente_email,' +
-			'    usuario_paciente.nombre AS paciente_nombre,' +
-			'    usuario_paciente.primer_apellido AS paciente_primer_apellido,' +
-			'    usuario_paciente.segundo_apellido AS paciente_segundo_apellido,' +
-			'    usuario_paciente.dni AS paciente_dni,' +
-			'    especialista.usuario_id AS especialista_id,' +
-			'    especialista.num_colegiado,' +
-			'    especialidad.nombre AS especialidad_nombre,' +
-			'		 consulta.id AS consulta_id,' +
-			'		 consulta.nombre AS consulta_nombre,' +
-			'		 usuario_especialista.email AS especialista_email, ' +
-			'    usuario_especialista.nombre AS especialista_nombre, ' +
-			'    usuario_especialista.primer_apellido AS especialista_primer_apellido, ' +
-			'    usuario_especialista.segundo_apellido AS especialista_segundo_apellido, ' +
-			'    patologia.id AS patologia_id,' +
-			'    patologia.nombre AS patologia_nombre,' +
-			'    patologia.descripcion AS patologia_descripcion ' +
+			' informe.id AS informe_id,' +
+			' informe.motivo,' +
+			' informe.contenido,' +
+			' cita.id AS cita_id,' +
+			' cita.fecha,' +
+			' cita.hora,' +
+			' paciente.usuario_id AS paciente_id,' +
+			' paciente.num_historia_clinica,' +
+			' tipo_via.nombre AS nombre_tipo_via,' +
+			' paciente.nombre_via AS paciente_nombre_via,' +
+			' paciente.numero AS paciente_numero,' +
+			' paciente.piso AS paciente_piso,' +
+			' paciente.puerta AS paciente_puerta,' +
+			' municipio.nombre AS paciente_municipio,' +
+			' provincia.nombre AS paciente_provincia,' +
+			' paciente.codigo_postal AS paciente_codigo_postal,' +
+			' paciente.tel_fijo AS paciente_tel_fijo,' +
+			' paciente.tel_movil AS paciente_tel_movil,' +
+			' usuario_paciente.email AS paciente_email,' +
+			' usuario_paciente.nombre AS paciente_nombre,' +
+			' usuario_paciente.primer_apellido AS paciente_primer_apellido,' +
+			' usuario_paciente.segundo_apellido AS paciente_segundo_apellido,' +
+			' usuario_paciente.dni AS paciente_dni,' +
+			' especialista.usuario_id AS especialista_id,' +
+			' especialista.num_colegiado,' +
+			' especialidad.nombre AS especialidad_nombre,' +
+			' consulta.id AS consulta_id,' +
+			' consulta.nombre AS consulta_nombre,' +
+			' usuario_especialista.email AS especialista_email, ' +
+			' usuario_especialista.nombre AS especialista_nombre, ' +
+			' usuario_especialista.primer_apellido AS especialista_primer_apellido, ' +
+			' usuario_especialista.segundo_apellido AS especialista_segundo_apellido, ' +
+			' patologia.id AS patologia_id,' +
+			' patologia.nombre AS patologia_nombre,' +
+			' patologia.descripcion AS patologia_descripcion ' +
 			'FROM' +
-			'    informe ' +
+			' informe ' +
 			'INNER JOIN ' +
-			'    cita ON informe.id = cita.informe_id ' +
+			' cita ON informe.id = cita.informe_id ' +
 			'INNER JOIN ' +
-			'    paciente ON cita.paciente_id = paciente.usuario_id ' +
+			' paciente ON cita.paciente_id = paciente.usuario_id ' +
 			'INNER JOIN ' +
-			'    tipo_via ON paciente.tipo_via = tipo_via.id ' +
+			' tipo_via ON paciente.tipo_via = tipo_via.id ' +
 			'INNER JOIN ' +
-			'    municipio ON paciente.municipio = municipio.id ' +
+			' municipio ON paciente.municipio = municipio.id ' +
 			'INNER JOIN ' +
-			'    provincia ON municipio.provincia_id = provincia.id ' +
+			' provincia ON municipio.provincia_id = provincia.id ' +
 			'INNER JOIN ' +
-			'    usuario AS usuario_paciente ON paciente.usuario_id = usuario_paciente.id ' +
+			' usuario AS usuario_paciente ON paciente.usuario_id = usuario_paciente.id ' +
 			'INNER JOIN ' +
-			'    especialista ON cita.especialista_id = especialista.usuario_id ' +
+			' especialista ON cita.especialista_id = especialista.usuario_id ' +
 			'INNER JOIN ' +
-			'    usuario AS usuario_especialista ON especialista.usuario_id = usuario_especialista.id ' +
+			' usuario AS usuario_especialista ON especialista.usuario_id = usuario_especialista.id ' +
 			'INNER JOIN ' +
-			'    consulta ON especialista.consulta_id = consulta.id ' +
+			' consulta ON especialista.consulta_id = consulta.id ' +
 			'INNER JOIN ' +
-			'    especialidad ON especialista.especialidad_id = especialidad.id ' +
+			' especialidad ON especialista.especialidad_id = especialidad.id ' +
 			'INNER JOIN ' +
-			'    informe_patologia ON informe.id = informe_patologia.informe_id ' +
+			' informe_patologia ON informe.id = informe_patologia.informe_id ' +
 			'INNER JOIN ' +
-			'    patologia ON informe_patologia.patologia_id = patologia.id ' +
+			' patologia ON informe_patologia.patologia_id = patologia.id ' +
 			'WHERE' +
-			'    informe.id = ?';
+			' informe.id = ?';
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
 
@@ -248,7 +248,7 @@ class InformeModel {
 
 		const query =
 			'INSERT INTO informe (motivo, contenido) ' +
-			'		VALUES (?, ?)';
+			' VALUES (?, ?)';
 
 		try {
 			const informe = await dbConn.execute(query, [motivo, contenido]);
@@ -280,9 +280,9 @@ class InformeModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		informe ' +
+			' informe ' +
 			'WHERE ' +
-			'		id = ?';
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query, [informeId]);

@@ -26,16 +26,16 @@ class InformeModel {
 
 		const query =
 			'SELECT ' +
-			'		errno, ' +
-			'		sql_state, ' +
-			'		error_text, ' +
-			'   timestamp ' +
+			' errno, ' +
+			' sql_state, ' +
+			' error_text, ' +
+			' timestamp ' +
 			'FROM ' +
-			'		error_log ' +
+			' error_log ' +
 			'WHERE ' +
-			'		timestamp BETWEEN ? AND ? ' +
+			' timestamp BETWEEN ? AND ? ' +
 			'ORDER BY ' +
-			'		timestamp DESC ' +
+			' timestamp DESC ' +
 			'LIMIT ? OFFSET ?';
 
 		const countQuery =

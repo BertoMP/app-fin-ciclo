@@ -20,17 +20,17 @@ class PacienteModel {
 	static async findAll(dbConn) {
 		const query =
 			'SELECT ' +
-			'   paciente.usuario_id AS paciente_id,' +
-			'   usuario.nombre AS nombre,' +
-			'   usuario.primer_apellido AS primer_apellido,' +
-			'   usuario.segundo_apellido AS segundo_apellido,' +
-			'   paciente.num_historia_clinica ' +
+			' paciente.usuario_id AS paciente_id,' +
+			' usuario.nombre AS nombre,' +
+			' usuario.primer_apellido AS primer_apellido,' +
+			' usuario.segundo_apellido AS segundo_apellido,' +
+			' paciente.num_historia_clinica ' +
 			'FROM ' +
-			'   paciente ' +
+			' paciente ' +
 			'INNER JOIN ' +
-			'   usuario ON paciente.usuario_id = usuario.id ' +
+			' usuario ON paciente.usuario_id = usuario.id ' +
 			'ORDER BY ' +
-			'   usuario.primer_apellido ASC';
+			' usuario.primer_apellido ASC';
 
 		try {
 			const [rows] = await dbConn.execute(query);
@@ -75,7 +75,7 @@ class PacienteModel {
 			'(usuario_id, num_historia_clinica, fecha_nacimiento, tipo_via,' +
 			' nombre_via, numero, piso, puerta, municipio,' +
 			' codigo_postal, tel_fijo, tel_movil) ' +
-			'   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+			' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 		try {
 			return await dbConn.execute(query, [
@@ -111,43 +111,43 @@ class PacienteModel {
 	static async findByUserId(usuario_id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   usuario.id, ' +
-			'   email, ' +
-			'   usuario.nombre AS usuario_nombre, ' +
-			'   primer_apellido, ' +
-			'   segundo_apellido, ' +
-			'   dni, ' +
-			'   rol_id, ' +
-			'   rol.nombre AS nombre_rol, ' +
-			'   num_historia_clinica, ' +
-			'   fecha_nacimiento, ' +
-			'   tipo_via, ' +
-			'   tipo_via.nombre AS tipo_via_nombre, ' +
-			'   nombre_via, ' +
-			'   numero, ' +
-			'   piso, ' +
-			'   puerta, ' +
-			'   municipio AS municipio_id, ' +
-			'   municipio.nombre AS municipio_nombre,' +
-			'   provincia_id, ' +
-			'   provincia.nombre AS provincia_nombre, ' +
-			'   codigo_postal, ' +
-			'   tel_fijo, ' +
-			'   tel_movil ' +
+			' usuario.id, ' +
+			' email, ' +
+			' usuario.nombre AS usuario_nombre, ' +
+			' primer_apellido, ' +
+			' segundo_apellido, ' +
+			' dni, ' +
+			' rol_id, ' +
+			' rol.nombre AS nombre_rol, ' +
+			' num_historia_clinica, ' +
+			' fecha_nacimiento, ' +
+			' tipo_via, ' +
+			' tipo_via.nombre AS tipo_via_nombre, ' +
+			' nombre_via, ' +
+			' numero, ' +
+			' piso, ' +
+			' puerta, ' +
+			' municipio AS municipio_id, ' +
+			' municipio.nombre AS municipio_nombre,' +
+			' provincia_id, ' +
+			' provincia.nombre AS provincia_nombre, ' +
+			' codigo_postal, ' +
+			' tel_fijo, ' +
+			' tel_movil ' +
 			'FROM ' +
-			'   paciente ' +
+			' paciente ' +
 			'INNER JOIN ' +
-			'   usuario ON paciente.usuario_id = usuario.id ' +
+			' usuario ON paciente.usuario_id = usuario.id ' +
 			'INNER JOIN ' +
-			'   tipo_via ON paciente.tipo_via = tipo_via.id ' +
+			' tipo_via ON paciente.tipo_via = tipo_via.id ' +
 			'INNER JOIN ' +
-			'   municipio ON paciente.municipio = municipio.id ' +
+			' municipio ON paciente.municipio = municipio.id ' +
 			'INNER JOIN ' +
-			'   provincia ON municipio.provincia_id = provincia.id ' +
+			' provincia ON municipio.provincia_id = provincia.id ' +
 			'INNER JOIN ' +
-			'   rol ON usuario.rol_id = rol.id ' +
+			' rol ON usuario.rol_id = rol.id ' +
 			'WHERE ' +
-			'   usuario_id = ?';
+			' usuario_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [usuario_id]);
@@ -214,7 +214,12 @@ class PacienteModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deletePacienteByUserId(usuario_id, dbConn) {
-		const query = 'DELETE FROM paciente WHERE usuario_id = ?';
+		const query =
+			'DELETE ' +
+			'FROM ' +
+			' paciente ' +
+			'WHERE ' +
+			' usuario_id = ?';
 
 		try {
 			return await dbConn.execute(query, [usuario_id]);
@@ -249,20 +254,20 @@ class PacienteModel {
 
 		const query =
 			'UPDATE ' +
-			'   paciente ' +
+			' paciente ' +
 			'SET ' +
-			'   fecha_nacimiento = ?, ' +
-			'   tipo_via = ?, ' +
-			'   nombre_via = ?, ' +
-			'   numero = ?, ' +
-			'   piso = ?, ' +
-			'   puerta = ?, ' +
-			'   municipio = ?, ' +
-			'   codigo_postal = ?, ' +
-			'   tel_fijo = ?, ' +
-			'   tel_movil = ? ' +
+			' fecha_nacimiento = ?, ' +
+			' tipo_via = ?, ' +
+			' nombre_via = ?, ' +
+			' numero = ?, ' +
+			' piso = ?, ' +
+			' puerta = ?, ' +
+			' municipio = ?, ' +
+			' codigo_postal = ?, ' +
+			' tel_fijo = ?, ' +
+			' tel_movil = ? ' +
 			'WHERE ' +
-			'   usuario_id = ?';
+			' usuario_id = ?';
 
 		try {
 			return await dbConn.execute(query, [

@@ -17,11 +17,11 @@ class CodigoPostalMunicipioModel {
 	static async findByMunicipioId(cod_municipio, dbConn) {
 		const query =
 			'SELECT ' +
-			'   codigo_postal_id ' +
+			' codigo_postal_id ' +
 			'FROM ' +
-			'   codigo_postal_municipio ' +
+			' codigo_postal_municipio ' +
 			'WHERE ' +
-			'   municipio_id = ?';
+			' municipio_id = ?';
 
 		const formattedCod = cod_municipio.toString().padStart(5, '0');
 

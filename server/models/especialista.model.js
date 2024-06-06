@@ -25,9 +25,8 @@ class EspecialistaModel {
 
 		const query =
 			'INSERT INTO especialista ' +
-			'(usuario_id, especialidad_id, consulta_id, num_colegiado,' +
-			' descripcion, imagen, turno) ' +
-			'   VALUES (?, ?, ?, ?, ?, ?, ?)';
+			'(usuario_id, especialidad_id, consulta_id, num_colegiado,descripcion, imagen, turno) ' +
+			' VALUES (?, ?, ?, ?, ?, ?, ?)';
 
 		try {
 			return await dbConn.execute(query, [
@@ -58,20 +57,20 @@ class EspecialistaModel {
 	static async findByEspecialidadId(especialidad_id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   usuario.id, ' +
-			'   usuario.nombre AS usuario_nombre, ' +
-			'   primer_apellido, ' +
-			'   segundo_apellido, ' +
-			'   turno ' +
+			' usuario.id, ' +
+			' usuario.nombre AS usuario_nombre, ' +
+			' primer_apellido, ' +
+			' segundo_apellido, ' +
+			' turno ' +
 			'FROM ' +
-			'   especialista ' +
+			' especialista ' +
 			'INNER JOIN ' +
-			'   usuario ON especialista.usuario_id = usuario.id ' +
+			' usuario ON especialista.usuario_id = usuario.id ' +
 			'WHERE ' +
-			'   especialidad_id = ? ' +
-			'   AND turno <> "no-trabajando"' +
+			' especialidad_id = ? ' +
+			' AND turno <> "no-trabajando"' +
 			'ORDER BY ' +
-			'   usuario.nombre ASC';
+			' usuario.nombre ASC';
 
 		try {
 			const [rows] = await dbConn.execute(query, [especialidad_id]);
@@ -100,17 +99,17 @@ class EspecialistaModel {
 	static async findByNumColegiado(num_colegiado, dbConn) {
 		const query =
 			'SELECT ' +
-			'    usuario_id, ' +
-			'    especialidad_id, ' +
-			'    consulta_id, ' +
-			'    num_colegiado, ' +
-			'    descripcion, ' +
-			'    imagen, ' +
-			'    turno ' +
+			' usuario_id, ' +
+			' especialidad_id, ' +
+			' consulta_id, ' +
+			' num_colegiado, ' +
+			' descripcion, ' +
+			' imagen, ' +
+			' turno ' +
 			'FROM ' +
-			'   especialista ' +
+			' especialista ' +
 			'WHERE ' +
-			'   num_colegiado = ?';
+			' num_colegiado = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [num_colegiado]);
@@ -134,17 +133,17 @@ class EspecialistaModel {
 	static async findByConsultaId(consulta_id, dbConn) {
 		const query =
 			'SELECT ' +
-			'    usuario_id, ' +
-			'    especialidad_id, ' +
-			'    consulta_id, ' +
-			'    num_colegiado, ' +
-			'    descripcion, ' +
-			'    imagen, ' +
-			'    turno ' +
+			' usuario_id, ' +
+			' especialidad_id, ' +
+			' consulta_id, ' +
+			' num_colegiado, ' +
+			' descripcion, ' +
+			' imagen, ' +
+			' turno ' +
 			'FROM ' +
-			'   especialista ' +
+			' especialista ' +
 			'WHERE ' +
-			'   consulta_id = ?';
+			' consulta_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [consulta_id]);
@@ -168,17 +167,17 @@ class EspecialistaModel {
 	static async findEspecialistaById(especialista_id, dbConn) {
 		const query =
 			'SELECT ' +
-			'    usuario_id, ' +
-			'    especialidad_id, ' +
-			'    consulta_id, ' +
-			'    num_colegiado, ' +
-			'    descripcion, ' +
-			'    imagen, ' +
-			'    turno ' +
+			' usuario_id, ' +
+			' especialidad_id, ' +
+			' consulta_id, ' +
+			' num_colegiado, ' +
+			' descripcion, ' +
+			' imagen, ' +
+			' turno ' +
 			'FROM ' +
-			'   especialista ' +
+			' especialista ' +
 			'WHERE ' +
-			'   usuario_id = ?';
+			' usuario_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [especialista_id]);
@@ -207,11 +206,11 @@ class EspecialistaModel {
 	static async findTurnoById(usuario_id, dbConn) {
 		const query =
 			'SELECT ' +
-			'    turno ' +
+			' turno ' +
 			'FROM ' +
-			'   especialista ' +
+			' especialista ' +
 			'WHERE ' +
-			'   usuario_id = ?';
+			' usuario_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [usuario_id]);
@@ -239,34 +238,34 @@ class EspecialistaModel {
 	static async findByUserId(usuario_id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   usuario.id, ' +
-			'   email, ' +
-			'   usuario.nombre AS usuario_nombre, ' +
-			'   primer_apellido, ' +
-			'   segundo_apellido, ' +
-			'   dni, ' +
-			'   rol_id, ' +
-			'		rol.nombre AS nombre_rol, ' +
-			'   especialidad_id, ' +
-			'		especialidad.nombre AS especialidad_nombre, ' +
-			'   consulta_id, ' +
-			'   consulta.nombre AS consulta_nombre, ' +
-			'   num_colegiado, ' +
-			'   especialista.descripcion, ' +
-			'   especialista.imagen, ' +
-			'   turno ' +
+			' usuario.id, ' +
+			' email, ' +
+			' usuario.nombre AS usuario_nombre, ' +
+			' primer_apellido, ' +
+			' segundo_apellido, ' +
+			' dni, ' +
+			' rol_id, ' +
+			' rol.nombre AS nombre_rol, ' +
+			' especialidad_id, ' +
+			' especialidad.nombre AS especialidad_nombre, ' +
+			' consulta_id, ' +
+			' consulta.nombre AS consulta_nombre, ' +
+			' num_colegiado, ' +
+			' especialista.descripcion, ' +
+			' especialista.imagen, ' +
+			' turno ' +
 			'FROM ' +
-			'   especialista ' +
+			' especialista ' +
 			'INNER JOIN ' +
-			'   especialidad ON especialista.especialidad_id = especialidad.id ' +
+			' especialidad ON especialista.especialidad_id = especialidad.id ' +
 			'INNER JOIN ' +
-			'   consulta ON especialista.consulta_id = consulta.id ' +
+			' consulta ON especialista.consulta_id = consulta.id ' +
 			'INNER JOIN ' +
-			'   usuario ON especialista.usuario_id = usuario.id ' +
+			' usuario ON especialista.usuario_id = usuario.id ' +
 			'INNER JOIN ' +
-			'   rol ON usuario.rol_id = rol.id ' +
+			' rol ON usuario.rol_id = rol.id ' +
 			'WHERE ' +
-			'   usuario_id = ?';
+			' usuario_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [usuario_id]);
@@ -330,16 +329,16 @@ class EspecialistaModel {
 
 		const query =
 			'UPDATE ' +
-			'   especialista ' +
+			' especialista ' +
 			'SET ' +
-			'   especialidad_id = ?, ' +
-			'   consulta_id = ?, ' +
-			'   num_colegiado = ?, ' +
-			'   descripcion = ?, ' +
-			'   imagen = ?, ' +
-			'   turno = ? ' +
+			' especialidad_id = ?, ' +
+			' consulta_id = ?, ' +
+			' num_colegiado = ?, ' +
+			' descripcion = ?, ' +
+			' imagen = ?, ' +
+			' turno = ? ' +
 			'WHERE ' +
-			'   usuario_id = ?';
+			' usuario_id = ?';
 
 		try {
 			return await dbConn.execute(query, [
@@ -370,11 +369,11 @@ class EspecialistaModel {
 	static async setNoTrabajandoById(id, dbConn) {
 		const query =
 			'UPDATE ' +
-			'   especialista ' +
+			' especialista ' +
 			'SET ' +
-			'   turno = "no-trabajando" ' +
+			' turno = "no-trabajando" ' +
 			'WHERE ' +
-			'   usuario_id = ?';
+			' usuario_id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);
@@ -396,10 +395,11 @@ class EspecialistaModel {
 	 */
 	static async deleteEspecialistaById(usuario_id, dbConn) {
 		const query =
-			'DELETE FROM ' +
-			'   especialista ' +
+			'DELETE ' +
+			'FROM ' +
+			' especialista ' +
 			'WHERE ' +
-			'   usuario_id = ?';
+			' usuario_id = ?';
 
 		try {
 			return await dbConn.execute(query, [usuario_id]);

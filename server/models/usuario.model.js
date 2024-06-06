@@ -24,39 +24,39 @@ class UsuarioModel {
 
 		let query =
 			'SELECT ' +
-			'   usuario.id,' +
-			'   email,' +
-			'   usuario.nombre,' +
-			'   primer_apellido,' +
-			'   segundo_apellido,' +
-			'   dni,' +
-			'   rol_id,' +
-			'   rol.nombre AS nombre_rol, ' +
-			'   turno ' +
+			' usuario.id,' +
+			' email,' +
+			' usuario.nombre,' +
+			' primer_apellido,' +
+			' segundo_apellido,' +
+			' dni,' +
+			' rol_id,' +
+			' rol.nombre AS nombre_rol, ' +
+			' turno ' +
 			'FROM ' +
-			'   usuario ' +
+			' usuario ' +
 			'INNER JOIN ' +
-			'   rol ON usuario.rol_id = rol.id ' +
+			' rol ON usuario.rol_id = rol.id ' +
 			'LEFT JOIN ' +
-			'   paciente ON usuario.id = paciente.usuario_id ' +
+			' paciente ON usuario.id = paciente.usuario_id ' +
 			'LEFT JOIN ' +
-			'		especialista ON usuario.id = especialista.usuario_id ' +
+			' especialista ON usuario.id = especialista.usuario_id ' +
 			'WHERE ' +
-			'   rol_id <> 1 ';
+			' rol_id <> 1 ';
 
 		let countQuery =
 			'SELECT ' +
-			'		COUNT(*) AS count ' +
+			' COUNT(*) AS count ' +
 			'FROM ' +
-			'		usuario ' +
+			' usuario ' +
 			'INNER JOIN ' +
-			'		rol ON usuario.rol_id = rol.id ' +
+			' rol ON usuario.rol_id = rol.id ' +
 			'LEFT JOIN ' +
-			'		paciente ON usuario.id = paciente.usuario_id ' +
+			' paciente ON usuario.id = paciente.usuario_id ' +
 			'LEFT JOIN ' +
-			'		especialista ON usuario.id = especialista.usuario_id ' +
+			' especialista ON usuario.id = especialista.usuario_id ' +
 			'WHERE ' +
-			'		rol_id <> 1 ';
+			' rol_id <> 1 ';
 
 		let queryParams = [];
 		let countParams = [];
@@ -123,11 +123,11 @@ class UsuarioModel {
 	static async getPasswordById(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'		password ' +
+			' password ' +
 			'FROM ' +
-			'		usuario ' +
+			' usuario ' +
 			'WHERE ' +
-			'		id = ?';
+			' id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -158,11 +158,11 @@ class UsuarioModel {
 	static async getRoleByUserId(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   rol_id ' +
+			' rol_id ' +
 			'FROM ' +
-			'   usuario ' +
+			' usuario ' +
 			'WHERE ' +
-			'   id = ?';
+			' id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -194,16 +194,18 @@ class UsuarioModel {
 	static async findByEmail(email, dbConn) {
 		const query =
 			'SELECT ' +
-			'		id, ' +
-			'		email, ' +
-			'		password, ' +
-			'		nombre, ' +
-			'		primer_apellido, ' +
-			'		segundo_apellido, ' +
-			'		dni, ' +
-			'		rol_id ' +
-			'FROM usuario ' +
-			'WHERE email = ?';
+			' id, ' +
+			' email, ' +
+			' password, ' +
+			' nombre, ' +
+			' primer_apellido, ' +
+			' segundo_apellido, ' +
+			' dni, ' +
+			' rol_id ' +
+			'FROM ' +
+			' usuario ' +
+			'WHERE ' +
+			' email = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [email]);
@@ -245,17 +247,17 @@ class UsuarioModel {
 	static async findByDNI(dni, dbConn) {
 		const query =
 			'SELECT ' +
-			'   id, ' +
-			'   email, ' +
-			'   nombre, ' +
-			'   primer_apellido, ' +
-			'   segundo_apellido, ' +
-			'   dni, ' +
-			'   rol_id ' +
+			' id, ' +
+			' email, ' +
+			' nombre, ' +
+			' primer_apellido, ' +
+			' segundo_apellido, ' +
+			' dni, ' +
+			' rol_id ' +
 			'FROM ' +
-			'   usuario ' +
+			' usuario ' +
 			'WHERE ' +
-			'   dni = ?';
+			' dni = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [dni]);
@@ -304,9 +306,8 @@ class UsuarioModel {
 
 		const query =
 			'INSERT INTO usuario ' +
-			'(email, password, nombre, primer_apellido, segundo_apellido, ' +
-			' dni, rol_id) ' +
-			'   VALUES (?, ?, ?, ?, ?, ?, ?)';
+			'(email, password, nombre, primer_apellido, segundo_apellido, dni, rol_id) ' +
+			' VALUES (?, ?, ?, ?, ?, ?, ?)';
 
 		try {
 			const user = await dbConn.execute(query, [
@@ -352,9 +353,11 @@ class UsuarioModel {
 	static async updatePassword(email, password, dbConn) {
 		const query =
 			'UPDATE ' +
-			'usuario ' +
-			'SET password = ? ' +
-			'WHERE email = ?';
+			' usuario ' +
+			'SET ' +
+			' password = ? ' +
+			'WHERE ' +
+			' email = ?';
 
 		try {
 			return await dbConn.execute(query, [password, email]);
@@ -377,11 +380,11 @@ class UsuarioModel {
 	static async getEmailById(id, dbConn) {
 		const query = '' +
 			'SELECT ' +
-			'		email ' +
+			' email ' +
 			'FROM ' +
-			'   usuario ' +
+			' usuario ' +
 			'WHERE ' +
-			'		id = ?';
+			' id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -412,9 +415,12 @@ class UsuarioModel {
 	 */
 	static async getRefreshTokenById(id, dbConn) {
 		const query =
-			'SELECT refresh_token ' +
-			'FROM usuario ' +
-			'WHERE id = ?';
+			'SELECT ' +
+			' refresh_token ' +
+			'FROM ' +
+			' usuario ' +
+			'WHERE ' +
+			' id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -446,9 +452,9 @@ class UsuarioModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		usuario ' +
+			' usuario ' +
 			'WHERE ' +
-			'		id = ?';
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);
@@ -472,10 +478,11 @@ class UsuarioModel {
 	static async updateRefreshToken(userId, refreshToken, dbConn) {
 		const query =
 			'UPDATE ' +
-			'		usuario ' +
+			' usuario ' +
 			'SET ' +
-			'		refresh_token = ? ' +
-			'WHERE id = ?';
+			' refresh_token = ? ' +
+			'WHERE ' +
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query, [refreshToken, userId]);
@@ -498,11 +505,11 @@ class UsuarioModel {
 	static async deleteRefreshToken(userId, dbConn) {
 		const query =
 			'UPDATE ' +
-			'		usuario ' +
+			' usuario ' +
 			'SET ' +
-			'		refresh_token = NULL ' +
+			' refresh_token = NULL ' +
 			'WHERE ' +
-			'		id = ?';
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query, [userId]);
@@ -525,20 +532,20 @@ class UsuarioModel {
 	static async findById(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   usuario.id, ' +
-			'   email, ' +
-			'   usuario.nombre AS usuario_nombre, ' +
-			'   primer_apellido, ' +
-			'   segundo_apellido, ' +
-			'   dni, ' +
-			'   rol_id, ' +
-			'   rol.nombre AS nombre_rol ' +
+			' usuario.id, ' +
+			' email, ' +
+			' usuario.nombre AS usuario_nombre, ' +
+			' primer_apellido, ' +
+			' segundo_apellido, ' +
+			' dni, ' +
+			' rol_id, ' +
+			' rol.nombre AS nombre_rol ' +
 			'FROM ' +
-			'   usuario ' +
+			' usuario ' +
 			'INNER JOIN ' +
-			'   rol ON usuario.rol_id = rol.id ' +
+			' rol ON usuario.rol_id = rol.id ' +
 			'WHERE ' +
-			'   usuario.id = ?';
+			' usuario.id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -587,15 +594,15 @@ class UsuarioModel {
 
 		const query =
 			'UPDATE ' +
-			'   usuario ' +
+			' usuario ' +
 			'SET ' +
-			'   email = ?, ' +
-			'   nombre = ?, ' +
-			'   primer_apellido = ?, ' +
-			'   segundo_apellido = ?, ' +
-			'   dni = ? ' +
+			' email = ?, ' +
+			' nombre = ?, ' +
+			' primer_apellido = ?, ' +
+			' segundo_apellido = ?, ' +
+			' dni = ? ' +
 			'WHERE ' +
-			'   id = ?';
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query,

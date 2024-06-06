@@ -23,18 +23,18 @@ class EspecialidadModel {
 
 		let query =
 			'SELECT ' +
-			'    id, ' +
-			'    nombre, ' +
-			'    descripcion, ' +
-			'    imagen ' +
+			' id, ' +
+			' nombre, ' +
+			' descripcion, ' +
+			' imagen ' +
 			'FROM ' +
-			'   especialidad ';
+			' especialidad ';
 
 		let countQuery =
 			'SELECT ' +
-			'   COUNT(*) AS count ' +
+			' COUNT(*) AS count ' +
 			'FROM ' +
-			'   especialidad ';
+			' especialidad ';
 
 		const queryParams = [];
 		const countParams = [];
@@ -48,7 +48,7 @@ class EspecialidadModel {
 
 		query +=
 			'ORDER BY ' +
-			'   nombre ASC ' +
+			' nombre ASC ' +
 			'LIMIT ? OFFSET ?';
 
 		queryParams.push(`${limit}`, `${offset}`);
@@ -90,12 +90,12 @@ class EspecialidadModel {
 	static async fetchAllListado(dbConn) {
 		const query =
 			'SELECT ' +
-			'    id, ' +
-			'    nombre ' +
+			' id, ' +
+			' nombre ' +
 			'FROM ' +
-			'   especialidad ' +
+			' especialidad ' +
 			'ORDER BY ' +
-			'   nombre ASC';
+			' nombre ASC';
 
 		try {
 			const [rows] = await dbConn.execute(query);
@@ -124,13 +124,13 @@ class EspecialidadModel {
 	static async getEspecialidadByEspecialistaId(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'    especialidad.nombre AS especialidad_nombre ' +
+			' especialidad.nombre AS especialidad_nombre ' +
 			'FROM ' +
-			'   especialidad ' +
+			' especialidad ' +
 			'INNER JOIN ' +
-			'   especialista ON especialidad.id = especialista.especialidad_id ' +
+			' especialista ON especialidad.id = especialista.especialidad_id ' +
 			'WHERE ' +
-			'   especialista.usuario_id = ?';
+			' especialista.usuario_id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -160,24 +160,24 @@ class EspecialidadModel {
 	static async fetchAllEspecialidadesEspecialistas(dbConn) {
 		const query =
 			'SELECT' +
-			'    especialidad.id AS especialidad_id,' +
-			'    especialidad.nombre AS especialidad_nombre,' +
-			'    usuario.id AS usuario_id,' +
-			'    usuario.nombre AS especialista_nombre,' +
-			'    usuario.primer_apellido ,' +
-			'    usuario.segundo_apellido ,' +
-			'    especialista.imagen ' +
+			' especialidad.id AS especialidad_id,' +
+			' especialidad.nombre AS especialidad_nombre,' +
+			' usuario.id AS usuario_id,' +
+			' usuario.nombre AS especialista_nombre,' +
+			' usuario.primer_apellido ,' +
+			' usuario.segundo_apellido ,' +
+			' especialista.imagen ' +
 			'FROM' +
-			'    especialidad ' +
+			' especialidad ' +
 			'INNER JOIN' +
-			'    especialista ON especialidad.id = especialista.especialidad_id ' +
+			' especialista ON especialidad.id = especialista.especialidad_id ' +
 			'INNER JOIN' +
-			'    usuario ON especialista.usuario_id = usuario.id ' +
+			' usuario ON especialista.usuario_id = usuario.id ' +
 			'WHERE' +
-			'    especialista.turno <> ? ' +
+			' especialista.turno <> ? ' +
 			'ORDER BY' +
-			'    especialidad.id ASC, ' +
-			'    usuario.id ASC';
+			' especialidad.id ASC, ' +
+			' usuario.id ASC';
 
 		try {
 			const [rows] = await dbConn.execute(query, ['no-trabajando']);
@@ -228,14 +228,14 @@ class EspecialidadModel {
 	static async findById(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'    id, ' +
-			'    nombre, ' +
-			'    descripcion, ' +
-			'    imagen ' +
+			' id, ' +
+			' nombre, ' +
+			' descripcion, ' +
+			' imagen ' +
 			'FROM ' +
-			'   especialidad ' +
+			' especialidad ' +
 			'WHERE ' +
-			'   id = ?';
+			' id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -271,14 +271,14 @@ class EspecialidadModel {
 	static async findByNombre(nombre, dbConn) {
 		const query =
 			'SELECT ' +
-			'    id, ' +
-			'    nombre, ' +
-			'    descripcion, ' +
-			'    imagen ' +
+			' id, ' +
+			' nombre, ' +
+			' descripcion, ' +
+			' imagen ' +
 			'FROM ' +
-			'   especialidad ' +
+			' especialidad ' +
 			'WHERE ' +
-			'   nombre = ?';
+			' nombre = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [nombre]);
@@ -316,7 +316,9 @@ class EspecialidadModel {
 		const descripcion = especialidad.descripcion;
 		const imagen = especialidad.imagen;
 
-		const query = 'INSERT INTO especialidad (nombre, descripcion, imagen) VALUES (?, ?, ?)';
+		const query =
+			'INSERT INTO especialidad (nombre, descripcion, imagen) ' +
+			' VALUES (?, ?, ?)';
 
 		try {
 			const insert = await dbConn.execute(query, [nombre, descripcion, imagen]);
@@ -349,9 +351,9 @@ class EspecialidadModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		especialidad ' +
+			' especialidad ' +
 			'WHERE ' +
-			'		id = ?';
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);
@@ -380,13 +382,13 @@ class EspecialidadModel {
 		try {
 			const query =
 				'UPDATE ' +
-				'   especialidad ' +
+				' especialidad ' +
 				'SET ' +
-				'   nombre = ?, ' +
-				'   descripcion = ?, ' +
-				'   imagen = ? ' +
+				' nombre = ?, ' +
+				' descripcion = ?, ' +
+				' imagen = ? ' +
 				'WHERE ' +
-				'   id = ?';
+				' id = ?';
 
 			return await dbConn.execute(query, [nombre, descripcion, imagen, id]);
 		} catch (err) {

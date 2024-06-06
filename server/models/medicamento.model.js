@@ -16,12 +16,12 @@ class MedicamentoModel {
 	static async fetchAllPrescripcion(dbConn) {
 		const query =
 			'SELECT ' +
-			'   id, ' +
-			'   nombre ' +
+			' id, ' +
+			' nombre ' +
 			'FROM ' +
-			'   medicamento ' +
+			' medicamento ' +
 			'ORDER BY ' +
-			'   nombre ASC';
+			' nombre ASC';
 
 		try {
 			const [rows] = await dbConn.execute(query);
@@ -56,17 +56,17 @@ class MedicamentoModel {
 
 		let query =
 			'SELECT ' +
-			'   id, ' +
-			'   nombre, ' +
-			'   descripcion ' +
+			' id, ' +
+			' nombre, ' +
+			' descripcion ' +
 			'FROM ' +
-			'   medicamento ';
+			' medicamento ';
 
 		let countQuery =
 			'SELECT ' +
-			'		COUNT(*) AS count ' +
+			' COUNT(*) AS count ' +
 			'FROM ' +
-			'		medicamento ';
+			' medicamento ';
 
 		let queryParams = [];
 		let countParams = [];
@@ -80,7 +80,7 @@ class MedicamentoModel {
 
 		query +=
 			'ORDER BY ' +
-			'		nombre ASC ' +
+			' nombre ASC ' +
 			'LIMIT ? OFFSET ?';
 
 		queryParams.push(`${limit}`, `${offset}`);
@@ -121,13 +121,13 @@ class MedicamentoModel {
 	static async findById(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   id, ' +
-			'   nombre, ' +
-			'   descripcion ' +
+			' id, ' +
+			' nombre, ' +
+			' descripcion ' +
 			'FROM ' +
-			'   medicamento ' +
+			' medicamento ' +
 			'WHERE ' +
-			'   id = ?';
+			' id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -163,13 +163,13 @@ class MedicamentoModel {
 	static async findByNombre(nombre, dbConn) {
 		const query =
 			'SELECT ' +
-			'   id, ' +
-			'   nombre, ' +
-			'   descripcion ' +
+			' id, ' +
+			' nombre, ' +
+			' descripcion ' +
 			'FROM ' +
-			'   medicamento ' +
+			' medicamento ' +
 			'WHERE ' +
-			'   nombre = ?';
+			' nombre = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [nombre]);
@@ -208,7 +208,7 @@ class MedicamentoModel {
 
 		const query =
 			'INSERT INTO medicamento (nombre, descripcion) ' +
-			'		VALUES (?, ?)';
+			' VALUES (?, ?)';
 
 		try {
 			const insert = await dbConn.execute(query, [nombre, descripcion]);
@@ -244,12 +244,12 @@ class MedicamentoModel {
 		try {
 			const query =
 				'UPDATE ' +
-				'   medicamento ' +
+				' medicamento ' +
 				'SET ' +
-				'   nombre = ?, ' +
-				'   descripcion = ? ' +
+				' nombre = ?, ' +
+				' descripcion = ? ' +
 				'WHERE ' +
-				'   id = ?';
+				' id = ?';
 
 			return await dbConn.execute(query, [nombre, descripcion, id]);
 		} catch (err) {

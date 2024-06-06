@@ -32,7 +32,7 @@ class TomaModel {
 
 		const query =
 			'INSERT INTO toma (dosis, hora, fecha_inicio, fecha_fin, observaciones) ' +
-			'   VALUES (?, ?, ?, ?, ?)';
+			' VALUES (?, ?, ?, ?, ?)';
 
 		try {
 			const result = await dbConn.execute(query, [
@@ -74,9 +74,9 @@ class TomaModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		toma ' +
+			' toma ' +
 			'WHERE ' +
-			'		id = ?';
+			' id = ?';
 
 		try {
 			return await dbConn.execute(query, [id]);
@@ -99,19 +99,19 @@ class TomaModel {
 	static async findToma(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   id, ' +
-			'		hora,' +
-			'   dosis,' +
-			'   fecha_inicio,' +
-			'   fecha_fin,' +
-			'   observaciones, ' +
-			'   medicamento_id ' +
+			' id, ' +
+			' hora,' +
+			' dosis,' +
+			' fecha_inicio,' +
+			' fecha_fin,' +
+			' observaciones, ' +
+			' medicamento_id ' +
 			'FROM ' +
-			'		toma ' +
+			'	toma ' +
 			'INNER JOIN ' +
-			'		paciente_toma_medicamento ON toma.id = paciente_toma_medicamento.toma_id ' +
+			'	paciente_toma_medicamento ON toma.id = paciente_toma_medicamento.toma_id ' +
 			'WHERE ' +
-			'		id = ?';
+			'	id = ?';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);
@@ -149,12 +149,13 @@ class TomaModel {
 	 * @throws {Error} Si ocurre un error durante la operación, se lanzará un error.
 	 */
 	static async deleteAllTomas(tomas, dbConn) {
+		const placeholder = tomas.map(() => '?').join(', ');
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		toma ' +
+			' toma ' +
 			'WHERE ' +
-			'		id IN (?)';
+			` id IN (${placeholder})`;
 
 		try {
 			return await dbConn.execute(query, [...tomas]);

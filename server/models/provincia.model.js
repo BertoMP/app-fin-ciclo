@@ -16,12 +16,12 @@ class ProvinciaModel {
 	static async fetchAll(dbConn) {
 		const query =
 			'SELECT ' +
-			'		id, ' +
-			'		nombre ' +
+			' id, ' +
+			' nombre ' +
 			'FROM ' +
-			'		provincia ' +
+			' provincia ' +
 			'ORDER BY ' +
-			'		nombre';
+			' nombre';
 
 		try {
 			const [rows] = await dbConn.execute(query);

@@ -28,17 +28,17 @@ class GlucometriaModel {
 
 		const query =
 			'SELECT ' +
-			'   fecha, ' +
-			'   hora, ' +
-			'   medicion ' +
+			' fecha, ' +
+			' hora, ' +
+			' medicion ' +
 			'FROM ' +
-			'   glucometria ' +
+			' glucometria ' +
 			'WHERE ' +
-			'   fecha BETWEEN ? AND ? AND ' +
-			'   paciente_id = ? ' +
+			' fecha BETWEEN ? AND ? AND ' +
+			' paciente_id = ? ' +
 			'ORDER BY ' +
-			'   fecha DESC, ' +
-			'   hora DESC ' +
+			' fecha DESC, ' +
+			' hora DESC ' +
 			'LIMIT ? OFFSET ?';
 
 		try {
@@ -52,12 +52,12 @@ class GlucometriaModel {
 
 			const [count] = await dbConn.execute(
 				'SELECT ' +
-					'   COUNT(*) AS count ' +
+					' COUNT(*) AS count ' +
 					'FROM ' +
-					'   glucometria ' +
+					' glucometria ' +
 					'WHERE ' +
-					'   fecha BETWEEN ? AND ? AND ' +
-					'   paciente_id = ?',
+					' fecha BETWEEN ? AND ? AND ' +
+					' paciente_id = ?',
 				[fechaInicio, fechaFin, paciente_id],
 			);
 			const total = count[0].count;
@@ -132,9 +132,9 @@ class GlucometriaModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		glucometria ' +
+			' glucometria ' +
 			'WHERE ' +
-			'		paciente_id = ?';
+			' paciente_id = ?';
 		try {
 			return await dbConn.execute(query, [paciente_id]);
 		} catch (err) {

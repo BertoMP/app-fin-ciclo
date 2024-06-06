@@ -17,14 +17,14 @@ class MunicipioModel {
 	static async fetchByProvinciaId(id, dbConn) {
 		const query =
 			'SELECT ' +
-			'   id, ' +
-			'   nombre ' +
+			' id, ' +
+			' nombre ' +
 			'FROM ' +
-			'   municipio ' +
+			' municipio ' +
 			'WHERE ' +
-			'   provincia_id = ? ' +
+			' provincia_id = ? ' +
 			'ORDER BY ' +
-			'   nombre';
+			' nombre';
 
 		try {
 			const [rows] = await dbConn.execute(query, [id]);

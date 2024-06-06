@@ -18,7 +18,7 @@ class TokenModel {
 	static async create(idUser, token, dbConn) {
 		const query =
 			'INSERT INTO token (usuario_id, reset_token) ' +
-			'		VALUES (?, ?)';
+			' VALUES (?, ?)';
 
 		try {
 			const insert = await dbConn.execute(query, [idUser, token]);
@@ -50,9 +50,9 @@ class TokenModel {
 		const query =
 			'DELETE ' +
 			'FROM ' +
-			'		token ' +
+			' token ' +
 			'WHERE ' +
-			'		usuario_id = ?';
+			' usuario_id = ?';
 
 		try {
 			return await dbConn.execute(query, [idUser]);
