@@ -130,7 +130,6 @@ export class ModalComponent implements OnInit {
   }
 
   transformarFecha(fecha: string) {
-    console.log(fecha);
     if (fecha != null) {
       let [day, month, year] = fecha.split('-');
 
@@ -140,7 +139,6 @@ export class ModalComponent implements OnInit {
   }
 
   enviarFecha(fecha: string) {
-    console.log(fecha);
     if (fecha != null) {
       let [year, month, day] = fecha.split('-');
 
@@ -214,20 +212,22 @@ export class ModalComponent implements OnInit {
     this.isLoading = true;
     const newToma: TomaInforme = this.generateToma();
 
-    let prescription = this.meds.find(p => p.medicamento.id === newToma.id);
+    if (!this.isEditing) {
+      let prescription = this.meds.find(p => p.medicamento.id === newToma.id);
 
-    if (prescription) {
-      const existingToma = prescription.medicamento.tomas.find(t => t.hora === newToma.toma.hora);
+      if (prescription) {
+        const existingToma = prescription.medicamento.tomas.find(t => t.hora === newToma.toma.hora);
 
-      if (existingToma) {
-        this.isLoading = false;
-        Swal.fire({
-          title: 'Error',
-          text: 'Ya existe una toma de este medicamento a esa hora hora',
-          icon: 'error',
-          width: '50%'
-        });
-        return;
+        if (existingToma) {
+          this.isLoading = false;
+          Swal.fire({
+            title: 'Error',
+            text: 'Ya existe una toma de este medicamento a esa hora hora',
+            icon: 'error',
+            width: '50%'
+          });
+          return;
+        }
       }
     }
 
@@ -270,7 +270,7 @@ export class ModalComponent implements OnInit {
         dosis: this.registerForm.get('dosis').value,
         fecha_fin: this.enviarFecha(this.registerForm.get('fechaFin').value),
         fecha_inicio: this.enviarFecha(this.registerForm.get('fechaInicio').value),
-        hora: this.registerForm.get('hora').value,
+        hora: this.registerForm.get('hora').value + ':00',
         id: this.id ?? null,
         observaciones: this.registerForm.get('observacion').value,
       }

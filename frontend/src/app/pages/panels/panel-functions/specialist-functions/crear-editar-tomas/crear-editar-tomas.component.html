@@ -6,7 +6,7 @@
 }  @else {
 <section class="no-results">
         <button type="button" (click)="open()">Añadir toma</button>
-        <button type="button" (click)="onRegisterTomas()">Guardar tomas</button>
+        <button *ngIf="meds.length > 0" type="button" (click)="onRegisterTomas()">Guardar tomas</button>
 </section>
 @if (meds.length === 0) {
   <section class="no-results">

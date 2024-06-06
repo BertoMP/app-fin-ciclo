@@ -48,7 +48,7 @@ export const validatePacienteTomaMedicamento = [
 		.isString()
 		.withMessage('La hora de toma debe ser un valor alfanumérico.')
 		.custom((value) => {
-			const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+			const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]:00$/;
 			if (!regex.test(value)) {
 				throw new Error('La hora de toma debe tener el formato HH:MM.');
 			}

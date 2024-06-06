@@ -55,6 +55,9 @@ export class CrearEditarTomasComponent implements OnInit {
     modalRef.componentInstance.meds = this.meds;
 
     modalRef.result.then((result) => {
+      if (!result) {
+        return;
+      }
       // Recibimos los datos del modal y los asignamos a la variable datos
       if(medicamento_id!=null && medicamento_id!=result.id){
        this.eliminateToma(toma,medicamento_id);
@@ -97,6 +100,9 @@ export class CrearEditarTomasComponent implements OnInit {
 
     }, (reason) => {
       // Manejo de cierre del modal si es necesario
+      if (reason === 'cancel' || reason === 'backdrop-click' || reason === 'esc') {
+        console.log('Modal cerrado');
+      }
     });
   }
 
