@@ -210,3 +210,7 @@ del cliente:
 ## Licencia
 
 Este proyecto está licenciado bajo los términos de la licencia GNU GPLv3.
+
+## Versiones
+
+- [v1.0.0](https://github.com/BertoMP/mediapp/releases/tag/v1.0.0): Versión inicial del proyecto.
