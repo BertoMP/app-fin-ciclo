@@ -57,10 +57,10 @@
                 <strong>Medicamento:</strong> Debe haber un medicamento seleccionado.
             </li>
             <li *ngIf="registerForm.get('hora').invalid">
-                <strong>Hora:</strong> Debe haber una hora establecida.
+                <strong>Hora:</strong> Debe haber una hora establecida en formato HH:MM.
             </li>
             <li *ngIf="registerForm.get('dosis').invalid">
-                <strong>Dosis:</strong>El medicamento debe de estar dosificado.
+                <strong>Dosis:</strong> El medicamento debe de estar dosificado y ser una cantidad mayor de 1.
             </li>
             <li *ngIf="registerForm.get('fechaInicio').invalid">
                 <strong>Fecha inicio:</strong> El tratamiento debe de tener una fecha de inicio.

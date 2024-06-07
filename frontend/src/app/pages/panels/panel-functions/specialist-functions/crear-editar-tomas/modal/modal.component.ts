@@ -86,22 +86,26 @@ export class ModalComponent implements OnInit {
         null,
         [
           Validators.required,
+          CustomValidators.validTime
         ]
       ),
       'dosis': new FormControl(
         null,
         [
           Validators.required,
+          Validators.min(1),
         ]
       ),
       'fechaInicio': new FormControl(
         null,
         [
           Validators.required,
+          CustomValidators.validDate
         ]
       ),
       'fechaFin': new FormControl(
-        null
+        null,
+        CustomValidators.validDate
       ),
       'observacion': new FormControl(
         null,

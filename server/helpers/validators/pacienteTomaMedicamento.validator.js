@@ -40,6 +40,13 @@ export const validatePacienteTomaMedicamento = [
 		.withMessage('La dosis es requerida.')
 		.isNumeric()
 		.withMessage('La dosis debe ser un valor numérico.')
+		.custom((value) => {
+			if (value < 1) {
+				throw new Error('La dosis no puede ser un valor negativo o 0.');
+			}
+
+			return true;
+		})
 		.escape(),
 	body('prescripcion.*.medicamento.tomas.*.hora')
 		.trim()

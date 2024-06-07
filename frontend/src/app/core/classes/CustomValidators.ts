@@ -233,4 +233,30 @@ export class CustomValidators {
 
     return null;
   }
+
+  static validTime(control: FormControl): { [s: string]: boolean } | null {
+    const value = control.value;
+    const regex: RegExp = new RegExp('^([01]?[0-9]|2[0-3]):[0-5][0-9](:00)?$');
+
+    if (!regex.test(value)) {
+      return { 'isInvalidTime': true }
+    }
+
+    return null;
+  }
+
+  static validDate(control: FormControl): { [s: string]: boolean } | null {
+    const value = control.value;
+    const regex: RegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+
+    if (value === null) {
+      return null;
+    }
+
+    if (!regex.test(value)) {
+      return { 'isInvalidDate': true }
+    }
+
+    return null;
+  }
 }
