@@ -135,7 +135,7 @@ p {
   box-shadow: 0px 0px 20px lightgray;
   transition: 0.7s;
 
-  @media screen and (max-width: 1100px) {
+  @media screen and (min-width: 1100px) {
     &:hover {
       transform: scale(110%);
       background-color: #2239ab;
