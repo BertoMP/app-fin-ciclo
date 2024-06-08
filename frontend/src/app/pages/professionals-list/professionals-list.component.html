@@ -10,16 +10,16 @@
           <section class="specialists-container">
             @for (doctor of datum.especialistas; track doctor.id) {
               <section class="specialist-container">
-                <article>
+                <article class="image">
                   <figure>
                     <img src="{{ doctor.imagen }}" alt="{{ doctor.nombre }}">
                   </figure>
                 </article>
                 <article class="specialist-info">
                   <h4>{{ doctor.nombre }} {{ doctor.primer_apellido }} {{doctor.segundo_apellido}}</h4>
-                  <section class="btn-container">
-                    <button type="button" routerLink="/listado-de-especialistas/{{doctor.id}}">Ver perfil</button>
-                  </section>
+                </article>
+                <article class="btn-container">
+                  <button type="button" routerLink="/listado-de-especialistas/{{doctor.id}}">Ver perfil</button>
                 </article>
               </section>
             }
