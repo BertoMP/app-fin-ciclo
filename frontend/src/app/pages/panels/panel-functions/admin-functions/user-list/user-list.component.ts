@@ -205,6 +205,7 @@ export class UserListComponent implements OnInit {
               }
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
+        this.dataLoaded = true;
         Swal.fire({
           title: 'Cancelado',
           text: 'No se ha eliminado al usuario',
