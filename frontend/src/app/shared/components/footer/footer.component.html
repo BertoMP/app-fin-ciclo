@@ -28,17 +28,18 @@
 </ul>
 <ul class="menu">
   <li>
-    <a [routerLink]="'/sobre-nosotros'">La clínica</a>
+    <a [routerLink]="'/sobre-nosotros'" [routerLinkActive]="'active'">La clínica</a>
   </li>
   <li>
-    <a [routerLink]="'/nuestros-servicios'">Servicios</a>
+    <a [routerLink]="'/nuestros-servicios'" [routerLinkActive]="'active'">Servicios</a>
   </li>
   <li>
-    <a [routerLink]="'/contacto'">Contacto</a>
+    <a [routerLink]="'/contacto'" [routerLinkActive]="'active'">Contacto</a>
   </li>
   <li>
-    <a [routerLink]="'/auth/login'">MediAPP</a>
+    <a [routerLink]="'/auth/login'" [routerLinkActive]="'active'">MediAPP</a>
   </li>
 </ul>
-<p><a routerLink="/terminos-y-condiciones">Términos y condiciones</a> | <a routerLink="/politica-de-privacidad">Política de privacidad</a></p>
+<p><a routerLink="/terminos-y-condiciones" [routerLinkActive]="'active'">Términos y condiciones</a>
+  | <a routerLink="/politica-de-privacidad" [routerLinkActive]="'active'">Política de privacidad</a></p>
 <p>&copy; 2024 Clínica Médica Coslada, S.L. | All Rights Reserved</p>

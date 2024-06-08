@@ -37,6 +37,10 @@ a {
   text-decoration: none;
   transition: 0.5s all;
 
+  &.active {
+    color: black;
+  }
+
   @media (min-width: 1200px) {
     &:hover {
       color: black;
