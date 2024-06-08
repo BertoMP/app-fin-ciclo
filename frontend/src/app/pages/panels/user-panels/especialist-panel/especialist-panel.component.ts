@@ -97,6 +97,7 @@ export class EspecialistPanelComponent implements OnInit, OnDestroy {
       name: 'Actualizar Contraseña',
       icon: 'bi bi-key-fill',
       path: '/mediapp/actualizar-password',
+      method: 'onOptionSelected',
     },
     {
       name: 'Cerrar Sesión',

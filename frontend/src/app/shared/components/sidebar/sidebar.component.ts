@@ -48,6 +48,7 @@ export class SidebarComponent {
   }
 
   onDeleteAccount(): void {
+    this.closeSidebar.emit();
     Swal.fire({
       text: '¿Estás seguro que quieres eliminar tu cuenta de usuario?',
       confirmButtonText: 'Confirmar',
