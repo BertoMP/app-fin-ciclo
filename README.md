@@ -196,7 +196,7 @@ del cliente:
         <p>Ejemplo de Ventana Modal</p>
       </td>
       <td>
-        <img src="./screenshots/formulario_consulta.png" width="200"/>
+        <img src="./screenshots/formulario_toma.png" width="200" height="120"/>
         <p>Ejemplo de asignación de toma a paciente</p>
       </td>
       <td>
