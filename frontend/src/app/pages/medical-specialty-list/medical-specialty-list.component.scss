@@ -23,6 +23,16 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1rem;
+  width: 100%;
+
+  @media (max-width: 600px){
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 400px){
+    font-size: 0.7rem;
+  }
 
   pagination-controls{
     margin-top: 1rem;
@@ -33,26 +43,15 @@ h2 {
     .current {
       background-color: lightblue;
       color: black;
-      font-size: 1.2rem;
-      border-radius: 50%;
-
-      @media all and (max-width: 600px) {
-        font-size: 1rem;
-      }
     }
 
     li {
       a {
-        font-size: 1rem;
         padding: 5px 10px;
         border-radius: 5px;
-        margin: 0 5px;
+        margin: 0 2px;
         cursor: pointer;
         transition: background-color 0.3s;
-
-        @media all and (max-width: 600px) {
-          font-size: 0.8rem;
-        }
 
         &:hover {
           background-color: transparent;
@@ -61,6 +60,7 @@ h2 {
 
       &.pagination-next,
       &.pagination-previous{
+        font-size: 0.6rem;
         &:hover {
           a {
             background-color: transparent;
