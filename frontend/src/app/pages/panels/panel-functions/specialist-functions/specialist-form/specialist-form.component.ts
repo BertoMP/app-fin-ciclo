@@ -332,7 +332,7 @@ export class SpecialistFormComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.location.back();
+    this.router.navigate(['/mediapp/usuarios']);
   }
 
   onFileSelect(event: { target: { files: File[]; }; }) {
