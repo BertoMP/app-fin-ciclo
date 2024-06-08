@@ -35,10 +35,12 @@ li {
 a {
   color: #fff;
   text-decoration: none;
-  transition: .5s all;
+  transition: 0.5s all;
 
-  &:hover {
-    color: black;
+  @media (min-width: 1200px) {
+    &:hover {
+      color: black;
+    }
   }
 }
 
@@ -48,20 +50,24 @@ li a {
   font-size: 3rem;
   margin: 0 0.5rem;
   display: inline-block;
-  transition: .5s;
+  transition: 0.5s;
 }
 
 .menu li a {
   font-size: 1.2rem;
+
+  @media (min-width: 1000px) {
+    &:hover {
+      color: black;
+    }
+  }
 }
 
-.social-media li a:hover {
-  color: black;
-  transform: translateY(-1rem);
-}
-
-.menu li a:hover {
-  color: black;
+@media (min-width: 1000px) {
+  .social-media li a:hover {
+    color: black;
+    transform: translateY(-1rem);
+  }
 }
 
 p {
@@ -90,21 +96,21 @@ p {
 
 .wave:nth-child(2) {
   z-index: 999;
-  opacity: .5;
+  opacity: 0.5;
   bottom: 10px;
   animation: animateWave_2 4s linear infinite;
 }
 
 .wave:nth-child(3) {
   z-index: 999;
-  opacity: .2;
+  opacity: 0.2;
   bottom: 15px;
   animation: animateWave 3s linear infinite;
 }
 
 .wave:nth-child(4) {
   z-index: 999;
-  opacity: .7;
+  opacity: 0.7;
   bottom: 10px;
   animation: animateWave_2 3s linear infinite;
 }

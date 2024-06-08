@@ -1,27 +1,32 @@
-import {Component, ElementRef, HostListener, OnDestroy, OnInit} from "@angular/core";
-import {NavigationEnd, Router, RouterLink, RouterModule, RouterOutlet} from "@angular/router";
-import {AuthService} from "../../../../core/services/auth.service";
-import {NgIf} from "@angular/common";
-import {Subscription} from "rxjs";
-import {filter} from "rxjs/operators";
-import {SidebarComponent} from "../../../../shared/components/sidebar/sidebar.component";
-import {PanelOptionModel} from "../../../../core/interfaces/panel-option.model";
-import {Title} from "@angular/platform-browser";
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import {
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterModule,
+  RouterOutlet,
+} from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
+import { NgIf } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar.component';
+import { PanelOptionModel } from '../../../../core/interfaces/panel-option.model';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
-  imports: [
-    RouterLink,
-    RouterOutlet,
-    RouterModule,
-    NgIf,
-    SidebarComponent
-  ],
+  imports: [RouterLink, RouterOutlet, RouterModule, NgIf, SidebarComponent],
   templateUrl: './admin-panel.component.html',
-  styleUrl: './admin-panel.component.scss'
+  styleUrl: './admin-panel.component.scss',
 })
-
 export class AdminPanelComponent implements OnInit, OnDestroy {
   optionSelected: boolean = false;
   userName: string = '';
@@ -50,7 +55,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           icon: 'bi bi-hospital-fill',
           path: '/mediapp/crear-especialista',
           method: 'onOptionSelected',
-        }
+        },
       ],
     },
     {
@@ -67,7 +72,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           icon: 'bi bi-patch-plus-fill',
           path: '/mediapp/crear-especialidad',
           method: 'onOptionSelected',
-        }
+        },
       ],
     },
     {
@@ -84,7 +89,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           icon: 'bi bi-hospital-fill',
           path: '/mediapp/crear-consulta',
           method: 'onOptionSelected',
-        }
+        },
       ],
     },
     {
@@ -95,9 +100,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           icon: 'bi bi-database-exclamation',
           path: '/mediapp/logs-error-db',
           method: 'onOptionSelected',
-        }
-      ]
-    }
+        },
+      ],
+    },
   ];
 
   sidebarOptionsBottom: PanelOptionModel[] = [
@@ -109,25 +114,31 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     {
       name: 'Cerrar Sesión',
       icon: 'bi bi-box-arrow-right',
-      method: 'onLogout'
-    }
+      method: 'onLogout',
+    },
   ];
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    const sidebarElement = this.elementRef.nativeElement.querySelector('.sidebar');
-    const buttonElement = this.elementRef.nativeElement.querySelector('.menu-button');
+    const sidebarElement =
+      this.elementRef.nativeElement.querySelector('.sidebar');
+    const buttonElement =
+      this.elementRef.nativeElement.querySelector('.menu-button');
 
-    if (!sidebarElement.contains(event.target) && event.target !== buttonElement) {
+    if (
+      !sidebarElement.contains(event.target) &&
+      event.target !== buttonElement
+    ) {
       this.sidebarOpen = false;
     }
   }
 
-  constructor(private auth: AuthService,
-              private router: Router,
-              private elementRef: ElementRef,
-              private title: Title) {
-  }
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private elementRef: ElementRef,
+    private title: Title
+  ) {}
 
   ngOnInit(): void {
     this.title.setTitle('MediAPP - Panel de Administrador');
@@ -143,32 +154,35 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       '/mediapp/consultas',
       '/mediapp/crear-consulta',
       '/mediapp/actualizar-password',
-      '/mediapp/logs-error-db'
+      '/mediapp/logs-error-db',
     ];
     if (options.includes(this.router.url)) {
       this.optionSelected = true;
     }
 
-    this.routerSub = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.optionSelected = event.url !== '/mediapp';
-    });
+    this.routerSub = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.optionSelected = event.url !== '/mediapp';
+      });
 
-    this.routerSub = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.optionSelected = event.url !== '/mediapp';
-    });
+    this.routerSub = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.optionSelected = event.url !== '/mediapp';
+      });
   }
 
   toggleSidebar(event: MouseEvent) {
     event.stopPropagation();
     this.sidebarOpen = !this.sidebarOpen;
+
+    if (this.sidebarOpen) {
+      scrollTo(0, 0);
+    }
   }
 
   ngOnDestroy() {
     this.routerSub.unsubscribe();
   }
 }
-

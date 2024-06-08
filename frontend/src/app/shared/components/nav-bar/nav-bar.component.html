@@ -1,8 +1,8 @@
 <section class="icons" (click)="onToggleMenu($event)">
   @if (isMenuOpen) {
-    <i class="bi bi-x"></i>
+  <i class="bi bi-x"></i>
   } @else {
-    <i class="bi bi-list"></i>
+  <i class="bi bi-list"></i>
   }
 </section>
 
@@ -11,37 +11,31 @@
   <a [routerLink]="'/nuestros-servicios'" [routerLinkActive]="'active'">Servicios</a>
   <a [routerLink]="'/contacto'" [routerLinkActive]="'active'">Contacto</a>
   @if (isUserLoggedIn) {
-    <div class="dropdown">
-      <a class="btn dropdown-toggle"
-         role="button"
-         id="dropdownMenuLink"
-         data-bs-toggle="dropdown"
-         aria-expanded="false"
-      >
-        Hola, {{ userName }}
-      </a>
+  <div class="dropdown">
+    <a class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+      Hola, {{ userName }}
+    </a>
 
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <li class="dropdown-item" [routerLink]="'/mediapp'"><i class="bi bi-card-list"></i>Panel de usuario</li>
-        <li *ngIf="isPatient" [routerLink]="'/mediapp/editar-perfil'" class="dropdown-item"><i class="bi bi-person-fill"></i>Editar perfil</li>
-        <li class="dropdown-item" (click)="onLogout()"><i class="bi bi-box-arrow-right"></i>Cerrar sesión</li>
-      </ul>
-    </div>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <li class="dropdown-item" [routerLink]="'/mediapp'"><i class="bi bi-card-list"></i>Panel de usuario</li>
+      <li *ngIf="isPatient" [routerLink]="'/mediapp/editar-perfil'" class="dropdown-item"><i
+          class="bi bi-person-fill"></i>Editar perfil</li>
+      <li class="dropdown-item" (click)="onLogout()"><i class="bi bi-box-arrow-right"></i>Cerrar sesión</li>
+    </ul>
+  </div>
   } @else {
-    <a [routerLink]="'/auth/login'" [routerLinkActive]="'active'">MediAPP</a>
+  <a [routerLink]="'/auth/login'" [routerLinkActive]="'active'">MediAPP</a>
   }
 </nav>
 
-<nav class="navbar-mobile"
-     [ngClass]="{'open': isMenuOpen}"
->
+<nav class="navbar-mobile" [ngClass]="{'open': isMenuOpen}">
   <a [routerLink]="'/sobre-nosotros'" style="--i:0" [routerLinkActive]="'active'">La clínica</a>
   <a [routerLink]="'/nuestros-servicios'" style="--i:1" [routerLinkActive]="'active'">Servicios</a>
   <a [routerLink]="'/contacto'" style="--i:2" [routerLinkActive]="'active'">Contacto</a>
-   @if (isUserLoggedIn) {
-      <a [routerLink]="'/mediapp'" style="--i:3" [routerLinkActive]="'active'">Panel de usuario</a>
-     <a (click)="onLogout()" style="--i:4" class="logout-button"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a>
-   } @else {
-      <a [routerLink]="'/auth/login'" style="--i:3" [routerLinkActive]="'active'">MediAPP</a>
-    }
+  @if (isUserLoggedIn) {
+  <a [routerLink]="'/mediapp'" style="--i:3" [routerLinkActive]="'active'">Panel de usuario</a>
+  <a (click)="onLogout()" style="--i:4" class="logout-button"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a>
+  } @else {
+  <a [routerLink]="'/auth/login'" style="--i:3" [routerLinkActive]="'active'">MediAPP</a>
+  }
 </nav>
