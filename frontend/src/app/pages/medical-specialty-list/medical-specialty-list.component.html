@@ -14,11 +14,13 @@
       ></pagination-controls>
     </section>
     <section class="card-container">
-      <app-vertical-card *ngFor="let specialty of specialties | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }"
-                         [info]="specialty"
-                         [routerLink]="'/listado-de-especialistas'"
-                         [fragment]="specialty.datos_especialidad.nombre | lowercase | removeAccents"
-      ></app-vertical-card>
+      <div >
+        <app-vertical-card *ngFor="let specialty of specialties | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }"
+                           [info]="specialty"
+                           [routerLink]="'/listado-de-especialistas'"
+                           [fragment]="specialty.datos_especialidad.nombre | lowercase | removeAccents"
+        ></app-vertical-card>
+      </div>
       <app-chat-bot></app-chat-bot>
     </section>
   }
