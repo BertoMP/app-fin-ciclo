@@ -98,7 +98,7 @@ export class RegisterComponent implements OnInit {
       } else {
         this.title.setTitle('MediAPP - Registro de usuario');
         if (this.authService.isLoggedIn() && UserRole.PACIENT == this.authService.getUserRole()) {
-          this.isPatient=true;
+          this.isPatient = true;
           this.id = this.authService.getUserId();
           this.isEditing = true;
         }
@@ -348,24 +348,26 @@ export class RegisterComponent implements OnInit {
     this.registerForm.get('municipio').valueChanges
       .subscribe({
         next: (municipio: string) => {
-          this.codigoPostalService.getCodigosPostales(municipio)
-            .subscribe({
-              next: (codigosPostales: CodigoPostalModel[]) => {
-                this.codigosPostales = codigosPostales.map((codigoPostal: CodigoPostalModel) => {
-                  return {
-                    value: codigoPostal.codigo_postal_id,
-                    label: codigoPostal.codigo_postal_id
-                  }
-                });
-              },
-              error: (error: HttpErrorResponse) => {
-                Swal.fire({
-                  title: 'Error',
-                  text: 'Ha ocurrido un error al cargar los códigos postales',
-                  icon: 'error'
-                });
-              }
-            });
+          if (municipio) {
+            this.codigoPostalService.getCodigosPostales(municipio)
+              .subscribe({
+                next: (codigosPostales: CodigoPostalModel[]) => {
+                  this.codigosPostales = codigosPostales.map((codigoPostal: CodigoPostalModel) => {
+                    return {
+                      value: codigoPostal.codigo_postal_id,
+                      label: codigoPostal.codigo_postal_id
+                    }
+                  });
+                },
+                error: (error: HttpErrorResponse) => {
+                  Swal.fire({
+                    title: 'Error',
+                    text: 'Ha ocurrido un error al cargar los códigos postales',
+                    icon: 'error'
+                  });
+                }
+              });
+          }
         }
       });
   }
