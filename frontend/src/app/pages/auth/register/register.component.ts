@@ -349,7 +349,9 @@ export class RegisterComponent implements OnInit {
     this.registerForm.get('municipio').valueChanges
       .subscribe({
         next: (municipio: string) => {
-          this.codigosPostales = [];
+          if (!this.isEditing) {
+            this.codigosPostales = [];
+          }
           if (municipio && !this.isSuccess) {
             this.codigoPostalService.getCodigosPostales(municipio)
               .subscribe({
@@ -458,7 +460,7 @@ export class RegisterComponent implements OnInit {
         this.mensajeExito(message);
       });
     } else if (this.isAdmin) {
-      this.router.navigate(['/mediapp/listado-pacientes']).then(r => {
+      this.router.navigate(['/mediapp/usuarios']).then(r => {
         this.mensajeExito(message);
       });
     } else {
