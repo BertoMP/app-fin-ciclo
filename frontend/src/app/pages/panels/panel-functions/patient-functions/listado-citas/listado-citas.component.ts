@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Select2Data, Select2Module } from 'ng-select2-component';
-import {Title} from "@angular/platform-browser";
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-listado-citas',
@@ -25,9 +25,10 @@ import {Title} from "@angular/platform-browser";
     FormsModule,
     RouterLink,
     LoadingSpinnerComponent,
-    Select2Module],
+    Select2Module,
+  ],
   templateUrl: './listado-citas.component.html',
-  styleUrl: './listado-citas.component.scss'
+  styleUrl: './listado-citas.component.scss',
 })
 export class ListadoCitasComponent {
   citas: CitasDataModel[];
@@ -51,52 +52,47 @@ export class ListadoCitasComponent {
   errores: string[];
   datos: string[];
   rango: number;
-  resultMin:number;
-  resultMax:number;
+  resultMin: number;
+  resultMax: number;
 
-  perPage: string = "10";
+  perPage: string = '10';
 
   perPageOptions: Select2Data = [
     {
       value: 5,
-      label: '5'
+      label: '5',
     },
     {
       value: 10,
-      label: '10'
+      label: '10',
     },
     {
       value: 15,
-      label: '15'
+      label: '15',
     },
     {
       value: 20,
-      label: '20'
-    }
+      label: '20',
+    },
   ];
 
   private getCitasSubject: Subject<void> = new Subject<void>();
 
-  constructor(private citasService: CitasService,
-              private title: Title) { }
+  constructor(private citasService: CitasService, private title: Title) {}
 
   ngOnInit(): void {
     this.title.setTitle('MediAPP - Listado de citas');
 
     this.actualPage = 1;
 
-    this.getCitasSubject
-      .pipe(
-        debounceTime(500)
-      )
-      .subscribe({
-        next: () => {
-          this.getCitas();
-        },
-        error: (error) => {
-          this.errores = error;
-        }
-      });
+    this.getCitasSubject.pipe(debounceTime(500)).subscribe({
+      next: () => {
+        this.getCitas();
+      },
+      error: (error) => {
+        this.errores = error;
+      },
+    });
     this.initialLoad = true;
     this.getCitasSubject.next();
   }
@@ -109,7 +105,7 @@ export class ListadoCitasComponent {
       this.fechaInicio,
       this.fechaFin,
       parseInt(this.perPage),
-      this.actualPage,
+      this.actualPage
     );
 
     request.subscribe({
@@ -124,21 +120,21 @@ export class ListadoCitasComponent {
           title: 'Error',
           text: 'Ha ocurrido un error durante el proceso',
           icon: 'error',
-          width: '50%'
+          width: '50%',
         });
-
 
         if (error.error.errors) {
           this.errores = error.error.errors;
         } else {
           this.errores = ['Ha ocurrido un error durante el proceso'];
         }
-      }
+      },
     });
   }
 
   cancelarCita(idCita: number) {
-    let request: Observable<CitasListModel> = this.citasService.cancelarCita(idCita);
+    let request: Observable<CitasListModel> =
+      this.citasService.cancelarCita(idCita);
 
     request.subscribe({
       next: (response: CitasListModel) => {
@@ -147,10 +143,10 @@ export class ListadoCitasComponent {
           title: 'Enhorabuena',
           text: 'Has conseguido eliminar la cita correctamente',
           icon: 'success',
-          width: '50%'
+          width: '50%',
         }).then(() => {
           this.getCitas();
-        })
+        });
       },
       error: (error: string[]) => {
         this.errores = error;
@@ -172,30 +168,27 @@ export class ListadoCitasComponent {
           title: 'Cancelado',
           text: 'No se ha eliminado la cita',
           icon: 'info',
-          width: '50%'
+          width: '50%',
         });
       }
-    })
+    });
   }
 
   comprobarFecha(hora: string, fecha: string) {
     let fechaActual = new Date();
     let fechaConsulta = this.convertirFecha(fecha, hora);
 
-    if (fechaActual > fechaConsulta)
-      return false;
-    else
-      return true;
-
+    if (fechaActual > fechaConsulta) return false;
+    else return true;
   }
 
   convertirFecha(fecha: string, hora: string) {
-    const dateParts = fecha.split("-");
+    const dateParts = fecha.split('-');
     const day = parseInt(dateParts[0], 10);
     const month = parseInt(dateParts[1], 10) - 1;
     const year = parseInt(dateParts[2], 10);
 
-    const timeParts = hora.split(":");
+    const timeParts = hora.split(':');
     const hour = parseInt(timeParts[0], 10);
     const minute = parseInt(timeParts[1], 10);
     const second = parseInt(timeParts[2], 10);
@@ -203,7 +196,9 @@ export class ListadoCitasComponent {
     return new Date(year, month, day, hour, minute, second);
   }
 
-  updateFilters():void {
+  updateFilters(): void {
+    this.dataLoaded = false;
+
     if (this.initialLoad) {
       if (this.fechaInicio && this.fechaFin) {
         let currentDate = new Date();
@@ -250,6 +245,4 @@ export class ListadoCitasComponent {
     this.citas = data.citas[0].citas;
     this.paciente = data.citas[0].datos_paciente;
   }
-
-
 }

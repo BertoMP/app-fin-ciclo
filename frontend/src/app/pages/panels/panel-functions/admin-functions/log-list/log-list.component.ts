@@ -1,31 +1,31 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormsModule} from "@angular/forms";
-import {LoadingSpinnerComponent} from "../../../../../shared/components/loading-spinner/loading-spinner.component";
-import {NgForOf} from "@angular/common";
-import {NgxPaginationModule} from "ngx-pagination";
-import {RouterLink} from "@angular/router";
-import {Select2Data, Select2Module} from "ng-select2-component";
-import {LogsListModel} from "../../../../../core/interfaces/logs-list.model";
-import {debounceTime, Observable, Subject} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
-import {LogDataModel} from "../../../../../core/interfaces/log-data.model";
-import {LogService} from "../../../../../core/services/log.service";
-import Swal from "sweetalert2";
-import {Title} from "@angular/platform-browser";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { LoadingSpinnerComponent } from '../../../../../shared/components/loading-spinner/loading-spinner.component';
+import { NgForOf } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { RouterLink } from '@angular/router';
+import { Select2Data, Select2Module } from 'ng-select2-component';
+import { LogsListModel } from '../../../../../core/interfaces/logs-list.model';
+import { debounceTime, Observable, Subject } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LogDataModel } from '../../../../../core/interfaces/log-data.model';
+import { LogService } from '../../../../../core/services/log.service';
+import Swal from 'sweetalert2';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-log-list',
   standalone: true,
-    imports: [
-        FormsModule,
-        LoadingSpinnerComponent,
-        NgForOf,
-        NgxPaginationModule,
-        RouterLink,
-        Select2Module
-    ],
+  imports: [
+    FormsModule,
+    LoadingSpinnerComponent,
+    NgForOf,
+    NgxPaginationModule,
+    RouterLink,
+    Select2Module,
+  ],
   templateUrl: './log-list.component.html',
-  styleUrl: './log-list.component.scss'
+  styleUrl: './log-list.component.scss',
 })
 export class LogListComponent implements OnInit, OnDestroy {
   logs: LogDataModel[];
@@ -47,50 +47,45 @@ export class LogListComponent implements OnInit, OnDestroy {
   itemsPerPage: number;
   errores: string[];
   datos: string[];
-  resultMin:number;
-  resultMax:number;
+  resultMin: number;
+  resultMax: number;
 
-  perPage: string = "10";
+  perPage: string = '10';
 
   perPageOptions: Select2Data = [
     {
       value: 5,
-      label: '5'
+      label: '5',
     },
     {
       value: 10,
-      label: '10'
+      label: '10',
     },
     {
       value: 15,
-      label: '15'
+      label: '15',
     },
     {
       value: 20,
-      label: '20'
-    }
+      label: '20',
+    },
   ];
 
   private getLogsSubject: Subject<void> = new Subject<void>();
 
-  constructor(private logsService: LogService,
-              private title: Title) { }
+  constructor(private logsService: LogService, private title: Title) {}
 
   ngOnInit(): void {
     this.actualPage = 1;
 
     this.title.setTitle('MediAPP - Listado de logs');
 
-    this.getLogsSubject
-      .pipe(
-        debounceTime(500)
-      )
-      .subscribe({
-        next: () => {
-          this.getLogs();
-        },
-        error: (error) => {}
-      });
+    this.getLogsSubject.pipe(debounceTime(500)).subscribe({
+      next: () => {
+        this.getLogs();
+      },
+      error: (error) => {},
+    });
     this.initialLoad = true;
     this.getLogsSubject.next();
   }
@@ -103,7 +98,7 @@ export class LogListComponent implements OnInit, OnDestroy {
       this.fechaInicio,
       this.fechaFin,
       parseInt(this.perPage),
-      this.actualPage,
+      this.actualPage
     );
 
     request.subscribe({
@@ -125,11 +120,13 @@ export class LogListComponent implements OnInit, OnDestroy {
           title: 'Error',
           text: 'Ha ocurrido un error durante el proceso',
         });
-      }
+      },
     });
   }
 
-  updateFilters():void {
+  updateFilters(): void {
+    this.dataLoaded = false;
+
     if (this.initialLoad) {
       let currentDate = new Date();
       currentDate.setHours(0, 0, 0, 0);
