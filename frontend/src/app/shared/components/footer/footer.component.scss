@@ -64,14 +64,14 @@ li a {
     color: black;
   }
 
-  @media (min-width: 1000px) {
+  @media (min-width: 1100px) {
     &:hover {
       color: black;
     }
   }
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1100px) {
   .social-media li a:hover {
     color: black;
     transform: translateY(-1rem);
