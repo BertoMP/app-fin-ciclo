@@ -70,9 +70,10 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
               p {
                 margin-bottom: 0;
                 padding-right: 0.8rem;
+                text-align: center;
 
                 span {
-                  text-align: center;
+
                   &.description-overlimit {
                     color: red;
                     font-weight: bold;
