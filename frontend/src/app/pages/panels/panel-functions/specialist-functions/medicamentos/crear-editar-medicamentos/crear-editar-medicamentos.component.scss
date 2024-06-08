@@ -1,7 +1,7 @@
-$form-shadow: 0 0 20px rgba(0,0,0,0.3);
+$form-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 
 :host {
-  padding: .8rem;
+  padding: 0.8rem;
   border-radius: 1.6rem;
   display: flex;
   flex-flow: column nowrap;
@@ -87,7 +87,7 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
             padding: 1rem;
             text-align: justify;
             resize: none;
-            border-radius: .5rem;
+            border-radius: 0.5rem;
             word-break: break-word;
 
             ::ng-deep.ql-toolbar.ql-snow {
@@ -116,9 +116,9 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
           font-size: 1.2rem;
           border: 1px solid black;
           border-radius: 5px;
-          padding: .5rem;
+          padding: 0.5rem;
           display: block;
-          width: 50%;
+          width: 100%;
           float: none;
           background-color: #c0dff1;
           box-shadow: $form-shadow;
@@ -127,7 +127,7 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
         label {
           padding-left: 0.8rem;
           font-weight: bold;
-          font-size: .9rem;
+          font-size: 0.9rem;
           display: block;
         }
 
@@ -152,7 +152,7 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
       }
 
       &.error-message {
-        font-size: .8rem;
+        font-size: 0.8rem;
         background-color: lightcoral;
         border: 1px solid red;
         border-radius: 1rem;
@@ -175,7 +175,7 @@ $form-shadow: 0 0 20px rgba(0,0,0,0.3);
         background-color: #007bff;
         color: white;
         cursor: pointer;
-        transition: background-color .3s;
+        transition: background-color 0.3s;
 
         &:hover {
           background-color: #0056b3;
