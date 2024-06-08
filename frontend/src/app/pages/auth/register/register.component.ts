@@ -452,13 +452,21 @@ export class RegisterComponent implements OnInit {
     this.isLoading = false;
 
     if (this.isPatient) {
-      this.router.navigate(['/mediapp']).then(r => { });
+      this.router.navigate(['/mediapp']).then(r => {
+        this.mensajeExito(message);
+      });
     } else if (this.isAdmin) {
-      this.router.navigate(['/mediapp/listado-pacientes']).then(r => { });
+      this.router.navigate(['/mediapp/listado-pacientes']).then(r => {
+        this.mensajeExito(message);
+      });
     } else {
-      this.router.navigate(['/auth/login']).then(r => { });
+      this.router.navigate(['/auth/login']).then(r => {
+        this.mensajeExito(message);
+      });
     }
+  }
 
+  mensajeExito(message: string): void {
     Swal.fire({
       title: 'Enhorabuena',
       text: (this.isPatient) ? 'Has editado tu usuario con éxito.' : `Has conseguido ${message} un usuario correctamente`,
