@@ -67,6 +67,7 @@ export class RegisterComponent implements OnInit {
   isPatient: boolean = false;
   isEditing: boolean = false;
   isAdmin: boolean = false;
+  isSuccess: boolean = false;
 
   constructor(private provinceService: ProvinceService,
               private municipioService: MunicipioService,
@@ -349,7 +350,7 @@ export class RegisterComponent implements OnInit {
       .subscribe({
         next: (municipio: string) => {
           this.codigosPostales = [];
-          if (municipio) {
+          if (municipio && !this.isSuccess) {
             this.codigoPostalService.getCodigosPostales(municipio)
               .subscribe({
                 next: (codigosPostales: CodigoPostalModel[]) => {
@@ -450,6 +451,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
+    this.isSuccess = true;
 
     if (this.isPatient) {
       this.router.navigate(['/mediapp']).then(r => {
