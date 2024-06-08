@@ -60,6 +60,10 @@ li a {
 .menu li a {
   font-size: 1.2rem;
 
+  &.active {
+    color: black;
+  }
+
   @media (min-width: 1000px) {
     &:hover {
       color: black;
