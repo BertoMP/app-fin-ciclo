@@ -64,8 +64,6 @@ class EspecialidadService {
 		} catch (err) {
 			throw err;
 		}
-
-		return await EspecialidadModel.fetchAll(searchValues, limit, conn);
 	}
 
 	/**

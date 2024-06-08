@@ -12,15 +12,11 @@ h2 {
 }
 
 .card-container {
-  width: 80%;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
   align-content: center;
-
-  @media (max-width: 500px) {
-    grid-template-columns: 1fr;
-  }
+  gap: 1rem;
 
   div {
     display: flex;
