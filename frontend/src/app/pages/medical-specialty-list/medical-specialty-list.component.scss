@@ -18,14 +18,21 @@ h2 {
   align-content: center;
   gap: 1rem;
 
+  @media screen and (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   div {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    @media (max-width: 400px) {
-      width: 100%;
+    @media screen and (max-width: 500px) {
+      width: 250px;
     }
   }
 }
