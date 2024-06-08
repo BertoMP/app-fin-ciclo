@@ -6,7 +6,6 @@
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
   cursor: default;
   transition: all 400ms ease;
-  margin: 0 auto;
 
   @media (min-width: 1000px) {
     &:hover {
@@ -15,7 +14,7 @@
     }
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 500px) {
     width: 100%;
   }
 }

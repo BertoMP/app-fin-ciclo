@@ -12,11 +12,26 @@ h2 {
 }
 
 .card-container {
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
-  justify-content: center;
+  align-content: center;
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    @media (max-width: 400px) {
+      width: 100%;
+    }
+  }
 }
 
 .pagination {
@@ -26,15 +41,15 @@ h2 {
   font-size: 1rem;
   width: 100%;
 
-  @media (max-width: 600px){
+  @media (max-width: 600px) {
     font-size: 0.8rem;
   }
 
-  @media (max-width: 400px){
+  @media (max-width: 400px) {
     font-size: 0.7rem;
   }
 
-  pagination-controls{
+  pagination-controls {
     margin-top: 1rem;
     margin-bottom: 0;
   }
@@ -59,7 +74,7 @@ h2 {
       }
 
       &.pagination-next,
-      &.pagination-previous{
+      &.pagination-previous {
         &:hover {
           a {
             background-color: transparent;
