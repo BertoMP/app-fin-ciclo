@@ -42,7 +42,7 @@ class EmailService {
 		const mailDetails = EmailService.#createMailDetails(
 			process.env.EMAIL_ACCOUNT,
 			to,
-			'Bienvenido a Clínica Médica Coslada',
+			'Bienvenid@ a Clínica Médica Coslada',
 			compiledTemplate,
 		);
 
@@ -66,7 +66,7 @@ class EmailService {
 		const mailDetails = EmailService.#createMailDetails(
 			process.env.EMAIL_ACCOUNT,
 			to,
-			'Bienvenido a Clínica Médica Coslada',
+			'Bienvenid@ a Clínica Médica Coslada',
 			compiledTemplate,
 		);
 
@@ -101,7 +101,7 @@ class EmailService {
 		const mailDetails = EmailService.#createMailDetails(
 			'clinicamedicacoslada@gmail.com',
 			to,
-			'Recuperar contraseña - Clínica Médica Coslada',
+			'Recuperar contraseña',
 			compiledTemplate,
 		);
 
