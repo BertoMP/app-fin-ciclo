@@ -348,6 +348,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm.get('municipio').valueChanges
       .subscribe({
         next: (municipio: string) => {
+          this.codigosPostales = [];
           if (municipio) {
             this.codigoPostalService.getCodigosPostales(municipio)
               .subscribe({
