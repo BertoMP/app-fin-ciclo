@@ -263,6 +263,12 @@
                 font-weight: 500;
                 padding: 10px;
                 text-align: center;
+
+                @media screen and (max-width: 500px) {
+                  &:last-child {
+                    display: none;
+                  }
+                }
               }
             }
           }
@@ -281,6 +287,12 @@
                 padding: 10px;
                 margin: 1rem 0;
                 text-align: center;
+
+                @media screen and (max-width: 500px) {
+                  &:last-child {
+                    display: none;
+                  }
+                }
 
                 &.hypertension,
                 &.hyperglycemia,
