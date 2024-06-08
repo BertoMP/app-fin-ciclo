@@ -196,6 +196,20 @@ del cliente:
         <p>Ejemplo de Ventana Modal</p>
       </td>
       <td>
+        <img src="./screenshots/formulario_consulta.png" width="200"/>
+        <p>Ejemplo de asignación de toma a paciente</p>
+      </td>
+      <td>
+        <img src="./screenshots/chatbot.png" width="200"/>
+        <p>Ejemplo vista chatbot</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="./screenshots/listado_logs.png" width="200"/>
+        <p>Vista de logs de errores</p>
+      </td>
+      <td>
         <img src="./screenshots/swagger.png" width="200"/>
         <p>Documentación de API con Swagger</p>
       </td>
