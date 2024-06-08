@@ -14,9 +14,8 @@
       ></pagination-controls>
     </section>
     <section class="card-container">
-      <div >
-        <app-vertical-card *ngFor="let specialty of specialties | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }"
-                           [info]="specialty"
+      <div *ngFor="let specialty of specialties | paginate: { itemsPerPage: itemsPerPage, currentPage: actualPage, totalItems: totalItems }">
+        <app-vertical-card [info]="specialty"
                            [routerLink]="'/listado-de-especialistas'"
                            [fragment]="specialty.datos_especialidad.nombre | lowercase | removeAccents"
         ></app-vertical-card>
