@@ -142,12 +142,13 @@
           button {
             padding: 0.5rem 1rem;
             border-radius: 1rem;
+            border: none;
             color: white;
             cursor: pointer;
             transition: .5s ease-in-out all;
 
             &[type=submit] {
-              background-color: #257c21;
+              background-color: #569354;
 
               &:hover {
                 background-color: #398a34;
@@ -155,7 +156,7 @@
             }
 
             &[type=reset] {
-              background-color: #fe4d4d;
+              background-color: #da6262;
 
               &:hover {
                 background-color: #ff0000;
