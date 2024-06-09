@@ -95,6 +95,7 @@ export class UpdatePasswordComponent implements OnInit {
           .then(() => {});
       },
       error: (err) => {
+        this.errores = err;
         Swal.fire({
           title: 'Error',
           text: 'Ha ocurrido un error al actualizar la contraseña',

@@ -50,11 +50,12 @@
         </ul>
     </section>
     } @else if (errores.length > 0) {
-    <div class="error-message">
-      <ul>
-        <li *ngFor="let error of errores">{{ error }}</li>
-      </ul>
-    </div>
+      <section class="error-message">
+        <h3>Han ocurrido los siguientes errores:</h3>
+        <ul>
+          <li *ngFor="let error of errores">{{ error }}</li>
+        </ul>
+      </section>
     }
     <section class="btn-section">
         <button type="submit" *ngIf="!isEditing; else isEditingBtn">Crear</button>
