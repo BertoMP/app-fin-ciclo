@@ -105,7 +105,7 @@ export class RegisterComponent implements OnInit {
         }
       }
 
-      if (this.isAdmin) {
+      if (this.isAdmin && this.id) {
         this.authService.getPatient(this.id).subscribe({
           next: (res: PatientModel) => {
             this.paciente = res;
