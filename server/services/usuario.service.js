@@ -137,6 +137,7 @@ class UsuarioService {
 	 */
 	static async createUsuario(data, conn = null) {
 		const isConnProvided = !!conn;
+		const errors = [];
 
 		if (!isConnProvided) {
 			conn = await dbConn.getConnection();
@@ -150,21 +151,25 @@ class UsuarioService {
 			const emailExists = await UsuarioModel.findByEmail(data.datos_personales.email, conn);
 
 			if (emailExists) {
-				throw new Error('El correo electrónico ya está en uso.');
+				errors.push('El correo electrónico ya está en uso.');
 			}
 
 			const dniExists = await UsuarioModel.findByDNI(data.datos_personales.dni, conn);
 
 			if (dniExists) {
-				throw new Error('El DNI ya está en uso.');
+				errors.push('El DNI ya está en uso.');
 			}
 
 			if (data.datos_especialista) {
 				const colegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(data.datos_especialista.num_colegiado, conn);
 
 				if (colegiadoExists) {
-					throw new Error('El número de colegiado ya está en uso.');
+					errors.push('El número de colegiado ya está en uso.');
 				}
+			}
+
+			if (errors.length > 0) {
+				throw new Error(errors.join('\n'), { cause: 'validation' });
 			}
 
 			if (!data.datos_personales.password) {
@@ -378,6 +383,7 @@ class UsuarioService {
 	 */
 	static async updateUsuario(usuario_id, isAdmin, data, conn = null) {
 		const isConnProvided = !!conn;
+		const errors = [];
 
 		if (!isConnProvided) {
 			conn = await dbConn.getConnection();
@@ -402,21 +408,25 @@ class UsuarioService {
 			const emailExists = await UsuarioModel.findByEmail(data.datos_personales.email, conn);
 
 			if (emailExists && emailExists.usuario_id !== usuario_id) {
-				throw new Error('El correo electrónico ya está en uso.');
+				errors.push('El correo electrónico ya está en uso.');
 			}
 
 			const dniExists = await UsuarioModel.findByDNI(data.datos_personales.dni, conn);
 
 			if (dniExists && dniExists.usuario_id !== usuario_id) {
-				throw new Error('El DNI ya está en uso.');
+				errors.push('El DNI ya está en uso.');
 			}
 
 			if (data.datos_especialista) {
 				const colegiadoExists = await EspecialistaService.readEspecialistaByNumColegiado(data.datos_especialista.num_colegiado, conn);
 
 				if (colegiadoExists && colegiadoExists.usuario_id !== usuario_id) {
-					throw new Error('El número de colegiado ya está en uso.');
+					errors.push('El número de colegiado ya está en uso.');
 				}
+			}
+
+			if (errors.length > 0) {
+				throw new Error(errors.join('\n'), { cause: 'validation' });
 			}
 
 			const existingUser = await UsuarioModel.findById(usuario_id, conn);

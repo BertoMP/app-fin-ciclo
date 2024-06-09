@@ -229,7 +229,7 @@
               <li>
                 <strong>Fecha de nacimiento:</strong> Seleccione una fecha
                 usando el calendario o introduzca una en formato: DD/MM/AAAA.
-                La fecha no puede ser negativa o mayor a 120 años.
+                La fecha no puede ser futura o resultar en una edad mayor a 120 años.
               </li>
             }
 
@@ -317,11 +317,12 @@
           </ul>
         </section>
       } @else if (errores.length>0) {
-        <div class="error-message">
+        <section class="error-message">
+          <h3>Han ocurrido los siguientes errores:</h3>
           <ul>
             <li *ngFor="let error of errores">{{ error }}</li>
           </ul>
-        </div>
+        </section>
       }
       <section class="btn-section">
         <button type="submit" *ngIf="isEditing || isPatient; else isRegistering">Editar</button>

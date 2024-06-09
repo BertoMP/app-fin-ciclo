@@ -124,20 +124,8 @@ class UsuarioController {
 
 			return res.status(200).json({ message: 'Usuario creado exitosamente.' });
 		} catch (err) {
-			if (err.message === 'El correo electrónico ya está en uso.') {
-				errors.push(err.message);
-			}
-
-			if (err.message === 'El DNI ya está en uso.') {
-				errors.push(err.message);
-			}
-
-			if (err.message === 'El número de colegiado ya está en uso.') {
-				errors.push(err.message);
-			}
-
-			if (errors.length > 0) {
-				return res.status(409).json({ errors });
+			if (err.cause === 'validation') {
+				return res.status(409).json({ errors: err.message.split('\n') });
 			}
 
 			return res.status(500).json({ errors: [err.message] });
@@ -456,16 +444,8 @@ class UsuarioController {
 				return res.status(409).json({ errors: [err.message] });
 			}
 
-			if (err.message === 'El correo electrónico ya está en uso.') {
-				errors.push(err.message);
-			}
-
-			if (err.message === 'El DNI ya está en uso.') {
-				errors.push(err.message);
-			}
-
-			if (err.message === 'El número de colegiado ya está en uso.') {
-				errors.push(err.message);
+			if (err.cause === 'validation') {
+				return res.status(409).json({ errors: err.message.split('\n') });
 			}
 
 			if (errors.length > 0) {

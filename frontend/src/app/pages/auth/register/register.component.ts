@@ -349,10 +349,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm.get('municipio').valueChanges
       .subscribe({
         next: (municipio: string) => {
-          if (!this.isEditing) {
-            this.codigosPostales = [];
-          }
-          if (municipio && !this.isSuccess) {
+          if (municipio) {
             this.codigoPostalService.getCodigosPostales(municipio)
               .subscribe({
                 next: (codigosPostales: CodigoPostalModel[]) => {
@@ -371,6 +368,8 @@ export class RegisterComponent implements OnInit {
                   });
                 }
               });
+          } else {
+            this.codigosPostales = [];
           }
         }
       });
@@ -484,6 +483,7 @@ export class RegisterComponent implements OnInit {
   onSubmitError(error: string[]): void {
     this.isLoading = false;
     this.errores = error;
+
     Swal.fire({
       title: 'Error',
       text: 'Ha ocurrido un error durante el proceso.',
