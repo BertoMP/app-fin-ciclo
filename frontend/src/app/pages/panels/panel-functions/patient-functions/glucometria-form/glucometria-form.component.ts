@@ -98,6 +98,7 @@ export class GlucometriaFormComponent implements OnInit {
     this.isLoading = false;
     this.router.navigate(['/mediapp/listado-glucometria'])
       .then(() => {});
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido registrar una toma de glucosa correctamente`,
@@ -113,6 +114,7 @@ export class GlucometriaFormComponent implements OnInit {
   onSubmitError(error: string[]): void {
     this.isLoading = false;
     this.errores = error;
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Error',
       text: `Ha ocurrido un error al intentar registrar la toma de glucosa`,

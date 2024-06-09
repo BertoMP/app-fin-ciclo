@@ -112,6 +112,7 @@ export class TensionFormComponent implements OnInit {
     this.isLoading = false;
     this.router.navigate(['/mediapp/listado-tension'])
       .then(() => {});
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido registrar una toma de tensión correctamente`,
@@ -128,6 +129,7 @@ export class TensionFormComponent implements OnInit {
     this.isLoading = false;
     this.errores = error;
 
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Error',
       text: `Ha ocurrido un error al intentar registrar la toma de tensión`,

@@ -186,6 +186,7 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
     this.isLoading = false;
     this.router.navigate(['/mediapp/especialidades'])
       .then(() => {});
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} una especialidad correctamente`,
@@ -205,6 +206,7 @@ export class CrearEditarEspecialidadesComponent implements OnInit {
     const formCopy = { ...this.registerForm.value };
     delete formCopy.imagen;
 
+    scrollTo(0, 0);
     Swal.fire({
       icon: 'error',
       title: 'Error',

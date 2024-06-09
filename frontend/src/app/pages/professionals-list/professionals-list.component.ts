@@ -55,6 +55,7 @@ export class ProfessionalsListComponent implements OnInit {
          },
           error: (err) => {
             this.isLoading = false;
+            scrollTo(0, 0);
             Swal.fire({
               icon: 'error',
               title: 'Error',

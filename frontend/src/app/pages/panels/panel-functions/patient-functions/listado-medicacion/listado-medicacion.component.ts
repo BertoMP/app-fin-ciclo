@@ -98,6 +98,7 @@ export class ListadoMedicacionComponent implements OnInit {
         this.errores = error;
         this.dataLoaded = true;
 
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -146,6 +147,7 @@ export class ListadoMedicacionComponent implements OnInit {
     request.subscribe({
       next: (response) => {
         this.dataLoaded = true;
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Enhorabuena',
           text: `Has conseguido eliminar ${mensaje} correctamente`,
@@ -183,6 +185,7 @@ export class ListadoMedicacionComponent implements OnInit {
         this.errores = error;
         this.dataLoaded = true;
 
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',

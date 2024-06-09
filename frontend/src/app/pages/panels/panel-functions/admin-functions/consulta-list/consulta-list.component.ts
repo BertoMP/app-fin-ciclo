@@ -121,6 +121,7 @@ export class ConsultaListComponent implements OnInit, OnDestroy {
       },
       error: (error: string[]) => {
         this.dataLoaded = true;
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -143,6 +144,7 @@ export class ConsultaListComponent implements OnInit, OnDestroy {
   }
 
   confirmarEliminacion(id: number) {
+    scrollTo(0, 0);
     Swal.fire({
       text: '¿Estás seguro que quieres eliminar a esta consulta?',
       confirmButtonText: 'Confirmar',
@@ -159,6 +161,7 @@ export class ConsultaListComponent implements OnInit, OnDestroy {
               }
 
               this.getConsultas();
+              scrollTo(0, 0);
               Swal.fire({
                 title: 'Enhorabuena',
                 text: 'Has conseguido eliminar la consulta correctamente',
@@ -170,6 +173,7 @@ export class ConsultaListComponent implements OnInit, OnDestroy {
               this.errores = error.error.errores;
 
               if (error.status === 409) {
+                scrollTo(0, 0);
                 Swal.fire({
                   icon: 'error',
                   title: 'Error',
@@ -178,6 +182,7 @@ export class ConsultaListComponent implements OnInit, OnDestroy {
                 return;
               }
 
+              scrollTo(0, 0);
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -186,6 +191,7 @@ export class ConsultaListComponent implements OnInit, OnDestroy {
             }
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Cancelado',
           text: 'No se ha eliminado la consulta',

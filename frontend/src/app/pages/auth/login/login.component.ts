@@ -102,6 +102,7 @@ export class LoginComponent implements OnInit {
           this.isLoading = false;
 
           if (error.status === 0 || error.status === 500) {
+            scrollTo(0, 0);
             Swal.fire({
               icon: 'error',
               title: 'Error',

@@ -197,6 +197,7 @@ export class ListadoMedicionesComponent implements OnInit {
           this.errores = ['Ha ocurrido un error durante el proceso'];
         }
 
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -220,6 +221,7 @@ export class ListadoMedicionesComponent implements OnInit {
       endDate.setHours(0, 0, 0, 0);
 
       if (startDate > currentDate) {
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -230,6 +232,7 @@ export class ListadoMedicionesComponent implements OnInit {
       }
 
       if (endDate > currentDate) {
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -240,6 +243,7 @@ export class ListadoMedicionesComponent implements OnInit {
       }
 
       if (endDate < startDate) {
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',

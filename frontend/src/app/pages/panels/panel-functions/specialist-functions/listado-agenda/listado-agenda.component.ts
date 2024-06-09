@@ -54,6 +54,7 @@ export class ListadoAgendaComponent implements OnInit {
         error: (error) => {
           this.errores = error;
 
+          scrollTo(0, 0);
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -80,6 +81,7 @@ export class ListadoAgendaComponent implements OnInit {
       error: (error: HttpErrorResponse) => {
         this.dataLoaded = true;
 
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',

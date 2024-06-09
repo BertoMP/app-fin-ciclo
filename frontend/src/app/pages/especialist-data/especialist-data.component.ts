@@ -61,6 +61,7 @@ export class EspecialistDataComponent implements OnDestroy, OnInit {
               this.router.navigate(['/404'])
                 .then(() => {});
             } else {
+              scrollTo(0, 0);
               Swal.fire({
                 title: 'Error',
                 text: 'Ha ocurrido un error al cargar la información del especialista',

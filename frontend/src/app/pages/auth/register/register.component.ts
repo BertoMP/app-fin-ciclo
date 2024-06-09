@@ -114,7 +114,7 @@ export class RegisterComponent implements OnInit {
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
-
+            scrollTo(0, 0);
             Swal.fire({
               title: 'Error',
               text: 'Ha ocurrido un error durante la carga de datos del paciente.',
@@ -132,7 +132,7 @@ export class RegisterComponent implements OnInit {
           },
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
-
+            scrollTo(0, 0);
             Swal.fire({
               title: 'Error',
               text: 'Ha ocurrido un error durante la carga de datos de sus datos.',
@@ -295,6 +295,7 @@ export class RegisterComponent implements OnInit {
 
         },
         error: (error: HttpErrorResponse) => {
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Error',
             text: 'Ha ocurrido un error al cargar los tipos de vía',
@@ -314,6 +315,7 @@ export class RegisterComponent implements OnInit {
           });
         },
         error: (error: HttpErrorResponse) => {
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Error',
             text: 'Ha ocurrido un error al cargar las provincias',
@@ -336,6 +338,7 @@ export class RegisterComponent implements OnInit {
                 });
               },
               error: (error: HttpErrorResponse) => {
+                scrollTo(0, 0);
                 Swal.fire({
                   title: 'Error',
                   text: 'Ha ocurrido un error al cargar los municipios',
@@ -361,6 +364,7 @@ export class RegisterComponent implements OnInit {
                   });
                 },
                 error: (error: HttpErrorResponse) => {
+                  scrollTo(0, 0);
                   Swal.fire({
                     title: 'Error',
                     text: 'Ha ocurrido un error al cargar los códigos postales',
@@ -470,6 +474,7 @@ export class RegisterComponent implements OnInit {
   }
 
   mensajeExito(message: string): void {
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Enhorabuena',
       text: (this.isPatient) ? 'Has editado tu usuario con éxito.' : `Has conseguido ${message} un usuario correctamente`,

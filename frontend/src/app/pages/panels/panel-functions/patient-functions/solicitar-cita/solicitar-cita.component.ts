@@ -95,6 +95,7 @@ export class SolicitarCitaComponent implements OnInit {
         );
       },
       error: (error: HttpErrorResponse) => {
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Error',
           text: 'Ha ocurrido un error al intentar buscar las especialidades',
@@ -119,6 +120,7 @@ export class SolicitarCitaComponent implements OnInit {
         .subscribe({
           next: (especialistas: EspecialistaCitaModel[]) => {
             if (especialistas.length === 0) {
+              scrollTo(0, 0);
               Swal.fire({
                 title: 'No hay especialistas',
                 text: `No hay especialistas disponibles para la especialidad seleccionada`,
@@ -145,6 +147,7 @@ export class SolicitarCitaComponent implements OnInit {
             this.especialistas = null;
             this.especialista_id = null;
 
+            scrollTo(0, 0);
             Swal.fire({
               title: 'Error',
               text: 'Ha ocurrido un error al intentar buscar los especialistas',
@@ -164,6 +167,7 @@ export class SolicitarCitaComponent implements OnInit {
       let fechaIngresada = new Date(this.fecha);
 
       if (this.fecha < new Date().toISOString().split('T')[0]) {
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Fecha incorrecta',
           text: `La fecha no puede ser anterior a la fecha actual`,
@@ -177,6 +181,7 @@ export class SolicitarCitaComponent implements OnInit {
         fechaIngresada.getDay() === 0 ||
         fechaIngresada.getDay() === 6
       ) {
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Fecha incorrecta',
           text: `La fecha no puede ser un fin de semana`,
@@ -212,6 +217,7 @@ export class SolicitarCitaComponent implements OnInit {
             this.citaBuscada = true;
           },
           error: (error: HttpErrorResponse) => {
+            scrollTo(0, 0);
             Swal.fire({
               title: 'Error',
               text: 'Ha ocurrido un error al intentar buscar las citas disponibles',
@@ -230,6 +236,7 @@ export class SolicitarCitaComponent implements OnInit {
         this.dataLoaded = true;
       },
       error: (error: HttpErrorResponse) => {
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Error',
           text: 'Ha ocurrido un error al intentar buscar el especialista',
@@ -286,6 +293,7 @@ export class SolicitarCitaComponent implements OnInit {
       next: (response: CitaUploadModel) => {
         this.dataLoaded = true;
         this.router.navigate(['/mediapp/listado-citas']);
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Enhorabuena',
           text: 'Has conseguido solicitar la cita correctamente',
@@ -298,6 +306,7 @@ export class SolicitarCitaComponent implements OnInit {
       error: (error: string[]) => {
         this.errores = error;
 
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Error',
           text: 'Ha ocurrido un error al intentar solicitar la cita',
@@ -311,6 +320,7 @@ export class SolicitarCitaComponent implements OnInit {
   }
 
   confirmarCita(hora: string) {
+    scrollTo(0, 0);
     Swal.fire({
       text: '¿Estás seguro que quieres acudir a esta cita?',
       confirmButtonText: 'Confirmar',
@@ -322,6 +332,7 @@ export class SolicitarCitaComponent implements OnInit {
       if (result.isConfirmed) {
         this.pedirCita(hora);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Cancelado',
           text: 'No se ha confirmado la cita',

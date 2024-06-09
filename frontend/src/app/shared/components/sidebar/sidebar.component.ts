@@ -49,6 +49,7 @@ export class SidebarComponent {
 
   onDeleteAccount(): void {
     this.closeSidebar.emit();
+    scrollTo(0, 0);
     Swal.fire({
       text: '¿Estás seguro que quieres eliminar tu cuenta de usuario?',
       confirmButtonText: 'Confirmar',
@@ -60,6 +61,7 @@ export class SidebarComponent {
           next: (): void => {
             this.router.navigate(['/'])
               .then((): void => {
+                scrollTo(0, 0);
                 Swal.fire({
                   title: 'Enhorabuena',
                   text: 'Has conseguido eliminar al usuario correctamente',
@@ -73,6 +75,7 @@ export class SidebarComponent {
           }
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'info',
           title: 'Cancelado',

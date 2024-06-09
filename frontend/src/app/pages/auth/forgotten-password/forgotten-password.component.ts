@@ -63,6 +63,7 @@ export class ForgottenPasswordComponent {
         next: (response) => {
           this.botonDesactivado = false;
           this.isDataLoaded = true;
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Enhorabuena',
             text: 'Se ha enviado un enlace a su email, por favor siga las instrucciones para renovar su contraseña',
@@ -80,6 +81,7 @@ export class ForgottenPasswordComponent {
           this.errores = error.message.split(',');
           this.botonDesactivado = false;
           this.isDataLoaded = true;
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Error',
             text: `Ha ocurrido un error durante la solicitud de renovación de contraseña.`,

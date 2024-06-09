@@ -73,6 +73,7 @@ export class UpdatePasswordComponent implements OnInit {
     this.checkPasswords();
 
     if (this.updatePassForm.invalid || !this.contrasenasIguales) {
+      scrollTo(0, 0);
       Swal.fire({
         title: 'Error',
         text: 'No se cumple con los requisitos especificados',
@@ -85,6 +86,7 @@ export class UpdatePasswordComponent implements OnInit {
     const newPassword: UpdatePasswordModel = this.generatePasswordModel();
     this.authService.updatePassword(newPassword).subscribe({
       next: () => {
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Contraseña actualizada',
           text: 'La contraseña ha sido actualizada correctamente',
@@ -96,6 +98,7 @@ export class UpdatePasswordComponent implements OnInit {
       },
       error: (err) => {
         this.errores = err;
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Error',
           text: 'Ha ocurrido un error al actualizar la contraseña',

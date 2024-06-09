@@ -115,6 +115,7 @@ export class LogListComponent implements OnInit, OnDestroy {
           this.errores = ['Ha ocurrido un error durante el proceso'];
         }
 
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -138,6 +139,7 @@ export class LogListComponent implements OnInit, OnDestroy {
       endDate.setHours(0, 0, 0, 0);
 
       if (startDate > currentDate) {
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -148,6 +150,7 @@ export class LogListComponent implements OnInit, OnDestroy {
       }
 
       if (endDate > currentDate) {
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -158,6 +161,7 @@ export class LogListComponent implements OnInit, OnDestroy {
       }
 
       if (endDate < startDate) {
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',

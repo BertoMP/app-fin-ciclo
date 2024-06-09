@@ -160,6 +160,7 @@ export class ModalComponent implements OnInit {
           });
         },
         error: (error: HttpErrorResponse) => {
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Error',
             text: 'Ha ocurrido un error al cargar las patologías disponibles',
@@ -219,6 +220,7 @@ export class ModalComponent implements OnInit {
 
         if (existingToma) {
           this.isLoading = false;
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Error',
             text: 'Ya existe una toma de este medicamento a esa hora hora',
@@ -241,6 +243,7 @@ export class ModalComponent implements OnInit {
 
   onSubmitted(message: string): void {
     this.isLoading = false;
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} una toma correctamente`,

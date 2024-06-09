@@ -79,6 +79,7 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
     this.checkPasswordRecover();
 
     if (this.refreshPassForm.invalid || !this.contrasenasIguales) {
+      scrollTo(0, 0);
       Swal.fire({
         title: 'Error',
         text: 'No se cumple con los requisitos especificados',
@@ -93,6 +94,7 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
     this.refreshPasswordService.renovarContrasena(newPassword)
       .subscribe({
         next: (response) => {
+          scrollTo(0,0);
           Swal.fire({
             title: 'Enhorabuena',
             text: 'Has conseguido actualizar la contraseña correctamente',
@@ -109,6 +111,7 @@ export class RefreshPasswordComponent implements OnInit, OnDestroy {
         },
         error: (error: HttpErrorResponse): void => {
           this.errores = error.message.split(',');
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Error',
             text: 'No se ha podido actualizar la contraseña',

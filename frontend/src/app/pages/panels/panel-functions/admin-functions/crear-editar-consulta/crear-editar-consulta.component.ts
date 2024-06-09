@@ -132,6 +132,7 @@ export class CrearEditarConsultaComponent {
     this.isLoading = false;
     this.router.navigate(['/mediapp/consultas'])
       .then(() => {});
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} una consulta correctamente`,
@@ -152,6 +153,7 @@ export class CrearEditarConsultaComponent {
     this.registerForm.reset(formCopy);
 
     if (error.status === 409) {
+      scrollTo(0, 0);
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -160,6 +162,7 @@ export class CrearEditarConsultaComponent {
       return;
     }
 
+    scrollTo(0, 0);
     Swal.fire({
       icon: 'error',
       title: 'Error',

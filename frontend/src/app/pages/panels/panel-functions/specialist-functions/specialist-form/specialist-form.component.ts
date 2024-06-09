@@ -108,6 +108,7 @@ export class SpecialistFormComponent implements OnInit {
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
 
+            scrollTo(0, 0);
             Swal.fire({
               title: 'Error',
               text: 'Ha ocurrido un error al cargar los datos del especialista',
@@ -217,6 +218,7 @@ export class SpecialistFormComponent implements OnInit {
 
         },
         error: (error: HttpErrorResponse) => {
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Error',
             text: 'Ha ocurrido un error al cargar las consultas',
@@ -303,6 +305,7 @@ export class SpecialistFormComponent implements OnInit {
   onSubmitted(message: string): void {
     this.isLoading = false;
     this.router.navigate(['/mediapp/usuarios']);
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Enhorabuena',
       text: `Has conseguido ${message} un especialista correctamente`,
@@ -319,6 +322,7 @@ export class SpecialistFormComponent implements OnInit {
     this.isLoading = false;
     this.errores = error;
 
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Error',
       text: 'Ha ocurrido un error durante el proceso.',

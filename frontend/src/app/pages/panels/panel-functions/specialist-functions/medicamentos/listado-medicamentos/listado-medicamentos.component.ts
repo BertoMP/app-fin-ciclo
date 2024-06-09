@@ -138,6 +138,7 @@ export class ListadoMedicamentosComponent implements OnInit {
         this.errores = error;
         this.dataLoaded = true;
 
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Error',
           text: 'Se ha producido un error al cargar los medicamentos',

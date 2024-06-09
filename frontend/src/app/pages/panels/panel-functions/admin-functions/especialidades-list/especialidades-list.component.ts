@@ -140,6 +140,7 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
       error: (error: string[]) => {
         this.errores = error;
         this.dataLoaded = true;
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -162,6 +163,7 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
   }
 
   confirmarCancelacion(id: number) {
+    scrollTo(0, 0);
     Swal.fire({
       text: '¿Estás seguro que quieres eliminar a esta especialidad?',
       confirmButtonText: 'Confirmar',
@@ -178,6 +180,7 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
               }
 
               this.getSpecialities();
+              scrollTo(0, 0);
               Swal.fire({
                 title: 'Enhorabuena',
                 text: 'Has conseguido eliminar la especialidad correctamente',
@@ -187,6 +190,7 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
             },
             error: (error: string[]): void => {
               this.errores = error;
+              scrollTo(0, 0);
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -195,6 +199,7 @@ export class EspecialidadesListComponent implements OnInit, OnDestroy {
             }
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Cancelado',
           text: 'No se ha eliminado la especialidad',

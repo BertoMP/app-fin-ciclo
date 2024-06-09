@@ -116,6 +116,7 @@ export class ListadoCitasComponent {
       error: (error: HttpErrorResponse) => {
         this.dataLoaded = true;
 
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Error',
           text: 'Ha ocurrido un error durante el proceso',
@@ -139,6 +140,7 @@ export class ListadoCitasComponent {
     request.subscribe({
       next: (response: CitasListModel) => {
         this.dataLoaded = true;
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Enhorabuena',
           text: 'Has conseguido eliminar la cita correctamente',
@@ -155,6 +157,7 @@ export class ListadoCitasComponent {
   }
 
   confirmarCancelar(idCita: number) {
+    scrollTo(0, 0);
     Swal.fire({
       text: '¿Estás seguro que quieres cancelar esta cita?',
       confirmButtonText: 'Confirmar',
@@ -164,6 +167,7 @@ export class ListadoCitasComponent {
       if (result.isConfirmed) {
         this.cancelarCita(idCita);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Cancelado',
           text: 'No se ha eliminado la cita',
@@ -211,6 +215,7 @@ export class ListadoCitasComponent {
         endDate.setHours(0, 0, 0, 0);
 
         if (endDate < startDate) {
+          scrollTo(0, 0);
           Swal.fire({
             icon: 'error',
             title: 'Error',

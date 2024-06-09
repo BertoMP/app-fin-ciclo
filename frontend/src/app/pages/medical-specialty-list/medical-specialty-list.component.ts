@@ -77,7 +77,7 @@ export class MedicalSpecialtyListComponent implements OnInit {
           error: () => {
             this.error = true;
             this.isLoading = false;
-
+            scrollTo(0, 0);
             Swal.fire({
               icon: 'error',
               title: 'Error',

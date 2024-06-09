@@ -63,6 +63,7 @@ export class PatientListComponent implements OnInit {
           }
         },
         error: (error) => {
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Error',
             text: 'Ha ocurrido un error al cargar los pacientes',

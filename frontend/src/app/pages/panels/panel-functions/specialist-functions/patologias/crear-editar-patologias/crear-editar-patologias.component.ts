@@ -87,6 +87,7 @@ export class CrearEditarPatologiasComponent {
           error: (error: HttpErrorResponse): void => {
             this.errores = error.message.split(',');
 
+            scrollTo(0, 0);
             Swal.fire({
               title: 'Error',
               text: 'Ha ocurrido un error al cargar la patología',

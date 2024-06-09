@@ -138,6 +138,7 @@ export class ListadoInformesComponent {
       error: (error: HttpErrorResponse) => {
         this.dataLoaded = true;
 
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -167,6 +168,7 @@ export class ListadoInformesComponent {
       endDate.setHours(0, 0, 0, 0);
 
       if (startDate > currentDate) {
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -177,6 +179,7 @@ export class ListadoInformesComponent {
       }
 
       if (endDate > currentDate) {
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -187,6 +190,7 @@ export class ListadoInformesComponent {
       }
 
       if (endDate < startDate) {
+        scrollTo(0, 0);
         Swal.fire({
           icon: 'error',
           title: 'Error',

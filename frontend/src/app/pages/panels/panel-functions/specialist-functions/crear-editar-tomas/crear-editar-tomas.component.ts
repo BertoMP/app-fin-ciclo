@@ -177,6 +177,7 @@ export class CrearEditarTomasComponent implements OnInit {
           this.errores = error;
           this.dataLoaded = true;
 
+          scrollTo(0, 0);
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -212,6 +213,7 @@ export class CrearEditarTomasComponent implements OnInit {
 
   onSubmitted(message: string): void {
     this.dataLoaded = true;
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Enhorabuena',
       text:  `Has conseguido ${message} las tomas correctamente`,
@@ -226,6 +228,7 @@ export class CrearEditarTomasComponent implements OnInit {
   onSubmitError(error: string[]): void {
     this.dataLoaded = true;
     this.errores = error;
+    scrollTo(0, 0);
     Swal.fire({
       title: 'Error',
       text: 'Ha ocurrido un error durante el proceso.',

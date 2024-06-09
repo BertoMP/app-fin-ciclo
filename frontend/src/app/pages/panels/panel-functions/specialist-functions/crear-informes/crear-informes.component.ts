@@ -110,6 +110,7 @@ export class CrearInformesComponent implements OnInit {
           });
         },
         error: (error: HttpErrorResponse) => {
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Error',
             text: 'Ha ocurrido un error al cargar las patologías disponibles',

@@ -143,6 +143,7 @@ export class UserListComponent implements OnInit {
       error: (error: string[]) => {
         this.errores = error;
         this.dataLoaded = true;
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Error',
           text: `Ha ocurrido un error al intentar obtener los usuarios`,
@@ -166,6 +167,7 @@ export class UserListComponent implements OnInit {
   }
 
   confirmarCancelacion(id: number) {
+    scrollTo(0, 0);
     Swal.fire({
       text: '¿Estás seguro que quieres eliminar a este usuario?',
       confirmButtonText: 'Confirmar',
@@ -184,6 +186,7 @@ export class UserListComponent implements OnInit {
 
               this.getUsers();
               this.dataLoaded = true;
+              scrollTo(0, 0);
               Swal.fire({
                 title: 'Enhorabuena',
                 text: 'Has conseguido eliminar al usuario correctamente',
@@ -194,6 +197,7 @@ export class UserListComponent implements OnInit {
             error: (error: string[]): void => {
               this.errores = error;
               this.dataLoaded = true;
+              scrollTo(0, 0);
               Swal.fire({
                 title: 'Error',
                 text: `Ha ocurrido un error al intentar eliminar al usuario`,
@@ -206,6 +210,7 @@ export class UserListComponent implements OnInit {
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         this.dataLoaded = true;
+        scrollTo(0, 0);
         Swal.fire({
           title: 'Cancelado',
           text: 'No se ha eliminado al usuario',

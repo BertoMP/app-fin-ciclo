@@ -115,6 +115,7 @@ export class ContactUsComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.isSendingEmail = false;
+          scrollTo(0, 0);
           Swal.fire({
             title:'Enhorabuena',
             text:'Correo enviado correctamente',
@@ -130,6 +131,7 @@ export class ContactUsComponent implements OnInit {
         error: (error: string[]): void => {
           this.errores = error;
           this.isSendingEmail = false;
+          scrollTo(0, 0);
           Swal.fire({
             title: 'Error',
             text: 'No se ha podido enviar el correo. Por favor, inténtelo de nuevo.',
