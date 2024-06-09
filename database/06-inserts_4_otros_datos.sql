@@ -30,7 +30,11 @@ VALUES
 -- Inserción de datos en la tabla cita
 INSERT INTO cita (fecha, hora, especialista_id, paciente_id, informe_id)
 VALUES
-    ('2024-04-21', '08:00:00', 3, 11, 1);
+    ('2024-04-21', '08:00:00', 3, 11, 1),
+    ('2024-06-12', '10:00:00', 3, 11, NULL),
+    ('2024-06-12', '11:00:00', 3, 5, NULL),
+	('2024-06-12', '13:00:00', 3, 4, NULL),
+    ('2024-06-12', '14:00:00', 3, 8, NULL);
 
 -- Inserción de datos en la tabla medicamento
 INSERT INTO medicamento (nombre, descripcion)
@@ -145,17 +149,17 @@ VALUES
 -- Inserción de datos en toma
 INSERT INTO toma (hora, dosis, fecha_inicio, fecha_fin, observaciones)
 VALUES
-    ('10:00:00', 1, '2024-04-25', '2024-05-25', 'Tomar con agua'),
+    ('10:00:00', 1, '2024-04-25', '2024-06-25', 'Tomar con agua'),
     ('14:00:00', 2, '2024-04-26', NULL, 'Tomar después de comer'),
-    ('20:00:00', 1, '2024-04-27', '2024-05-27', NULL),
+    ('20:00:00', 1, '2024-04-27', '2024-06-27', NULL),
     ('22:00:00', 2, '2024-04-28', NULL, NULL),
-    ('07:00:00', 1, '2024-04-29', '2024-05-29', 'Tomar con el desayuno'),
+    ('07:00:00', 1, '2024-04-29', '2024-06-29', 'Tomar con el desayuno'),
     ('15:00:00', 2, '2024-04-30', NULL, 'Tomar después de comer'),
-    ('21:00:00', 1, '2024-05-01', '2024-06-01', NULL),
+    ('21:00:00', 1, '2024-05-01', '2024-07-01', NULL),
     ('23:00:00', 2, '2024-05-02', NULL, NULL),
-    ('06:00:00', 1, '2024-05-03', '2024-06-03', 'Tomar antes del desayuno'),
-    ('16:00:00', 2, '2024-05-04', NULL, 'Tomar durante la cena'),
-    ('22:00:00', 1, '2024-05-05', '2024-06-05', NULL),
+    ('06:00:00', 1, '2024-05-03', '2024-07-03', 'Tomar antes del desayuno'),
+    ('16:00:00', 2, '2024-05-04', NULL, NULL),
+    ('22:00:00', 1, '2024-05-05', '2024-07-05', 'Tomar durante la cena'),
     ('00:00:00', 2, '2024-05-06', NULL, NULL);
 
 -- Inserción de datos en paciente_toma_medicamento

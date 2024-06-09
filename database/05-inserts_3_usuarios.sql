@@ -31,17 +31,17 @@ VALUES  ('admin'),
 -- Inserción de datos en la tabla usuario
 INSERT INTO usuario (email, password, nombre, primer_apellido, segundo_apellido, dni, rol_id)
 VALUES
-    ('joseperez@example.com', '$2a$10$RNKIrdkRrPG5rMRx/LL06.6dvvy1S05oZDeD3IhLhQrjzqCJ8vNRe', 'Jose', 'Perez', 'Gomez', '12345678A', 1), -- Password_1
-    ('anamartinez@example.com', '$2a$10$4x32KSHtkQMxLp9gXczQ1eE9CbQ2nrJwxrXN0o8ybGzBfH8WtFAMC', 'Ana', 'Martinez', 'Lopez', '12345679B', 2), -- Password_2
-    ('carlosgutierrez@example.com', '$2a$10$K3Td2n0rlZBXPJKYX0QfK.c/bNmewdb7V.HNrN8z22gbHCN/ck3Mu', 'Carlos', 'Gutierrez', 'Torres', '12345680C', 3), -- Password_3
-    ('mariarodriguez@example.com', '$2a$10$sAL0pjvGgdVBXT5w7RkF/eSkVe9gdcgDAUhlee4jcwu375Ka9/K2S', 'Maria', 'Rodriguez', 'Morales', '12345681D', 2), -- Password_4
-    ('juangonzalez@example.com', '$2a$10$e2UHiqEnKEAZvjDheTkeYOYJ/OiuX50ca2QqmJiUH3t9eqwgiIwKy', 'Juan', 'Gonzalez', 'Guerrero', '12345682E', 2), -- Password_5
-    ('lauraramirez@example.com', '$2a$10$eTVH7a9hepLY.LP0GSrk6ufwQcqdwtxDQUptj8kiyMmWOzYeAzUOm', 'Laura', 'Ramirez', 'Santos', '12345683F', 3), -- Password_6
+    ('joseperez@example.com', '$2a$10$RNKIrdkRrPG5rMRx/LL06.6dvvy1S05oZDeD3IhLhQrjzqCJ8vNRe', 'José', 'Pérez', 'Gómez', '12345678A', 1), -- Password_1
+    ('anamartinez@example.com', '$2a$10$4x32KSHtkQMxLp9gXczQ1eE9CbQ2nrJwxrXN0o8ybGzBfH8WtFAMC', 'Ana', 'Martínez', 'López', '12345679B', 2), -- Password_2
+    ('carlosgutierrez@example.com', '$2a$10$K3Td2n0rlZBXPJKYX0QfK.c/bNmewdb7V.HNrN8z22gbHCN/ck3Mu', 'Carlos', 'Gutiérrez', 'Torres', '12345680C', 3), -- Password_3
+    ('mariarodriguez@example.com', '$2a$10$sAL0pjvGgdVBXT5w7RkF/eSkVe9gdcgDAUhlee4jcwu375Ka9/K2S', 'María', 'Rodríguez', 'Morales', '12345681D', 2), -- Password_4
+    ('juangonzalez@example.com', '$2a$10$e2UHiqEnKEAZvjDheTkeYOYJ/OiuX50ca2QqmJiUH3t9eqwgiIwKy', 'Juan', 'González', 'Guerrero', '12345682E', 2), -- Password_5
+    ('lauraramirez@example.com', '$2a$10$eTVH7a9hepLY.LP0GSrk6ufwQcqdwtxDQUptj8kiyMmWOzYeAzUOm', 'Laura', 'Ramírez', 'Santos', '12345683F', 3), -- Password_6
     ('davidmorales@example.com', '$2a$10$DEFgybDeBQjHZrEb15cPo.sEsxkvxDmr7FxaD5hMy70mzZV6dDlmu', 'David', 'Morales', 'Peña', '12345684G', 3), -- Password_7
-    ('carmenlopez@example.com', '$2a$10$Se0xTl6HVLjumMsuzyUWDOH9HVnlsZHJP5mcOwpoLkRarVlN5mNmy', 'Carmen', 'Lopez', 'Cano', '12345685H', 2), -- Password_8
+    ('carmenlopez@example.com', '$2a$10$Se0xTl6HVLjumMsuzyUWDOH9HVnlsZHJP5mcOwpoLkRarVlN5mNmy', 'Carmen', 'López', 'Cano', '12345685H', 2), -- Password_8
     ('franciscotorres@example.com', '$2a$10$w0rtDkkgct4xnLZuqsjcrOcqjqLAnqrxMS9BKOnHaivCE6.pVFYX2', 'Francisco', 'Torres', 'Romero', '12345686I', 3), -- Password_9
     ('patriciamedina@example.com', '$2a$10$ZLfC3hOHt3vko2kr8hseQOSkweAjcp.2fuNwqQ94AJEe07YAzoF8e', 'Patricia', 'Medina', 'Navarro', '12345687J', 3), -- Password_10
-    ('alberto.martinezp1990@gmail.com', '$2a$10$ZY67ggZXT3a6LvhbplPGaOGfhYS8UiRYj8x7rnRLcf5RnUHMVwz8S', 'Alberto', 'Martinez', 'Perez', '47234226T', 2); -- Password_11
+    ('alberto.martinezp1990@gmail.com', '$2a$10$ZY67ggZXT3a6LvhbplPGaOGfhYS8UiRYj8x7rnRLcf5RnUHMVwz8S', 'Alberto', 'Martínez', 'Pérez', '47234226T', 2); -- Password_11
 
 -- Inserción de datos en la tabla paciente
 INSERT INTO paciente (usuario_id, fecha_nacimiento,  num_historia_clinica, tipo_via, nombre_via, numero, piso, puerta, municipio, codigo_postal, tel_movil, tel_fijo)
