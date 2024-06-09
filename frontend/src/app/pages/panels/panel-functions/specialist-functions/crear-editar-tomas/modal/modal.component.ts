@@ -75,6 +75,8 @@ export class ModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    scrollTo(0, 0);
+
     this.registerForm = new FormGroup<any>({
       'medicamento': new FormControl(
         null,

@@ -16,13 +16,11 @@
       <select2 id="per-page" [data]="perPageOptions" [value]="10" [(ngModel)]="perPage" (update)="updateFilters()"></select2>
     </article>
   </article>
-  @if (isPatient) {
-    <article class="buttons">
-      <button type="button" class="btn btn-primary m-3"
-              routerLink="/mediapp/tomar-{{isGlucometria ? 'glucometria' : 'tension'}}"
-      >{{ isGlucometria ? 'Tomar glucometría' : 'Tomar tensión arterial' }}</button>
-    </article>
-  }
+  <article class="buttons" [ngClass]="isPatient ? 'visible' : 'hidden'">
+    <button type="button" class="btn btn-primary m-3"
+            routerLink="/mediapp/tomar-{{isGlucometria ? 'glucometria' : 'tension'}}"
+    >{{ isGlucometria ? 'Tomar glucometría' : 'Tomar tensión arterial' }}</button>
+  </article>
 </section>
 @if (!dataLoaded) {
   <app-loading-spinner></app-loading-spinner>

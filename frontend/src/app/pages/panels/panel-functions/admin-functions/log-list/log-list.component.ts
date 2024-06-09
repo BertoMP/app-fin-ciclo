@@ -143,15 +143,7 @@ export class LogListComponent implements OnInit, OnDestroy {
           title: 'Error',
           text: 'La fecha de inicio no puede ser posterior a hoy',
         });
-        return;
-      }
-
-      if (endDate < startDate) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'La fecha de fin no puede ser anterior a la fecha de inicio',
-        });
+        this.dataLoaded = true;
         return;
       }
 
@@ -161,6 +153,17 @@ export class LogListComponent implements OnInit, OnDestroy {
           title: 'Error',
           text: 'La fecha de fin no puede ser posterior a hoy',
         });
+        this.dataLoaded = true;
+        return;
+      }
+
+      if (endDate < startDate) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'La fecha de fin no puede ser anterior a la fecha de inicio',
+        });
+        this.dataLoaded = true;
         return;
       }
 

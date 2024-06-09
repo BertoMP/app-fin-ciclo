@@ -172,6 +172,7 @@ export class ListadoInformesComponent {
           title: 'Error',
           text: 'La fecha de inicio no puede ser posterior a hoy',
         });
+        this.dataLoaded = true;
         return;
       }
 
@@ -181,6 +182,7 @@ export class ListadoInformesComponent {
           title: 'Error',
           text: 'La fecha de fin no puede ser posterior a hoy',
         });
+        this.dataLoaded = true;
         return;
       }
 
@@ -190,6 +192,7 @@ export class ListadoInformesComponent {
           title: 'Error',
           text: 'La fecha de fin no puede ser anterior a la fecha de inicio',
         });
+        this.dataLoaded = true;
         return;
       }
 

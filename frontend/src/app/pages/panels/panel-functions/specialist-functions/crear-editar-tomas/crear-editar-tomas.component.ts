@@ -114,6 +114,22 @@ export class CrearEditarTomasComponent implements OnInit {
     }
   }
 
+  modalDelete(toma: MedicamentoTomasModel, medicamento_id: number) {
+    scrollTo(0, 0);
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Estas a punto de eliminar una toma de medicamento',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.eliminateToma(toma, medicamento_id);
+      }
+    });
+  }
+
   eliminateToma(toma?: MedicamentoTomasModel, medicamento_id?: number){
     let prescripcionOriginal = this.meds.find(p => p.medicamento.id === medicamento_id);
     let hora=toma.hora;

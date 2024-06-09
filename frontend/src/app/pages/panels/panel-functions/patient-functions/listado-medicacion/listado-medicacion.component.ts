@@ -109,6 +109,7 @@ export class ListadoMedicacionComponent implements OnInit {
   }
 
   confirmarCancelar(mensaje:string,accion:string,id:number) {
+    scrollTo(0,0);
     Swal.fire({
       titleText: mensaje,
       icon: 'question',
