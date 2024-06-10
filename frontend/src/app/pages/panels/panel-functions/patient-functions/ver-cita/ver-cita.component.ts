@@ -75,6 +75,15 @@ export class VerCitaComponent {
       },
       error: (error: string[]) => {
         this.errores = error;
+        this.dataLoaded = true;
+
+        scrollTo(0, 0);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error al obtener la cita',
+          confirmButtonText: 'Aceptar',
+        });
       },
     });
   }

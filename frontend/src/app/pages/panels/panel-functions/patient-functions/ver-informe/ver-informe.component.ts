@@ -92,7 +92,7 @@ export class VerInformeComponent {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Ha ocurrido un error al descargar el informe',
+          text: 'Ha ocurrido un error al cargar el informe',
           confirmButtonText: 'Aceptar',
         });
       },
@@ -101,10 +101,29 @@ export class VerInformeComponent {
 
   descargarInforme() {
     this.dataLoaded = false;
-    this.informeService.getDownloadInforme(this.informe.datos_informe.id).subscribe((response: any) => {
-      this.dataLoaded = true;
-      const blob = new Blob([response]);
-      saveAs(blob, `informe_${this.informe.datos_paciente.datos_personales.nombre}_${this.informe.datos_paciente.datos_personales.primer_apellido}_${this.informe.datos_paciente.datos_personales.segundo_apellido}.pdf`);
-    });
+    this.informeService
+      .getDownloadInforme(this.informe.datos_informe.id)
+      .subscribe({
+        next: (response: any): void => {
+          this.dataLoaded = true;
+          const blob = new Blob([response]);
+          saveAs(
+            blob,
+            `informe_${this.informe.datos_paciente.datos_personales.nombre}_${this.informe.datos_paciente.datos_personales.primer_apellido}_${this.informe.datos_paciente.datos_personales.segundo_apellido}.pdf`
+          );
+        },
+        error: (error: string[]): void => {
+          this.errores = error;
+          this.dataLoaded = true;
+
+          scrollTo(0, 0);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ha ocurrido un error al descargar el informe',
+            confirmButtonText: 'Aceptar',
+          });
+        },
+      });
   }
 }
