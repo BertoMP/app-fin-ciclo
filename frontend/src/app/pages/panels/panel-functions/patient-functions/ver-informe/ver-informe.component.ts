@@ -10,6 +10,7 @@ import { InformeService } from '../../../../../core/services/informe.service';
 import { saveAs } from 'file-saver';
 import {DomSanitizer, SafeHtml, Title} from "@angular/platform-browser";
 import {AuthService} from "../../../../../core/services/auth.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-ver-informe',
@@ -85,6 +86,15 @@ export class VerInformeComponent {
       },
       error: (error: string[]) => {
         this.errores = error;
+        this.dataLoaded = true;
+
+        scrollTo(0, 0);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error al descargar el informe',
+          confirmButtonText: 'Aceptar',
+        });
       },
     });
   }

@@ -9,6 +9,7 @@ import {Location} from "@angular/common";
 import {saveAs} from "file-saver";
 import {AuthService} from "../../../../../core/services/auth.service";
 import {Title} from "@angular/platform-browser";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-ver-cita',
@@ -92,7 +93,16 @@ export class VerCitaComponent {
         },
         error: (error: string[]): void => {
           this.errores = error;
-        }
+          this.dataLoaded = true;
+
+          scrollTo(0, 0);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ha ocurrido un error al descargar la cita',
+            confirmButtonText: 'Aceptar',
+          });
+        },
       });
   }
 
